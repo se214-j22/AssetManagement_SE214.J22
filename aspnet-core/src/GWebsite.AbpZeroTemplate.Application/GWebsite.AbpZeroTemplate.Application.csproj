@@ -11,9 +11,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GSoft.AbpZeroTemplate.Application.Shared\GSoft.AbpZeroTemplate.Application.Shared.csproj" />
-    <ProjectReference Include="..\GSoft.AbpZeroTemplate.Core\GSoft.AbpZeroTemplate.Core.csproj" />
+    <ProjectReference Include="..\GSoft.AbpZeroTemplate.EntityFrameworkCore\GSoft.AbpZeroTemplate.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\GWebsite.AbpZeroTemplate.Application.Share\GWebsite.AbpZeroTemplate.Application.Share.csproj" />
     <ProjectReference Include="..\GWebsite.AbpZeroTemplate.Core\GWebsite.AbpZeroTemplate.Core.csproj" />
+    <ProjectReference Include="..\GWebsite.AbpZeroTemplate.EntityFrameworkCore\GWebsite.AbpZeroTemplate.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Budget\" />
   </ItemGroup>
 
 </Project>

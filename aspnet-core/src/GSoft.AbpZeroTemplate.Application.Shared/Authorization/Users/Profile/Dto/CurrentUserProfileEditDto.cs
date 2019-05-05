@@ -31,5 +31,6 @@ namespace GSoft.AbpZeroTemplate.Authorization.Users.Profile.Dto
         public string QrCodeSetupImageUrl { get; set; }
 
         public bool IsGoogleAuthenticatorEnabled { get; set; }
+        public int Level { get; set; }
     }
 }

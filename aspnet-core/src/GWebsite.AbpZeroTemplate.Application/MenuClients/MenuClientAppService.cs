@@ -71,7 +71,7 @@ namespace GWebsite.AbpZeroTemplate.Application.MenuClients
             return output;
         }
 
-        [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient_Create)]
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient_Edit)]
         public async Task<MenuClientDto> CreateMenuClientAsync(CreateMenuClientInput input)
         {
             var entity = ObjectMapper.Map<MenuClient>(input);

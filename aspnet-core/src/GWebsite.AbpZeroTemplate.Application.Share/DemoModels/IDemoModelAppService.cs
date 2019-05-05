@@ -14,7 +14,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.DemoModels
         DemoModelInput GetDemoModelForEdit(int id);
         void DeleteDemoModel(int id);
         PagedResultDto<DemoModelDto> GetDemoModels(DemoModelFilter input);
-        DemoModelForViewDto GetDemoModelForView(int id);
 
     }
 }

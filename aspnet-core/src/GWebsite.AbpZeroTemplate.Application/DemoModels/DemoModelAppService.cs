@@ -1,18 +1,15 @@
 ﻿using Abp.Application.Services.Dto;
-using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using GWebsite.AbpZeroTemplate.Application;
 using GWebsite.AbpZeroTemplate.Application.Share.DemoModels;
 using GWebsite.AbpZeroTemplate.Application.Share.DemoModels.Dto;
-using GWebsite.AbpZeroTemplate.Core.Authorization;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 
 namespace GWebsite.AbpZeroTemplate.Web.Core.DemoModels
 {
-    [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient)]
     public class DemoModelAppService : GWebsiteAppServiceBase, IDemoModelAppService
     {
         private readonly IRepository<DemoModel> demoModelRepository;
@@ -22,7 +19,6 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.DemoModels
             this.demoModelRepository = demoModelRepository;
         }
 
-        [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient_Create)]
         public DemoModelDto CreateOrEditDemoModel(DemoModelInput demoModelInput)
         {
             DemoModel demoModelEntity = null;
@@ -37,7 +33,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.DemoModels
             else
             {
                 // Update
-                demoModelEntity = demoModelRepository.GetAll().SingleOrDefault(x => x.Id == demoModelInput.Id);
+                demoModelEntity = demoModelRepository.GetAll().Where(x => x.IsDelete == false).SingleOrDefault(x => x.Id == demoModelInput.Id);
                 if (demoModelEntity == null)
                 {
                     return null;
@@ -64,7 +60,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.DemoModels
 
         public DemoModelInput GetDemoModelForEdit(int id)
         {
-            var demoModelEntity = demoModelRepository.GetAll().SingleOrDefault(x => x.Id == id);
+            var demoModelEntity = demoModelRepository.GetAll().Where(x => x.IsDelete == false).SingleOrDefault(x => x.Id == id);
             if (demoModelEntity == null)
             {
                 return null;
@@ -72,19 +68,9 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.DemoModels
             return ObjectMapper.Map<DemoModelInput>(demoModelEntity);
         }
 
-        public DemoModelForViewDto GetDemoModelForView(int id)
-        {
-            var demoModelEntity = demoModelRepository.GetAll().SingleOrDefault(x => x.Id == id);
-            if (demoModelEntity == null)
-            {
-                return null;
-            }
-            return ObjectMapper.Map<DemoModelForViewDto>(demoModelEntity);
-        }
-
         public PagedResultDto<DemoModelDto> GetDemoModels(DemoModelFilter input)
         {
-            var query = demoModelRepository.GetAll();
+            var query = demoModelRepository.GetAll().Where(x => x.IsDelete == false);
 
             // filter by value
             if (input.Value != null)

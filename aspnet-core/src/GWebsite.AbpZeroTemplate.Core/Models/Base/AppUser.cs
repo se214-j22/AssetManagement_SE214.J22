@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace GWebsite.AbpZeroTemplate.Core.Models
 {
@@ -12,6 +13,7 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
             AppUserClaims = new HashSet<AppUserClaim>();
             AppUserLogins = new HashSet<AppUserLogin>();
             AppUserRoles = new HashSet<AppUserRole>();
+            //Purchases = new Collection<Purchase>();
         }
 
         public string Id { get; set; }
@@ -68,6 +70,7 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public string ValueString2 { get; set; }
         public string PriceCode { get; set; }
 
+        //public ICollection<Purchase> Purchases { get; set; }
         public ICollection<AnnouncementUser> AnnouncementUsers { get; set; }
         public ICollection<Announcement> Announcements { get; set; }
         public ICollection<AppUserClaim> AppUserClaims { get; set; }

@@ -11,6 +11,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.DemoModels.Dto
     {
         public int? Value { get; set; }
         public string Info { get; set; }
-        public string Date { get; set; }
+        public DateTime? Date { get; set; }
     }
 }

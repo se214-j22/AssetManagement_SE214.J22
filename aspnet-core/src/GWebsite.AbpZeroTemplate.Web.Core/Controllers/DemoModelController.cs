@@ -43,12 +43,5 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         {
             demoModelAppService.DeleteDemoModel(id);
         }
-
-        [HttpGet]
-        public DemoModelForViewDto GetDemoModelForView(int id)
-        {
-            return demoModelAppService.GetDemoModelForView(id);
-        }
-
     }
 }

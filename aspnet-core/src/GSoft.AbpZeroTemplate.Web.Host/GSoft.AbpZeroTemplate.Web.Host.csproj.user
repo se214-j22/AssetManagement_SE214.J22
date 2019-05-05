@@ -6,5 +6,6 @@
   <PropertyGroup>
     <ActiveDebugProfile>GSoft.AbpZeroTemplate.Web.Host</ActiveDebugProfile>
     <NameOfLastUsedPublishProfile>FolderProfile1</NameOfLastUsedPublishProfile>
+    <ShowAllFiles>true</ShowAllFiles>
   </PropertyGroup>
 </Project>

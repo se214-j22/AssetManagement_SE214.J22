@@ -23,11 +23,17 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
         public virtual DbSet<Function> Functions { get; set; }
         public virtual DbSet<MenuClient> MenuClients { get; set; }
         public virtual DbSet<DemoModel> DemoModels { get; set; }
-        public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<Image> Images { get; set; }
+        public virtual DbSet<Supplier> Suppliers { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Purchase> Purchases { get; set; }
+        public virtual DbSet<PurchaseProduct> PurchaseProducts { get; set; }
+        public virtual DbSet<Department> Departments { get; set; }
         /// <summary>
         /// GPermissions dùng cho bên Gwebsite
         /// </summary>
         public virtual DbSet<Permission> GPermissions { get; set; }
+        public virtual DbSet<Bidding> Biddings { get; set; }
 
         /// <summary>
         /// 
@@ -45,7 +51,7 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
+
             modelBuilder.Entity<Announcement>(entity =>
             {
                 //entity.HasIndex(e => e.UserId)
@@ -231,6 +237,12 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
                 entity.Property(e => e.SignContractDt)
                     .HasColumnName("SignContractDT")
                     .HasColumnType("datetime");
+
+                //entity
+                //     .HasMany(p => p.Purchases)
+                //      .WithOne(i => i.User)
+                //      .HasForeignKey(i => i.UserId)
+                //      .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Function>(entity =>
@@ -293,8 +305,57 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
 
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
+            // configuration for product entity
+            modelBuilder.Entity<Image>(entity =>
+            {
+                entity
+                .HasOne(i => i.Product)
+                .WithOne(p => p.Image)
+                .HasForeignKey<Image>(i => i.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
 
+            });
+            modelBuilder.Entity<Bidding>(entity =>
+            {
+                //entity
+                //      .HasKey(oi => new { oi.ProductId, oi.SupplierId });
+                entity
+                       .HasOne(p => p.Product)
+                        .WithMany(i => i.Biddings)
+                        .HasForeignKey(i => i.ProductId)
+                        .OnDelete(DeleteBehavior.Restrict);
+                entity
+                     .HasOne(p => p.Supplier)
+                      .WithMany(i => i.Biddings)
+                      .HasForeignKey(i => i.SupplierId)
+                      .OnDelete(DeleteBehavior.Restrict);
 
+            });
+            modelBuilder.Entity<Department>(entity =>
+            {
+                entity
+               .HasMany(p => p.Purchases)
+                .WithOne(i => i.Department)
+                .HasForeignKey(i => i.DepartmentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            });
+            modelBuilder.Entity<PurchaseProduct>(entity =>
+            {
+                entity
+              .HasKey(oi => new { oi.ProductId, oi.PurchaseId });
+                entity
+                .HasOne(oi => oi.Product)
+                .WithMany(p => p.PurchaseProducts)
+                .HasForeignKey(ot => ot.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+                entity
+                    .HasOne(oi => oi.Purchase)
+                    .WithMany(p => p.PurchaseProducts)
+                    .HasForeignKey(ot => ot.PurchaseId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
             modelBuilder.Entity<Permission>(entity =>
             {
                 //entity.HasIndex(e => e.FunctionId)

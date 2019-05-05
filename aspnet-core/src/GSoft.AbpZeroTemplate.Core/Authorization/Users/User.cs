@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Abp.Authorization.Users;
 using Abp.Extensions;
 using Abp.Timing;
@@ -10,6 +11,7 @@ namespace GSoft.AbpZeroTemplate.Authorization.Users
     /// </summary>
     public class User : AbpUser<User>
     {
+
         public virtual Guid? ProfilePictureId { get; set; }
 
         public virtual bool ShouldChangePasswordOnNextLogin { get; set; }
@@ -21,6 +23,8 @@ namespace GSoft.AbpZeroTemplate.Authorization.Users
         public string GoogleAuthenticatorKey { get; set; }
 
         //Can add application specific user properties here
+
+        public int Level { get; set; }
 
         public User()
         {
