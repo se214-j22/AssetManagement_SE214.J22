@@ -15,5 +15,6 @@
         "*.sln": true,
         "*.csproj.user": true,
         "*.suo": true
-    }
+    },
+    "git.ignoreLimitWarning": true
 }
