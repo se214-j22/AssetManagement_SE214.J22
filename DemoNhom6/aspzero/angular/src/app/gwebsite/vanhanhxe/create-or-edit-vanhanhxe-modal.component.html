@@ -1,0 +1,124 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content dinhdangchu">
+            <form #editForm="ngForm" novalidate>
+                <div class="modal-header header">
+                    <h4 class="modal-title w-100 text-center title">
+                        <span *ngIf="vanhanhxe.id">Cập nhật Thông tin vận hành : {{thongtinxe.soXe}}</span>
+                        <span *ngIf="!vanhanhxe.id">Tạo mới Thông tin vận hành</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Loại xe </label>
+                                <input #loaixeInput="ngModel" class="form-control" type="text" name="loaiXe"
+                                    [disabled]="true" [(ngModel)]="model.loaiXe " required maxlength="64">
+                                <validation-messages [formCtrl]="loaixeInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Model </label>
+                                <input #modelInput="ngModel" class="form-control" type="text" name="model"
+                                    [disabled]="true" [(ngModel)]="thongtinxe.model" required maxlength="64">
+                                <validation-messages [formCtrl]="modelInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Nước sản xuất </label>
+                                <input #nuocsanxuatInput="ngModel" class="form-control" type="text" name="nuocSanXuat"
+                                    [disabled]="true" [(ngModel)]="thongtinxe.nuocSanXuat" required maxlength="64">
+                                <validation-messages [formCtrl]="nuocsanxuatInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Loại nhiên liệu </label>
+                                <input #loaiNhienLieuInput="ngModel" class="form-control" type="text"
+                                    name="loaiNhienLieu" [disabled]="true" [(ngModel)]="thongtinxe.loaiNhienLieu"
+                                    required maxlength="64">
+                                <validation-messages [formCtrl]="loaiNhienLieuInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Đơn vị sử dụng </label>
+                                <input #donViSuDungInput="ngModel" class="form-control" type="text" name="donViSuDung"
+                                    [disabled]="true" [(ngModel)]="thongtinxe.donViSuDung" required maxlength="64">
+                                <validation-messages [formCtrl]="donViSuDungInput"></validation-messages>
+                            </div>
+                            <!-- <div class="form-group">
+                                                    <label>Ngày cập nhập *</label>
+                                                    <input #ngayCapNhapInput="ngModel" class="form-control" type="text" name="ngayCapNhap"
+                                                        [(ngModel)]="vanhanhxe.ngayCapNhat" required maxlength="64">
+                                                    <validation-messages [formCtrl]="ngayCapNhapInput"></validation-messages>
+                                                </div> -->
+                            <div class="form-group">
+                                <label>Ngày cập nhập </label>
+                                <p-calendar #ngayCapNhapInput="ngModel" class="form-control" [showIcon]="true"
+                                    [(ngModel)]="ngayCapNhap" name="ngayCapNhap">
+                                </p-calendar>
+                                <validation-messages [formCtrl]="ngayCapNhapInput"></validation-messages>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Số km cũ </label>
+                                <input #kmCuInput="ngModel" class="form-control" type="text" name="kmCu"
+                                    [disabled]="true" [(ngModel)]="vanhanhxe.kmCu" required maxlength="64">
+                                <validation-messages [formCtrl]="kmCuInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Số Km mới </label>
+                                <input #kmMoiInput="ngModel" class="form-control" type="text" name="kmMoi"
+                                    (keydown)="onKeydown($event)" [(ngModel)]="vanhanhxe.kmMoi" required maxlength="64">
+                                <validation-messages [formCtrl]="kmMoiInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Định mức nhiên liệu (lit/100km)</label>
+                                <input #dinhMucNhienLieuInput="ngModel" class="form-control" type="text"
+                                    name="nuocSanXuat" [disabled]="true" [(ngModel)]="model.dinhMucNhienLieu" required
+                                    maxlength="64">
+                                <validation-messages [formCtrl]="dinhMucNhienLieuInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Số km </label>
+                                <input #soKmInput="ngModel" class="form-control" type="text" name="km" required
+                                    [disabled]="true" [(ngModel)]="vanhanhxe.soKM" maxlength="64">
+                                <validation-messages [formCtrl]="soKmInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>NHiên liệu tiêu hao theo định mức (lit) </label>
+                                <input class="form-control" type="text" name="xangdinhmuc" required
+                                    value="{{xangdinhmuc}}" [disabled]="true" maxlength="64">
+
+                            </div>
+                            <div class="form-group">
+                                <label>Nhiên liệu tiêu hao thực tế(lit) </label>
+                                <input #xangtieuthuInput="ngModel" class="form-control" type="text" name="xangTieuThu"
+                                    [(ngModel)]="vanhanhxe.xangTieuThu" required maxlength="64">
+                                <validation-messages [formCtrl]="xangtieuthuInput"></validation-messages>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Trạng thái duyệt </label>
+                                <input #ghiChuInput="ngModel" class="form-control" type="text" name="trangThaiDaDuyet"
+                                    [(ngModel)]="vanhanhxe.trangThaiDaDuyet" required maxlength="64">
+                                <validation-messages [formCtrl]="ghiChuInput"></validation-messages>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </form>
+
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-default"
+                    (click)="close()">{{l("Cancel")}}</button>
+                <button (click)="save()" class="btn btn-primary"><i class="fa fa-save"></i>
+                    <span>{{l("Save")}}</span></button>
+            </div>
+        </div>
+    </div>
+</div>

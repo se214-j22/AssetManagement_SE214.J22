@@ -1,0 +1,77 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content dinhdangchu">
+            <div class="modal-header  " style=" background-color: #00C5DC">
+                <h4 class="modal-title w-100 text-center"
+                    style="color: #ffffff; font-size: 30; text-transform: uppercase ; font-weight: 100">
+                    Thông tin chi tiết vận hành xe
+                    <!-- <span *ngIf="thogtinxe.id">{{l("Cập nhập thông tin xe ")}}: {{thongtinxe.soXe}}</span>
+                    <span *ngIf="!thongtinxe.id">{{l("Tạo mới thông tin xe")}}</span> -->
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-6 dinhdangcot">
+                        <div class="form-group">
+                            <label>Số xe : {{vanhanhxe.soXe}} </label>
+                        </div>
+                        <div class="form-group">
+                            <label>Model : {{thongtinxe.model}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Loại xe : {{model.loaiXe}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label> Nước sản xuất {{thongtinxe.nuocSanXuat}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Loại nhiên liệu : {{thongtinxe.loaiNhienLieu}} </label>
+                        </div>
+                        <div class="form-group">
+                            <label>Đơn vị sử dụng : {{thongtinxe.donViSuDung}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Ngày cập nhập : {{vanhanhxe.ngayCapNhat|date}}</label>
+                        </div>
+                    </div>
+                    <div class="col-6 dinhdangcot">
+                        <div class="form-group">
+                            <label> Số km cũ : {{vanhanhxe.kmCu}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Số km mới: {{vanhanhxe.kmMoi}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label> Số km : {{vanhanhxe.soKM}} </label>
+                        </div>
+                        <div class="form-group">
+                            <label>Định mức nhiên liệu : {{model.dinhMucNhienLieu}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Nhiên liệu tiêu thụ theo định mức:
+                                {{nhienlieudinhmuc}} </label>
+                        </div>
+                        <div class="form-group">
+                            <label>Nhiên liệu tiêu thụ thực tế: {{vanhanhxe.xangTieuThu}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Ghi chú : {{vanhanhxe.ghiChu}}</label>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <var></var>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" (click)="close()">{{l("Cancel")}}</button>
+            </div>
+        </div>
+    </div>
+</div>

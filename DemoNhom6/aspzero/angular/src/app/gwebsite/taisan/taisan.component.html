@@ -1,0 +1,155 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Thông tin Tài sản
+                    <!-- <span *ngIf="thogtinxe.id">{{l("Cập nhập thông tin xe ")}}: {{thongtinxe.soXe}}</span>
+                        <span *ngIf="!thongtinxe.id">{{l("Tạo mới thông tin xe")}}</span> -->
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row align-items-center">
+
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container " [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable selectionMode="single" [(selection)]="item"
+                            (onLazyLoad)="getTaiSans($event)" [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [responsive]="primengTableHelper.isResponsive">
+                            <ng-template pTemplate="header">
+                                <!-- Bắt đầu hàng -->
+                                <tr>
+                                    <!-- <th style="width: 3em"></th> -->
+                                    <th pSortableColumn="maTaiSan ">
+                                        Mã tài sản
+                                        <p-sortIcon field="maTaiSan"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="tenTaiSan">
+                                        Tên tài sản
+                                        <p-sortIcon field="tenTaiSan"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="nhomTaiSan">
+                                        Nhóm tài sản
+                                        <p-sortIcon field="nhomTaiSan"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="loaiTaiSan">
+                                        Loại tài sản
+                                        <p-sortIcon field="loaiTaiSan"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="thongTinMoTa">
+                                        Thông tin mô tả
+                                        <p-sortIcon field="thongTinMoTa"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="nguyenGiaTaiSan">
+                                        Nguyên giá tài sản
+                                        <p-sortIcon field="nguyenGiaTaiSan"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="donViSuDung">
+                                        Đơn vị sử dụng
+                                        <p-sortIcon field="donViSuDung"></p-sortIcon>
+                                    </th>
+
+                                    <th pSortableColumn="tinhTrangTaiSan">
+                                        Tình trạng tài sản
+                                        <p-sortIcon field="tinhTrangTaiSan"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="nguoiSuDung">
+                                        Người sử dụng
+                                        <p-sortIcon field="nguoiSuDung "></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="tinhTrangKhauHao">
+                                        Tình trạng khấu hao
+                                        <p-sortIcon field="tinhTrangKhauHao"></p-sortIcon>
+                                    </th>
+                                </tr>
+
+                            </ng-template>
+                            <ng-template let-rowData pTemplate="body" let-record="$implicit">
+                                <tr [pSelectableRow]="rowData">
+                                    <!-- <td>
+                                        <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+                                    </td> -->
+                                    <td>
+                                        <span class="ui-column-title">Mã tài sản</span>
+                                        <span title="{{record.maTaiSan}}">{{truncateString(record.maTaiSan)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Tên tài sản</span>
+                                        <span title="{{record.tenTaiSan}}">{{truncateString(record.tenTaiSan )}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title"> Nhóm tài sản</span>
+                                        <span title="{{record.nhomTaiSan}}">{{truncateString(record.nhomTaiSan)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Loại tài sản </span>
+                                        <span title="{{record.loaiTaiSan}}">{{truncateString(record.loaiTaiSan)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Thông tin mô tả </span>
+                                        <span
+                                            title="{{record.thongTinMoTa}}">{{truncateString(record.thongTinMoTa)}}</span>
+                                    </td>
+
+                                    <td>
+                                        <span class="ui-column-title">Nguyên giá tài sản</span>
+                                        <span
+                                            title="{{record.nguyenGiaTaiSan}}">{{truncateString(record.nguyenGiaTaiSan)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Đơn vị sử dụng </span>
+                                        <span
+                                            title="{{record.donViSuDung}}">{{truncateString(record.donViSuDung)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Tình trạng tài sản </span>
+                                        <span
+                                            title="{{record.tinhTrangTaiSan}}">{{truncateString(record.tinhTrangTaiSan)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Người sử dụng </span>
+                                        <span
+                                            title="{{record.nguoiSuDung}}">{{truncateString(record.nguoisuDung)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Tình trạnh khấu hao </span>
+                                        <span
+                                            title="{{record.tinhTrangKhauHao}}">{{truncateString(record.tinhTrangKhauHao)}}</span>
+                                    </td>
+
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
+                                (onPageChange)="getTaiSans($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <div class="d-flex justify-content-end">
+                    <p-button (click)="close()" class="m-3" icon="pi pi-check" label="Close"></p-button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

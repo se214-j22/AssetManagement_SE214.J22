@@ -1,0 +1,158 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content dinhdangchu">
+            <div class="modal-header" style="background-color: #00C5DC; ">
+                <h2 class="modal-title w-100 text-center title" style="color: #FFFFFF; font-style: normal">
+                    <b> Thông tin chi tiết xe {{thongtinxe.soXe}}</b>
+                </h2>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <tabset class="tab-container tabbable-line">
+                    <tab heading="Thông tin tài sản" customClass="m-tabs__item">
+                        <!-- <h2 class="subTitle">Thông tin tài sản</h2> -->
+                        <div class="row dinhdanghang">
+                            <div class="col-sm-6 d-flex flex-column  " style="padding-left: 10%">
+                                <div class="form-group">
+                                    <label>Mã tài sản : {{taisan.maTaiSan}} </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tên tài sản: {{taisan.tenTaiSan}} </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nhóm tài sản : {{taisan.nhomTaiSan}} </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Loại tài sản : {{taisan.loaiTaiSan}} </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Thông tin mô tả: {{taisan.thongTinMoTa}} </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 d-flex flex-column " style="padding-left: 10%">
+                                <div class="form-group">
+                                    <label>Nguyên giá tài sản : {{taisan.nguyenGiaTaiSan}} </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Đơn vị sử dụng: {{taisan.donViSuDung}} </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tình trạng tài sản : {{taisan.tinhTrangTaiSan}} </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Người sử dụng : {{taisan.nguoiSuDung}} </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tình Trạng khấu hao : {{taisan.tinhTrangKhauHao}} </label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </tab>
+
+                    <tab heading="Thông tin chi tiết xe" customClass="m-tabs__item">
+                        <!-- <h2 class="subTitle">Thông
+                            tin chi tiết xe</h2> -->
+                        <div class="row dinhdanghang">
+                            <div class="col-sm-6" style="padding-left: 10%">
+                                <div class="form-group">
+                                    <label>Số xe : {{thongtinxe.soXe}} </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Model : {{thongtinxe.model}}</label>
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Loại xe : {{model.loaiXe}}</label>
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Hãng sản xuất {{model.hangSanXuat}}</label>
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Định mức nhiên liệu : {{model.dinhMucNhienLieu}}</label>
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Nước sản xuất: {{thongtinxe.nuocSanXuat}}</label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Loại nhiên liệu : {{thongtinxe.loaiNhienLieu}} </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Năm sản xuất : {{thongtinxe.namSanXuat}}</label>
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Màu xe: {{thongtinxe.mauXe}}</label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label> Mục đích sử dụng : {{thongtinxe.loaiNhienLieu}} </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Ngày đăng kí ban đầu : {{thongtinxe.ngayDangKiBanDau|date}}</label>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-6" style="padding-left: 10%">
+                                <div class="form-group">
+                                    <label>Số máy: {{thongtinxe.soMay}}</label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Số sườn : {{thongtinxe.soSuon}} </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Cỡ lốp sử dụng : {{thongtinxe.coLopSuDung}}</label>
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Kiểu động cơ: {{thongtinxe.kieuDongCo}}</label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Loại hộp số : {{thongtinxe.loaiHopSo}} </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Thể tích động cơ : {{thongtinxe.theTichDongCo}}</label>
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Chiều dài : {{thongtinxe.chieuDai}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Chiều cao : {{thongtinxe.chieuCao}} </label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Chiều ngang: {{thongtinxe.chieuNgang}}</label>
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Đơn vị sử dụng: {{thongtinxe.donViSuDung}}</label>
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Tên chủ phương tiện : {{thongtinxe.tenChuPhuongTien}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label>Trạng thái duyệt : {{thongtinxe.trangThaiDuyet}}</label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+            <var></var>
+            <div class="modal-footer">
+                <button type="button" class=" btn btn-outline-info" (click)="close()">{{l("Cancel")}}</button>
+            </div>
+        </div>
+    </div>
+</div>
