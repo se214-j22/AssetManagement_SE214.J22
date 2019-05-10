@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Injector, ViewEncapsulation, OnInit } from '@
 import { AppSalesSummaryDatePeriod } from '@shared/AppEnums';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
-import { TenantDashboardServiceProxy } from '@shared/service-proxies/service-proxies';
+import { TenantDashboardServiceProxy, OrganizationUnitServiceProxy } from '@shared/service-proxies/service-proxies';
 declare let d3, Datamap: any;
 
 @Component({
@@ -23,14 +23,35 @@ export class DashboardComponent extends AppComponentBase implements OnInit, Afte
     dailySalesLineChart: DailySalesLineChart;
     profitSharePieChart: ProfitSharePieChart;
     memberActivityTable: MemberActivityTable;
+    warehouseStatus: WarehouseStatus;
+    warehouseData = Array<MiniChartItem>();
     miniChartData = Array<MiniChartItem>();
     recentActivity: any;
     constructor(
         injector: Injector,
-        private _dashboardService: TenantDashboardServiceProxy
+        private _dashboardService: TenantDashboardServiceProxy,
+        private _organizationUnitService: OrganizationUnitServiceProxy
     ) {
         super(injector);
 
+    }
+    setWarehouseData() {
+        this.miniChartData[0] = {
+            link: 'https://www.techjockey.com/asset-management/asset/list',
+            color: 'orange', title: 'All Assets', count: this.warehouseStatus.allNumber
+        };
+        this.miniChartData[1] = {
+            link: 'https://www.techjockey.com/asset-management/asset/list',
+            color: 'aquamarine', title: 'Owned Assets', count: this.warehouseStatus.parentNumber
+        };
+        this.miniChartData[2] = {
+            link: 'https://www.techjockey.com/asset-management/asset/list',
+            color: 'crimson', title: 'Damaged Assets', count: 0
+        };
+        this.miniChartData[3] =  {
+            link: 'https://www.techjockey.com/asset-management/asset/list',
+            color: 'violet', title: 'Children Assets', count: this.warehouseStatus.childrenNumber
+        };
     }
     ngOnInit() {
         this.dashboardHeaderStats = new DashboardHeaderStats();
@@ -40,35 +61,38 @@ export class DashboardComponent extends AppComponentBase implements OnInit, Afte
         this.dailySalesLineChart = new DailySalesLineChart(this._dashboardService, '#m_chart_daily_sales');
         this.profitSharePieChart = new ProfitSharePieChart(this._dashboardService, '#m_chart_profit_share');
         this.memberActivityTable = new MemberActivityTable(this._dashboardService);
-        this.miniChartData.push(new MiniChartItem(<MiniChartItem>{
-            link: 'https://www.techjockey.com/asset-management/asset/list',
-            color: 'orange', title: 'Assets', count: 1
-        }));
-        this.miniChartData = [{
-            link: 'https://www.techjockey.com/asset-management/asset/list',
-            color: 'orange', title: 'Assets', count: 9
-        }, {
-            link: 'https://www.techjockey.com/asset-management/asset/list',
-            color: 'aquamarine', title: 'Employee', count: 5
-        }, {
-            link: 'https://www.techjockey.com/asset-management/asset/list',
-            color: 'crimson', title: 'Location', count: 2
-        }, {
-            link: 'https://www.techjockey.com/asset-management/asset/list',
-            color: 'violet', title: 'Products', count: 6
-        }, {
-            link: 'https://www.techjockey.com/asset-management/asset/list',
-            color: 'greenyellow', title: 'Vendors', count: 3
-        }, {
-            link: 'https://www.techjockey.com/asset-management/asset/list',
-            color: 'violet', title: 'Unassigned Assets', count: 7
-        }, {
-            link: 'https://www.techjockey.com/asset-management/asset/list',
-            color: 'coral', title: 'Assigned Assets', count: 4
-        }, {
-            link: 'https://www.techjockey.com/asset-management/asset/list',
-            color: 'mediumpurple', title: 'Total Asset Cost', count: 8
-        }];
+        this.warehouseStatus = new WarehouseStatus(this._organizationUnitService);
+        // this.miniChartData.push(new MiniChartItem(<MiniChartItem>{
+        //     link: 'https://www.techjockey.com/asset-management/asset/list',
+        //     color: 'orange', title: 'Assets', count: 1
+        // }));
+        this.setWarehouseData();
+        this.miniChartData.push(
+            {
+                link: 'https://www.techjockey.com/asset-management/asset/list',
+                color: 'orange', title: 'Assets', count: 9
+            }, {
+                link: 'https://www.techjockey.com/asset-management/asset/list',
+                color: 'aquamarine', title: 'Employee', count: 5
+            }, {
+                link: 'https://www.techjockey.com/asset-management/asset/list',
+                color: 'crimson', title: 'Location', count: 2
+            }, {
+                link: 'https://www.techjockey.com/asset-management/asset/list',
+                color: 'violet', title: 'Products', count: 6
+            }, {
+                link: 'https://www.techjockey.com/asset-management/asset/list',
+                color: 'greenyellow', title: 'Vendors', count: 3
+            }, {
+                link: 'https://www.techjockey.com/asset-management/asset/list',
+                color: 'violet', title: 'Unassigned Assets', count: 7
+            }, {
+                link: 'https://www.techjockey.com/asset-management/asset/list',
+                color: 'coral', title: 'Assigned Assets', count: 4
+            }, {
+                link: 'https://www.techjockey.com/asset-management/asset/list',
+                color: 'mediumpurple', title: 'Total Asset Cost', count: 8
+            });
         this.recentActivity = [
             {
                 nameActivity: 'Products',
@@ -108,6 +132,10 @@ export class DashboardComponent extends AppComponentBase implements OnInit, Afte
                 this.profitSharePieChart.init(result.profitShares);
                 this.salesSummaryChart.init(result.salesSummary, result.totalSales, result.revenue, result.expenses, result.growth);
             });
+        this._organizationUnitService.getWarehouseStatus().subscribe(result => {
+            this.warehouseStatus.init(result);
+            this.setWarehouseData()
+        });
     }
 
     ngAfterViewInit(): void {
@@ -199,7 +227,34 @@ class SalesSummaryChart extends DashboardChartBase {
             });
     }
 }
+class WarehouseStatus extends DashboardChartBase {
+    allNumber = 0;
+    childrenNumber = 0;
+    parentNumber = 0
 
+    constructor(private _organizationUnitService: OrganizationUnitServiceProxy) {
+        super();
+    }
+
+    init(data: Partial<WarehouseStatus>) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        this.hideLoading();
+    }
+    reload() {
+        this.showLoading();
+        this._organizationUnitService
+            .getWarehouseStatus()
+            .subscribe(result => {
+                this.init(result);
+                this.hideLoading();
+            });
+    }
+}
 class RegionalStatsTable extends DashboardChartBase {
     stats: Array<any>;
 

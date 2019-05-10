@@ -5381,13 +5381,10 @@ export class OrganizationUnitServiceProxy {
     }
 
     /**
-     * @orgunitId (optional) 
      * @return Success
      */
-    getWarehouseStatus(orgunitId: number | null | undefined): Observable<WarehouseStatus> {
-        let url_ = this.baseUrl + "/api/services/app/OrganizationUnit/GetWarehouseStatus?";
-        if (orgunitId !== undefined)
-            url_ += "orgunitId=" + encodeURIComponent("" + orgunitId) + "&"; 
+    getWarehouseStatus(): Observable<WarehouseStatus> {
+        let url_ = this.baseUrl + "/api/services/app/OrganizationUnit/GetWarehouseStatus";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -5782,7 +5779,7 @@ export class ProductServiceProxy {
             })
         };
 
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processCreateOrEdit(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
