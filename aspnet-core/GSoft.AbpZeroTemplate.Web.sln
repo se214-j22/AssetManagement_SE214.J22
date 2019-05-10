@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AFAA0841-BD93-466F-B8F4-FB4EEC86F1FC}"
 EndProject
@@ -38,9 +38,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GSoft.AbpZeroTemplate.Core.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{AEA1AD24-5FB6-4DC1-919A-36B603507171}"
 	ProjectSection(SolutionItems) = preProject
-		docs\1.README.md = docs\1.README.md
-		docs\2.SetPermission.md = docs\2.SetPermission.md
-		docs\UpgradeDotnetZero.md = docs\UpgradeDotnetZero.md
+		docs\1.HuongDanTaoWebApi.md = docs\1.HuongDanTaoWebApi.md
+		docs\2.HuongDanTaoAngular.md = docs\2.HuongDanTaoAngular.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GWebsite.AbpZeroTemplate.Core", "src\GWebsite.AbpZeroTemplate.Core\GWebsite.AbpZeroTemplate.Core.csproj", "{5FA9A9A2-373A-4575-94AB-601BE794D019}"
