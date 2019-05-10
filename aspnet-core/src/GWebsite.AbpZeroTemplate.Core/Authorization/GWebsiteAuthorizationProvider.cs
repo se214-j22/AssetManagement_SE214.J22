@@ -46,6 +46,9 @@ namespace GWebsite.AbpZeroTemplate.Core.Authorization
             customer.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_Edit, L("EditingCustomer"));
             customer.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_Delete, L("DeletingCustomer"));
 
+            var product = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Product, L("Product"));
+            product.CreateChildPermission(GWebsitePermissions.Pages_Administration_Product_Create_Edit, L("CreatingOrEditingProduct"));
+            product.CreateChildPermission(GWebsitePermissions.Pages_Administration_Product_Delete, L("DeletingProduct"));
         }
 
         private static ILocalizableString L(string name)

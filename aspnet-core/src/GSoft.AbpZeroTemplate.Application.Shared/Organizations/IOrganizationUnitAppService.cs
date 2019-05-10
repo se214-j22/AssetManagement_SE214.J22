@@ -24,5 +24,9 @@ namespace GSoft.AbpZeroTemplate.Organizations
         Task AddUsersToOrganizationUnit(UsersToOrganizationUnitInput input);
 
         Task<PagedResultDto<NameValueDto>> FindUsers(FindOrganizationUnitUsersInput input);
+
+        Task PlaceProductToOrganizationUnit(ProductsToOrganizationUnitInput input);
+
+        Task<WarehouseStatus> GetWarehouseStatus(long orgunitId);
     }
 }

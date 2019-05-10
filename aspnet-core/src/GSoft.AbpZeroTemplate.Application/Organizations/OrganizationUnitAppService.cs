@@ -11,6 +11,8 @@ using GSoft.AbpZeroTemplate.Organizations.Dto;
 using System.Linq.Dynamic.Core;
 using Abp.Extensions;
 using Microsoft.EntityFrameworkCore;
+using GWebsite.AbpZeroTemplate.Core.Models;
+using System.Collections.Generic;
 
 namespace GSoft.AbpZeroTemplate.Organizations
 {
@@ -20,15 +22,18 @@ namespace GSoft.AbpZeroTemplate.Organizations
         private readonly OrganizationUnitManager _organizationUnitManager;
         private readonly IRepository<OrganizationUnit, long> _organizationUnitRepository;
         private readonly IRepository<UserOrganizationUnit, long> _userOrganizationUnitRepository;
+        private readonly IRepository<ProductOrganizationUnit, int> _productOrganizationUnitRepository;
 
         public OrganizationUnitAppService(
             OrganizationUnitManager organizationUnitManager,
             IRepository<OrganizationUnit, long> organizationUnitRepository,
-            IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository)
+            IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository,
+            IRepository<ProductOrganizationUnit, int> productOrganizationUnitRepository)
         {
             _organizationUnitManager = organizationUnitManager;
             _organizationUnitRepository = organizationUnitRepository;
             _userOrganizationUnitRepository = userOrganizationUnitRepository;
+            _productOrganizationUnitRepository = productOrganizationUnitRepository;
         }
 
         public async Task<ListResultDto<OrganizationUnitDto>> GetOrganizationUnits()
@@ -167,5 +172,39 @@ namespace GSoft.AbpZeroTemplate.Organizations
             dto.MemberCount = await _userOrganizationUnitRepository.CountAsync(uou => uou.OrganizationUnitId == organizationUnit.Id);
             return dto;
         }
+
+        [AbpAuthorize(AppPermissions.Pages_Administration_OrganizationUnits_ManageWarehouse)]
+        public async Task PlaceProductToOrganizationUnit(ProductsToOrganizationUnitInput input)
+        {
+            var existedProductIds = await _productOrganizationUnitRepository.GetAll()
+                .Where(x => input.ProductIds.Contains(x.ProductId))
+                .Select(p => p.ProductId).ToListAsync();
+            var notExistedProductIds = input.ProductIds.Except(existedProductIds).ToList();
+
+            await _productOrganizationUnitRepository.GetAll()
+                .Where(x => existedProductIds.Contains(x.ProductId))
+                .ForEachAsync(p => p.OrganizationUnitId = input.OrganizationUnitId);
+            foreach (int productId in notExistedProductIds)
+            {
+                var newProduct = new ProductOrganizationUnit() { ProductId = productId, OrganizationUnitId = input.OrganizationUnitId };
+                await _productOrganizationUnitRepository.InsertAndGetIdAsync(newProduct);
+            }
+            await CurrentUnitOfWork.SaveChangesAsync();
+        }
+
+        [AbpAuthorize(AppPermissions.Pages_Administration_OrganizationUnits_ManageWarehouse)]
+        public async Task<WarehouseStatus> GetWarehouseStatus(long orgunitId)
+        {
+            var childrendOrgIds = from o in _organizationUnitRepository.GetAll() where (o.ParentId == orgunitId) select o.Id;
+            var childrendNumber = (from po in _productOrganizationUnitRepository.GetAll()
+                                   where childrendOrgIds.Contains(po.OrganizationUnitId)
+                                   select po).Count();
+            var parentNumber = (from po in _productOrganizationUnitRepository.GetAll()
+                                where orgunitId == po.OrganizationUnitId
+                                select po).Count();
+            var allNumber = childrendNumber + parentNumber;
+            return new WarehouseStatus { AllNumber = allNumber, ParentNumber = parentNumber, ChildrenNumber = childrendNumber };
+        }
+
     }
 }

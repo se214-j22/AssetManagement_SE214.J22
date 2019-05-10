@@ -56,6 +56,7 @@ namespace GSoft.AbpZeroTemplate.Authorization
             var organizationUnits = administration.CreateChildPermission(AppPermissions.Pages_Administration_OrganizationUnits, L("OrganizationUnits"));
             organizationUnits.CreateChildPermission(AppPermissions.Pages_Administration_OrganizationUnits_ManageOrganizationTree, L("ManagingOrganizationTree"));
             organizationUnits.CreateChildPermission(AppPermissions.Pages_Administration_OrganizationUnits_ManageMembers, L("ManagingMembers"));
+            organizationUnits.CreateChildPermission(AppPermissions.Pages_Administration_OrganizationUnits_ManageWarehouse, L("ManageWarehouse"));
 
             administration.CreateChildPermission(AppPermissions.Pages_Administration_UiCustomization, L("VisualSettings"));
             

@@ -5327,6 +5327,113 @@ export class OrganizationUnitServiceProxy {
         }
         return _observableOf<PagedResultDtoOfNameValueDto>(<any>null);
     }
+
+    /**
+     * @input (optional) 
+     * @return Success
+     */
+    placeProductToOrganizationUnit(input: ProductsToOrganizationUnitInput | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/OrganizationUnit/PlaceProductToOrganizationUnit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPlaceProductToOrganizationUnit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPlaceProductToOrganizationUnit(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPlaceProductToOrganizationUnit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @orgunitId (optional) 
+     * @return Success
+     */
+    getWarehouseStatus(orgunitId: number | null | undefined): Observable<WarehouseStatus> {
+        let url_ = this.baseUrl + "/api/services/app/OrganizationUnit/GetWarehouseStatus?";
+        if (orgunitId !== undefined)
+            url_ += "orgunitId=" + encodeURIComponent("" + orgunitId) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetWarehouseStatus(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetWarehouseStatus(<any>response_);
+                } catch (e) {
+                    return <Observable<WarehouseStatus>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<WarehouseStatus>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetWarehouseStatus(response: HttpResponseBase): Observable<WarehouseStatus> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? WarehouseStatus.fromJS(resultData200) : new WarehouseStatus();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<WarehouseStatus>(<any>null);
+    }
 }
 
 @Injectable()
@@ -5642,6 +5749,70 @@ export class PermissionServiceProxy {
             }));
         }
         return _observableOf<ListResultDtoOfFlatPermissionWithLevelDto>(<any>null);
+    }
+}
+
+@Injectable()
+export class ProductServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @input (optional) 
+     * @return Success
+     */
+    createOrEdit(input: ProductInput | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/Product/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
     }
 }
 
@@ -15459,6 +15630,98 @@ export interface IFindOrganizationUnitUsersInput {
     filter: string | undefined;
 }
 
+export class ProductsToOrganizationUnitInput implements IProductsToOrganizationUnitInput {
+    productIds!: number[] | undefined;
+    organizationUnitId!: number | undefined;
+
+    constructor(data?: IProductsToOrganizationUnitInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (data["productIds"] && data["productIds"].constructor === Array) {
+                this.productIds = [];
+                for (let item of data["productIds"])
+                    this.productIds.push(item);
+            }
+            this.organizationUnitId = data["organizationUnitId"];
+        }
+    }
+
+    static fromJS(data: any): ProductsToOrganizationUnitInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProductsToOrganizationUnitInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.productIds && this.productIds.constructor === Array) {
+            data["productIds"] = [];
+            for (let item of this.productIds)
+                data["productIds"].push(item);
+        }
+        data["organizationUnitId"] = this.organizationUnitId;
+        return data; 
+    }
+}
+
+export interface IProductsToOrganizationUnitInput {
+    productIds: number[] | undefined;
+    organizationUnitId: number | undefined;
+}
+
+export class WarehouseStatus implements IWarehouseStatus {
+    allNumber!: number | undefined;
+    parentNumber!: number | undefined;
+    childrenNumber!: number | undefined;
+
+    constructor(data?: IWarehouseStatus) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.allNumber = data["allNumber"];
+            this.parentNumber = data["parentNumber"];
+            this.childrenNumber = data["childrenNumber"];
+        }
+    }
+
+    static fromJS(data: any): WarehouseStatus {
+        data = typeof data === 'object' ? data : {};
+        let result = new WarehouseStatus();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["allNumber"] = this.allNumber;
+        data["parentNumber"] = this.parentNumber;
+        data["childrenNumber"] = this.childrenNumber;
+        return data; 
+    }
+}
+
+export interface IWarehouseStatus {
+    allNumber: number | undefined;
+    parentNumber: number | undefined;
+    childrenNumber: number | undefined;
+}
+
 export class PaymentInfoDto implements IPaymentInfoDto {
     edition!: EditionSelectDto | undefined;
     additionalPrice!: number | undefined;
@@ -15925,6 +16188,46 @@ export interface IFlatPermissionWithLevelDto {
     displayName: string | undefined;
     description: string | undefined;
     isGrantedByDefault: boolean | undefined;
+}
+
+export class ProductInput implements IProductInput {
+    name!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IProductInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): ProductInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProductInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IProductInput {
+    name: string | undefined;
+    id: number | undefined;
 }
 
 export class CurrentUserProfileEditDto implements ICurrentUserProfileEditDto {
