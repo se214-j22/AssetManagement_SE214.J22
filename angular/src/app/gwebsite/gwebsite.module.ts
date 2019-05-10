@@ -19,6 +19,30 @@ import { CustomerComponent } from './customer/customer.component';
 import { ViewCustomerModalComponent } from './customer/view-customer-modal.component';
 import { CreateOrEditCustomerModalComponent } from './customer/create-or-edit-customer-modal.component';
 
+// qlts
+import { CategoryComponent } from './category/category.component';
+import { ViewCategoryModalComponent } from './category/view-category-modal.component';
+import { CreateOrEditCategoryModalComponent } from './category/create-or-edit-category-modal.component';
+
+import { AssetComponent } from './asset/asset.component';
+import { ViewAssetModalComponent } from './asset/view-asset-modal.component';
+import { CreateOrEditAssetModalComponent } from './asset/create-or-edit-asset-modal.component';
+
+import { AssetDetailComponent} from './assetdetail/assetdetail.component';
+import { ViewAssetDetailModalComponent } from './assetdetail/view-assetdetail-modal.component';
+import { CreateOrEditAssetDetailModalComponent } from './assetdetail/create-or-edit-assetdetail-modal.component';
+
+import { ProviderComponent } from './provider/provider.component';
+import { ViewProviderModalComponent } from './provider/view-provider-modal.component';
+import { CreateOrEditProviderModalComponent } from './provider/create-or-edit-provider-modal.component';
+
+import { LiquidationComponent } from './liquidation/liquidation.component';
+import { ViewLiquidationModalComponent } from './liquidation/view-liquidation-modal.component';
+import { CreateOrEditLiquidationModalComponent } from './liquidation/create-or-edit-liquidation-modal.component';
+
+import { LiquidationDetailComponent } from './liquidationdetail/liquidationdetail.component';
+import { ViewLiquidationDetailModalComponent } from './liquidationdetail/view-liquidationdetail-modal.component';
+import { CreateOrEditLiquidationDetailModalComponent } from './liquidationdetail/create-or-edit-liquidationdetail-modal.component';
 @NgModule({
     imports: [
         FormsModule,
@@ -42,6 +66,13 @@ import { CreateOrEditCustomerModalComponent } from './customer/create-or-edit-cu
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
         DemoModelComponent, CreateOrEditDemoModelModalComponent, ViewDemoModelModalComponent,
         CustomerComponent, CreateOrEditCustomerModalComponent, ViewCustomerModalComponent,
+
+        CategoryComponent, CreateOrEditCategoryModalComponent, ViewCategoryModalComponent,
+        AssetComponent, CreateOrEditAssetModalComponent, ViewAssetModalComponent,
+        AssetDetailComponent, CreateOrEditAssetDetailModalComponent, ViewAssetDetailModalComponent,
+        ProviderComponent, CreateOrEditProviderModalComponent, ViewProviderModalComponent,
+        LiquidationComponent, CreateOrEditLiquidationModalComponent, ViewLiquidationModalComponent,
+        LiquidationDetailComponent, CreateOrEditLiquidationDetailModalComponent, ViewLiquidationDetailModalComponent,
     ],
     providers: [
         DemoModelServiceProxy,

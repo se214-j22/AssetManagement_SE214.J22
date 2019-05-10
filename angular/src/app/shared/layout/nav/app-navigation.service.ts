@@ -19,7 +19,18 @@ export class AppNavigationService {
             new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [
                 new AppMenuItem('MenuClient', 'Pages.Administration.MenuClient', 'flaticon-menu-1', '/app/gwebsite/menu-client'),
                 new AppMenuItem('DemoModel', 'Pages.Administration.DemoModel', 'flaticon-menu-1', '/app/gwebsite/demo-model'),
-                new AppMenuItem('Customer', 'Pages.Administration.Customer', 'flaticon-menu-1', '/app/gwebsite/customer')
+                new AppMenuItem('Customer', 'Pages.Administration.Customer', 'flaticon-menu-1', '/app/gwebsite/customer'),
+                new AppMenuItem('Danh mục tài sản', 'Pages.Administration.Category', 'flaticon-menu-1', '/app/gwebsite/category'),
+                new AppMenuItem('Nhà cung cấp', 'Pages.Administration.Provider', 'flaticon-menu-1', '/app/gwebsite/provider'),
+            
+                new AppMenuItem('Quản lý tài sản', '', 'flaticon-squares', '', [
+                    new AppMenuItem('Tài Sản', 'Pages.Administration.Asset', 'flaticon-menu-1', '/app/gwebsite/asset'),
+                    new AppMenuItem('Chi tiết tài sản', 'Pages.Administration.AssetDetail', 'flaticon-menu-1', '/app/gwebsite/assetdetail'),
+                ]),
+                new AppMenuItem('Quản lý thanh lý', '', 'flaticon-truck', '', [
+                    new AppMenuItem('Thanh lý', 'Pages.Administration.Liquidation', 'flaticon-menu-1', '/app/gwebsite/liquidation'),
+                    new AppMenuItem('Chi tiết thanh lý', 'Pages.Administration.LiquidationDetail', 'flaticon-menu-1', '/app/gwebsite/liquidationdetail'),
+                ]),
             ]),
             new AppMenuItem('Systems', '', 'flaticon-layers', '', [
                 new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),

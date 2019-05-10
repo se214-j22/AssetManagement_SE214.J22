@@ -1,0 +1,51 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="liquidationdetail.id">Cập nhật chi tiết thanh lý: {{liquidationdetail.liquidationID}}</span>
+                        <span *ngIf="!liquidationdetail.id">Tạo mới chi tiết thanh lý</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Mã thanh lý *</label>
+                        <input #nameInput="ngModel" class="form-control" type="text" name="LiquidationID"
+                            [(ngModel)]="liquidationdetail.liquidationID" required maxlength="64">
+                        <validation-messages [formCtrl]="liquidationIDInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Mã tài sản *</label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="AssetID"
+                            [(ngModel)]="liquidationdetail.assetID" required maxlength="64">
+                        <validation-messages [formCtrl]="assetIDInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Giá tiền thanh lý *</label>
+                        <input #addressInput="ngModel" class="form-control" type="number" name="LiquidationPrice"
+                            [(ngModel)]="liquidationdetail.liquidationPrice" required>
+                        <validation-messages [formCtrl]="liquidationPriceInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Ghi chú *</label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="Note"
+                            [(ngModel)]="liquidationdetail.note" required maxlength="64">
+                        <validation-messages [formCtrl]="noteInput"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

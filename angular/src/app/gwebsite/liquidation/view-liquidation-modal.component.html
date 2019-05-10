@@ -1,0 +1,45 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
+aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span *ngIf="liquidation.id">{{l("EditLiquidation")}}: {{liquidation.name}}</span>
+                    <span *ngIf="!liquidation.id">{{l("CreateNewLiquidation")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Tên nhà thanh lý</label>
+                    <p>{{liquidation.liquidatorName}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Số hợp đồng</label>
+                    <p>{{liquidation.contractCode}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Ngày thanh lý</label>
+                    <p>{{liquidation.date}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Tổng tài sản thanh lý</label>
+                    <p>{{liquidation.totalAsset}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Tổng tiền thanh lý</label>
+                    <p>{{liquidation.totalPrice}}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-default"
+                    (click)="close()">{{l("Cancel")}}</button>
+                <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                    [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                    <span>{{l("Save")}}</span></button>
+            </div>
+        </div>
+    </div>
+</div>
