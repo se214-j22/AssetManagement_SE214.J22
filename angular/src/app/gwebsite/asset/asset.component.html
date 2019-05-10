@@ -1,0 +1,204 @@
+<div [@routerTransition]>
+
+    <div class="m-subheader ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-xs-6">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("Asset")}}</span>
+                </h3>
+                <span class="m-section__sub">
+                    {{l("AssetInfo")}}
+                </span>
+            </div>
+            <div class="col-xs-6 text-right">
+                <button (click)="createAsset()" *ngIf="isGranted('Pages.Administration.Asset.Create')"
+                    class="btn btn-primary"><i class="fa fa-plus"></i> {{l("CreateNewAsset")}}</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form autocomplete="off">
+                    <div class="m-form m-form--label-align-right" id="TextsFilterForm">
+                        <div class="row align-items-center m--margin-bottom-10">
+                            <div class="col-sm-12">
+                                <div class="input-group">
+                                    <input [(ngModel)]="assetName" name="assetName" autoFocus class="form-control"
+                                        placeholder="Nhập tên tài sản" type="text">
+                                    <span class="input-group-btn">
+                                        <button (click)="applyFilters()" class="btn btn-primary" type="submit"><i
+                                                class="icon-refresh"></i>
+                                            {{l("Refresh")}}</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getAssets($event)" [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [responsive]="primengTableHelper.isResponsive">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th pSortableColumn="name">
+                                        Tên tài sản
+                                        <p-sortIcon field="name"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="cateid">
+                                        Mã danh mục
+                                    </th>
+                                    <th pSortableColumn="providerid">
+                                        Mã nhà cung cấp
+                                    </th>
+                                    <th pSortableColumn="serialnumber">
+                                        Số serial
+                                    </th>
+                                    <th pSortableColumn="status">
+                                        Tình trạng
+                                    </th>
+                                    <th pSortableColumn="purchasedate">
+                                        Ngày mua tài sản
+                                    </th>
+                                    <th pSortableColumn="warrantyenddate">
+                                        Ngày kết thúc bảo hành
+                                    </th>
+                                    <th pSortableColumn="liquidationdate">
+                                        Ngày thanh lý
+                                    </th>
+                                    <th pSortableColumn="purchaseprice">
+                                        Giá trị đầu tiên
+                                    </th>
+                                    <th pSortableColumn="annualdepreciationrate">
+                                        Tỉ lệ khấu hao hằng năm
+                                    </th>
+                                    <th pSortableColumn="sesidualprice">
+                                        Giá trị còn lại
+                                    </th>
+                                    <th pSortableColumn="departmentsneedfollow">
+                                        Phòng cần theo dõi
+                                    </th>
+                                    <th pSortableColumn="totalmaintenancecosts">
+                                        Tổng tiền bảo hành
+                                    </th>
+                                    <th pSortableColumn="totalrepaircost">
+                                        Tổng tiền sửa chữa
+                                    </th>
+                                    <th pSortableColumn="description">
+                                        Mô tả
+                                    </th>
+                                    <th>{{l('Edit')}}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td>
+                                        <span class="ui-column-title">Tên tài sản</span>
+                                        <span title="{{record.name}}">{{truncateString(record.name)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Mã danh mục</span>
+                                        <span title="{{record.cateID}}">{{truncateString(record.cateID)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Mã nhà cung cấp</span>
+                                        <span title="{{record.providerID}}">{{truncateString(record.providerID)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Số serial</span>
+                                        <span title="{{record.serialNumber}}">{{truncateString(record.serialNumber)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Tình trạng</span>
+                                        <span *ngIf="record.status == 1" title="{{record.status}}">Tốt</span>
+                                        <span *ngIf="record.status == 2" title="{{record.status}}">Hỏng</span>
+                                        <span *ngIf="record.status == 3" title="{{record.status}}">Đã thanh lý</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Ngày mua tài sản</span>
+                                        <span title="{{record.purchaseDate}}">{{truncateString(record.purchaseDate.format("DD/MM/YYYY"))}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Ngày kết thúc bảo hành</span>
+                                        <span title="{{record.warrantyEndDate}}">{{truncateString(record.warrantyEndDate.format("DD/MM/YYYY"))}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Ngày thanh lý</span>
+                                        <span title="{{record.liquidationDate}}">{{truncateString(record.liquidationDate.format("DD/MM/YYYY"))}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Giá trị đầu tiên</span>
+                                        <span title="{{record.purchasePrice}}">{{truncateString(record.purchasePrice)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Tỉ lệ khấu hao hằng năm</span>
+                                        <span title="{{record.annualDepreciationRate}}">{{truncateString(record.annualDepreciationRate)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Giá trị còn lại</span>
+                                        <span title="{{record.residualPrice}}">{{truncateString(record.residualPrice)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Phòng cần theo dõi</span>
+                                        <span title="{{record.departmentsNeedFollow}}">{{truncateString(record.departmentsNeedFollow)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Tổng tiền bảo hành</span>
+                                        <span title="{{record.totalMaintenanceCosts}}">{{truncateString(record.totalMaintenanceCosts)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Tổng tiền sửa chữa</span>
+                                        <span title="{{record.totalRepairCost}}">{{truncateString(record.totalRepairCost)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Mô tả</span>
+                                        <span title="{{record.description}}">{{truncateString(record.description)}}</span>
+                                    </td>
+                                    <td>
+                                        <button
+                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                            (click)="createOrEditModal.show(record.id)" title="{{l('Edit')}}">
+                                            <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
+                                        </button>
+    
+                                        <button
+                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                            (click)="deleteAsset(record.id)" title="{{l('Delete')}}">
+                                            <i class="fa fa-times" [attr.aria-label]="l('Delete')"></i>
+                                        </button>
+    
+                                        <button
+                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                            (click)="viewAssetModal.show(record.id)" title="{{l('View')}}">
+                                            <i class="fa fa-eye" [attr.aria-label]="l('View')"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
+                                (onPageChange)="getAssets($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <createOrEditAssetModal #createOrEditModal (modalSave)="reloadPage()"></createOrEditAssetModal>
+    <viewAssetModal #viewAssetModal></viewAssetModal>
+    </div>
