@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Injector, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, Injector, ViewEncapsulation, OnInit } from '@angular/core';
 import { AppSalesSummaryDatePeriod } from '@shared/AppEnums';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -11,7 +11,8 @@ declare let d3, Datamap: any;
     encapsulation: ViewEncapsulation.None,
     animations: [appModuleAnimation()]
 })
-export class DashboardComponent extends AppComponentBase implements AfterViewInit {
+
+export class DashboardComponent extends AppComponentBase implements OnInit, AfterViewInit {
 
     appSalesSummaryDateInterval = AppSalesSummaryDatePeriod;
     selectedSalesSummaryDatePeriod: any = AppSalesSummaryDatePeriod.Daily;
@@ -22,13 +23,16 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     dailySalesLineChart: DailySalesLineChart;
     profitSharePieChart: ProfitSharePieChart;
     memberActivityTable: MemberActivityTable;
-
-
+    miniChartData = Array<MiniChartItem>();
+    recentActivity: any;
     constructor(
         injector: Injector,
         private _dashboardService: TenantDashboardServiceProxy
     ) {
         super(injector);
+
+    }
+    ngOnInit() {
         this.dashboardHeaderStats = new DashboardHeaderStats();
         this.salesSummaryChart = new SalesSummaryChart(this._dashboardService, 'salesStatistics');
         this.regionalStatsTable = new RegionalStatsTable(this._dashboardService);
@@ -36,8 +40,61 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
         this.dailySalesLineChart = new DailySalesLineChart(this._dashboardService, '#m_chart_daily_sales');
         this.profitSharePieChart = new ProfitSharePieChart(this._dashboardService, '#m_chart_profit_share');
         this.memberActivityTable = new MemberActivityTable(this._dashboardService);
+        this.miniChartData.push(new MiniChartItem(<MiniChartItem>{
+            link: 'https://www.techjockey.com/asset-management/asset/list',
+            color: 'orange', title: 'Assets', count: 1
+        }));
+        this.miniChartData = [{
+            link: 'https://www.techjockey.com/asset-management/asset/list',
+            color: 'orange', title: 'Assets', count: 9
+        }, {
+            link: 'https://www.techjockey.com/asset-management/asset/list',
+            color: 'aquamarine', title: 'Employee', count: 5
+        }, {
+            link: 'https://www.techjockey.com/asset-management/asset/list',
+            color: 'crimson', title: 'Location', count: 2
+        }, {
+            link: 'https://www.techjockey.com/asset-management/asset/list',
+            color: 'violet', title: 'Products', count: 6
+        }, {
+            link: 'https://www.techjockey.com/asset-management/asset/list',
+            color: 'greenyellow', title: 'Vendors', count: 3
+        }, {
+            link: 'https://www.techjockey.com/asset-management/asset/list',
+            color: 'violet', title: 'Unassigned Assets', count: 7
+        }, {
+            link: 'https://www.techjockey.com/asset-management/asset/list',
+            color: 'coral', title: 'Assigned Assets', count: 4
+        }, {
+            link: 'https://www.techjockey.com/asset-management/asset/list',
+            color: 'mediumpurple', title: 'Total Asset Cost', count: 8
+        }];
+        this.recentActivity = [
+            {
+                nameActivity: 'Products',
+                value: [{ sno: '1', action: 'Inserted', performer: 'Le Phuoc Tan', performedOn: new Date('2019-04-10 21:24:06') },
+                { sno: '2', action: 'Update', performer: 'Ngo Vu Quyen', performedOn: new Date('2019-04-10 22:03:06') }]
+            },
+            {
+                nameActivity: 'Assets',
+                value: [{ sno: '1', action: 'Inserted', performer: 'Le Phuoc Tan', performedOn: new Date('2019-04-10 21:24:06') },
+                { sno: '2', action: 'Update', performer: 'Ngo Vu Quyen', performedOn: new Date('2019-04-10 22:03:06') }
+                ]
+            },
+            {
+                nameActivity: 'Location',
+                value: [{ sno: '1', action: 'Inserted', performer: 'Le Phuoc Tan', performedOn: new Date('2019-04-10 21:24:06') },
+                { sno: '2', action: 'Update', performer: 'Ngo Vu Quyen', performedOn: new Date('2019-04-10 22:03:06') }
+                ]
+            },
+            {
+                nameActivity: 'Component',
+                value: [{ sno: '1', action: 'Inserted', performer: 'Le Phuoc Tan', performedOn: new Date('2019-04-10 21:24:06') },
+                { sno: '2', action: 'Update', performer: 'Ngo Vu Quyen', performedOn: new Date('2019-04-10 22:03:06') }
+                ]
+            }
+        ];
     }
-
     getDashboardStatisticsData(datePeriod): void {
         this.salesSummaryChart.showLoading();
         this.generalStatsPieChart.showLoading();
@@ -60,6 +117,15 @@ export class DashboardComponent extends AppComponentBase implements AfterViewIni
     }
 }
 
+class MiniChartItem {
+    link: string;
+    count: number;
+    title: string;
+    color: string;
+    public constructor(init?: Partial<MiniChartItem>) {
+        Object.assign(this, init);
+    }
+}
 
 abstract class DashboardChartBase {
     loading = true;
@@ -96,10 +162,17 @@ class SalesSummaryChart extends DashboardChartBase {
             axes: false,
             fillOpacity: 1,
             data: salesSummaryData,
-            lineColors: ['#399a8c', '#92e9dc'],
+            lineColors: ['#399a8c'
+                // , '#92e9dc'
+            ],
             xkey: 'period',
-            ykeys: ['sales', 'profit'],
-            labels: ['Sales', 'Profit'],
+            ykeys: [
+                // 'period'
+                , 'profit'
+            ],
+            labels: ['Revenue',
+                //  'Profit'
+            ],
             pointSize: 0,
             lineWidth: 0,
             hideHover: 'auto',
@@ -146,9 +219,9 @@ class RegionalStatsTable extends DashboardChartBase {
         let config = {
             type: 'line',
             data: {
-                labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October"],
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October'],
                 datasets: [{
-                    label: "",
+                    label: '',
                     borderColor: color,
                     borderWidth: border,
 
@@ -234,13 +307,92 @@ class RegionalStatsTable extends DashboardChartBase {
         this._dashboardService
             .getRegionalStats({})
             .subscribe(result => {
-                this.stats = result.stats;
+                let stats = [
+                    {
+                        'countryName': 'Toyota Camry XLE',
+                        'sales': 26523.0,
+                        'amount': 352.0,
+                        'change': [
+                            5,
+                            4,
+                            -18,
+                            -9,
+                            -2,
+                            -18,
+                            -18,
+                            -2,
+                            8,
+                            -2
+                        ],
+                        'averagePrice': 98.0,
+                        'totalPrice': 36356.0
+                    },
+                    {
+                        'countryName': 'KIA Sedona',
+                        'sales': 39329.0,
+                        'amount': 300.0,
+                        'change': [
+                            -18,
+                            -18,
+                            -15,
+                            1,
+                            18,
+                            13,
+                            -16,
+                            -14,
+                            -15,
+                            -9
+                        ],
+                        'averagePrice': 54.0,
+                        'totalPrice': 48634.0
+                    },
+                    {
+                        'countryName': '2019 Limousine Dcar',
+                        'sales': 66810.0,
+                        'amount': 272.0,
+                        'change': [
+                            -15,
+                            8,
+                            -10,
+                            -17,
+                            -10,
+                            -19,
+                            -3,
+                            12,
+                            9,
+                            -3
+                        ],
+                        'averagePrice': 72.0,
+                        'totalPrice': 49983.0
+                    },
+                    {
+                        'countryName': 'Mescedes S5000',
+                        'sales': 27500.0,
+                        'amount': 382.0,
+                        'change': [
+                            -15,
+                            -15,
+                            18,
+                            -11,
+                            14,
+                            -17,
+                            -8,
+                            -3,
+                            12,
+                            -11
+                        ],
+                        'averagePrice': 86.0,
+                        'totalPrice': 15327.0
+                    }
+                ]
+                    ;
+                this.stats = stats;
                 this.hideLoading();
-                var colors = ['accent', 'danger', 'success', 'warning'];
+                let colors = ['accent', 'danger', 'success', 'warning'];
                 setTimeout(() => {
-                    var $canvasItems = $('canvas.m_chart_sales_by_region');
-                    for (var i = 0; i < $canvasItems.length; i++) {
-                        var $canvas = $canvasItems[i];
+                    let $canvasItems = $('canvas.m_chart_sales_by_region');
+                    for (let i = 0; i < $canvasItems.length; i++) {
+                        let $canvas = $canvasItems[i];
                         self._initSparklineChart($canvas, this.stats[i].change, mUtil.getColor(colors[i % 4]), 2);
                     }
                 });
