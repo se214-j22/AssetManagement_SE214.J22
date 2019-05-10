@@ -18,7 +18,16 @@
                 <organization-tree #ouTree (ouSelected)="ouMembers.organizationUnit = $event"></organization-tree>
             </div>
             <div class="col-lg-6">
-                <organization-unit-members #ouMembers (membersAdded)="ouTree.membersAdded($event)" (memberRemoved)="ouTree.memberRemoved($event)"></organization-unit-members>
+                <organization-unit-members #ouMembers (membersAdded)="ouTree.membersAdded($event)"
+                    (memberRemoved)="ouTree.memberRemoved($event)"></organization-unit-members>
+            </div>
+            <div class="col-lg-6">
+                <label>Product</label>
+                List ProductId: <input type="text" name="ProductIds" value="10,11" [(ngModel)]="productIds"><br>
+                OrganizationUnitId: <input type="number" name="OrganizationUnitId" value="7"
+                    [(ngModel)]="organizationUnitId"><br>
+                <button type="button" (click)="placeProductsToOrganizationUnit()"> Place products to organization unit
+                </button>
             </div>
         </div>
     </div>
