@@ -9,6 +9,7 @@ using GWebsite.AbpZeroTemplate.Core.Authorization;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 
 namespace GWebsite.AbpZeroTemplate.Web.Core.Products
 {
@@ -32,12 +33,34 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Products
         //}
 
         [AbpAuthorize(GWebsitePermissions.Pages_Administration_Product_Create_Edit)]
-        public void CreateOrEdit(ProductInput productInput)
+        public async Task CreateOrEdit(ProductInput productInput)
+        {
+            if (productInput.Id == 0)
+            {
+                await CreateAsync(productInput);
+            }
+            else
+            {
+                await UpdateAsync(productInput);
+            }
+        }
+        private async Task CreateAsync(ProductInput productInput)
         {
             var productEntity = ObjectMapper.Map<Product>(productInput);
             SetAuditInsert(productEntity);
-            var id = productRepository.InsertOrUpdateAndGetIdAsync(productEntity);
-            CurrentUnitOfWork.SaveChanges();
+            await productRepository.InsertAsync(productEntity);
+            await CurrentUnitOfWork.SaveChangesAsync();
+        }
+        private async Task UpdateAsync(ProductInput productInput)
+        {
+            var productEntity = productRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == productInput.Id);
+            if (productEntity == null)
+            {
+            }
+            ObjectMapper.Map(productInput, productEntity);
+            SetAuditEdit(productEntity);
+            await productRepository.UpdateAsync(productEntity);
+            await CurrentUnitOfWork.SaveChangesAsync();
         }
     }
 }

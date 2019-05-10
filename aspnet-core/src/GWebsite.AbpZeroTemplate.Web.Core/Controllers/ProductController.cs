@@ -4,6 +4,7 @@ using GWebsite.AbpZeroTemplate.Application.Share.Customers.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Products;
 using GWebsite.AbpZeroTemplate.Application.Share.Products.Dto;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace GWebsite.AbpZeroTemplate.Application.Controllers
 {
@@ -17,16 +18,11 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
             this.productAppService = productAppService;
         }
 
-        //[HttpPost]
-        //public void Create([FromBody] ProductInput input)
-        //{
-        //    productAppService.Create(input);
-        //}
 
-        [HttpPut]
-        public void CreateOrEdit([FromBody] ProductInput input)
+        [HttpPost]
+        public async Task CreateOrEdit([FromBody] ProductInput input)
         {
-            productAppService.CreateOrEdit(input);
+            await productAppService.CreateOrEdit(input);
         }
     }
 }

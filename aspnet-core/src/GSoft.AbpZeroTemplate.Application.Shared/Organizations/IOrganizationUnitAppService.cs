@@ -27,6 +27,6 @@ namespace GSoft.AbpZeroTemplate.Organizations
 
         Task PlaceProductToOrganizationUnit(ProductsToOrganizationUnitInput input);
 
-        Task<WarehouseStatus> GetWarehouseStatus(long orgunitId);
+        Task<WarehouseStatus> GetWarehouseStatus();
     }
 }

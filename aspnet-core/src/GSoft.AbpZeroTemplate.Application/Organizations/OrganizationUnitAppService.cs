@@ -187,20 +187,24 @@ namespace GSoft.AbpZeroTemplate.Organizations
             foreach (int productId in notExistedProductIds)
             {
                 var newProduct = new ProductOrganizationUnit() { ProductId = productId, OrganizationUnitId = input.OrganizationUnitId };
-                await _productOrganizationUnitRepository.InsertAndGetIdAsync(newProduct);
+                await _productOrganizationUnitRepository.InsertAsync(newProduct);
             }
             await CurrentUnitOfWork.SaveChangesAsync();
         }
 
         [AbpAuthorize(AppPermissions.Pages_Administration_OrganizationUnits_ManageWarehouse)]
-        public async Task<WarehouseStatus> GetWarehouseStatus(long orgunitId)
+        public async Task<WarehouseStatus> GetWarehouseStatus()
         {
-            var childrendOrgIds = from o in _organizationUnitRepository.GetAll() where (o.ParentId == orgunitId) select o.Id;
+            var user = GetCurrentUser();
+            var organizationUnitId = _userOrganizationUnitRepository.FirstOrDefault(uo => uo.UserId == user.Id)?.OrganizationUnitId;
+            if(organizationUnitId == null)  //this case occurs when current user granted organization unit permission don't have organization unit.
+                return new WarehouseStatus { AllNumber = 0, ParentNumber = 0, ChildrenNumber = 0 };
+            var childrendOrgIds = from o in _organizationUnitRepository.GetAll() where (o.ParentId == organizationUnitId) select o.Id;
             var childrendNumber = (from po in _productOrganizationUnitRepository.GetAll()
                                    where childrendOrgIds.Contains(po.OrganizationUnitId)
                                    select po).Count();
             var parentNumber = (from po in _productOrganizationUnitRepository.GetAll()
-                                where orgunitId == po.OrganizationUnitId
+                                where organizationUnitId == po.OrganizationUnitId
                                 select po).Count();
             var allNumber = childrendNumber + parentNumber;
             return new WarehouseStatus { AllNumber = allNumber, ParentNumber = parentNumber, ChildrenNumber = childrendNumber };
