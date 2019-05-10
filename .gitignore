@@ -131,3 +131,10 @@ src/GSoft.AbpZeroTemplate.Web.Public/wwwroot/Common/_Bundles
 src/GSoft.AbpZeroTemplate.Web.Public/wwwroot/view-resources/Views/_Bundles
 src/GSoft.AbpZeroTemplate.Web.Public/wwwroot/view-resources/**/*.min.*
 src/GSoft.AbpZeroTemplate.Web.Public/wwwroot/Common/**/*.min.*
+
+*/**/**/bin/Debug
+*/**/**/bin/Release
+*/**/**/obj/Debug
+*/**/**/obj/Release
+*/**/**/obj/node_modules
+.vs
