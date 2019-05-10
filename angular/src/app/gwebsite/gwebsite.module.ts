@@ -1,4 +1,4 @@
-import { CustomerServiceProxy } from './../../shared/service-proxies/service-proxies';
+import { CustomerServiceProxy, TaiSanServiceProxy, CapPhatServiceProxy, ThuHoiServiceProxy, DieuChuyenServiceProxy } from './../../shared/service-proxies/service-proxies';
 import { ViewDemoModelModalComponent } from './demo-model/view-demo-model-modal.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -18,6 +18,18 @@ import { DemoModelServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CustomerComponent } from './customer/customer.component';
 import { ViewCustomerModalComponent } from './customer/view-customer-modal.component';
 import { CreateOrEditCustomerModalComponent } from './customer/create-or-edit-customer-modal.component';
+import { TaiSanComponent } from './taisan/taisan.component';
+import { CreateOrEditTaiSanModalComponent } from './taisan/create-or-edit-taisan-modal.component';
+import { ViewTaiSanModalComponent } from './taisan/view-taisan-modal.component';
+import { CapPhatComponent } from './capphat/capphat.component';
+import { CreateOrEditCapPhatModalComponent } from './capphat/create-or-edit-capphat-modal.component';
+import { ViewCapPhatModalComponent } from './capphat/view-capphat-modal.component';
+import { ThuHoiComponent } from './thuhoi/thuhoi.component';
+import { CreateOrEditThuHoiModalComponent } from './thuhoi/create-or-edit-thuhoi-modal.component';
+import { ViewThuHoiModalComponent } from './thuhoi/view-thuhoi-modal.component';
+import { DieuChuyenComponent } from './dieuchuyen/dieuchuyen.component';
+import { CreateOrEditDieuChuyenModalComponent } from './dieuchuyen/create-or-edit-dieuchuyen-modal.component';
+import { ViewDieuChuyenModalComponent } from './dieuchuyen/view-dieuchuyen-modal.component';
 
 @NgModule({
     imports: [
@@ -42,10 +54,18 @@ import { CreateOrEditCustomerModalComponent } from './customer/create-or-edit-cu
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
         DemoModelComponent, CreateOrEditDemoModelModalComponent, ViewDemoModelModalComponent,
         CustomerComponent, CreateOrEditCustomerModalComponent, ViewCustomerModalComponent,
+        TaiSanComponent, CreateOrEditTaiSanModalComponent, ViewTaiSanModalComponent,
+        CapPhatComponent, CreateOrEditCapPhatModalComponent, ViewCapPhatModalComponent,
+        DieuChuyenComponent, CreateOrEditDieuChuyenModalComponent, ViewDieuChuyenModalComponent,
+        ThuHoiComponent, CreateOrEditThuHoiModalComponent, ViewThuHoiModalComponent
     ],
     providers: [
         DemoModelServiceProxy,
-        CustomerServiceProxy
+        CustomerServiceProxy,
+        TaiSanServiceProxy,
+        CapPhatServiceProxy,
+        DieuChuyenServiceProxy,
+        ThuHoiServiceProxy
     ]
 })
 export class GWebsiteModule { }
