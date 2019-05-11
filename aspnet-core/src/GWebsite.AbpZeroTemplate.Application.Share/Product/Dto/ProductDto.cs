@@ -16,6 +16,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Products.Dto
         public double Discount { get; set; }
         public string Summary { get; set; }
         public string AvailableAddress { get; set; }
+        public string ProductType { get; set; }
         public DateTime AddedDate { get; set; }
         public ImageDto Image { get; set; }
         public ICollection<TitleBiddingProduct> Biddings { get; set; }
