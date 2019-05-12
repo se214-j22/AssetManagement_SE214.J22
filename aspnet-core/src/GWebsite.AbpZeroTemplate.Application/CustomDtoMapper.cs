@@ -2,6 +2,7 @@ using AutoMapper;
 using GWebsite.AbpZeroTemplate.Application.Share.Bidding.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.DemoModels.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.Product.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Products.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Purchases.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
@@ -15,12 +16,14 @@ namespace GWebsite.AbpZeroTemplate.Applications
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {
             configuration.CreateMap<MenuClient, MenuClientDto>();
-            configuration.CreateMap<Product, ProductDto>();
+            configuration.CreateMap<Product, ProductDto>()
+                         .ForMember(dto => dto.Name, opt => opt.MapFrom(model => model.ProductType.Name));
+            configuration.CreateMap<ProductType, ProductTypeDto>();
             configuration.CreateMap<Purchase, PurchaseDto>();
             configuration.CreateMap<Bidding, BiddingProduct>();
             configuration.CreateMap<Supplier, SupplierDto>();
             configuration.CreateMap<SupplierSavedDto, SupplierDto>();
-            
+
             configuration.CreateMap<PurchaseDto, Purchase>();
             configuration.CreateMap<MenuClient, MenuClientListDto>();
             configuration.CreateMap<CreateMenuClientInput, MenuClient>();
@@ -39,14 +42,14 @@ namespace GWebsite.AbpZeroTemplate.Applications
                 .ForMember(p => p.PurchaseProducts, opt => opt.Ignore())
                 .AfterMap((pr, p) =>
                 {
-                    p.PurchaseProducts= new Collection<PurchaseProduct>();
+                    p.PurchaseProducts = new Collection<PurchaseProduct>();
                     var addedProduct = pr.PurchaseProducts.Where(id => p.PurchaseProducts.All(pc => pc.ProductId != id.ProductId && pc.Quantity != id.Quantity))
                         .Select(id => new PurchaseProduct() { ProductId = id.ProductId, PurchaseId = pr.Id, Quantity = id.Quantity }).ToList();
                     foreach (var pc in addedProduct)
                     {
                         p.PurchaseProducts.Add(pc);
                     }
-                    
+
                     var removedProduct =
                         p.PurchaseProducts.Where(c => pr.PurchaseProducts.FirstOrDefault(x => x.ProductId == c.ProductId).Equals(null)).ToList();
                     foreach (var pc in removedProduct)
@@ -56,7 +59,7 @@ namespace GWebsite.AbpZeroTemplate.Applications
                 });
             configuration.CreateMap<SupplierSavedDto, Supplier>()
                 .ForMember(p => p.Biddings, opt => opt.Ignore())
-                .AfterMap((pr, p)=>
+                .AfterMap((pr, p) =>
                 {
                     var biddingAdded = pr.Biddings.Where(id => p.Biddings.All(pc => pc.ProductId != id.ProductId && pc.SupplierId != id.SupplierId))
                                             .Select(id => new Bidding() { ProductId = id.ProductId, SupplierId = pr.Id, StartDate = id.StartDate, EndDate = id.EndDate, Status = id.Status }).ToList();
@@ -66,7 +69,7 @@ namespace GWebsite.AbpZeroTemplate.Applications
                     }
 
                     var removedProduct =
-                        p.Biddings.Where(c => pr.Biddings.FirstOrDefault(x => x.ProductId == c.ProductId && x.SupplierId==c.SupplierId).Equals(null)).ToList();
+                        p.Biddings.Where(c => pr.Biddings.FirstOrDefault(x => x.ProductId == c.ProductId && x.SupplierId == c.SupplierId).Equals(null)).ToList();
                     foreach (var pc in removedProduct)
                     {
                         p.Biddings.Remove(pc);

@@ -1781,15 +1781,32 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<double>("Price");
 
+                    b.Property<int>("ProductTypeId");
+
                     b.Property<string>("Summary");
 
                     b.Property<int>("SupplierId");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductTypeId");
+
                     b.HasIndex("SupplierId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.ProductType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductTypes");
                 });
 
             modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.Purchase", b =>
@@ -2158,6 +2175,11 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
             modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.Product", b =>
                 {
+                    b.HasOne("GWebsite.AbpZeroTemplate.Core.Models.ProductType", "ProductType")
+                        .WithMany()
+                        .HasForeignKey("ProductTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("GWebsite.AbpZeroTemplate.Core.Models.Supplier", "Supplier")
                         .WithMany()
                         .HasForeignKey("SupplierId")
