@@ -3,6 +3,7 @@ using Abp.Domain.Repositories;
 using GWebsite.AbpZeroTemplate.Application.Share;
 using GWebsite.AbpZeroTemplate.Application.Share.Bidding;
 using GWebsite.AbpZeroTemplate.Application.Share.Bidding.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,17 +24,17 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         {
             _SupplierAppService = SuppllierService;
         }
-
+       
         [HttpGet]
-        public async Task<ListResultDto<SupplierDto>> GetSupplierByProduct(int start = 0, int numberItem = 10, int productId=0)
+        public async Task<ListResultDto<SupplierDto>> GetSupplierByProduct(GetMenuClientInput input,int productId=0)
         {
-            return await _SupplierAppService.GetSupplierByProductAsync(new Pagination() { Start = start, NumberItem = numberItem }, productId);
+            return await _SupplierAppService.GetSupplierByProductAsync(input, productId);
         }
 
         [HttpGet]
-        public async Task<ListResultDto<SupplierDto>> GetAllBiddingPass()
+        public async Task<ListResultDto<SupplierDto>> GetAllBiddingPass(GetMenuClientInput input)
         {
-            return await _SupplierAppService.GetAllBiddingPassAsync();
+            return await _SupplierAppService.GetAllBiddingPassAsync(input);
         }
 
         [HttpGet]

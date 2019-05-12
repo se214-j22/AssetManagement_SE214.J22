@@ -4,11 +4,14 @@ using GWebsite.AbpZeroTemplate.Application;
 using GWebsite.AbpZeroTemplate.Application.Share;
 using GWebsite.AbpZeroTemplate.Application.Share.Bidding;
 using GWebsite.AbpZeroTemplate.Application.Share.Bidding.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Linq.Dynamic.Core;
+using Abp.Linq.Extensions;
 
 namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
 {
@@ -80,17 +83,17 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
         /// </summary>
         /// <param name="pagination"></param>
         /// <returns></returns>
-        public async Task<PagedResultDto<SupplierDto>> GetAllBiddingPassAsync()
+        public async Task<PagedResultDto<SupplierDto>> GetAllBiddingPassAsync(GetMenuClientInput input)
         {
             var query = _supplierRepository.GetAllIncluding().Include(p => p.Biddings).ThenInclude(p => p.Product);
             //query = query.Select(p => p.Biddings.Select(pc => pc.Status == 1));
             //&& p.Biddings.FirstOrDefault(b => b.Status == 1) != null;
             var select = query.Where(p => p.Biddings.Count>0 );
             var totalCount = await select.CountAsync();
-            //var items = await select.Skip(pagination.Start * pagination.NumberItem).Take(pagination.NumberItem).ToListAsync();
+            var items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
             return new PagedResultDto<SupplierDto>(
              totalCount,
-             select.Select(item => ObjectMapper.Map<SupplierDto>(item)).ToList());
+             items.Select(item => ObjectMapper.Map<SupplierDto>(item)).ToList());
         }
         /// <summary>
         /// 
@@ -112,12 +115,12 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
         /// <param name="pagination"></param>
         /// <param name="productId"></param>
         /// <returns></returns>
-        public async Task<PagedResultDto<SupplierDto>> GetSupplierByProductAsync(Pagination pagination, int productId)
+        public async Task<PagedResultDto<SupplierDto>> GetSupplierByProductAsync(GetMenuClientInput input, int productId)
         {
             var query = _supplierRepository.GetAllIncluding().Include(p => p.Biddings).ThenInclude(p => p.Product).ThenInclude(p => p.Image);
             var select = query.Where(p => p.Biddings.FirstOrDefault(b => b.ProductId == productId)!=null);
             var totalCount = await select.CountAsync();
-            var items = await select.Skip(pagination.Start * pagination.NumberItem).Take(pagination.NumberItem).ToListAsync();
+            var items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
             return new PagedResultDto<SupplierDto>(
              totalCount,
              items.Select(item => ObjectMapper.Map<SupplierDto>(item)).ToList());

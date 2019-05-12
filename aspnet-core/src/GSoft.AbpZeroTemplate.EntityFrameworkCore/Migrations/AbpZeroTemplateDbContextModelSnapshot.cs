@@ -1559,7 +1559,11 @@ namespace GSoft.AbpZeroTemplate.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("BiddingType");
+
                     b.Property<DateTime>("EndDate");
+
+                    b.Property<float>("Price");
 
                     b.Property<int>("ProductId");
 

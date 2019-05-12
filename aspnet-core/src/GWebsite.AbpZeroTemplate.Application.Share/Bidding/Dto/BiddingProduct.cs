@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GWebsite.AbpZeroTemplate.Application.Share.Bidding.Dto
 {
-   public partial class BiddingProduct
+    public partial class BiddingProduct
     {
         public int SupplierId { get; set; }
         public int ProductId { get; set; }
@@ -16,5 +16,8 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Bidding.Dto
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int Status { get; set; }
+        public float Price { get; set; }
+        public int BiddingType { get; set; }
     }
+
 }

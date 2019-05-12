@@ -16,6 +16,7 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int Status { get; set; }
-
+        public float Price { get; set; }
+        public int BiddingType { get; set; }
     }
 }

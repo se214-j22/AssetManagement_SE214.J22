@@ -1,0 +1,16 @@
+F:\github\AssetManagement_SE214.J22\aspnet-core\test\GSoft.AbpZeroTemplate.ConsoleApiClient\bin\Debug\netcoreapp2.1\GSoft.AbpZeroTemplate.ConsoleApiClient.deps.json
+F:\github\AssetManagement_SE214.J22\aspnet-core\test\GSoft.AbpZeroTemplate.ConsoleApiClient\bin\Debug\netcoreapp2.1\GSoft.AbpZeroTemplate.ConsoleApiClient.runtimeconfig.json
+F:\github\AssetManagement_SE214.J22\aspnet-core\test\GSoft.AbpZeroTemplate.ConsoleApiClient\bin\Debug\netcoreapp2.1\GSoft.AbpZeroTemplate.ConsoleApiClient.runtimeconfig.dev.json
+F:\github\AssetManagement_SE214.J22\aspnet-core\test\GSoft.AbpZeroTemplate.ConsoleApiClient\bin\Debug\netcoreapp2.1\GSoft.AbpZeroTemplate.ConsoleApiClient.dll
+F:\github\AssetManagement_SE214.J22\aspnet-core\test\GSoft.AbpZeroTemplate.ConsoleApiClient\bin\Debug\netcoreapp2.1\GSoft.AbpZeroTemplate.ConsoleApiClient.pdb
+F:\github\AssetManagement_SE214.J22\aspnet-core\test\GSoft.AbpZeroTemplate.ConsoleApiClient\bin\Debug\netcoreapp2.1\GSoft.AbpZeroTemplate.Application.Shared.dll
+F:\github\AssetManagement_SE214.J22\aspnet-core\test\GSoft.AbpZeroTemplate.ConsoleApiClient\bin\Debug\netcoreapp2.1\GSoft.AbpZeroTemplate.Core.Shared.dll
+F:\github\AssetManagement_SE214.J22\aspnet-core\test\GSoft.AbpZeroTemplate.ConsoleApiClient\bin\Debug\netcoreapp2.1\GSoft.AbpZeroTemplate.Application.Shared.pdb
+F:\github\AssetManagement_SE214.J22\aspnet-core\test\GSoft.AbpZeroTemplate.ConsoleApiClient\bin\Debug\netcoreapp2.1\GSoft.AbpZeroTemplate.Core.Shared.pdb
+F:\github\AssetManagement_SE214.J22\aspnet-core\test\GSoft.AbpZeroTemplate.ConsoleApiClient\obj\Debug\netcoreapp2.1\GSoft.AbpZeroTemplate.ConsoleApiClient.csprojAssemblyReference.cache
+F:\github\AssetManagement_SE214.J22\aspnet-core\test\GSoft.AbpZeroTemplate.ConsoleApiClient\obj\Debug\netcoreapp2.1\GSoft.AbpZeroTemplate.ConsoleApiClient.csproj.CoreCompileInputs.cache
+F:\github\AssetManagement_SE214.J22\aspnet-core\test\GSoft.AbpZeroTemplate.ConsoleApiClient\obj\Debug\netcoreapp2.1\GSoft.AbpZeroTemplate.ConsoleApiClient.AssemblyInfoInputs.cache
+F:\github\AssetManagement_SE214.J22\aspnet-core\test\GSoft.AbpZeroTemplate.ConsoleApiClient\obj\Debug\netcoreapp2.1\GSoft.AbpZeroTemplate.ConsoleApiClient.AssemblyInfo.cs
+F:\github\AssetManagement_SE214.J22\aspnet-core\test\GSoft.AbpZeroTemplate.ConsoleApiClient\obj\Debug\netcoreapp2.1\GSoft.AbpZeroTemplate.ConsoleApiClient.csproj.CopyComplete
+F:\github\AssetManagement_SE214.J22\aspnet-core\test\GSoft.AbpZeroTemplate.ConsoleApiClient\obj\Debug\netcoreapp2.1\GSoft.AbpZeroTemplate.ConsoleApiClient.dll
+F:\github\AssetManagement_SE214.J22\aspnet-core\test\GSoft.AbpZeroTemplate.ConsoleApiClient\obj\Debug\netcoreapp2.1\GSoft.AbpZeroTemplate.ConsoleApiClient.pdb
