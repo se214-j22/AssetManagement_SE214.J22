@@ -1,0 +1,208 @@
+<div [@routerTransition]>
+
+    <div class="m-subheader ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-xs-6">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("Plan")}}</span>
+                </h3>
+                <span class="m-section__sub">
+                    {{l("PlanInfo")}}
+                </span>
+            </div>
+            <div class="col-xs-6 text-right">
+                <button (click)="createPlan()" *ngIf="isGranted('Pages.Administration.MenuClient.Create')"
+                    class="btn btn-primary"><i class="fa fa-plus"></i> {{l("CreateNewPlan")}}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form autocomplete="off" (ngSubmit)="searchPlan()">
+                    <div class="m-form m-form--label-align-right" id="TextsFilterForm">
+                        <!-- filter -->
+                        <div class="row m--margin-bottom-10">
+                            <div class="col-sm-6">
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Plan Id:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <input type="text" name="planId" [placeholder]="'Plan Id'" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Year Implement:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <select #yearImplementSelect name="yearImplement" class="form-control"
+                                            [(ngModel)]="yearImplement" [attr.data-live-search]="true"
+                                            jq-plugin="selectpicker" required>
+                                            <option *ngFor="let item of YearImplementList" [value]="item">
+                                                {{item}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Approval Status:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <select #approvalStatusSelect name="approvalStatus" class="form-control"
+                                            [(ngModel)]="approvalStatus" [attr.data-live-search]="true"
+                                            jq-plugin="selectpicker" required>
+                                            <option *ngFor="let item of ApprovalStatusList" [value]="item.id">
+                                                {{item.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Unit Code:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <select #unitCodeSelect name="unitCode" class="form-control"
+                                            [(ngModel)]="unitCode" [attr.data-live-search]="true"
+                                            jq-plugin="selectpicker" required>
+                                            <option *ngFor="let item of UnitCodeList" [value]="item">
+                                                {{item}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Department Code:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <select #departmentCodeSelect name="departmentCode" class="form-control"
+                                            [(ngModel)]="deparmentCode" [attr.data-live-search]="true"
+                                            jq-plugin="selectpicker" required>
+                                            <option *ngFor="let item of DepartmentCodeList" [value]="item">
+                                                {{item}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- search -->
+                        <div class="row align-items-center m--margin-bottom-10">
+                            <div class="col-sm-12 text-center">
+                                <button class="btn btn-primary" type="submit"><i class="icon-refresh"></i>
+                                    {{l("Search")}}</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getPlans($event)" [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [responsive]="primengTableHelper.isResponsive">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th pSortableColumn="ordinalNumber">
+                                        {{l('Number')}}
+                                        <p-sortIcon field="ordinalNumber"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="planId">
+                                        {{l('Plan Id')}}
+                                        <p-sortIcon field="planId"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="effectiveDate">
+                                        {{l('Effective Date')}}
+                                        <p-sortIcon field="effectiveDate"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="totalPrice">
+                                        {{l('Total Price')}}
+                                        <p-sortIcon field="totalPrice"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="unitCode">
+                                        {{l('Unit Code')}}
+                                        <p-sortIcon field="unitCode"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="status">
+                                        {{l('Status')}}
+                                        <p-sortIcon field="status"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="countChanged">
+                                        {{l('Count Changed')}}
+                                        <p-sortIcon field="countChanged"></p-sortIcon>
+                                    </th>
+                                    <th>{{l('Action')}}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit" let-index="rowIndex">
+                                <tr class="table-row" (click)="gotoPlanDetail(record.planId, $event)">
+                                    <td>
+                                        <span class="ui-column-title">{{l('Number')}}</span>
+                                        <span title="{{record.ordinalNumber}}">{{truncateString(index + 1)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Plan Id')}}</span>
+                                        <span title="{{record.planId}}">{{truncateString(record.planId)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Effective Date')}}</span>
+                                        <span title="{{record.effectiveDate}}">{{ record.effectiveDate }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Total Price')}}</span>
+                                        <span title="{{record.totalPrice}}">{{ record.totalPrice }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Unit Code')}}</span>
+                                        <span title="{{record.unitCode}}">{{ record.unitCode }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Status')}}</span>
+                                        <span
+                                            title="{{record.status}}">{{ record.status === approvalStatusEnum.Approved ? 'Approved' : 'Awaiting Approval' }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Count Changed')}}</span>
+                                        <span title="{{record.countChanged}}">{{ record.countChanged }}</span>
+                                    </td>
+                                    <td>
+                                        <!-- <button
+                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                            (click)="createOrEditModal.show(record.id)" title="{{l('Approved')}}">
+                                            <i class="fa fa-edit" [attr.aria-label]="l('Approved')"></i>
+                                        </button> -->
+                                        <button class="btn"
+                                            [ngClass]="{'btn-success': record.status === approvalStatusEnum.Approved, 'btn-danger': record.status === approvalStatusEnum.AwaitingApproval}"
+                                            [disabled]="record.status === approvalStatusEnum.Approved"
+                                            (click)="approvalPlan(record.id, $event, index)"
+                                            title="{{l(record.status === approvalStatusEnum.Approved ? 'Approved' : 'Awaiting Approval')}}">Approved
+                                        </button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
+                                (onPageChange)="getPlans($event)" [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <createOrEditPlanModal #createOrEditModal (modalSave)="refreshValueFromModal()"></createOrEditPlanModal>
+</div>

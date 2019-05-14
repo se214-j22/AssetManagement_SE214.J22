@@ -1,0 +1,21 @@
+
+div.btn-approved {
+  right: 0;
+  min-width: 80%;
+} 
+
+.m-b-5 {
+    margin-bottom: 5px;
+}
+
+#searchPlan{
+  text-align: center!important;
+}
+
+.table-row:hover {
+  cursor: pointer;
+}
+
+/* td:hover {
+  cursor: pointer;
+} */

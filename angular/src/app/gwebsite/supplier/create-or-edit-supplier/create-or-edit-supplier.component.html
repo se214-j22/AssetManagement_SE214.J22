@@ -1,0 +1,93 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form *ngIf="active" #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="isEdit">Edit Supplier : {{supplier?.name}}</span>
+                        <span *ngIf="!isEdit">Create new supplier</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+
+
+                        <p-multiSelect [options]="selectItems" [(ngModel)]="biddings" *ngIf="!isEdit"
+                            [ngModelOptions]="{standalone: true}" (onChange)="onChangeOptionProduct()"
+                            [panelStyle]="{minWidth:'12em'}">
+                            <ng-template let-products pTemplate="selectedItems">
+                                <span *ngFor="let product of products">{{product.label}}</span>
+                            </ng-template>
+                            <ng-template let-product let-i="index" pTemplate="item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div>{{product.label}}</div>
+                                    </div>
+                                    <p-calendar [(ngModel)]="product.value.ranges" selectionMode="range"
+                                        aria-placeholder="Select start to end date"
+                                        [ngModelOptions]="{standalone: true}" [readonlyInput]="true">
+                                    </p-calendar>
+                                    <input #nameInput="ngModel" class="form-control w-25 " type="text" name="price"
+                                        placeholder="Price" [(ngModel)]="product.value.price" required maxlength="64">
+                                    <p-dropdown [options]="biddingTypes" [(ngModel)]="product.value.biddingType"
+                                        [ngModelOptions]="{standalone: true}">
+                                    </p-dropdown>
+                                    <p-dropdown [options]="status" [(ngModel)]="product.value.status"
+                                        [ngModelOptions]="{standalone: true}">
+                                    </p-dropdown>
+
+                                </div>
+                            </ng-template>
+                        </p-multiSelect>
+
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>{{l("Name")}} *</label>
+                        <input #nameInput="ngModel" class="form-control" type="text" name="DisplayName"
+                            [(ngModel)]="supplier.name" required maxlength="64">
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>{{l("Address")}} *</label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="address"
+                            [(ngModel)]="supplier.address" required maxlength="64">
+                        <validation-messages [formCtrl]="addressInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>{{l("Email")}} *</label>
+                        <input #emailInput="ngModel" class="form-control" type="text" name="Email"
+                            [(ngModel)]="supplier.email" required maxlength="64">
+                        <validation-messages [formCtrl]="emailInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>{{l("Fax")}} *</label>
+                        <input #faxInput="ngModel" class="form-control" type="text" name="fax"
+                            [(ngModel)]="supplier.fax" required maxlength="64">
+                        <validation-messages [formCtrl]="faxInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>{{l("Contact")}} *</label>
+                        <input #contactInput="ngModel" class="form-control" type="text" name="Contact"
+                            [(ngModel)]="supplier.contact" required maxlength="64">
+                        <validation-messages [formCtrl]="contactInput"></validation-messages>
+                    </div>
+
+                </div>
+                <div class="d-flex justify-content-end mr-4 mb-3">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="!editForm.form.valid"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

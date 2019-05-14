@@ -1,8 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MenuClientComponent } from '@app/gwebsite/menu-client/menu-client.component';
-import { DemoModelComponent } from './demo-model/demo-model.component';
-import { CustomerComponent } from './customer/customer.component';
+import { ProductComponent } from './product/product.component';
+import { ProductCategoryComponent } from './productCategory/productCategory.component';
+import { PlanComponent } from './plan/plan.component';
+import { SupplierComponent } from './supplier/supplier.component';
+import { SupplierCategoryComponent } from './supplierCategory/supplierCategory.component';
+import { ProjectComponent } from './project/project.component';
+import { BidProfileComponent } from './bids/bidProfile.component';
+import { PurchaseContractComponent } from './purchaseContract/purchaseContract.component';
+import { PurchaseOrderComponent } from './purchaseOrder/purchaseOrder.component';
+import { SubmissionComponent } from './submission/submission.component';
+import { SubPlanComponent } from './plan/sub-plan/sub-plan.component';
+
 
 @NgModule({
     imports: [
@@ -20,8 +30,9 @@ import { CustomerComponent } from './customer/customer.component';
                 path: '',
                 children: [
                     {
-                        path: 'demo-model', component: DemoModelComponent,
-                        data: { permission: 'Pages.Administration.DemoModel' }
+                        path: 'supplier-category', component: SupplierCategoryComponent,
+                        //tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+                        data: { permission: 'Pages.Administration.MenuClient' }
                     },
                 ]
             },
@@ -29,11 +40,93 @@ import { CustomerComponent } from './customer/customer.component';
                 path: '',
                 children: [
                     {
-                        path: 'customer', component: CustomerComponent,
-                        data: { permission: 'Pages.Administration.Customer' }
+                        path: 'supplier', component: SupplierComponent,
+                        data: { permission: 'Pages.Administration.MenuClient' }
                     },
                 ]
-            }
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'product-category', component: ProductCategoryComponent,
+                        data: { permission: 'Pages.Administration.MenuClient' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        // path: 'plan', component: SubPlanComponent,
+                        path: 'plan', component: PlanComponent,
+                        data: { permission: 'Pages.Administration.MenuClient' }
+                    },
+                    {
+                        path: 'plan-detail', component: SubPlanComponent,
+                        data: { permission: 'Pages.Administration.MenuClient' }
+                    }
+                ]
+            },
+            {
+                path: '',
+                children: [
+
+                    {
+                        path: 'product', component: ProductComponent,
+                        data: { permission: 'Pages.Administration.MenuClient' }
+                    },
+                    {
+                        path: 'supplier', component: SupplierComponent,
+                        data: { permission: 'Pages.Administration.MenuClient' }
+                    }
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'project', component: ProjectComponent,
+                        data: { permission: 'Pages.Administration.MenuClient' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'bidProfile', component: BidProfileComponent,
+                        data: { permission: 'Pages.Administration.MenuClient' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'purchaseContract', component: PurchaseContractComponent,
+                        data: { permission: 'Pages.Administration.MenuClient' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'purchaseOrder', component: PurchaseOrderComponent,
+                        data: { permission: 'Pages.Administration.MenuClient' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'submission', component: SubmissionComponent,
+                        data: { permission: 'Pages.Administration.MenuClient' }
+                    },
+                ]
+            },
         ])
     ],
     exports: [
