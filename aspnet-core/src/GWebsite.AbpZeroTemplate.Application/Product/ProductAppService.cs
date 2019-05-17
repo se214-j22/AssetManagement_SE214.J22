@@ -27,10 +27,10 @@ namespace GWebsite.AbpZeroTemplate.Web.Core
         private readonly IRepository<Product, int> _productRepository;
         private readonly IRepository<ProductType, int> _productTypeRepository;
 
-        public ProductAppService(IRepository<Product, int> productRepository, IRepository<ProductType, int> productTypeRepository)
+        public ProductAppService(IRepository<Product, int> productRepository)
         {
             _productRepository = productRepository;
-            _productTypeRepository = productTypeRepository;
+          
         }
 
         public async Task<PagedResultDto<ProductDto>> GetProductsAsync(GetMenuClientInput input)
@@ -49,10 +49,10 @@ namespace GWebsite.AbpZeroTemplate.Web.Core
             return ObjectMapper.Map<ProductDto>(item);
         }
 
-        public async Task<IEnumerable<ProductTypeDto>> GetProductTypesAsync()
-        {
-            var items = await _productTypeRepository.GetAllListAsync();
-            return items.Select(model => ObjectMapper.Map<ProductTypeDto>(model));
-        }
+        //public async Task<IEnumerable<ProductTypeDto>> GetProductTypesAsync()
+        //{
+        //    var items = await _productTypeRepository.GetAllListAsync();
+        //    return items.Select(model => ObjectMapper.Map<ProductTypeDto>(model));
+        //}
     }
 }

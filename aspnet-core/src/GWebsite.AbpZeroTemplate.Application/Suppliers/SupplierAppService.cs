@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.Domain.Repositories;
+using Abp.Linq.Extensions;
 using GWebsite.AbpZeroTemplate.Application;
 using GWebsite.AbpZeroTemplate.Application.Share;
 using GWebsite.AbpZeroTemplate.Application.Share.Bidding;
@@ -9,9 +10,8 @@ using GWebsite.AbpZeroTemplate.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
-using Abp.Linq.Extensions;
+using System.Threading.Tasks;
 
 namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
 {
@@ -50,17 +50,33 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
         /// <returns></returns>
         public async Task<BiddingProduct> ChangeOwnerBiddingProductAsync(BiddingSaved biddingSaved)
         {
-            var current = await _biddingRepository.GetAllIncluding(p => p.Supplier, p1 => p1.Product).FirstOrDefaultAsync(x => x.ProductId == biddingSaved.ProductId && x.Status == 1);
-            if (current != null)
+
+          
+           
+            try
             {
-                current.Status = 0;
-                await _biddingRepository.UpdateAsync(current);
+                var current = await _biddingRepository.GetAllIncluding(p => p.Supplier, p1 => p1.Product).FirstOrDefaultAsync(x => x.ProductId == biddingSaved.ProductId && x.Status == 1);
+                if (current != null)
+                {
+                    current.Status = 0;
+                    await _biddingRepository.UpdateAsync(current);
+                }
+
+                var entity = await _biddingRepository.GetAllIncluding(p => p.Supplier, p1 => p1.Product).FirstOrDefaultAsync(x => x.ProductId == biddingSaved.ProductId && x.SupplierId == biddingSaved.SupplierId);
+                ObjectMapper.Map(biddingSaved, entity);
+                entity = await _biddingRepository.UpdateAsync(entity);
+                await CurrentUnitOfWork.SaveChangesAsync();
+                return ObjectMapper.Map<BiddingProduct>(entity);
             }
-            var entity = await _biddingRepository.GetAllIncluding(p => p.Supplier, p1 => p1.Product).FirstOrDefaultAsync(x => x.ProductId == biddingSaved.ProductId && x.SupplierId == biddingSaved.SupplierId);
-            ObjectMapper.Map(biddingSaved, entity);
-            entity = await _biddingRepository.UpdateAsync(entity);
-            await CurrentUnitOfWork.SaveChangesAsync();
-            return ObjectMapper.Map<BiddingProduct>(entity);
+            catch
+            {
+                var bidding = ObjectMapper.Map<Bidding>(biddingSaved);
+                await _biddingRepository.InsertAndGetIdAsync(bidding);
+                await CurrentUnitOfWork.SaveChangesAsync();
+                return ObjectMapper.Map<BiddingProduct>(bidding);
+            }
+
+            
         }
 
         public async Task<SupplierDto> CreateSupplierAsync(SupplierSavedDto supplierSavedDto)
@@ -88,7 +104,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
             var query = _supplierRepository.GetAllIncluding().Include(p => p.Biddings).ThenInclude(p => p.Product);
             //query = query.Select(p => p.Biddings.Select(pc => pc.Status == 1));
             //&& p.Biddings.FirstOrDefault(b => b.Status == 1) != null;
-            var select = query.Where(p => p.Biddings.Count>0 );
+            var select = query.Where(p => p.Biddings.Count > 0);
             var totalCount = await select.CountAsync();
             var items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
             return new PagedResultDto<SupplierDto>(
@@ -118,7 +134,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
         public async Task<PagedResultDto<SupplierDto>> GetSupplierByProductAsync(GetMenuClientInput input, int productId)
         {
             var query = _supplierRepository.GetAllIncluding().Include(p => p.Biddings).ThenInclude(p => p.Product).ThenInclude(p => p.Image);
-            var select = query.Where(p => p.Biddings.FirstOrDefault(b => b.ProductId == productId)!=null);
+            var select = query.Where(p => p.Biddings.FirstOrDefault(b => b.ProductId == productId) != null);
             var totalCount = await select.CountAsync();
             var items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
             return new PagedResultDto<SupplierDto>(

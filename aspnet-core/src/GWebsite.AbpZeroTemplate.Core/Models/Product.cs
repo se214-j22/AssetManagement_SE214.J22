@@ -19,8 +19,8 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public Image Image { get; set; }
         public Supplier Supplier { get; set; }
         public int SupplierId { get; set; }
-        public ProductType ProductType { get; set; }
-        public int ProductTypeId { get; set; }
+        //public ProductType ProductType { get; set; }
+        //public int ProductTypeId { get; set; }
         public ICollection<PurchaseProduct> PurchaseProducts { get; set; }
         public ICollection<Bidding> Biddings { get; set; }
         public Product()
