@@ -23,6 +23,8 @@ namespace GWebsite.AbpZeroTemplate.Applications
             configuration.CreateMap<Bidding, BiddingProduct>();
             configuration.CreateMap<Supplier, SupplierDto>();
             configuration.CreateMap<SupplierSavedDto, SupplierDto>();
+            configuration.CreateMap<SupplierType, SupplierTypeDto>()
+                         .ForMember(dto => dto.Id, opt => opt.MapFrom(model => model.Id));
 
             configuration.CreateMap<PurchaseDto, Purchase>();
             configuration.CreateMap<MenuClient, MenuClientListDto>();

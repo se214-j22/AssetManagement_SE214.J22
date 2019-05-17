@@ -2,7 +2,7 @@
 
 namespace GWebsite.AbpZeroTemplate.Core.Models
 {
-    public partial class ProductType : Entity<int>
+    public partial class SupplierType : Entity<int>
     {
         public string Name { get; set; }
     }
