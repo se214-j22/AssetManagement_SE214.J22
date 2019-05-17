@@ -1,0 +1,46 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span *ngIf="sanPham.id">{{l("Thông tin Sản phẩm")}}: {{sanPham.tenSP}}</span>
+                    <span *ngIf="!sanPham.id">{{l("Xem chi tiết Sản phẩm")}}: {{sanPham.tenSP}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Mã sản phẩm</label>
+                    <p>{{sanPham.maSP}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Tên sản phẩm</label>
+                    <p>{{sanPham.tenSP}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Ngày tạo</label>
+                    <p *ngIf="sanPham.ngayTao">{{sanPham.ngayTao.format('DD/MM/YYYY')}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Ngày cập nhật</label>
+                    <p *ngIf="sanPham.ngayCapNhat">{{sanPham.ngayCapNhat.format('DD/MM/YYYY')}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Trạng thái</label>
+                    <p>{{sanPham.trangThai}}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                    (click)="close()">{{l("Cancel")}}</button>
+                <button type="submit" class="btn btn-primary">
+                  <i class="fa fa-save"></i>
+                  <span>{{l("Save")}}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

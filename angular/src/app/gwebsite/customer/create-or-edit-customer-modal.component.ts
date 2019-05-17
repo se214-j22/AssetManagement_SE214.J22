@@ -10,7 +10,6 @@ import { CustomerServiceProxy, CustomerInput } from '@shared/service-proxies/ser
 })
 export class CreateOrEditCustomerModalComponent extends AppComponentBase {
 
-
     @ViewChild('createOrEditModal') modal: ModalDirective;
     @ViewChild('customerCombobox') customerCombobox: ElementRef;
     @ViewChild('iconCombobox') iconCombobox: ElementRef;
@@ -21,9 +20,9 @@ export class CreateOrEditCustomerModalComponent extends AppComponentBase {
      * @Output dùng để public event cho component khác xử lý
      */
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
-
+    infoInput : string;
     saving = false;
-
+    
     customer: CustomerInput = new CustomerInput();
 
     constructor(

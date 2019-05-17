@@ -34,6 +34,7 @@ import { UserNotificationHelper } from './shared/layout/notifications/UserNotifi
 import { HeaderNotificationsComponent } from './shared/layout/notifications/header-notifications.component';
 import { NotificationSettingsModalComponent } from './shared/layout/notifications/notification-settings-modal.component';
 import { NotificationsComponent } from './shared/layout/notifications/notifications.component';
+// import { ScanModalComponent } from './gwebsite/scanner/scan-modal.component';
 
 @NgModule({
     declarations: [
@@ -54,7 +55,8 @@ import { NotificationsComponent } from './shared/layout/notifications/notificati
         ChatBarComponent,
         ChatFriendListItemComponent,
         NotificationSettingsModalComponent,
-        ChatMessageComponent
+        ChatMessageComponent,
+        //ScanModalComponent
     ],
     imports: [
         ngCommon.CommonModule,

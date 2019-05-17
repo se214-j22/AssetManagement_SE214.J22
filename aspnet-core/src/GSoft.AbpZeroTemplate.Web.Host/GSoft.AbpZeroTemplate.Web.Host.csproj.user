@@ -5,6 +5,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ActiveDebugProfile>GSoft.AbpZeroTemplate.Web.Host</ActiveDebugProfile>
-    <NameOfLastUsedPublishProfile>FolderProfile1</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>Webdpsg - Web Deploy</NameOfLastUsedPublishProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

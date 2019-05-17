@@ -21,7 +21,12 @@ export class ViewDemoModelModalComponent extends AppComponentBase {
     ) {
         super(injector);
     }
-
+    close() : void{
+        this.modal.hide();
+    }
+    saving(): void{
+        this.modal.show();
+    }
     show(demoModelId?: number | null | undefined): void {
 
         this._demoModelService.getDemoModelForView(demoModelId).subscribe(result => {

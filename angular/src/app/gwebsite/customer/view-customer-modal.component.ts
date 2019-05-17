@@ -10,6 +10,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 })
 
 export class ViewCustomerModalComponent extends AppComponentBase {
+    saving : boolean;
 
     customer : CustomerForViewDto = new CustomerForViewDto();
     @ViewChild('viewModal') modal: ModalDirective;
