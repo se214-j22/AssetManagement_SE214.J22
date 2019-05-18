@@ -24,9 +24,9 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<ProductDto> GetProduct(int Id)
+        public async Task<ProductDto> GetProduct(EntityDto<int> input)
         {
-            return await _ProductAppService.GetProductAsync(Id);
+            return await _ProductAppService.GetProductAsync(input);
         }
     }
 }

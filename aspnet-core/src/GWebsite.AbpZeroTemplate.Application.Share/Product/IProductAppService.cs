@@ -13,7 +13,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Products
     public interface IProductAppService
     {
         Task<PagedResultDto<ProductDto>> GetProductsAsync(GetMenuClientInput input);
-        Task<ProductDto> GetProductAsync(int id);
+        Task<ProductDto> GetProductAsync(EntityDto<int> input);
         //Task<IEnumerable<ProductTypeDto>> GetProductTypesAsync();
     }
 }

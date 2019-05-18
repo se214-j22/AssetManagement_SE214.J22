@@ -83,8 +83,6 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
         {
             var supplier = ObjectMapper.Map<Supplier>(supplierSavedDto);
             await _supplierRepository.InsertAndGetIdAsync(supplier);
-            //_context.Biddings.Add(bidding);
-            //await _context.SaveChangesAsync();
             await CurrentUnitOfWork.SaveChangesAsync();
             return ObjectMapper.Map<SupplierDto>(supplier);
         }

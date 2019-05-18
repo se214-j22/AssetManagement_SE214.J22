@@ -43,11 +43,13 @@ namespace GWebsite.AbpZeroTemplate.Web.Core
              items.Select(item => ObjectMapper.Map<ProductDto>(item)).ToList());
         }
 
-        public async Task<ProductDto> GetProductAsync(int id)
+        public async Task<ProductDto> GetProductAsync(EntityDto<int> input)
         {
-            var item = await _productRepository.FirstOrDefaultAsync(i => i.Id == id);
-            return ObjectMapper.Map<ProductDto>(item);
+            var entity = await _productRepository.GetAllIncluding().Include(p => p.Image).Include(p => p.Biddings).ThenInclude(p => p.Supplier).FirstOrDefaultAsync(x => x.Id == input.Id);
+            return ObjectMapper.Map<ProductDto>(entity);
         }
+
+       
 
         //public async Task<IEnumerable<ProductTypeDto>> GetProductTypesAsync()
         //{
