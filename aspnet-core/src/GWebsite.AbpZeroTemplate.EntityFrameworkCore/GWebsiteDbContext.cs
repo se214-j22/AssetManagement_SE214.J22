@@ -24,6 +24,13 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
         public virtual DbSet<MenuClient> MenuClients { get; set; }
         public virtual DbSet<DemoModel> DemoModels { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<Speedster> Speedsters { get; set; }
+        public virtual DbSet<DonViCungCapTaiSan> DonViCungCapTaiSans { get; set; }
+        public virtual DbSet<PhongBan> PhongBans { get; set; }
+        public virtual DbSet<HoaDonNhap> HoaDonNhaps { get; set; }
+        public virtual DbSet<BangYeuCauCungCapTaiSan> BangYeuCauCungCapTaiSans { get; set; }
+        public virtual DbSet<LoaiTaiSan> LoaiTaiSans { get; set; }
+
         /// <summary>
         /// GPermissions dùng cho bên Gwebsite
         /// </summary>
@@ -322,6 +329,19 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
                     .HasConstraintName("FK_dbo.Permissions_dbo.AppRoles_RoleId");
             });
 
+            modelBuilder.Entity<BangYeuCauCungCapTaiSan>(entity =>
+			{
+				entity.Property(p => p.NgayYeuCau)
+					.HasColumnType("date");
+			});
+			modelBuilder.Entity<HoaDonNhap>(entity =>
+			{
+				entity.Property(p => p.NguyenGiaTaiSan)
+					.HasComputedColumnSql("[GiaMuaThucTe] + [ChiPhiVanChuyen] + [ChiPhiSuaChua] + [ChiPhiNangCap] + [ChiPhiLapDatChayThu] + [Thue] + [LePhi]");
+
+				entity.Property(p => p.NgayNhan)
+					.HasColumnType("date");
+			});
         }
     }
 }

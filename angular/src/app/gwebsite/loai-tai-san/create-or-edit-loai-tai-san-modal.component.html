@@ -1,0 +1,57 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="loaiTaiSan.id">Cập nhật loại tài sản: {{loaiTaiSan.tenNhomTaiSan}}</span>
+                        <span *ngIf="!loaiTaiSan.id">Tạo mới loại tài sản</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Tên loại tài sản *</label>
+                        <input #nameInput="ngModel" class="form-control" type="text" name="Name"
+                            [(ngModel)]="loaiTaiSan.tenNhomTaiSan" required maxlength="64">
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Tỉ lệ hao mòn *</label>
+                        <div class="input-group">
+                            <input #tiLeHaoMonInput="ngModel" class="form-control" type="text" name="TiLeHaoMon"
+                                [(ngModel)]="loaiTaiSan.tiLeHaoMon" required maxlength="64">
+                            <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+                        <validation-messages [formCtrl]="tiLeHaoMonInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Thời hạn sử dụng *</label>
+                        <div class="input-group">
+                            <input #thoiHanSuDungInput="ngModel" class="form-control" type="text" name="ThoiHanSuDung"
+                                [(ngModel)]="loaiTaiSan.thoiHanSuDung" required maxlength="64">
+                            <div class="input-group-append">
+                                <span class="input-group-text">Năm</span>
+                            </div>
+                        </div>
+                        <validation-messages [formCtrl]="thoiHanSuDungInput"></validation-messages>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

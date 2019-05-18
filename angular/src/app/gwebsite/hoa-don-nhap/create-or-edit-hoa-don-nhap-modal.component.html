@@ -1,0 +1,124 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="hoaDonNhap.id">Cập nhật đơn vị cung cấp tài sản: {{hoaDonNhap.id}}</span>
+                        <span *ngIf="!hoaDonNhap.id">Tạo mới đơn vị cung cấp tài sản</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Đon vị cung cấp tài sản {{hoaDonNhap.donViCungCapTaiSanId}} *</label>
+                        <select class="custom-select" [(ngModel)]="hoaDonNhap.donViCungCapTaiSanId" name="DonViCungCapTaiSanId">
+                            <option value="{{item.id}}" *ngFor="let item of donViCungCapTaiSans">{{item.tenDonViCungCap}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ngày nhận {{hoaDonNhap.ngayNhan}} *</label>
+                        <input type="date" class="form-control" [(ngModel)]="hoaDonNhap.ngayNhan" name="NgayNhan" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Số hóa đơn *</label>
+                        <input #soHoaDonInput="ngModel" class="form-control" type="text" name="SoHoaDon"
+                            [(ngModel)]="hoaDonNhap.soHoaDon" required maxlength="64">
+                        <validation-messages [formCtrl]="soHoaDonInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Giá mua thực tế *</label>
+                        <div class="input-group">
+                            <input #giaMuaInput="ngModel" [(ngModel)]="hoaDonNhap.giaMuaThucTe" name="GiaMuaThucTe" type="number" class="form-control" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text">VNĐ</span>
+                            </div>
+                        </div>
+                        <validation-messages [formCtrl]="giaMuaInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Chi phí vận chuyển *</label>
+                        <div class="input-group">
+                            <input #chiPhiVCInput="ngModel" [(ngModel)]="hoaDonNhap.chiPhiVanChuyen" name="ChiPhiVanChuyen" type="number" class="form-control" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text">VNĐ</span>
+                            </div>
+                        </div>
+                        <validation-messages [formCtrl]="chiPhiVCInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Chi phí sửa chữa *</label>
+                        <div class="input-group">
+                            <input #chiPhiSCInput="ngModel" [(ngModel)]="hoaDonNhap.chiPhiSuaChua" name="ChiPhiSuaChua" type="number" class="form-control" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text">VNĐ</span>
+                            </div>
+                        </div>
+                        <validation-messages [formCtrl]="chiPhiSCInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Chi phí nâng cấp *</label>
+                        <div class="input-group">
+                            <input #chiPhiNCInput="ngModel" [(ngModel)]="hoaDonNhap.chiPhiNangCap" name="ChiPhiNangCap" type="number" class="form-control" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text">VNĐ</span>
+                            </div>
+                        </div>
+                        <validation-messages [formCtrl]="chiPhiNCInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Chi phí lắp đặt chạy thử *</label>
+                        <div class="input-group">
+                            <input #chiPhiLDInput="ngModel" [(ngModel)]="hoaDonNhap.chiPhiLapDatChayThu" name="ChiPhiLapDatChayThu" type="number" class="form-control" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text">VNĐ</span>
+                            </div>
+                        </div>
+                        <validation-messages [formCtrl]="chiPhiLDInput"></validation-messages>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Thuế *</label>
+                        <div class="input-group">
+                            <input #thueInput="ngModel" [(ngModel)]="hoaDonNhap.thue" name="Thue" type="number" class="form-control" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text">VNĐ</span>
+                            </div>
+                        </div>
+                        <validation-messages [formCtrl]="thueInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Lệ phí *</label>
+                        <div class="input-group">
+                            <input #lePhiInput="ngModel" [(ngModel)]="hoaDonNhap.lePhi" name="LePhi" type="number" class="form-control" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text">VNĐ</span>
+                            </div>
+                        </div>
+                        <validation-messages [formCtrl]="lePhiInput"></validation-messages>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -46,6 +46,37 @@ namespace GWebsite.AbpZeroTemplate.Core.Authorization
             customer.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_Edit, L("EditingCustomer"));
             customer.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_Delete, L("DeletingCustomer"));
 
+            var speedster = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Speedster, L("Speedster"));
+            speedster = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Speedster_Create, L("CreatingNewSpeedster"));
+            speedster = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Speedster_Edit, L("EditingSpeedster"));
+            speedster = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Speedster_Delete, L("DeletingSpeedster"));
+
+            var donViCungCapTaiSan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_DonViCungCapTaiSan, L("DonViCungCapTaiSan"));
+            donViCungCapTaiSan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_DonViCungCapTaiSan_Create, L("CreatingNewDonViCungCapTaiSan"));
+            donViCungCapTaiSan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_DonViCungCapTaiSan_Edit, L("EditingDonViCungCapTaiSan"));
+            donViCungCapTaiSan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_DonViCungCapTaiSan_Delete, L("DeletingDonViCungCapTaiSan"));
+
+            var phongBan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_PhongBan, L("PhongBan"));
+            phongBan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_PhongBan_Create, L("CreatingNewPhongBan"));
+            phongBan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_PhongBan_Edit, L("EditingPhongBan"));
+            phongBan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_PhongBan_Delete, L("DeletingPhongBan"));
+
+
+            var hoaDonNhap = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_HoaDonNhap, L("HoaDonNhap"));
+            hoaDonNhap = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_HoaDonNhap_Create, L("CreatingNewHoaDonNhap"));
+            hoaDonNhap = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_HoaDonNhap_Edit, L("EditingHoaDonNhap"));
+            hoaDonNhap = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_HoaDonNhap_Delete, L("DeletingHoaDonNhap"));
+
+            var bangYeuCauCungCapTaiSan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_BangYeuCauCungCapTaiSan, L("BangYeuCauCungCapTaiSan"));
+            bangYeuCauCungCapTaiSan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_BangYeuCauCungCapTaiSan_Create, L("CreatingNewBangYeuCauCungCapTaiSan"));
+            bangYeuCauCungCapTaiSan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_BangYeuCauCungCapTaiSan_Edit, L("EditingBangYeuCauCungCapTaiSan"));
+            bangYeuCauCungCapTaiSan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_BangYeuCauCungCapTaiSan_Delete, L("DeletingBangYeuCauCungCapTaiSan"));
+
+            var loaiTaiSan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_LoaiTaiSan, L("LoaiTaiSan"));
+            loaiTaiSan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_LoaiTaiSan_Create, L("CreatingNewLoaiTaiSan"));
+            loaiTaiSan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_LoaiTaiSan_Edit, L("EditingLoaiTaiSan"));
+            loaiTaiSan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_LoaiTaiSan_Delete, L("DeletingLoaiTaiSan"));
+
         }
 
         private static ILocalizableString L(string name)

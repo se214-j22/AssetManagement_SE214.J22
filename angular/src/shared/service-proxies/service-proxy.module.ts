@@ -3,6 +3,9 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import * as ApiServiceProxies from './service-proxies';
 import { WebApiServiceProxy } from './webapi.service';
+import { CustomerServiceProxy } from '@shared/service-proxies/service-proxies';
+import { DemoModelServiceProxy } from '@shared/service-proxies/service-proxies';
+import { PhongBanServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @NgModule({
     providers: [
@@ -39,8 +42,15 @@ import { WebApiServiceProxy } from './webapi.service';
         ApiServiceProxies.SubscriptionServiceProxy,
         ApiServiceProxies.InstallServiceProxy,
         ApiServiceProxies.UiCustomizationSettingsServiceProxy,
+        ApiServiceProxies.DonViCungCapTaiSanServiceProxy,
+        ApiServiceProxies.HoaDonNhapServiceProxy,
+        ApiServiceProxies.PhongBanServiceProxy,
+        ApiServiceProxies.LoaiTaiSanServiceProxy,
+        ApiServiceProxies.BangYeuCauCungCapTaiSanServiceProxy,
         WebApiServiceProxy,
-        { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true }
+        { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true },
+        CustomerServiceProxy,
+        DemoModelServiceProxy,
     ]
 })
 export class ServiceProxyModule { }
