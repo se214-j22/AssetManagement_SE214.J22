@@ -1877,9 +1877,26 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<string>("Phone");
 
+                    b.Property<int>("SupplierTypeId");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("SupplierTypeId");
+
                     b.ToTable("Suppliers");
+                });
+
+            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.SupplierType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SupplierTypes");
                 });
 
             modelBuilder.Entity("GSoft.AbpZeroTemplate.Editions.SubscribableEdition", b =>
@@ -2208,6 +2225,14 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     b.HasOne("GWebsite.AbpZeroTemplate.Core.Models.Purchase", "Purchase")
                         .WithMany("PurchaseProducts")
                         .HasForeignKey("PurchaseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.Supplier", b =>
+                {
+                    b.HasOne("GWebsite.AbpZeroTemplate.Core.Models.SupplierType", "SupplierType")
+                        .WithMany()
+                        .HasForeignKey("SupplierTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

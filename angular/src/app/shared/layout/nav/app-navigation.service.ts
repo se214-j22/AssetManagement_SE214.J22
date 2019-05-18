@@ -18,8 +18,22 @@ export class AppNavigationService {
             new AppMenuItem('Editions', 'Pages.Editions', 'flaticon-app', '/app/admin/editions'),
             new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [
                 new AppMenuItem('MenuClient', 'Pages.Administration.MenuClient', 'flaticon-menu-1', '/app/gwebsite/menu-client'),
-                new AppMenuItem('DemoModel', 'Pages.Administration.DemoModel', 'flaticon-menu-1', '/app/gwebsite/demo-model'),
-                new AppMenuItem('Customer', 'Pages.Administration.Customer', 'flaticon-menu-1', '/app/gwebsite/customer')
+            ]),
+            new AppMenuItem('Catalog', '', 'flaticon-interface-5', '', [
+                new AppMenuItem('Supplier', 'Pages.Administration.MenuClient', 'flaticon-profile-1', '/app/gwebsite/supplier'),
+                new AppMenuItem('Supplier Catalog', 'Pages.Administration.MenuClient', 'flaticon-truck', '/app/gwebsite/supplier-category'),
+                new AppMenuItem('Product', 'Pages.Administration.MenuClient', 'flaticon-app', '/app/gwebsite/product'),
+                new AppMenuItem('Product Catalog', 'Pages.Administration.MenuClient', 'flaticon-shapes', '/app/gwebsite/product-category')
+            ]),
+            new AppMenuItem('Plan', '', 'flaticon-calendar', '', [
+                new AppMenuItem('Purchase Plan', 'Pages.Administration.MenuClient', 'flaticon-calendar-2', '/app/gwebsite/plan')
+            ]),
+            new AppMenuItem('Purchase', '', 'flaticon-cart', '', [
+                new AppMenuItem('Project', 'Pages.Administration.MenuClient', 'flaticon-imac', '/app/gwebsite/project'),
+                new AppMenuItem('Bid Profile', 'Pages.Administration.MenuClient', 'flaticon-book', '/app/gwebsite/bidProfile'),
+                new AppMenuItem('Purchase Contract', 'Pages.Administration.MenuClient', 'flaticon-squares-1', '/app/gwebsite/purchaseContract'),
+                new AppMenuItem('Purchase Order', 'Pages.Administration.MenuClient', 'flaticon-open-box', '/app/gwebsite/purchaseOrder'),
+                new AppMenuItem('Submission', 'Pages.Administration.MenuClient', 'flaticon-exclamation-1', '/app/gwebsite/submission'),
             ]),
             new AppMenuItem('Systems', '', 'flaticon-layers', '', [
                 new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),

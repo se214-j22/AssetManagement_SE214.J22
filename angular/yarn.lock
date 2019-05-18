@@ -224,6 +224,13 @@
   version "3.3.5"
   resolved "https://registry.yarnpkg.com/@fancyapps/fancybox/-/fancybox-3.3.5.tgz#e0bead520450ff0af51d353a17ac6bf864ba0f49"
 
+"@ng-select/ng-select@^2.17.0":
+  version "2.17.0"
+  resolved "https://registry.yarnpkg.com/@ng-select/ng-select/-/ng-select-2.17.0.tgz#e39efbcdcaae53d649e25e8ea5b5139a2f7e28d0"
+  integrity sha512-hCZIcg4tACYp8tKRLZnD9CEZJcVJbKWkVrS++8dh0cJv580SCiKTQ10CJ1qzWWvmC4tIbCRyLzrUuKQRdkRWpA==
+  dependencies:
+    tslib "^1.9.0"
+
 "@ngtools/webpack@6.0.0":
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-6.0.0.tgz#e160cccd85823e9b01ee7bc5156a02510a323a34"
@@ -448,6 +455,11 @@ almond@~0.3.1:
 amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
+
+angular-select2@^1.5.3:
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/angular-select2/-/angular-select2-1.5.3.tgz#983cda3366648c4976ee8ed01cf1cb0030ab9044"
+  integrity sha512-4TJAKzZjEXeUvmWrUHVMOfUYsv61SWPd9IUY+9O9npGxAeNSGe8LQvpRCivjYObHNR8Nyf7XaHA/wC8hU66OEA==
 
 angular2-counto@^1.2.5:
   version "1.2.5"

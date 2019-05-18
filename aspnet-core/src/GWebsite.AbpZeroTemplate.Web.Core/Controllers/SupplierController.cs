@@ -15,55 +15,71 @@ using System.Threading.Tasks;
 namespace GWebsite.AbpZeroTemplate.Application.Controllers
 {
     [Route("api/[controller]/[action]")]
-    public  class SupplierController : GWebsiteControllerBase
+    public class SupplierController : GWebsiteControllerBase
     {
 
         private readonly ISupplierAppService _SupplierAppService;
 
         public SupplierController(ISupplierAppService SuppllierService)
         {
-            _SupplierAppService = SuppllierService;
+            this._SupplierAppService = SuppllierService;
         }
-       
+
         [HttpGet]
-        public async Task<ListResultDto<SupplierDto>> GetSupplierByProduct(GetMenuClientInput input,int productId=0)
+        public async Task<ListResultDto<SupplierDto>> GetSupplierByProduct(GetMenuClientInput input, int productId = 0)
         {
-            return await _SupplierAppService.GetSupplierByProductAsync(input, productId);
+            return await this._SupplierAppService.GetSupplierByProductAsync(input, productId);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetSupplierByProduct(GetMenuClientInput input, string supplierType = null)
+        {
+            if (string.IsNullOrEmpty(supplierType))
+            {
+                return this.BadRequest();
+            }
+            return this.Ok(await this._SupplierAppService.GetSupplierByTypeAsync(input, supplierType));
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<SupplierTypeDto>> GetSupplierTypes()
+        {
+            return await this._SupplierAppService.GetSupplierTypesAsync();
         }
 
         [HttpGet]
         public async Task<ListResultDto<SupplierDto>> GetAllBiddingPass(GetMenuClientInput input)
         {
-            return await _SupplierAppService.GetAllBiddingPassAsync(input);
+            return await this._SupplierAppService.GetAllBiddingPassAsync(input);
         }
 
         [HttpGet]
         public async Task<SupplierDto> GetSupplierById(EntityDto<int> input)
         {
-            return await _SupplierAppService.GetSupplierByIdAsync(input);
+            return await this._SupplierAppService.GetSupplierByIdAsync(input);
         }
 
         [HttpPost]
         public async Task<BiddingProduct> CreateBidding([FromBody]  BiddingSaved BiddingSaved)
         {
-            return await _SupplierAppService.BiddingProductAsync(BiddingSaved);
+            return await this._SupplierAppService.BiddingProductAsync(BiddingSaved);
         }
 
         [HttpPut]
         public async Task<BiddingProduct> ChangeOwnerBiddingProduct([FromBody]  BiddingSaved BiddingSaved)
         {
-            return await _SupplierAppService.ChangeOwnerBiddingProductAsync(BiddingSaved);
+            return await this._SupplierAppService.ChangeOwnerBiddingProductAsync(BiddingSaved);
         }
 
         [HttpPost]
         public async Task<SupplierDto> CreateSupplier([FromBody]  SupplierSavedDto supplierSavedDto)
         {
-            return await _SupplierAppService.CreateSupplierAsync(supplierSavedDto);
+            return await this._SupplierAppService.CreateSupplierAsync(supplierSavedDto);
         }
         [HttpPut]
         public async Task<SupplierDto> UpdateSupplier([FromBody]  SupplierSavedDto supplierSavedDto)
         {
-            return await _SupplierAppService.UpdateSupplierAsync(supplierSavedDto);
+            return await this._SupplierAppService.UpdateSupplierAsync(supplierSavedDto);
         }
     }
 }
