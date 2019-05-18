@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace GWebsite.AbpZeroTemplate.Core.Models
 {
-    public class ProductOrganizationUnit : Entity<int>
+    public class AssetOrganizationUnit : Entity<int>
     {
-        public int ProductId { get; set; }
+        public int AssetId { get; set; }
         public long OrganizationUnitId { get; set; }
-        public Product Product { get; set; }
+        public Asset Asset { get; set; }
         public OrganizationUnit OrganizationUnit { get; set; }
     }
 }

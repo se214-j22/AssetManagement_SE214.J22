@@ -24,8 +24,11 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
         public virtual DbSet<MenuClient> MenuClients { get; set; }
         public virtual DbSet<DemoModel> DemoModels { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
-        public virtual DbSet<Product> Products { get; set; }
-        public virtual DbSet<ProductOrganizationUnit> ProductOrganizationUnits { get; set; }
+        public virtual DbSet<Asset> Assets { get; set; }
+        public virtual DbSet<AssetLine> AssetLines { get; set; }
+        public virtual DbSet<AssetType> AssetTypes { get; set; }
+        public virtual DbSet<Manufacturer> Manufacturers { get; set; }
+        public virtual DbSet<AssetOrganizationUnit> AssetOrganizationUnits { get; set; }
         /// <summary>
         /// GPermissions dùng cho bên Gwebsite
         /// </summary>

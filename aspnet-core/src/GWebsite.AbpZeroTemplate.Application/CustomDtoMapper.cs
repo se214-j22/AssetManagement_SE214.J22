@@ -2,7 +2,7 @@ using AutoMapper;
 using GWebsite.AbpZeroTemplate.Application.Share.Customers.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.DemoModels.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
-using GWebsite.AbpZeroTemplate.Application.Share.Products.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.Assets.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
 
 namespace GWebsite.AbpZeroTemplate.Applications
@@ -28,9 +28,15 @@ namespace GWebsite.AbpZeroTemplate.Applications
             configuration.CreateMap<Customer, CustomerInput>();
             configuration.CreateMap<Customer, CustomerForViewDto>();
 
-            //Product
-            configuration.CreateMap<Product, ProductDto>();
-            configuration.CreateMap<ProductInput, Product>();
+            //Asset
+            configuration.CreateMap<Asset, AssetDto>();
+            configuration.CreateMap<AssetInput, Asset>();
+            configuration.CreateMap<AssetType, AssetTypeDto>();
+            configuration.CreateMap<AssetTypeInput, AssetType>().AfterMap((ati, at) => at.Code=ati.Code.ToUpper());
+            configuration.CreateMap<AssetLine, AssetLineDto>();
+            configuration.CreateMap<AssetLineInput, AssetLine>().AfterMap((ali, al) => al.Code = ali.Code.ToUpper());
+            configuration.CreateMap<Manufacturer, ManufacturerDto>();
+            configuration.CreateMap<ManufacturerInput, Manufacturer>().AfterMap((mi, m) => m.Code =mi.Code.ToUpper());
         }
     }
 }

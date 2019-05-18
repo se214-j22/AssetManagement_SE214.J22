@@ -22,18 +22,18 @@ namespace GSoft.AbpZeroTemplate.Organizations
         private readonly OrganizationUnitManager _organizationUnitManager;
         private readonly IRepository<OrganizationUnit, long> _organizationUnitRepository;
         private readonly IRepository<UserOrganizationUnit, long> _userOrganizationUnitRepository;
-        private readonly IRepository<ProductOrganizationUnit, int> _productOrganizationUnitRepository;
+        private readonly IRepository<AssetOrganizationUnit, int> _assetOrganizationUnitRepository;
 
         public OrganizationUnitAppService(
             OrganizationUnitManager organizationUnitManager,
             IRepository<OrganizationUnit, long> organizationUnitRepository,
             IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository,
-            IRepository<ProductOrganizationUnit, int> productOrganizationUnitRepository)
+            IRepository<AssetOrganizationUnit, int> assetOrganizationUnitRepository)
         {
             _organizationUnitManager = organizationUnitManager;
             _organizationUnitRepository = organizationUnitRepository;
             _userOrganizationUnitRepository = userOrganizationUnitRepository;
-            _productOrganizationUnitRepository = productOrganizationUnitRepository;
+            _assetOrganizationUnitRepository = assetOrganizationUnitRepository;
         }
 
         public async Task<ListResultDto<OrganizationUnitDto>> GetOrganizationUnits()
@@ -174,24 +174,36 @@ namespace GSoft.AbpZeroTemplate.Organizations
         }
 
         [AbpAuthorize(AppPermissions.Pages_Administration_OrganizationUnits_ManageWarehouse)]
-        public async Task PlaceProductToOrganizationUnit(ProductsToOrganizationUnitInput input)
+        public async Task PlaceAssetsToOrganizationUnit(AssetsToOrganizationUnitInput input)
         {
-            var existedProductIds = await _productOrganizationUnitRepository.GetAll()
-                .Where(x => input.ProductIds.Contains(x.ProductId))
-                .Select(p => p.ProductId).ToListAsync();
-            var notExistedProductIds = input.ProductIds.Except(existedProductIds).ToList();
+            var existedAssetIds = await _assetOrganizationUnitRepository.GetAll()
+                .Where(x => input.AssetIds.Contains(x.AssetId))
+                .Select(p => p.AssetId).ToListAsync();
+            var notExistedAssetIds = input.AssetIds.Except(existedAssetIds).ToList();
 
-            await _productOrganizationUnitRepository.GetAll()
-                .Where(x => existedProductIds.Contains(x.ProductId))
+            await _assetOrganizationUnitRepository.GetAll()
+                .Where(x => existedAssetIds.Contains(x.AssetId))
                 .ForEachAsync(p => p.OrganizationUnitId = input.OrganizationUnitId);
-            foreach (int productId in notExistedProductIds)
+            foreach (int productId in notExistedAssetIds)
             {
-                var newProduct = new ProductOrganizationUnit() { ProductId = productId, OrganizationUnitId = input.OrganizationUnitId };
-                await _productOrganizationUnitRepository.InsertAsync(newProduct);
+                var newProduct = new AssetOrganizationUnit() { AssetId = productId, OrganizationUnitId = input.OrganizationUnitId };
+                await _assetOrganizationUnitRepository.InsertAsync(newProduct);
             }
             await CurrentUnitOfWork.SaveChangesAsync();
         }
+        [AbpAuthorize(AppPermissions.Pages_Administration_OrganizationUnits_ManageWarehouse)]
+        public async Task<List<Asset>> GetAssetsInWarehouse()
+        {
+            var user = GetCurrentUser();
+            var organizationUnitId = _userOrganizationUnitRepository.FirstOrDefault(uo => uo.UserId == user.Id)?.OrganizationUnitId;
+            if (organizationUnitId == null)
+                return new List<Asset>();
+            var assets = await (from po in _assetOrganizationUnitRepository.GetAll()
+                                where organizationUnitId == po.OrganizationUnitId
+                                select po.Asset).AsNoTracking().ToListAsync();
+            return assets;
 
+        }
         [AbpAuthorize(AppPermissions.Pages_Administration_OrganizationUnits_ManageWarehouse)]
         public async Task<WarehouseStatus> GetWarehouseStatus()
         {
@@ -200,10 +212,10 @@ namespace GSoft.AbpZeroTemplate.Organizations
             if(organizationUnitId == null)  //this case occurs when current user granted organization unit permission don't have organization unit.
                 return new WarehouseStatus { AllNumber = 0, ParentNumber = 0, ChildrenNumber = 0 };
             var childrendOrgIds = from o in _organizationUnitRepository.GetAll() where (o.ParentId == organizationUnitId) select o.Id;
-            var childrendNumber = (from po in _productOrganizationUnitRepository.GetAll()
+            var childrendNumber = (from po in _assetOrganizationUnitRepository.GetAll()
                                    where childrendOrgIds.Contains(po.OrganizationUnitId)
                                    select po).Count();
-            var parentNumber = (from po in _productOrganizationUnitRepository.GetAll()
+            var parentNumber = (from po in _assetOrganizationUnitRepository.GetAll()
                                 where organizationUnitId == po.OrganizationUnitId
                                 select po).Count();
             var allNumber = childrendNumber + parentNumber;

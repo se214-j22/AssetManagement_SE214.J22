@@ -4,9 +4,9 @@ using System.Text;
 
 namespace GSoft.AbpZeroTemplate.Organizations.Dto
 {
-    public class ProductsToOrganizationUnitInput
+    public class AssetsToOrganizationUnitInput
     {
-        public List<int> ProductIds { get; set; }
+        public List<int> AssetIds { get; set; }
         public long OrganizationUnitId { get; set; }
     }
 }
