@@ -14,6 +14,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Products
     {
         Task<PagedResultDto<ProductDto>> GetProductsAsync(GetMenuClientInput input);
         Task<ProductDto> GetProductAsync(EntityDto<int> input);
-        //Task<IEnumerable<ProductTypeDto>> GetProductTypesAsync();
+        Task<IEnumerable<ProductTypeDto>> GetProductTypesAsync();
     }
 }
