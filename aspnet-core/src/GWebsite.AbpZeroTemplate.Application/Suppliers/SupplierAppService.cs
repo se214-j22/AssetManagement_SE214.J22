@@ -11,12 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-<<<<<<< HEAD
-using System.Threading.Tasks;
-=======
 using Abp.Linq.Extensions;
 using System.Collections.Generic;
->>>>>>> 5b44b5dbc782d5bd30ebd550151246e5bdef36a9
+using System.Threading.Tasks;
 
 namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
 {
@@ -57,35 +54,6 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
         /// <returns></returns>
         public async Task<BiddingProduct> ChangeOwnerBiddingProductAsync(BiddingSaved biddingSaved)
         {
-<<<<<<< HEAD
-
-          
-           
-            try
-            {
-                var current = await _biddingRepository.GetAllIncluding(p => p.Supplier, p1 => p1.Product).FirstOrDefaultAsync(x => x.ProductId == biddingSaved.ProductId && x.Status == 1);
-                if (current != null)
-                {
-                    current.Status = 0;
-                    await _biddingRepository.UpdateAsync(current);
-                }
-
-                var entity = await _biddingRepository.GetAllIncluding(p => p.Supplier, p1 => p1.Product).FirstOrDefaultAsync(x => x.ProductId == biddingSaved.ProductId && x.SupplierId == biddingSaved.SupplierId);
-                ObjectMapper.Map(biddingSaved, entity);
-                entity = await _biddingRepository.UpdateAsync(entity);
-                await CurrentUnitOfWork.SaveChangesAsync();
-                return ObjectMapper.Map<BiddingProduct>(entity);
-            }
-            catch
-            {
-                var bidding = ObjectMapper.Map<Bidding>(biddingSaved);
-                await _biddingRepository.InsertAndGetIdAsync(bidding);
-                await CurrentUnitOfWork.SaveChangesAsync();
-                return ObjectMapper.Map<BiddingProduct>(bidding);
-            }
-
-            
-=======
             var current = await this._biddingRepository.GetAllIncluding(p => p.Supplier, p1 => p1.Product).FirstOrDefaultAsync(x => x.ProductId == biddingSaved.ProductId && x.Status == 1);
             if (current != null)
             {
@@ -97,24 +65,16 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
             entity = await this._biddingRepository.UpdateAsync(entity);
             await this.CurrentUnitOfWork.SaveChangesAsync();
             return this.ObjectMapper.Map<BiddingProduct>(entity);
->>>>>>> 5b44b5dbc782d5bd30ebd550151246e5bdef36a9
         }
 
         public async Task<SupplierDto> CreateSupplierAsync(SupplierSavedDto supplierSavedDto)
         {
-<<<<<<< HEAD
-            var supplier = ObjectMapper.Map<Supplier>(supplierSavedDto);
-            await _supplierRepository.InsertAndGetIdAsync(supplier);
-            await CurrentUnitOfWork.SaveChangesAsync();
-            return ObjectMapper.Map<SupplierDto>(supplier);
-=======
             var supplier = this.ObjectMapper.Map<Supplier>(supplierSavedDto);
             await this._supplierRepository.InsertAndGetIdAsync(supplier);
             //_context.Biddings.Add(bidding);
             //await _context.SaveChangesAsync();
             await this.CurrentUnitOfWork.SaveChangesAsync();
             return this.ObjectMapper.Map<SupplierDto>(supplier);
->>>>>>> 5b44b5dbc782d5bd30ebd550151246e5bdef36a9
         }
 
         public Task DeleteBiddingAsync(EntityDto<int> input)
@@ -161,10 +121,6 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
         /// <returns></returns>
         public async Task<PagedResultDto<SupplierDto>> GetSupplierByProductAsync(GetMenuClientInput input, int productId)
         {
-<<<<<<< HEAD
-            var query = _supplierRepository.GetAllIncluding().Include(p => p.Biddings).ThenInclude(p => p.Product).ThenInclude(p => p.Image);
-            var select = query.Where(p => p.Biddings.FirstOrDefault(b => b.ProductId == productId) != null);
-=======
             var query = this._supplierRepository.GetAllIncluding().Include(p => p.Biddings).ThenInclude(p => p.Product).ThenInclude(p => p.Image);
             var select = query.Where(p => p.Biddings.FirstOrDefault(b => b.ProductId == productId) != null);
             var totalCount = await select.CountAsync();
@@ -178,7 +134,6 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
         {
             var query = this._supplierRepository.GetAllIncluding().Include(p => p.SupplierType).Include(p => p.Biddings).ThenInclude(p => p.Product).ThenInclude(p => p.Image);
             var select = query.Where(sup => sup.SupplierType.Name.Equals(SupplierType));
->>>>>>> 5b44b5dbc782d5bd30ebd550151246e5bdef36a9
             var totalCount = await select.CountAsync();
             var items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
             return new PagedResultDto<SupplierDto>(
