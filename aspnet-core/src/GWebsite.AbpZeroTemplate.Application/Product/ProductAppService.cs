@@ -20,10 +20,12 @@ namespace GWebsite.AbpZeroTemplate.Web.Core
     public class ProductAppService : GWebsiteAppServiceBase, IProductAppService
     {
         private readonly IRepository<Product, int> productRepository;
+        private readonly IRepository<ProductType, int> productTypeRepository;
 
-        public ProductAppService(IRepository<Product, int> productRepository)
+        public ProductAppService(IRepository<Product, int> productRepository, IRepository<ProductType, int> productTypeRepository)
         {
             this.productRepository = productRepository;
+            this.productTypeRepository = productTypeRepository;
         }
 
         public async Task<PagedResultDto<ProductDto>> GetProductsAsync(GetMenuClientInput input)
