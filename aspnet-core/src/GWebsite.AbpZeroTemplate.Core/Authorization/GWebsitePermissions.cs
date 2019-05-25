@@ -24,5 +24,9 @@
         public const string Pages_Administration_Customer_Edit = "Pages.Administration.Customer.Edit";
         public const string Pages_Administration_Customer_Delete = "Pages.Administration.Customer.Delete";
 
+        public const string Pages_Administration_User = "Pages.Administration.User";
+        public const string Pages_Administration_User_Create = "Pages.Administration.User.Create";
+        public const string Pages_Administration_User_Edit = "Pages.Administration.User.Edit";
+        public const string Pages_Administration_User_Delete = "Pages.Administration.User.Delete";
     }
 }
