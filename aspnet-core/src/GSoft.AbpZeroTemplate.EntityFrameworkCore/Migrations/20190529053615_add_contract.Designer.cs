@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GSoft.AbpZeroTemplate.Migrations
 {
     [DbContext(typeof(AbpZeroTemplateDbContext))]
-    [Migration("20190510154016_add-price")]
-    partial class addprice
+    [Migration("20190529053615_add_contract")]
+    partial class add_contract
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1584,6 +1584,41 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     b.ToTable("Biddings");
                 });
 
+            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.Contract", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BiddingId");
+
+                    b.Property<DateTime>("DeliveryTime");
+
+                    b.Property<int>("GaranteeContractId");
+
+                    b.Property<int>("GuaranteeId");
+
+                    b.Property<int>("Index");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Note");
+
+                    b.Property<float>("TotalValueOfContract");
+
+                    b.Property<float>("TotalValueOfImplementation");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BiddingId");
+
+                    b.HasIndex("GaranteeContractId");
+
+                    b.HasIndex("GuaranteeId");
+
+                    b.ToTable("Contracts");
+                });
+
             modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.DemoModel", b =>
                 {
                     b.Property<int>("Id")
@@ -1659,6 +1694,52 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     b.HasIndex("ParentId");
 
                     b.ToTable("Functions");
+                });
+
+            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.GaranteeContract", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Amount");
+
+                    b.Property<string>("BankName");
+
+                    b.Property<DateTime>("ExpiredDate");
+
+                    b.Property<float>("Fee");
+
+                    b.Property<float>("Percent");
+
+                    b.Property<int>("Type");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GaranteeContracts");
+                });
+
+            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.Guarantee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Amount");
+
+                    b.Property<string>("BankName");
+
+                    b.Property<DateTime>("ExpiredDate");
+
+                    b.Property<float>("Fee");
+
+                    b.Property<float>("Percent");
+
+                    b.Property<int>("Type");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Guarantees");
                 });
 
             modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.Image", b =>
@@ -1783,15 +1864,32 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<double>("Price");
 
+                    b.Property<int>("ProductTypeId");
+
                     b.Property<string>("Summary");
 
                     b.Property<int>("SupplierId");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductTypeId");
+
                     b.HasIndex("SupplierId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.ProductType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductTypes");
                 });
 
             modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.Purchase", b =>
@@ -1862,9 +1960,26 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<string>("Phone");
 
+                    b.Property<int>("SupplierTypeId");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("SupplierTypeId");
+
                     b.ToTable("Suppliers");
+                });
+
+            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.SupplierType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SupplierTypes");
                 });
 
             modelBuilder.Entity("GSoft.AbpZeroTemplate.Editions.SubscribableEdition", b =>
@@ -2129,6 +2244,24 @@ namespace GSoft.AbpZeroTemplate.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
+            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.Contract", b =>
+                {
+                    b.HasOne("GWebsite.AbpZeroTemplate.Core.Models.Bidding", "Bidding")
+                        .WithMany()
+                        .HasForeignKey("BiddingId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GWebsite.AbpZeroTemplate.Core.Models.GaranteeContract", "GaranteeContract")
+                        .WithMany()
+                        .HasForeignKey("GaranteeContractId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GWebsite.AbpZeroTemplate.Core.Models.Guarantee", "Guarantee")
+                        .WithMany()
+                        .HasForeignKey("GuaranteeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.Function", b =>
                 {
                     b.HasOne("GWebsite.AbpZeroTemplate.Core.Models.Function", "Parent")
@@ -2160,6 +2293,11 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
             modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.Product", b =>
                 {
+                    b.HasOne("GWebsite.AbpZeroTemplate.Core.Models.ProductType", "ProductType")
+                        .WithMany()
+                        .HasForeignKey("ProductTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("GWebsite.AbpZeroTemplate.Core.Models.Supplier", "Supplier")
                         .WithMany()
                         .HasForeignKey("SupplierId")
@@ -2188,6 +2326,14 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     b.HasOne("GWebsite.AbpZeroTemplate.Core.Models.Purchase", "Purchase")
                         .WithMany("PurchaseProducts")
                         .HasForeignKey("PurchaseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.Supplier", b =>
+                {
+                    b.HasOne("GWebsite.AbpZeroTemplate.Core.Models.SupplierType", "SupplierType")
+                        .WithMany()
+                        .HasForeignKey("SupplierTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

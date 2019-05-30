@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GWebsite.AbpZeroTemplate.Application.Share.Product.Dto
+namespace GWebsite.AbpZeroTemplate.Application.Share.Contract.Dto
 {
-   public partial class TitleBiddingProduct
+    public partial class BiddingDto
     {
-        public int SupplierId { get; set; }
-        public int ProductId { get; set; }
-        public TitleSupplier Supplier { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int Status { get; set; }

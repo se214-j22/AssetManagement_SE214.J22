@@ -1,5 +1,6 @@
 using AutoMapper;
 using GWebsite.AbpZeroTemplate.Application.Share.Bidding.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.Contract.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.DemoModels.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Product.Dto;
@@ -30,7 +31,8 @@ namespace GWebsite.AbpZeroTemplate.Applications
             configuration.CreateMap<MenuClient, MenuClientListDto>();
             configuration.CreateMap<CreateMenuClientInput, MenuClient>();
             configuration.CreateMap<UpdateMenuClientInput, MenuClient>();
-
+            configuration.CreateMap<ContractDto, Contract>();
+            configuration.CreateMap<Contract, ContractDto>();
             // DemoModel
             configuration.CreateMap<DemoModel, DemoModelDto>();
             configuration.CreateMap<DemoModelInput, DemoModel>();
@@ -40,6 +42,7 @@ namespace GWebsite.AbpZeroTemplate.Applications
             // revert mapper 
 
             configuration.CreateMap<BiddingSaved, Bidding>();
+            configuration.CreateMap<ContractSaved, Contract>();
             configuration.CreateMap<PurchaseSave, Purchase>()
                 .ForMember(p => p.PurchaseProducts, opt => opt.Ignore())
                 .AfterMap((pr, p) =>

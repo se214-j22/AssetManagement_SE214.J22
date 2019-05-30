@@ -12,7 +12,6 @@ using System;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
-using Abp.Linq.Extensions;
 using System.Collections.Generic;
 
 
@@ -23,12 +22,12 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
         private readonly IRepository<Supplier, int> _supplierRepository;
         private readonly IRepository<Bidding, int> _biddingRepository;
         private readonly IRepository<SupplierType, int> _supplierTypeRepository;
-
-        public SupplierAppService(IRepository<Supplier, int> supplierRepository, IRepository<Bidding, int> biddingRepository, IRepository<SupplierType, int> supplierTypeRepository)
+        //IRepository<SupplierType, int> supplierTypeRepository
+        public SupplierAppService(IRepository<Supplier, int> supplierRepository, IRepository<Bidding, int> biddingRepository)
         {
             this._supplierRepository = supplierRepository;
             this._biddingRepository = biddingRepository;
-            this._supplierTypeRepository = supplierTypeRepository;
+            //this._supplierTypeRepository = supplierTypeRepository;
         }
 
         /// <summary>

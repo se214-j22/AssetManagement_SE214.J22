@@ -32,7 +32,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSupplierByProduct(GetMenuClientInput input, string supplierType = null)
+        public async Task<IActionResult> GetSupplierTypeByProduct(GetMenuClientInput input, string supplierType = null)
         {
             if (string.IsNullOrEmpty(supplierType))
             {

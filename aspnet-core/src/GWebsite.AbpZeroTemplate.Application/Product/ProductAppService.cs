@@ -26,7 +26,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core
     {
         private readonly IRepository<Product, int> _productRepository;
         private readonly IRepository<ProductType, int> _productTypeRepository;
-
+        //, IRepository<ProductType, int> productTypeRepository
         public ProductAppService(IRepository<Product, int> productRepository, IRepository<ProductType, int> productTypeRepository)
         {
             _productRepository = productRepository;
