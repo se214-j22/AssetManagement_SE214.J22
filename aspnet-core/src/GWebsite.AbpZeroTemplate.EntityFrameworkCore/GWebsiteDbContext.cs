@@ -356,6 +356,15 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
                 .OnDelete(DeleteBehavior.Cascade);
             });
 
+            modelBuilder.Entity<ProductType>(entity =>
+            {
+                entity
+               .HasMany(p => p.Products)
+                .WithOne(i => i.ProductType)
+                .HasForeignKey(i => i.ProductTypeId)
+                .OnDelete(DeleteBehavior.Cascade);
+            });
+
             modelBuilder.Entity<PurchaseProduct>(entity =>
             {
                 entity
