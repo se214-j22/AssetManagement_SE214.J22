@@ -9,10 +9,10 @@ using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 
 namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
@@ -22,12 +22,11 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
         private readonly IRepository<Supplier, int> _supplierRepository;
         private readonly IRepository<Bidding, int> _biddingRepository;
         private readonly IRepository<SupplierType, int> _supplierTypeRepository;
-        //IRepository<SupplierType, int> supplierTypeRepository
-        public SupplierAppService(IRepository<Supplier, int> supplierRepository, IRepository<Bidding, int> biddingRepository)
+        public SupplierAppService(IRepository<Supplier, int> supplierRepository, IRepository<Bidding, int> biddingRepository, IRepository<SupplierType, int> supplierTypeRepository)
         {
             this._supplierRepository = supplierRepository;
             this._biddingRepository = biddingRepository;
-            //this._supplierTypeRepository = supplierTypeRepository;
+            this._supplierTypeRepository = supplierTypeRepository;
         }
 
         /// <summary>
@@ -55,8 +54,8 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
         public async Task<BiddingProduct> ChangeOwnerBiddingProductAsync(BiddingSaved biddingSaved)
         {
 
-          
-           
+
+
             try
             {
                 var current = await _biddingRepository.GetAllIncluding(p => p.Supplier, p1 => p1.Product).FirstOrDefaultAsync(x => x.ProductId == biddingSaved.ProductId && x.Status == 1);
@@ -89,9 +88,10 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
             return ObjectMapper.Map<SupplierDto>(supplier);
         }
 
-        public Task DeleteBiddingAsync(EntityDto<int> input)
+        public async Task DeleteBiddingAsync(EntityDto<int> input)
         {
-            throw new NotImplementedException();
+            var query = await this._supplierRepository.FirstOrDefaultAsync(item => item.Id == input.Id);
+            await this._supplierRepository.DeleteAsync(query);
         }
 
         /// <summary>
@@ -152,11 +152,62 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
              totalCount,
              items.Select(item => this.ObjectMapper.Map<SupplierDto>(item)).ToList());
         }
-
-        public async Task<IEnumerable<SupplierTypeDto>> GetSupplierTypesAsync()
+        /// <summary>
+        /// get all category of supplier  with pagination
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<PagedResultDto<SupplierTypeDto>> GetSupplierTypesAsync(GetMenuClientInput input)
         {
-            var querry = this._supplierTypeRepository.GetAll();
-            return querry.Select(item => this.ObjectMapper.Map<SupplierTypeDto>(item)).ToList();
+            var query = this._supplierTypeRepository.GetAllIncluding(p => p.Suppliers);
+            var totalCount = await query.CountAsync();
+            var items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
+            return new PagedResultDto<SupplierTypeDto>(
+            totalCount,
+            items.Select(item => {
+                var data = this.ObjectMapper.Map<SupplierTypeDto>(item);
+                data.IsInCludeSupplier = item.Suppliers.Count > 0;
+                return data;
+            }).ToList());
+        }
+
+        /// <summary>
+        /// filter
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="code"></param>
+        /// <param name="name"></param>
+        /// <param name="intput"></param>
+        /// <returns></returns>
+        public async Task<PagedResultDto<SupplierTypeDto>> GetSupplierTypesWithFilterAsync(GetMenuClientInput input, string code, string name, int status)
+        {
+            var query = _supplierTypeRepository.GetAllIncluding(p => p.Suppliers).Where(p=>p.Name.Contains(name)|| p.Code.Contains(code)|| p.Status.Equals(status));
+            var totalCount = await query.CountAsync();
+            if (totalCount == 0)
+            {
+                query = _supplierTypeRepository.GetAllIncluding(p => p.Suppliers);
+            }
+            var items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
+            return new PagedResultDto<SupplierTypeDto>(
+            totalCount,
+            items.Select(item => {
+                var data = this.ObjectMapper.Map<SupplierTypeDto>(item);
+                data.IsInCludeSupplier = item.Suppliers.Count > 0;
+                return data;
+            }).ToList());
+        }
+        /// <summary>
+        /// toggle status
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<SupplierTypeDto> ToggleStatusSupplierCatalogAsync(EntityDto<int> input)
+        {
+            var query = await _supplierTypeRepository.GetAllIncluding(p => p.Suppliers).FirstOrDefaultAsync(item=>item.Id== input.Id);
+            query.Status = query.Status == 1 ? 2 : 1;
+            query = await _supplierTypeRepository.UpdateAsync(query);
+            await CurrentUnitOfWork.SaveChangesAsync();
+            return ObjectMapper.Map<SupplierTypeDto>(query);
         }
 
         /// <summary>
@@ -172,5 +223,32 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
             await this.CurrentUnitOfWork.SaveChangesAsync();
             return this.ObjectMapper.Map<SupplierDto>(entity);
         }
+
+
+        public async Task DeleteSupplierCatalogAsync(EntityDto<int> input)
+        {
+            var query = await this._supplierTypeRepository.FirstOrDefaultAsync(item => item.Id == input.Id);
+            await this._supplierTypeRepository.DeleteAsync(query);
+        }
+
+        public async Task<SupplierTypeDto> UpdateSupplierCatalogAsync(SupplierTypeSavedDto supplierTypeSavedDto)
+        {
+            var entity = await this._supplierTypeRepository.GetAllIncluding(p => p.Suppliers).FirstOrDefaultAsync(item => item.Id == supplierTypeSavedDto.Id);
+            this.ObjectMapper.Map(supplierTypeSavedDto, entity);
+            entity = await this._supplierTypeRepository.UpdateAsync(entity);
+            await this.CurrentUnitOfWork.SaveChangesAsync();
+            return this.ObjectMapper.Map<SupplierTypeDto>(entity);
+        }
+
+
+        public async Task<SupplierTypeDto> CreateSupplierCatalogAsync(SupplierTypeSavedDto supplierTypeSavedDto)
+        {
+            var supplier = ObjectMapper.Map<SupplierType>(supplierTypeSavedDto);
+            await _supplierTypeRepository.InsertAndGetIdAsync(supplier);
+            await CurrentUnitOfWork.SaveChangesAsync();
+            return ObjectMapper.Map<SupplierTypeDto>(supplier);
+        }
+
+
     }
 }

@@ -42,9 +42,9 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<SupplierTypeDto>> GetSupplierTypes()
+        public async Task<ListResultDto<SupplierTypeDto>> GetSupplierTypes(GetMenuClientInput input)
         {
-            return await this._SupplierAppService.GetSupplierTypesAsync();
+            return await this._SupplierAppService.GetSupplierTypesAsync(input);
         }
 
         [HttpGet]
@@ -57,6 +57,12 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         public async Task<SupplierDto> GetSupplierById(EntityDto<int> input)
         {
             return await this._SupplierAppService.GetSupplierByIdAsync(input);
+        }
+
+        [HttpGet]
+        public async Task<ListResultDto<SupplierTypeDto>> GetSupplierTypesWithFilter(GetMenuClientInput input, string code, string name, int status)
+        {
+            return await this._SupplierAppService.GetSupplierTypesWithFilterAsync(input, code,name,status);
         }
 
         [HttpPost]
@@ -81,5 +87,30 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         {
             return await this._SupplierAppService.UpdateSupplierAsync(supplierSavedDto);
         }
+
+        [HttpPut]
+        public async Task<SupplierTypeDto> ToggleStatusSupplierCatalog([FromBody]  EntityDto<int> input)
+        {
+            return await this._SupplierAppService.ToggleStatusSupplierCatalogAsync(input);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task DeleteSupplierCatalog(int id)
+        {
+            await _SupplierAppService.DeleteSupplierCatalogAsync(new EntityDto<int>() { Id = id });
+        }
+
+        [HttpPost]
+        public async Task<SupplierTypeDto> CreateSupplierCatalog([FromBody]  SupplierTypeSavedDto supplierTypeSavedDto)
+        {
+            return await this._SupplierAppService.CreateSupplierCatalogAsync(supplierTypeSavedDto);
+        }
+
+        [HttpPut]
+        public async Task<SupplierTypeDto> UpdateSupplierCatalog([FromBody]  SupplierTypeSavedDto supplierTypeSavedDto)
+        {
+            return await this._SupplierAppService.UpdateSupplierCatalogAsync(supplierTypeSavedDto);
+        }
+
     }
 }

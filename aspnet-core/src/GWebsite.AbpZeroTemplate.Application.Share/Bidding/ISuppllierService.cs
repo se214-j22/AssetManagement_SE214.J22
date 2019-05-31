@@ -13,10 +13,13 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Bidding
   public interface ISupplierAppService
     {
         Task<PagedResultDto<SupplierDto>> GetSupplierByTypeAsync(GetMenuClientInput input, string SupplierType);
-        Task<IEnumerable<SupplierTypeDto>> GetSupplierTypesAsync();
-
+        Task<PagedResultDto<SupplierTypeDto>> GetSupplierTypesAsync(GetMenuClientInput input);
+        Task DeleteSupplierCatalogAsync(EntityDto<int> input);
+        Task<SupplierTypeDto> CreateSupplierCatalogAsync(SupplierTypeSavedDto supplierTypeSavedDto);
+        Task<SupplierTypeDto> UpdateSupplierCatalogAsync(SupplierTypeSavedDto supplierTypeSavedDto);
         Task<PagedResultDto<SupplierDto>> GetSupplierByProductAsync(GetMenuClientInput input, int productId);
-
+        Task<PagedResultDto<SupplierTypeDto>> GetSupplierTypesWithFilterAsync(GetMenuClientInput input, string code, string name, int status);
+        Task<SupplierTypeDto> ToggleStatusSupplierCatalogAsync(EntityDto<int> input);
         Task<PagedResultDto<SupplierDto>> GetAllBiddingPassAsync(GetMenuClientInput input);
         Task<BiddingProduct> BiddingProductAsync(BiddingSaved biddingSaved);
         Task<BiddingProduct> ChangeOwnerBiddingProductAsync(BiddingSaved biddingSaved);

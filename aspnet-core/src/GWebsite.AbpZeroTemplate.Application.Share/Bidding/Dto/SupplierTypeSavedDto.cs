@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace GWebsite.AbpZeroTemplate.Application.Share.Bidding.Dto
 {
-    public class SupplierTypeDto : Entity<int>
+    public class SupplierTypeSavedDto : Entity<int>
     {
         public string Name { get; set; }
         public string Code { get; set; }
         public string Note { get; set; }
         public int Status { get; set; }
-        public bool IsInCludeSupplier { get; set; }
     }
 }
