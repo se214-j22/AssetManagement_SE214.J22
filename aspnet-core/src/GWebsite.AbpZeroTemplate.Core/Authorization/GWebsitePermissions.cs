@@ -16,6 +16,9 @@
         public const string Pages_Administration_MenuClient_Edit = "Pages.Administration.MenuClient.Edit";
         public const string Pages_Administration_MenuClient_Delete = "Pages.Administration.MenuClient.Delete";
 
+        public const string Pages_Catalog_SupplierCatalog = "Pages.Catalog.SupplierCatalog";
+        public const string Pages_Catalog_ProductCatalog = "Pages.Catalog.ProductCatalog";
+
         public const string Pages_Administration_Purchase = "Pages.Administration.Purchase";
         public const string Pages_Administration_Purchase_Create = "Pages.Administration.Purchase.Create";
         public const string Pages_Administration_Purchase_Edit = "Pages.Administration.Purchase.Edit";
