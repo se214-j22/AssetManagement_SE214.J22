@@ -18,7 +18,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Bidding
         Task<SupplierTypeDto> CreateSupplierCatalogAsync(SupplierTypeSavedDto supplierTypeSavedDto);
         Task<SupplierTypeDto> UpdateSupplierCatalogAsync(SupplierTypeSavedDto supplierTypeSavedDto);
         Task<PagedResultDto<SupplierDto>> GetSupplierByProductAsync(GetMenuClientInput input, int productId);
-        Task<PagedResultDto<SupplierTypeDto>> GetSupplierTypesWithFilterAsync(GetMenuClientInput input, string code, string name, int status);
+        Task<PagedResultDto<FilterSupplierTypeResponeModel>> GetSupplierTypesWithFilterAsync(int prePageIndex, int pageSize, string code, string name, int status);
         Task<SupplierTypeDto> ToggleStatusSupplierCatalogAsync(EntityDto<int> input);
         Task<PagedResultDto<SupplierDto>> GetAllBiddingPassAsync(GetMenuClientInput input);
         Task<BiddingProduct> BiddingProductAsync(BiddingSaved biddingSaved);

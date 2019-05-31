@@ -177,28 +177,57 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
         /// <summary>
         /// filter
         /// </summary>
-        /// <param name="input"></param>
+        /// <param name="prePageIndex"></param>
+        /// <param name="pageSize"></param>
         /// <param name="code"></param>
         /// <param name="name"></param>
-        /// <param name="intput"></param>
+        /// <param name="status"></param>
         /// <returns></returns>
-        public async Task<PagedResultDto<SupplierTypeDto>> GetSupplierTypesWithFilterAsync(GetMenuClientInput input, string code, string name, int status)
+        public async Task<PagedResultDto<FilterSupplierTypeResponeModel>> GetSupplierTypesWithFilterAsync(
+            int prePageIndex, 
+            int pageSize,
+            string code, 
+            string name,
+            int status)
         {
-            var query = supplierTypeRepository.GetAllIncluding(p => p.Suppliers).Where(p => p.Name.Contains(name) || p.Code.Contains(code) || p.Status.Equals(status));
-            var totalCount = await query.CountAsync();
-            if (totalCount == 0)
+            var supTypes = new List<SupplierType>();
+
+            if (status == 3)
             {
-                query = supplierTypeRepository.GetAllIncluding(p => p.Suppliers);
+                supTypes = supplierTypeRepository.GetAllIncluding(p => p.Suppliers)
+                    .Where(p => p.Name.Contains(name) && p.Code.Contains(code))
+                    .ToList();
             }
-            var items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
-            return new PagedResultDto<SupplierTypeDto>(
-            totalCount,
-            items.Select(item =>
+            else // =1 || 2
             {
-                var data = this.ObjectMapper.Map<SupplierTypeDto>(item);
-                data.IsInCludeSupplier = item.Suppliers.Count > 0;
-                return data;
-            }).ToList());
+                supTypes = supplierTypeRepository.GetAllIncluding(p => p.Suppliers)
+                .Where(p => p.Name.Contains(name) && p.Code.Contains(code) && p.Status.Equals(status))
+                .ToList();
+            }
+
+            int totalRecord = supTypes.Count;
+
+            supTypes = supTypes.Skip(prePageIndex * pageSize).Take(pageSize).ToList();
+
+            var respones = new List<FilterSupplierTypeResponeModel>();
+
+            foreach(var item in supTypes)
+            {
+                //bool isIncludeSupplier = item.Suppliers?.Count > 0;
+
+                respones.Add(new FilterSupplierTypeResponeModel {
+                    Code = item.Code,
+                    Name = item.Name,
+                    Note = item.Note,
+                    Status = item.Status,
+                    IsInCludeSupplier = false
+                });
+            }
+
+            return new PagedResultDto<FilterSupplierTypeResponeModel>(
+                totalRecord,
+                respones
+            );
         }
         /// <summary>
         /// toggle status

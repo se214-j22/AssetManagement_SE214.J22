@@ -60,9 +60,23 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<ListResultDto<SupplierTypeDto>> GetSupplierTypesWithFilter(GetMenuClientInput input, string code, string name, int status)
+        public async Task<ListResultDto<FilterSupplierTypeResponeModel>> GetSupplierTypesWithFilter(
+            int? prePageIndex, 
+            int? pageSize,
+            int? status,
+            string code = "",
+            string name = "")
         {
-            return await this._SupplierAppService.GetSupplierTypesWithFilterAsync(input, code,name,status);
+            if (!pageSize.HasValue || pageSize.Value < 1)
+                pageSize = 10;
+
+            if (!prePageIndex.HasValue || prePageIndex.Value < 0)
+                prePageIndex = 0;
+
+            if (!status.HasValue || status.Value < 1 || status.Value > 3)
+                prePageIndex = 3; //select all status
+
+            return await this._SupplierAppService.GetSupplierTypesWithFilterAsync(prePageIndex.Value, pageSize.Value, code, name, status.Value);
         }
 
         [HttpPost]

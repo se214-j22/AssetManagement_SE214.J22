@@ -15,4 +15,13 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Bidding.Dto
         public int Status { get; set; }
         public bool IsInCludeSupplier { get; set; }
     }
+
+    public class FilterSupplierTypeResponeModel
+    {
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string Note { get; set; }
+        public int Status { get; set; }
+        public bool IsInCludeSupplier { get; set; }
+    }
 }
