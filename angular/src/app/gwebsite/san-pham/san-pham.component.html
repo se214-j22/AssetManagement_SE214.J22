@@ -25,10 +25,10 @@
                         <div class="row align-items-center m--margin-bottom-10">
                             <div class="col-sm-12">
                                 <div class="input-group">
-                                    <!-- <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control"
-                                        placeholder="Tìm kiếm" type="text"> -->
-                                    <!-- <input type="date" class="form-control"  [(ngModel)]="filterText"> -->
-                                    <input type="date" class="form-control"  [(ngModel)]="filterText" name="filterText" required>
+                                    <input [(ngModel)]="maSP" name="maSP" autoFocus class="form-control"
+                                        placeholder="Tìm kiếm" type="text">
+                                    
+                                    <!-- <input type="date" [value]="null" class="form-control"  [(ngModel)]="filterText" name="filterText" [required]="false"> -->
                         
                                     <span class="input-group-btn">
                                         <button (click)="applyFilters()" class="btn btn-primary" type="submit"><i

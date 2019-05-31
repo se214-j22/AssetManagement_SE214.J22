@@ -9,10 +9,9 @@ import { SanPhamForViewDto, SanPhamServiceProxy } from "@shared/service-proxies/
 })
 
 export class ViewSanPhamModalComponent extends AppComponentBase {
-
     sanPham : SanPhamForViewDto = new SanPhamForViewDto();
     @ViewChild('viewModal') modal: ModalDirective;
-
+ 
     constructor(
         injector: Injector,
         private _sanPhamService: SanPhamServiceProxy

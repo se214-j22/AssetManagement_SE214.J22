@@ -23,7 +23,7 @@ export class ScanModalComponent extends AppComponentBase {
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
     saving = false;
-
+    isNull: Boolean;
     sanPham: SanPhamInput = new SanPhamInput();
 
     constructor(
@@ -33,13 +33,18 @@ export class ScanModalComponent extends AppComponentBase {
         super(injector);
     }
     
-    showInfo(sanPhamId?: string | null | undefined): void {
+    public showInfo(sanPhamId?: string | null | undefined): void {
         this.saving = false;
 
 
         this._sanPhamService.getSanPhamForEditMaSP(sanPhamId).subscribe(result => {
             this.sanPham = result;
-            this.modal.show();
+            
+            if (this.sanPham != null)
+                {
+                    this.isNull = false;
+                    this.modal.show();
+                }
 
         })
     }
@@ -47,6 +52,11 @@ export class ScanModalComponent extends AppComponentBase {
         let input = this.sanPham;
         this.saving = true;
 
+        
+        let now = new Date();
+        
+        input.ngayCapNhat= moment(now); // moment phải có thời gian thì mới gọi .toISOString() được
+        input.ngayCapNhat.utcOffset(0, true);
         this._sanPhamService.createOrEditSanPham(input).subscribe(result => {
             this.notify.info(this.l('Scanned Successfully'));
             this.close();

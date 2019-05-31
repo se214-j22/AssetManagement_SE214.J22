@@ -2,7 +2,7 @@
     aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+            <form [hidden]="check" #editForm="ngForm" novalidate (ngSubmit)="save()">
                 <div class="modal-header">
                     <h4 class="modal-title">
                         <span *ngIf="sanPham.id">Cập nhật sản phẩm: {{sanPham.tenSP}}</span>
@@ -16,9 +16,16 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Mã sản phẩm *</label>
-                        <input #nameInput="ngModel" class="form-control" type="text" name="Name"
-                            [(ngModel)]="sanPham.maSP" required maxlength="64">
-                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                        <div class="row">
+                            <div class="col-10">
+                                <input #maSPInput="ngModel" class="form-control" type="text" name="MaSP"
+                                    [(ngModel)]="sanPham.maSP" required maxlength="64">
+                            </div>
+                            <div class="col-2">
+                                <button  (click)="generateQRModal.transmissionData(maSP);createQR();" type="button" class="btn btn-selector">{{l("Generate QR")}}</button>
+                            </div>
+                            <validation-messages [formCtrl]="maSPInput"></validation-messages>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Tên sản phẩm *</label>
@@ -56,4 +63,5 @@
             </form>
         </div>
     </div>
+    <generateQRModal #generateQRModal [hidden]="!check"></generateQRModal>
 </div>

@@ -10,6 +10,7 @@ import { SanPhamServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ScanModalComponent } from './scan-modal.component';
 import { ZXingScannerComponent } from '@zxing/ngx-scanner';
 import { Result } from '@zxing/library';
+import * as moment from 'moment/moment.js';
 
 @Component({
   templateUrl: './scanner.component.html',
@@ -31,7 +32,7 @@ export class ScannerComponent extends AppComponentBase implements AfterViewInit,
     qrResultString: string;
     qrResult: Result;
     QR_CODE:string;
-
+    
     availableDevices: MediaDeviceInfo[];
     currentDevice: MediaDeviceInfo;
     /**
@@ -39,12 +40,13 @@ export class ScannerComponent extends AppComponentBase implements AfterViewInit,
      */
     sanPhamName: string;
     maSP: string;
-    
+    filterDate: moment.Moment;
 
     constructor(
       injector: Injector,
       private _sanPhamService: SanPhamServiceProxy,
       private _activatedRoute: ActivatedRoute,
+     
     ) {
         super(injector);
     }
@@ -69,7 +71,7 @@ export class ScannerComponent extends AppComponentBase implements AfterViewInit,
           });
       
         this.scanner.camerasNotFound.subscribe(() => this.hasDevices = false);
-        this.scanner.scanComplete.subscribe((result: Result) => {this.qrResult = result; this.ScanModal.showInfo(this.qrResultString)});
+       // this.scanner.scanComplete.subscribe((result: Result) => {this.qrResult = result; this.ScanModal.showInfo(this.qrResultString)});
         this.scanner.scanComplete.subscribe((result: Result) => {this.qrResult = result});
         this.scanner.permissionResponse.subscribe((perm: boolean) => this.hasPermission = perm);
     }
@@ -99,12 +101,12 @@ export class ScannerComponent extends AppComponentBase implements AfterViewInit,
          * mặc định ban đầu lấy hết dữ liệu nên dữ liệu filter = null
          */
 
-        this.reloadList(null, event);
+        this.reloadList(this.filterDate, event);
 
     }
 
-    reloadList(sanPhamName, event?: LazyLoadEvent) {
-        this._sanPhamService.getSanPhamsByFilter(sanPhamName,null,null,null,null, this.primengTableHelper.getSorting(this.dataTable),
+    reloadList(filterText, event?: LazyLoadEvent) {
+        this._sanPhamService.getSanPhamsByFilter(null,null,null,filterText,null, this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getMaxResultCount(this.paginator, event),
             this.primengTableHelper.getSkipCount(this.paginator, event),
         ).subscribe(result => {
@@ -123,8 +125,9 @@ export class ScannerComponent extends AppComponentBase implements AfterViewInit,
     init(): void {
         //get params từ url để thực hiện filter
         this._activatedRoute.params.subscribe((params: Params) => {
-            this.sanPhamName = params['name'] || '';
-            this.reloadList(this.sanPhamName, null);
+            //this.sanPhamName = params['name'] || '';
+            this.filterDate=(moment)(new Date());
+            this.reloadList(this.filterDate, null);
         });
     }
 
@@ -132,16 +135,17 @@ export class ScannerComponent extends AppComponentBase implements AfterViewInit,
         this.paginator.changePage(this.paginator.getPage());
     }
 
+    
     applyFilters(): void {
         //truyền params lên url thông qua router
-        this.reloadList(this.sanPhamName, null);
+        this.reloadList(this.filterDate, null);
 
         if (this.paginator.getPage() !== 0) {
             this.paginator.changePage(0);
             return;
         }
+        
     }
-
     /**
      * Tạo pipe thay vì tạo từng hàm truncate như thế này
      * @param text
@@ -159,6 +163,7 @@ export class ScannerComponent extends AppComponentBase implements AfterViewInit,
       handleQrCodeResult(resultString: string) {
         console.debug('Result: ', resultString);
         this.qrResultString = resultString;
+        this.ScanModal.showInfo(this.qrResultString);
       }
     
       onDeviceSelectChange(selectedValue: string) {

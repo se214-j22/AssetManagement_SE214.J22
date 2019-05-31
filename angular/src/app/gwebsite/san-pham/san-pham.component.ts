@@ -11,8 +11,6 @@ import { CreateOrEditSanPhamModalComponent } from './create-or-edit-san-pham-mod
 import { ViewSanPhamModalComponent } from './view-san-pham-modal.component';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import * as moment from 'moment/moment.js';
-import { Pipe, PipeTransform } from '@angular/core';
-import { DatePipe } from '@angular/common';
 
 @Component({
     templateUrl: './san-pham.component.html',
@@ -28,13 +26,13 @@ export class SanPhamComponent extends AppComponentBase implements AfterViewInit,
     @ViewChild('paginator') paginator: Paginator;
     @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditSanPhamModalComponent;
     @ViewChild('viewSanPhamModal') viewSanPhamModal: ViewSanPhamModalComponent;
-
     /**
      * tạo các biến dể filters
      */
     //filterText:string;
-    filterText: moment.Moment;
+    //filterText: moment.Moment;
     maSP: string;
+    id: string;
     //ngay: Date;
   
 
@@ -103,49 +101,34 @@ export class SanPhamComponent extends AppComponentBase implements AfterViewInit,
          //get params từ url để thực hiện filter
 
         this._activatedRoute.params.subscribe((params: Params) => {
-            this.filterText=(moment)(params['filterText']);
-            this.maSP=params[''] || '';
-         this.reloadList(null,null,this.filterText,null,null,null);
+           // this.filterText=(moment)(params['filterText']);
+             this.maSP=params['maSP'] || '';
+             this.reloadList(this.maSP,null,null,null,null,null);
+           // this.reloadList(null,null,this.filterText,null,null,null);
+            
         });
     }
 
-    // onClickFind(){
-    //      this._activatedRoute.params.subscribe((params: Params) => {
-    //          this.filterText= moment(params['filterText.date']);
-    //       this.filterText=(moment)(params['filterText']);
-            
-    //    });
-    //  }
     reloadPage(): void {
         this.paginator.changePage(this.paginator.getPage());
     }
 
-    applyFiltersOfMaSP(): void {
-        //truyền params lên url thông qua router
-
-        this._router.navigate(['app/gwebsite/san-pham', {
-             filterText: this.filterText
-        }]);
-     
-
-        if (this.paginator.getPage() !== 0) {
-            this.paginator.changePage(0);
-            return;
-        }
-    }
 
     applyFilters(): void {
         //truyền params lên url thông qua router
 
-        this._router.navigate(['app/gwebsite/san-pham', {
-             filterText: this.filterText
-        }]);
+        // this._router.navigate(['app/gwebsite/san-pham', {
+        //      filterText: this.filterText
+        // }]);
      
+        // this.filterText=null;
+        this.reloadList(this.maSP,null,null,null,null,null);
 
         if (this.paginator.getPage() !== 0) {
             this.paginator.changePage(0);
             return;
         }
+    
     }
 
     //hàm show view create MenuClient

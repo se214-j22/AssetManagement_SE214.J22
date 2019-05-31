@@ -2,7 +2,9 @@ import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild } from
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective, DatePickerComponent } from 'ngx-bootstrap';
 import { SanPhamInput, SanPhamServiceProxy } from '@shared/service-proxies/service-proxies';
+
 import * as moment from 'moment/moment.js';
+import { GenerateQrComponent } from './generate-qr.component';
 
 
 @Component({
@@ -16,6 +18,7 @@ export class CreateOrEditSanPhamModalComponent extends AppComponentBase {
     @ViewChild('sanPhamCombobox') sanPhamCombobox: ElementRef;
     @ViewChild('iconCombobox') iconCombobox: ElementRef;
     @ViewChild('dateInput') dateInput: ElementRef;
+    @ViewChild('generateQRModal') generateQRModal: GenerateQrComponent;
 
 
     /**
@@ -24,6 +27,8 @@ export class CreateOrEditSanPhamModalComponent extends AppComponentBase {
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
     saving = false;
+    check=false;
+    maSP:string;
 
     sanPham: SanPhamInput = new SanPhamInput();
 
@@ -36,12 +41,12 @@ export class CreateOrEditSanPhamModalComponent extends AppComponentBase {
 
     show(sanPhamId?: number | null | undefined): void {
         this.saving = false;
-
+        
 
         this._sanPhamService.getSanPhamForEdit(sanPhamId).subscribe(result => {
             this.sanPham = result;
             this.modal.show();
-
+            this.maSP=this.sanPham.maSP;
         })
     }
 
@@ -61,7 +66,11 @@ export class CreateOrEditSanPhamModalComponent extends AppComponentBase {
         })
 
     }
-
+    createQR():void{
+         this.check=true;
+        
+    }
+    
     close(): void {
         this.modal.hide();
         this.modalSave.emit(null);

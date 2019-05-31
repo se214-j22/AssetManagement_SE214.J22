@@ -11,6 +11,7 @@ import { AutoCompleteModule, EditorModule, FileUploadModule as PrimeNgFileUpload
 import { TableModule } from 'primeng/table';
 import { GWebsiteRoutingModule } from './gwebsite-routing.module';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { NgxKjuaModule } from 'ngx-kjua';
 
 import { MenuClientComponent, CreateOrEditMenuClientModalComponent } from './index';
 import { DemoModelComponent } from './demo-model/demo-model.component';
@@ -37,6 +38,8 @@ import { SanPhamComponent } from './san-pham/san-pham.component';
 import { CreateOrEditSanPhamModalComponent } from './san-pham/create-or-edit-san-pham-modal.component';
 import { ViewSanPhamModalComponent } from './san-pham/view-san-pham-modal.component';
 import { ScannerComponent } from './scanner/scanner.component';
+import { ScanModalComponent } from './scanner/scan-modal.component';
+import { GenerateQrComponent } from './san-pham/generate-qr.component';
 
 @NgModule({
     imports: [
@@ -58,7 +61,8 @@ import { ScannerComponent } from './scanner/scanner.component';
         AutoCompleteModule,
         EditorModule,
         InputMaskModule,
-        ZXingScannerModule
+        ZXingScannerModule,
+        NgxKjuaModule,
     ],
     declarations: [
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
@@ -69,7 +73,7 @@ import { ScannerComponent } from './scanner/scanner.component';
         HoaDonNhapComponent, CreateOrEditHoaDonNhapModalComponent, ViewHoaDonNhapModalComponent,
         LoaiTaiSanComponent, CreateOrEditLoaiTaiSanModalComponent, ViewLoaiTaiSanModalComponent,
         BangYeuCauCungCapTaiSanComponent, CreateOrEditBangYeuCauCungCapTaiSanModalComponent, ViewBangYeuCauCungCapTaiSanModalComponent,
-        SanPhamComponent, CreateOrEditSanPhamModalComponent, ViewSanPhamModalComponent, ScannerComponent,
+        SanPhamComponent, CreateOrEditSanPhamModalComponent, ViewSanPhamModalComponent, ScannerComponent, ScanModalComponent, GenerateQrComponent
     ],
     providers: [
         SanPhamServiceProxy

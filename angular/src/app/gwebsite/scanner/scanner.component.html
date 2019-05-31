@@ -20,7 +20,7 @@
                 </select>
                 </header>
             
-                <zxing-scanner #scanner start="true" [device]="currentDevice" (scanSuccess)="handleQrCodeResult($event)" [formats]="QR_CODE"></zxing-scanner>
+                <zxing-scanner #scanner start="true" [device]="currentDevice" (scanSuccess)="handleQrCodeResult($event)" [formats]="['QR_CODE', 'EAN13', 'CODE_128','DATA_MATRIX']"></zxing-scanner>
             
                 <section class="results" *ngIf="qrResultString">
                     <small>Result</small>
@@ -28,10 +28,12 @@
                 </section>
             </div>
         </div>
+        <div><h5>Danh sách sản phẩm chưa cập nhật</h5></div>
         <div class="m-portlet m-portlet--mobile">
             <div class="m-portlet__body">
                 <div class="row align-items-center">
                     <!--<Primeng-TurboTable-Start>-->
+                    
                     <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
                         <p-table #dataTable (onLazyLoad)="getSanPhams($event)" [value]="primengTableHelper.records"
                             rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
@@ -44,6 +46,10 @@
                                     </th>
                                     <th pSortableColumn="tenSP">
                                         Tên sản phẩm
+                                    </th>
+                                    <th pSortableColumn="ngayCapNhat">
+                                        Ngày cập nhật
+                                        <p-sortIcon field="ngayCapNhat"></p-sortIcon>
                                     </th>
                                     <th pSortableColumn="trangThai">
                                         Trạng thái
@@ -59,6 +65,10 @@
                                     <td>
                                         <span class="ui-column-title">Tên sản phẩm</span>
                                         <span title="{{record.tenSP}}">{{truncateString(record.tenSP)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Ngày cập nhật</span>
+                                        <span title="{{record.ngayCapNhat.format('DD/MM/YYYY')}}">{{truncateString(record.ngayCapNhat.format('DD/MM/YYYY'))}}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">Trạng thái</span>
@@ -87,5 +97,5 @@
             </div>
         </div>
     </div>
-
+    <ScanModal #ScanModal (modalSave)="reloadPage()"></ScanModal>
 </div>

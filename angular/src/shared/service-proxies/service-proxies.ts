@@ -13645,6 +13645,7 @@ export class CustomerForViewDto implements ICustomerForViewDto {
     name!: string | undefined;
     address!: string | undefined;
     info!: string | undefined;
+    id: number | undefined;
 
     constructor(data?: ICustomerForViewDto) {
         if (data) {
@@ -19937,6 +19938,7 @@ export class SanPhamForViewDto implements ISanPhamForViewDto {
     ngayTao!: moment.Moment | undefined;
     ngayCapNhat!: moment.Moment | undefined;
     trangThai!: string | undefined;
+    id: number | undefined;
 
     constructor(data?: ISanPhamForViewDto) {
         if (data) {

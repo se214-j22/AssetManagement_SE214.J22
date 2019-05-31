@@ -22,7 +22,7 @@ export class CreateOrEditCustomerModalComponent extends AppComponentBase {
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
     infoInput : string;
     saving = false;
-    
+
     customer: CustomerInput = new CustomerInput();
 
     constructor(

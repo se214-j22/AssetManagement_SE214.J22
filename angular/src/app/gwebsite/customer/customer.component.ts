@@ -28,7 +28,7 @@ export class CustomerComponent extends AppComponentBase implements AfterViewInit
      * tạo các biến dể filters
      */
     customerName: string;
-
+    id: string;
     constructor(
         injector: Injector,
         private _customerService: CustomerServiceProxy,
