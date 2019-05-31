@@ -60,7 +60,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.SanPhams
 
         public SanPhamInput GetSanPhamForEditMaSP(string maSP)
         {
-            var sanPhamEntity = sanPhamRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.MaSP == maSP);
+            var sanPhamEntity = sanPhamRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => ("https://"+x.MaSP+".com") == maSP);
             if (sanPhamEntity == null)
             {
                 return null;
@@ -105,7 +105,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.SanPhams
 
             if (input.NgayCapNhat != null)
             {
-                query = query.Where(x => (x.NgayCapNhat.Year == input.NgayCapNhat.Value.Year
+                query = query.Where(x => !(x.NgayCapNhat.Year == input.NgayCapNhat.Value.Year
                                  && x.NgayCapNhat.Month == input.NgayCapNhat.Value.Month
                                 && x.NgayCapNhat.Day == input.NgayCapNhat.Value.Day));
             }
