@@ -213,14 +213,14 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
 
             foreach(var item in supTypes)
             {
-                //bool isIncludeSupplier = item.Suppliers?.Count > 0;
+                bool isIncludeSupplier = item.Suppliers?.Count > 0;
 
                 respones.Add(new FilterSupplierTypeResponeModel {
                     Code = item.Code,
                     Name = item.Name,
                     Note = item.Note,
                     Status = item.Status,
-                    IsInCludeSupplier = false
+                    IsInCludeSupplier = isIncludeSupplier
                 });
             }
 

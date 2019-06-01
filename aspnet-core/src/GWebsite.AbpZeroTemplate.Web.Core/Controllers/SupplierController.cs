@@ -74,7 +74,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
                 prePageIndex = 0;
 
             if (!status.HasValue || status.Value < 1 || status.Value > 3)
-                prePageIndex = 3; //select all status
+                status = 3; //select all status
 
             return await this._SupplierAppService.GetSupplierTypesWithFilterAsync(prePageIndex.Value, pageSize.Value, code, name, status.Value);
         }
