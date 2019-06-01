@@ -21,31 +21,31 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         [HttpGet]
         public async Task<ListResultDto<ProductTypeDto>> GetProductTypes(ProductTypeListInputDto input)
         {
-            return await this.productTypeAppService.GetProductTypesAsync(input);
+            return await this.productTypeAppService.GetProductTypesWithFilterAsync(input);
         }
 
         [HttpPost("status/{id}")]
-        public async Task<ProductTypeDto> SetStatusProductTypeAsync(int id)
+        public async Task<ProductTypeDto> ToggleStatusProductCatalogAsync(int id)
         {
-            return await this.productTypeAppService.SetStatusProductTypeAsync(id);
+            return await this.productTypeAppService.ToggleStatusProductCatalogAsync(id);
         }
 
         [HttpPost]
-        public async Task<ProductTypeDto> CreateProductTypeDto(ProductTypeDto dto)
+        public async Task<ProductTypeDto> CreateProductCatalogAsync(ProductTypeSavedDto dto)
         {
-            return await this.productTypeAppService.CreateProductTypeAsync(dto);
+            return await this.productTypeAppService.CreateProductCatalogAsync(dto);
         }
 
         [HttpDelete("{id}")]
-        public async Task DeleteProductTypeAsync(int id)
+        public async Task DeleteProductCatalogAsync(int id)
         {
-            await this.productTypeAppService.DeleteProductTypeAsync(id);
+            await this.productTypeAppService.DeleteProductCatalogAsync(id);
         }
 
         [HttpPost("edit")]
-        public async Task<ProductTypeDto> EditNameProductTypeAsync(ProductTypeDto dto)
+        public async Task<ProductTypeDto> UpdateProductCatalogAsync(ProductTypeSavedDto dto)
         {
-            return await this.productTypeAppService.EditNameProductTypeAsync(dto.Id, dto.Name, dto.Note);
+            return await this.productTypeAppService.UpdateProductCatalogAsync(dto);
         }
     }
 }

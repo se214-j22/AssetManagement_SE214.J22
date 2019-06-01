@@ -84,8 +84,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.SupplierCategory
             {
                 current.Status = 1;
             }
-
-            if (current.Status == 1)
+            else if (current.Status == 1)
             {
                 current.Status = 2;
             }

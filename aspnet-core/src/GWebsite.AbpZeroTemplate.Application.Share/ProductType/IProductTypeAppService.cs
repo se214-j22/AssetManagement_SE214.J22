@@ -8,14 +8,14 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.ProductType
 {
     public interface IProductTypeAppService
     {
-        Task<PagedResultDto<ProductTypeDto>> GetProductTypesAsync(ProductTypeListInputDto input);
+        Task<PagedResultDto<ProductTypeDto>> GetProductTypesWithFilterAsync(ProductTypeListInputDto input);
 
-        Task<ProductTypeDto> SetStatusProductTypeAsync(int id);
+        Task<ProductTypeDto> ToggleStatusProductCatalogAsync(int id);
 
-        Task<ProductTypeDto> CreateProductTypeAsync(ProductTypeDto dto);
+        Task<ProductTypeDto> CreateProductCatalogAsync(ProductTypeSavedDto productTypeSavedDto);
 
-        Task DeleteProductTypeAsync(int id);
+        Task DeleteProductCatalogAsync(int id);
 
-        Task<ProductTypeDto> EditNameProductTypeAsync(int id, string name, string note);
+        Task<ProductTypeDto> UpdateProductCatalogAsync(ProductTypeSavedDto supplierTypeSavedDto);
     }
 }

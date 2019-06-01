@@ -31,6 +31,10 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
         public virtual DbSet<Purchase> Purchases { get; set; }
         public virtual DbSet<PurchaseProduct> PurchaseProducts { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
+        public virtual DbSet<Guarantee> Guarantees { get; set; }
+        public virtual DbSet<GaranteeContract> GaranteeContracts { get; set; }
+        public virtual DbSet<Contract> Contracts { get; set; }
+        
         /// <summary>
         /// GPermissions dùng cho bên Gwebsite
         /// </summary>
@@ -342,6 +346,25 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
                 .OnDelete(DeleteBehavior.Cascade);
 
             });
+
+            modelBuilder.Entity<SupplierType>(entity =>
+            {
+                entity
+               .HasMany(p => p.Suppliers)
+                .WithOne(i => i.SupplierType)
+                .HasForeignKey(i => i.SupplierTypeId)
+                .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<ProductType>(entity =>
+            {
+                entity
+               .HasMany(p => p.Products)
+                .WithOne(i => i.ProductType)
+                .HasForeignKey(i => i.ProductTypeId)
+                .OnDelete(DeleteBehavior.Cascade);
+            });
+
             modelBuilder.Entity<PurchaseProduct>(entity =>
             {
                 entity

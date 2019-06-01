@@ -1,9 +1,11 @@
 using AutoMapper;
 using GWebsite.AbpZeroTemplate.Application.Share.Bidding.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.Contract.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.DemoModels.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Product.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Products.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.ProductType.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Purchases.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using System.Collections.ObjectModel;
@@ -20,18 +22,23 @@ namespace GWebsite.AbpZeroTemplate.Applications
             //.ForMember(dto => dto.Name, opt => opt.MapFrom(model => model.ProductType.Name));
             configuration.CreateMap<ProductType, ProductTypeDto>()
                          .ForMember(dto => dto.Id, opt => opt.MapFrom(model => model.Id));
+            configuration.CreateMap<ProductTypeSavedDto, ProductType>()
+                         .ForMember(dto=>dto.Products,opt=>opt.Ignore());
             configuration.CreateMap<Purchase, PurchaseDto>();
             configuration.CreateMap<Bidding, BiddingProduct>();
             configuration.CreateMap<Supplier, SupplierDto>();
             configuration.CreateMap<SupplierSavedDto, SupplierDto>();
             configuration.CreateMap<SupplierType, SupplierTypeDto>()
                          .ForMember(dto => dto.Id, opt => opt.MapFrom(model => model.Id));
+            configuration.CreateMap<SupplierTypeDto, SupplierType>()
+                         .ForMember(dto => dto.Suppliers, opt => opt.Ignore());
 
             configuration.CreateMap<PurchaseDto, Purchase>();
             configuration.CreateMap<MenuClient, MenuClientListDto>();
             configuration.CreateMap<CreateMenuClientInput, MenuClient>();
             configuration.CreateMap<UpdateMenuClientInput, MenuClient>();
-
+            configuration.CreateMap<ContractDto, Contract>();
+            configuration.CreateMap<Contract, ContractDto>();
             // DemoModel
             configuration.CreateMap<DemoModel, DemoModelDto>();
             configuration.CreateMap<DemoModelInput, DemoModel>();
@@ -39,8 +46,9 @@ namespace GWebsite.AbpZeroTemplate.Applications
 
 
             // revert mapper 
-
+            configuration.CreateMap<SupplierTypeSavedDto, SupplierType>();
             configuration.CreateMap<BiddingSaved, Bidding>();
+            configuration.CreateMap<ContractSaved, Contract>();
             configuration.CreateMap<PurchaseSave, Purchase>()
                 .ForMember(p => p.PurchaseProducts, opt => opt.Ignore())
                 .AfterMap((pr, p) =>

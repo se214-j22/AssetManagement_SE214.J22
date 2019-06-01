@@ -24,6 +24,11 @@
         public const string Pages_Administration_Purchase_Edit = "Pages.Administration.Purchase.Edit";
         public const string Pages_Administration_Purchase_Delete = "Pages.Administration.Purchase.Delete";
 
+        public const string Pages_Administration_SupplierCatalog = "Pages.Administration.SupplierCatalog";
+        public const string Pages_Administration_SupplierCatalog_Create = "Pages.Administration.SupplierCatalog.Create";
+        public const string Pages_Administration_SupplierCatalog_Edit = "Pages.Administration.SupplierCatalog.Edit";
+        public const string Pages_Administration_SupplierCatalog_Delete = "Pages.Administration.SupplierCatalog.Delete";
+
         public const string Pages_Administration_OrderPackage = "Pages.Administration.OrderPackage";
         public const string Pages_Administration_OrderPackage_Create = "Pages.Administration.OrderPackage.Create";
         public const string Pages_Administration_OrderPackage_Edit = "Pages.Administration.OrderPackage.Edit";

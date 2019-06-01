@@ -27,93 +27,56 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.ProductCategory
             this.productTypeRepository = productTypeRepository;
         }
 
-        public async Task<PagedResultDto<ProductTypeDto>> GetProductTypesAsync(ProductTypeListInputDto input)
+        public async Task<PagedResultDto<ProductTypeDto>> GetProductTypesWithFilterAsync(ProductTypeListInputDto input)
         {
-            IQueryable<ProductType> query = this.productTypeRepository
-                .GetAll()
-                .Where(predicate: st => input.Status == 3 || (input.Status == st.Status));
-
-            if (!string.IsNullOrEmpty(input.Name))
-            {
-                query.Where(st => st.Name.Contains(input.Name)).OrderBy(st => st.Name);
-            }
-
-            if (!string.IsNullOrEmpty(input.Code))
-            {
-                query.Where(st => st.Code.Contains(input.Code)).OrderBy(st => st.Code);
-            }
-
+            IQueryable<ProductType> query = productTypeRepository.GetAllIncluding(p => p.Products).Where(p => p.Name.Contains(input.Name) || p.Code.Contains(input.Code) || p.Status.Equals(input.Status));
             int totalCount = await query.CountAsync();
-            List<ProductType> items = await query.PageBy(input.CountSkip, input.PageSize).ToListAsync();
+            if (totalCount == 0)
+            {
+                query = productTypeRepository.GetAllIncluding(p => p.Products);
+            }
+            List<ProductType> items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
             return new PagedResultDto<ProductTypeDto>(
-             totalCount,
-             items.Select(model => this.ObjectMapper.Map<ProductTypeDto>(model)).ToList());
+            totalCount,
+            items.Select(item =>
+            {
+                ProductTypeDto data = this.ObjectMapper.Map<ProductTypeDto>(item);
+                data.IsInCludeSupplier = item.Products.Count > 0;
+                return data;
+            }).ToList());
         }
 
-        public async Task<ProductTypeDto> EditNameProductTypeAsync(int id, string name, string note)
+        public async Task<ProductTypeDto> ToggleStatusProductCatalogAsync(int id)
         {
-            ProductType current = await this.productTypeRepository
-                .GetAll()
-                .FirstOrDefaultAsync(x => x.Id == id);
+            ProductType query = await productTypeRepository.GetAllIncluding(p => p.Products).FirstOrDefaultAsync(item => item.Id == id);
+            query.Status = query.Status == 1 ? 2 : 1;
+            query = await productTypeRepository.UpdateAsync(query);
+            await CurrentUnitOfWork.SaveChangesAsync();
+            return ObjectMapper.Map<ProductTypeDto>(query);
+        }
 
-            if (current == null)
-            {
-                return null;
-            }
+        public async Task DeleteProductCatalogAsync(int id)
+        {
+            ProductType query = await this.productTypeRepository.FirstOrDefaultAsync(item => item.Id == id);
+            await this.productTypeRepository.DeleteAsync(query);
+        }
 
-            current.Name = name;
-            current.Note = note;
-
-            current = await this.productTypeRepository.UpdateAsync(current);
+        public async Task<ProductTypeDto> UpdateProductCatalogAsync(ProductTypeSavedDto productTypeSavedDto)
+        {
+            ProductType entity = await this.productTypeRepository.GetAllIncluding(p => p.Products).FirstOrDefaultAsync(item => item.Id == productTypeSavedDto.Id);
+            this.ObjectMapper.Map(productTypeSavedDto, entity);
+            entity = await this.productTypeRepository.UpdateAsync(entity);
             await this.CurrentUnitOfWork.SaveChangesAsync();
-            return this.ObjectMapper.Map<ProductTypeDto>(current);
+            return this.ObjectMapper.Map<ProductTypeDto>(entity);
         }
 
-        public async Task<ProductTypeDto> SetStatusProductTypeAsync(int id)
+
+        public async Task<ProductTypeDto> CreateProductCatalogAsync(ProductTypeSavedDto productTypeSavedDto)
         {
-            ProductType current = await this.productTypeRepository
-                .GetAll()
-                .FirstOrDefaultAsync(x => x.Id == id);
-
-            if (current == null)
-            {
-                return null;
-            }
-
-            if (current.Status == 2)
-            {
-                current.Status = 1;
-            }
-
-            if (current.Status == 1)
-            {
-                current.Status = 2;
-            }
-
-            current = await this.productTypeRepository.UpdateAsync(current);
-            await this.CurrentUnitOfWork.SaveChangesAsync();
-            return this.ObjectMapper.Map<ProductTypeDto>(current);
-        }
-
-        public async Task DeleteProductTypeAsync(int id)
-        {
-            await this.productTypeRepository.DeleteAsync(id);
-        }
-
-        public async Task<ProductTypeDto> CreateProductTypeAsync(ProductTypeDto dto)
-        {
-            ProductType current = await this.productTypeRepository
-                   .GetAll()
-                   .FirstOrDefaultAsync(x => x.Code == dto.Code);
-
-            if (current != null)
-            {
-                return null;
-            }
-            current = this.ObjectMapper.Map<ProductType>(dto);
-            current = await this.productTypeRepository.InsertAsync(current);
-            await this.CurrentUnitOfWork.SaveChangesAsync();
-            return this.ObjectMapper.Map<ProductTypeDto>(current);
+            ProductType productType = ObjectMapper.Map<ProductType>(productTypeSavedDto);
+            await productTypeRepository.InsertAndGetIdAsync(productType);
+            await CurrentUnitOfWork.SaveChangesAsync();
+            return ObjectMapper.Map<ProductTypeDto>(productType);
         }
     }
 }
