@@ -69,6 +69,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         {
             if (!pageSize.HasValue || pageSize.Value < 1)
                 pageSize = 10;
+           
 
             if (!prePageIndex.HasValue || prePageIndex.Value < 0)
                 prePageIndex = 0;
