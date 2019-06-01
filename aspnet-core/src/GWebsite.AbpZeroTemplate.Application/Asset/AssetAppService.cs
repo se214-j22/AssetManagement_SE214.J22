@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.Authorization;
+using Abp.Authorization.Users;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using GWebsite.AbpZeroTemplate.Application;
@@ -20,11 +21,17 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
     {
         private readonly IRepository<Asset> assetRepository;
         private readonly IRepository<AssetLine> assetLineRepository;
+        private readonly IRepository<AssetOrganizationUnit> assetOrganizationUnitRepository;
+        private readonly IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository;
 
-        public AssetAppService(IRepository<Asset> assetRepository, IRepository<AssetLine> assetLineRepository)
+        public AssetAppService(IRepository<Asset> assetRepository, IRepository<AssetLine> assetLineRepository,
+            IRepository<AssetOrganizationUnit> assetOrganizationUnitRepository,
+            IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository)
         {
             this.assetRepository = assetRepository;
             this.assetLineRepository = assetLineRepository;
+            this.assetOrganizationUnitRepository = assetOrganizationUnitRepository;
+            this.userOrganizationUnitRepository = userOrganizationUnitRepository;
         }
 
         public async Task<AssetDto> GetAsyncForView(int id)
@@ -89,11 +96,19 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
             if (assetLineEntity == null)
                 throw new ArgumentException("AssetLine is not existed!");
             Random random = new Random();
-            var randomNumber = random.Next(0, 999999);
+            var randomNumber = random.Next(0, 999999).ToString("D6");
             //todo:check existed 
             assetEntity.Code = string.Concat(assetLineEntity.AssetType.Code, assetLineEntity.Manufacturer.Code, assetLineEntity.Code, randomNumber);
             SetAuditInsert(assetEntity);
             await assetRepository.InsertAsync(assetEntity);
+
+            var user = GetCurrentUser();
+            var organizationUnitId = userOrganizationUnitRepository.FirstOrDefault(uo => uo.UserId == user.Id)?.OrganizationUnitId;
+            if (organizationUnitId != null)
+            {
+                var assetOrganizationUnit = new AssetOrganizationUnit() { AssetId = assetEntity.Id, OrganizationUnitId = (long)organizationUnitId };
+                await this.assetOrganizationUnitRepository.InsertAsync(assetOrganizationUnit);
+            }
             await CurrentUnitOfWork.SaveChangesAsync();
         }
 

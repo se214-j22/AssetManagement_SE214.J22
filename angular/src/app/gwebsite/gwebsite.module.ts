@@ -1,6 +1,7 @@
-import { CustomerServiceProxy } from './../../shared/service-proxies/service-proxies';
+import { CustomerServiceProxy, AssetServiceProxy } from './../../shared/service-proxies/service-proxies';
 import { ViewDemoModelModalComponent } from './demo-model/view-demo-model-modal.component';
 import { NgModule } from '@angular/core';
+import { QRCodeModule } from 'angular2-qrcode';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppCommonModule } from '@app/shared/common/app-common.module';
@@ -18,6 +19,8 @@ import { DemoModelServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CustomerComponent } from './customer/customer.component';
 import { ViewCustomerModalComponent } from './customer/view-customer-modal.component';
 import { CreateOrEditCustomerModalComponent } from './customer/create-or-edit-customer-modal.component';
+import { AssetComponent } from './asset/asset.component';
+import { ViewAssetModalComponent } from './asset/view-asset-modal.component';
 
 @NgModule({
     imports: [
@@ -36,16 +39,20 @@ import { CreateOrEditCustomerModalComponent } from './customer/create-or-edit-cu
         PrimeNgFileUploadModule,
         AutoCompleteModule,
         EditorModule,
-        InputMaskModule
+        InputMaskModule,
+        QRCodeModule
     ],
     declarations: [
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
         DemoModelComponent, CreateOrEditDemoModelModalComponent, ViewDemoModelModalComponent,
         CustomerComponent, CreateOrEditCustomerModalComponent, ViewCustomerModalComponent,
+        AssetComponent,
+        ViewAssetModalComponent
     ],
     providers: [
         DemoModelServiceProxy,
-        CustomerServiceProxy
+        CustomerServiceProxy,
+        AssetServiceProxy
     ]
 })
 export class GWebsiteModule { }

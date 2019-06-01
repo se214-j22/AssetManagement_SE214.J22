@@ -42,7 +42,7 @@ export class DashboardComponent extends AppComponentBase implements OnInit, Afte
         };
         this.miniChartData[1] = {
             link: 'https://www.techjockey.com/asset-management/asset/list',
-            color: 'aquamarine', title: 'Owned Assets', count: this.warehouseStatus.parentNumber
+            color: 'aquamarine', title: 'Resting Assets', count: this.warehouseStatus.parentNumber
         };
         this.miniChartData[2] = {
             link: 'https://www.techjockey.com/asset-management/asset/list',
@@ -50,7 +50,7 @@ export class DashboardComponent extends AppComponentBase implements OnInit, Afte
         };
         this.miniChartData[3] =  {
             link: 'https://www.techjockey.com/asset-management/asset/list',
-            color: 'violet', title: 'Children Assets', count: this.warehouseStatus.childrenNumber
+            color: 'violet', title: 'Using Assets', count: this.warehouseStatus.childrenNumber
         };
     }
     ngOnInit() {
@@ -67,32 +67,32 @@ export class DashboardComponent extends AppComponentBase implements OnInit, Afte
         //     color: 'orange', title: 'Assets', count: 1
         // }));
         this.setWarehouseData();
-        this.miniChartData.push(
-            {
-                link: 'https://www.techjockey.com/asset-management/asset/list',
-                color: 'orange', title: 'Assets', count: 9
-            }, {
-                link: 'https://www.techjockey.com/asset-management/asset/list',
-                color: 'aquamarine', title: 'Employee', count: 5
-            }, {
-                link: 'https://www.techjockey.com/asset-management/asset/list',
-                color: 'crimson', title: 'Location', count: 2
-            }, {
-                link: 'https://www.techjockey.com/asset-management/asset/list',
-                color: 'violet', title: 'Products', count: 6
-            }, {
-                link: 'https://www.techjockey.com/asset-management/asset/list',
-                color: 'greenyellow', title: 'Vendors', count: 3
-            }, {
-                link: 'https://www.techjockey.com/asset-management/asset/list',
-                color: 'violet', title: 'Unassigned Assets', count: 7
-            }, {
-                link: 'https://www.techjockey.com/asset-management/asset/list',
-                color: 'coral', title: 'Assigned Assets', count: 4
-            }, {
-                link: 'https://www.techjockey.com/asset-management/asset/list',
-                color: 'mediumpurple', title: 'Total Asset Cost', count: 8
-            });
+        // this.miniChartData.push(
+        //     {
+        //         link: 'https://www.techjockey.com/asset-management/asset/list',
+        //         color: 'orange', title: 'Assets', count: 9
+        //     }, {
+        //         link: 'https://www.techjockey.com/asset-management/asset/list',
+        //         color: 'aquamarine', title: 'Employee', count: 5
+        //     }, {
+        //         link: 'https://www.techjockey.com/asset-management/asset/list',
+        //         color: 'crimson', title: 'Location', count: 2
+        //     }, {
+        //         link: 'https://www.techjockey.com/asset-management/asset/list',
+        //         color: 'violet', title: 'Products', count: 6
+        //     }, {
+        //         link: 'https://www.techjockey.com/asset-management/asset/list',
+        //         color: 'greenyellow', title: 'Vendors', count: 3
+        //     }, {
+        //         link: 'https://www.techjockey.com/asset-management/asset/list',
+        //         color: 'violet', title: 'Unassigned Assets', count: 7
+        //     }, {
+        //         link: 'https://www.techjockey.com/asset-management/asset/list',
+        //         color: 'coral', title: 'Assigned Assets', count: 4
+        //     }, {
+        //         link: 'https://www.techjockey.com/asset-management/asset/list',
+        //         color: 'mediumpurple', title: 'Total Asset Cost', count: 8
+        //     });
         this.recentActivity = [
             {
                 nameActivity: 'Products',

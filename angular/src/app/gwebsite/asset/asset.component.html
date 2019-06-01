@@ -1,0 +1,19 @@
+<button (click)='choose()'>Choose the way to detect(id/camera)</button>
+<div *ngIf='chooseBy == "id"'>
+    Detecting by Id
+    Asset Id: <input type="number" name="assetId" [(ngModel)]="assetId"><br>
+    <button (click)='getAssetByID()'>View Asset</button>
+</div>
+
+<div id = 'detectingByCamera' #detectingByCamera style='display:none'>
+    Detecting by camera
+    <div class="camera">
+        <video id="video" #video width="width" height="height" (canplay)="onCanPlay($event)">
+            Video stream not available.
+        </video>
+    </div>
+
+    <canvas id="canvas" #canvas width="width" height="height" style="display: none">
+    </canvas>
+</div>
+<app-view-asset-modal [asset]='asset'></app-view-asset-modal>

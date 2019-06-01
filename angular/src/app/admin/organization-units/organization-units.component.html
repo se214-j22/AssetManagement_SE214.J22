@@ -22,11 +22,11 @@
                     (memberRemoved)="ouTree.memberRemoved($event)"></organization-unit-members>
             </div>
             <div class="col-lg-6">
-                <label>Product</label>
-                List ProductId: <input type="text" name="ProductIds" value="10,11" [(ngModel)]="productIds"><br>
-                OrganizationUnitId: <input type="number" name="OrganizationUnitId" value="7"
+                <label>Asset</label>
+                List AssetId: <input type="text" name="AssetIds" placeholder="1,2,3" [(ngModel)]="assetIds"><br>
+                OrganizationUnitId: <input type="number" name="OrganizationUnitId" placeholder="1"
                     [(ngModel)]="organizationUnitId"><br>
-                <button type="button" (click)="placeProductsToOrganizationUnit()"> Place products to organization unit
+                <button type="button" (click)="placeAssetsToOrganizationUnit()"> Place assets to organization unit
                 </button>
             </div>
         </div>
