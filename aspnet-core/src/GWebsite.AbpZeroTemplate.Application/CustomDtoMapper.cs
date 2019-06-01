@@ -17,8 +17,9 @@ namespace GWebsite.AbpZeroTemplate.Applications
         {
             configuration.CreateMap<MenuClient, MenuClientDto>();
             configuration.CreateMap<Product, ProductDto>();
-                         //.ForMember(dto => dto.Name, opt => opt.MapFrom(model => model.ProductType.Name));
-            configuration.CreateMap<ProductType, ProductTypeDto>();
+            //.ForMember(dto => dto.Name, opt => opt.MapFrom(model => model.ProductType.Name));
+            configuration.CreateMap<ProductType, ProductTypeDto>()
+                         .ForMember(dto => dto.Id, opt => opt.MapFrom(model => model.Id));
             configuration.CreateMap<Purchase, PurchaseDto>();
             configuration.CreateMap<Bidding, BiddingProduct>();
             configuration.CreateMap<Supplier, SupplierDto>();
