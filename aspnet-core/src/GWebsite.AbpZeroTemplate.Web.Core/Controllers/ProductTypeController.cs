@@ -4,11 +4,12 @@ using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
 using Microsoft.AspNetCore.Mvc;
 using GWebsite.AbpZeroTemplate.Application.Share.ProductType;
 using GWebsite.AbpZeroTemplate.Application.Share.Product.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.ProductType.Dto;
 
 namespace GWebsite.AbpZeroTemplate.Application.Controllers
 {
     [Route("api/[controller]/[action]")]
-    class ProductTypeController : GWebsiteControllerBase
+    public class ProductTypeController : GWebsiteControllerBase
     {
         private readonly IProductTypeAppService productTypeAppService;
 
@@ -18,9 +19,33 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<ListResultDto<ProductTypeDto>> GetProductTypes(GetMenuClientInput input)
+        public async Task<ListResultDto<ProductTypeDto>> GetProductTypes(ProductTypeListInputDto input)
         {
-            return await this.productTypeAppService.GetProductTypesAsync(input);
+            return await this.productTypeAppService.GetProductTypesWithFilterAsync(input);
+        }
+
+        [HttpPost("status/{id}")]
+        public async Task<ProductTypeDto> ToggleStatusProductCatalogAsync(int id)
+        {
+            return await this.productTypeAppService.ToggleStatusProductCatalogAsync(id);
+        }
+
+        [HttpPost]
+        public async Task<ProductTypeDto> CreateProductCatalogAsync(ProductTypeSavedDto dto)
+        {
+            return await this.productTypeAppService.CreateProductCatalogAsync(dto);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task DeleteProductCatalogAsync(int id)
+        {
+            await this.productTypeAppService.DeleteProductCatalogAsync(id);
+        }
+
+        [HttpPost("edit")]
+        public async Task<ProductTypeDto> UpdateProductCatalogAsync(ProductTypeSavedDto dto)
+        {
+            return await this.productTypeAppService.UpdateProductCatalogAsync(dto);
         }
     }
 }

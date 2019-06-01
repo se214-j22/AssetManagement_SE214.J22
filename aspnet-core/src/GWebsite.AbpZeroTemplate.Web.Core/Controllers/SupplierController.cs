@@ -32,7 +32,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSupplierTypeByProduct(GetMenuClientInput input, string supplierType = null)
+        public async Task<IActionResult> GetSupplierByProductType(GetMenuClientInput input, string supplierType = null)
         {
             if (string.IsNullOrEmpty(supplierType))
             {
@@ -41,11 +41,11 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
             return this.Ok(await this._SupplierAppService.GetSupplierByTypeAsync(input, supplierType));
         }
 
-        [HttpGet]
-        public async Task<ListResultDto<SupplierTypeDto>> GetSupplierTypes(GetMenuClientInput input)
-        {
-            return await this._SupplierAppService.GetSupplierTypesAsync(input);
-        }
+        //[HttpGet]
+        //public async Task<IEnumerable<SupplierTypeDto>> GetSupplierTypes()
+        //{
+        //    return await this._SupplierAppService.GetSupplierTypesAsync();
+        //}
 
         [HttpGet]
         public async Task<ListResultDto<SupplierDto>> GetAllBiddingPass(GetMenuClientInput input)

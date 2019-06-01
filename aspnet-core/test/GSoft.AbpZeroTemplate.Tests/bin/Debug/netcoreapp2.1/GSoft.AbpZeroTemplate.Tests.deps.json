@@ -3592,14 +3592,14 @@
     "Microsoft.Data.Sqlite/2.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-eXVnRIBYQd1ZPlCvqJukQqwcPd6eUDJInZ4fT1D7IJslrIcevW4nWaI+k6Yt/oww4woK0Dqb9G3rey2uX/aXmQ==",
+      "sha512": "sha512-8o+c+h4q0RpPZm5dwFe7q5GLgZrqIvYc8AWjRfIhPFVZIqw1b75mu+TDOk4AFhhMKRN1v8YgajxkIf3e73BfjA==",
       "path": "microsoft.data.sqlite/2.1.0",
       "hashPath": "microsoft.data.sqlite.2.1.0.nupkg.sha512"
     },
     "Microsoft.Data.Sqlite.Core/2.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-VJ0kOuf3wp9xyarhBla0JJlwdxz28g09rI4NP8ly8I8/ZhrOZZLtlYvjiMZAPNm0+45+dZ+VXUiO7n4IrP52Zw==",
+      "sha512": "sha512-lsdb0TeHY10QcIJtOtzsFHCnbEwWXA2n38b/adUKz0tULwO0luQv5GoWw2yT5WQqxehEGhIKCv21DbzXZTWZZA==",
       "path": "microsoft.data.sqlite.core/2.1.0",
       "hashPath": "microsoft.data.sqlite.core.2.1.0.nupkg.sha512"
     },
@@ -4012,7 +4012,7 @@
     "runtime.native.System.Data.SqlClient.sni/4.4.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-A8v6PGmk+UGbfWo5Ixup0lPM4swuSwOiayJExZwKIOjTlFFQIsu3QnDXECosBEyrWSPryxBVrdqtJyhK3BaupQ==",
+      "sha512": "sha512-Xu7AUFtXuxEspQPI5nKCDEiEcbRmE5FTIO0qE1r0qA9v1OoawQZnbWmsnrdYaO8vlSixXMedPv1U6916STjPnQ==",
       "path": "runtime.native.system.data.sqlclient.sni/4.4.0",
       "hashPath": "runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512"
     },

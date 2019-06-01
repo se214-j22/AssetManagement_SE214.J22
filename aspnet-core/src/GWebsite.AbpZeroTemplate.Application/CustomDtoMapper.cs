@@ -5,6 +5,7 @@ using GWebsite.AbpZeroTemplate.Application.Share.DemoModels.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Product.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Products.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.ProductType.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Purchases.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using System.Collections.ObjectModel;
@@ -18,14 +19,19 @@ namespace GWebsite.AbpZeroTemplate.Applications
         {
             configuration.CreateMap<MenuClient, MenuClientDto>();
             configuration.CreateMap<Product, ProductDto>();
-                         //.ForMember(dto => dto.Name, opt => opt.MapFrom(model => model.ProductType.Name));
-            configuration.CreateMap<ProductType, ProductTypeDto>();
+            //.ForMember(dto => dto.Name, opt => opt.MapFrom(model => model.ProductType.Name));
+            configuration.CreateMap<ProductType, ProductTypeDto>()
+                         .ForMember(dto => dto.Id, opt => opt.MapFrom(model => model.Id));
+            configuration.CreateMap<ProductTypeSavedDto, ProductType>()
+                         .ForMember(dto=>dto.Products,opt=>opt.Ignore());
             configuration.CreateMap<Purchase, PurchaseDto>();
             configuration.CreateMap<Bidding, BiddingProduct>();
             configuration.CreateMap<Supplier, SupplierDto>();
             configuration.CreateMap<SupplierSavedDto, SupplierDto>();
             configuration.CreateMap<SupplierType, SupplierTypeDto>()
                          .ForMember(dto => dto.Id, opt => opt.MapFrom(model => model.Id));
+            configuration.CreateMap<SupplierTypeDto, SupplierType>()
+                         .ForMember(dto => dto.Suppliers, opt => opt.Ignore());
 
             configuration.CreateMap<PurchaseDto, Purchase>();
             configuration.CreateMap<MenuClient, MenuClientListDto>();
