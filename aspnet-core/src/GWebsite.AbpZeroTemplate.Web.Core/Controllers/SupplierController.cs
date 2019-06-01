@@ -68,7 +68,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
             string name = "")
         {
             if (!pageSize.HasValue || pageSize.Value < 1)
-                pageSize = 5;
+                pageSize = 10;
            
 
             if (!prePageIndex.HasValue || prePageIndex.Value < 0)
