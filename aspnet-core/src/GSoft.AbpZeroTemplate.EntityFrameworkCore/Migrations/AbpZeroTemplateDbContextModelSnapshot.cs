@@ -1885,8 +1885,6 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<string>("Code");
 
-                    b.Property<bool>("IsInCludeSupplier");
-
                     b.Property<string>("Name");
 
                     b.Property<string>("Note");
@@ -1982,8 +1980,6 @@ namespace GSoft.AbpZeroTemplate.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code");
-
-                    b.Property<bool>("IsInCludeSupplier");
 
                     b.Property<string>("Name");
 
