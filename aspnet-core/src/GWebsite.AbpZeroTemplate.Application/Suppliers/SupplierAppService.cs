@@ -184,7 +184,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
         /// <param name="status"></param>
         /// <returns></returns>
         public async Task<PagedResultDto<FilterSupplierTypeResponeModel>> GetSupplierTypesWithFilterAsync(
-            int prePageIndex, 
+            int skipCount, 
             int pageSize,
             string code, 
             string name,
@@ -207,7 +207,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
 
             int totalRecord = supTypes.Count;
 
-            supTypes = supTypes.Skip(prePageIndex * pageSize).Take(pageSize).ToList();
+            supTypes = supTypes.Skip(skipCount).Take(pageSize).ToList();
 
             var respones = new List<FilterSupplierTypeResponeModel>();
 

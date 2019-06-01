@@ -61,23 +61,29 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
 
         [HttpGet]
         public async Task<ListResultDto<FilterSupplierTypeResponeModel>> GetSupplierTypesWithFilter(
-            int? prePageIndex, 
-            int? pageSize,
+            int? skipCount, 
+            int? maxResultCount,
             int? status,
             string code = "",
             string name = "")
         {
-            if (!pageSize.HasValue || pageSize.Value < 1)
-                pageSize = 10;
+            if (!maxResultCount.HasValue || maxResultCount.Value < 1)
+                maxResultCount = 10;
            
 
-            if (!prePageIndex.HasValue || prePageIndex.Value < 0)
-                prePageIndex = 0;
+            if (!skipCount.HasValue || skipCount.Value < 0)
+                skipCount = 0;
 
             if (!status.HasValue || status.Value < 1 || status.Value > 3)
                 status = 3; //select all status
 
-            return await this._SupplierAppService.GetSupplierTypesWithFilterAsync(prePageIndex.Value, pageSize.Value, code, name, status.Value);
+            if (string.IsNullOrEmpty(code))
+                code = "";
+
+            if (string.IsNullOrEmpty(name))
+                name = "";
+
+            return await this._SupplierAppService.GetSupplierTypesWithFilterAsync(skipCount.Value, maxResultCount.Value, code, name, status.Value);
         }
 
         [HttpPost]
