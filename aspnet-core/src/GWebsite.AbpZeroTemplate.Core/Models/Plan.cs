@@ -14,8 +14,7 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public DateTime EffectiveDate { get; set; }
         public float TotalPrice { get; set; }
         public string UnitCode { get; set; }
-        public int DepartmentId { get; set; }
-        public Department Department { get; set; }
+        public string DepartmentCode { get; set; }
         public int Status { get; set; }
         public int CountChange { get; set; }
         public ICollection<SubPlan> SubPlans { get; set; }

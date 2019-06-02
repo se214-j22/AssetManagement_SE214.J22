@@ -11,5 +11,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.SubPlans
    public interface ISubPlanAppService
     {
         Task<PagedResultDto<SubPlanDto>> GetSubPlanWithFilterAsync(SubPlanListInputDto input);
+        Task<SubPlanDto> UpdateSubPlanAsync(SubPlanSavedDto SubPlanSavedDto);
+        Task<SubPlanDto> CreateSubPlanAsync(SubPlanSavedDto subPlanSavedDto);
     }
 }

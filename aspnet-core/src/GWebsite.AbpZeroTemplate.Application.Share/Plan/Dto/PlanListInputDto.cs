@@ -13,6 +13,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Plans.Dto
         public string Year { get; set; }
         public string Status { get; set; }
         public string UnitCode  { get; set; }
-        public string DepartmentId { get; set; }
+        public string DepartmentCode { get; set; }
     }
 }

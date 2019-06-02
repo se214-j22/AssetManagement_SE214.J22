@@ -51,6 +51,7 @@ namespace GWebsite.AbpZeroTemplate.Applications
 
             // revert mapper 
             configuration.CreateMap<SupplierTypeSavedDto, SupplierType>();
+            configuration.CreateMap<SubPlanSavedDto, SubPlan>();
             configuration.CreateMap<BiddingSaved, Bidding>();
             configuration.CreateMap<ContractSaved, Contract>();
             configuration.CreateMap<PurchaseSave, Purchase>()

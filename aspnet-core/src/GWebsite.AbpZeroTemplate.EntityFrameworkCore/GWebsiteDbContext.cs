@@ -357,11 +357,11 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
                 .HasForeignKey(i => i.DepartmentId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-                entity
-               .HasMany(p => p.Plans)
-                .WithOne(i => i.Department)
-                .HasForeignKey(i => i.DepartmentId)
-                .OnDelete(DeleteBehavior.Cascade);
+               // entity
+               //.HasMany(p => p.Plans)
+               // .WithOne(i => i.Department)
+               // .HasForeignKey(i => i.DepartmentId)
+               // .OnDelete(DeleteBehavior.Cascade);
 
             });
 

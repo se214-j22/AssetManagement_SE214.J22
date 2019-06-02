@@ -27,5 +27,18 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
 
 
 
+        [HttpPut]
+        public async Task<SubPlanDto> UpdateSubPlanAsync([FromBody] SubPlanSavedDto SubPlanSavedDto)
+        {
+            return await this._SubPlanAppService.UpdateSubPlanAsync(SubPlanSavedDto);
+        }
+
+        [HttpPost]
+        public async Task<SubPlanDto> CreateProductCatalogAsync([FromBody] SubPlanSavedDto subPlanSavedDto)
+        {
+            return await this._SubPlanAppService.CreateSubPlanAsync(subPlanSavedDto);
+        }
+
+
     }
 }
