@@ -14,14 +14,39 @@ using System.Threading.Tasks;
 
 namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
 {
-    [AbpAuthorize(GWebsitePermissions.Pages_Administration_Asset)]
+    [AbpAuthorize(GWebsitePermissions.Pages_Administration_Manufacturer)]
     public class ManufacturerAppService : GWebsiteAppServiceBase, IManufacturerAppService
     {
         private readonly IRepository<Manufacturer> manufacturerRepository;
+        private readonly IRepository<AssetLine> assetLineRepository;
 
-        public ManufacturerAppService(IRepository<Manufacturer> manufacturerRepository)
+        public ManufacturerAppService(IRepository<Manufacturer> manufacturerRepository, IRepository<AssetLine> assetLineRepository)
         {
             this.manufacturerRepository = manufacturerRepository;
+            this.assetLineRepository = assetLineRepository;
+        }
+
+        public async Task<PagedResultDto<ManufacturerDto>> GetsForView(ManufacturerFilter filter)
+        {
+            var query = manufacturerRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking();
+
+            if (filter.Term != null)
+            {
+                query = query.Where(x => x.Name.ToLower().Contains(filter.Term));
+            }
+
+            var totalCount = query.Count();
+
+            if (!string.IsNullOrWhiteSpace(filter.Sorting))
+            {
+                query = query.OrderBy(filter.Sorting);
+            }
+
+            var items = await query.PageBy(filter).ToListAsync();
+
+            return new PagedResultDto<ManufacturerDto>(
+                totalCount,
+                items.Select(item => ObjectMapper.Map<ManufacturerDto>(item)).ToList());
         }
 
         public async Task<ManufacturerDto> GetAsyncForView(int id)
@@ -53,7 +78,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
             return manufacturerEntity;
         }
 
-        [AbpAuthorize(GWebsitePermissions.Pages_Administration_Asset_Create_Edit)]
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_Manufacturer_Create_Edit)]
         public async Task CreateOrEdit(ManufacturerInput manufacturerInput)
         {
             if (manufacturerInput.Id == 0)
@@ -84,6 +109,28 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
             SetAuditEdit(manufacturerEntity);
             await manufacturerRepository.UpdateAsync(manufacturerEntity);
             await CurrentUnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<bool> HasAnyRecordsPointTo(int id)
+        {
+            var assetTypeEntity = manufacturerRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == id);
+            if (assetTypeEntity != null)
+            {
+                return await assetLineRepository.GetAll().AnyAsync(x => x.AssetTypeID == id);
+            }
+            return false;
+        }
+
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_Manufacturer_Delete)]
+        public async Task DeleteAsync(int id)
+        {
+            var manufacturerEntity = manufacturerRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == id);
+            if (manufacturerEntity != null)
+            {
+                manufacturerEntity.IsDelete = true;
+                await manufacturerRepository.UpdateAsync(manufacturerEntity);
+                await CurrentUnitOfWork.SaveChangesAsync();
+            }
         }
     }
 }

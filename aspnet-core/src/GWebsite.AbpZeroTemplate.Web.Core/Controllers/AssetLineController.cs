@@ -20,6 +20,12 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpGet]
+        public async Task<PagedResultDto<AssetLineDto>> GetByFilter(AssetLineFilter filter)
+        {
+            return await assetLineAppService.GetsForView(filter);
+        }
+
+        [HttpGet]
         public async Task<AssetLineDto> GetById(int id)
         {
             return await assetLineAppService.GetAsyncForView(id);
@@ -34,6 +40,15 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         public async Task CreateOrEdit([FromBody] AssetLineInput input)
         {
             await assetLineAppService.CreateOrEdit(input);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            if (await assetLineAppService.HasAnyRecordsPointTo(id))
+                return BadRequest("This record has anything point to!");
+            await assetLineAppService.DeleteAsync(id);
+            return Ok();
         }
     }
 }

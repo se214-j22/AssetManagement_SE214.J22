@@ -21,6 +21,12 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpGet]
+        public async Task<PagedResultDto<AssetDto>> GetByFilter(AssetFilter filter)
+        {
+            return await assetAppService.GetsForView(filter);
+        }
+
+        [HttpGet]
         public async Task<AssetDto> GetById(int id)
         {
             return await assetAppService.GetAsyncForView(id);
@@ -31,6 +37,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         {
             return await assetAppService.GetAsyncForView(code);
         }
+
         [HttpPost]
         public async Task<ActionResult> Create([FromBody] AssetInput input)
         {
@@ -51,6 +58,12 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
             {
                 return BadRequest(e);
             }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task Delete(int id)
+        {
+            await assetAppService.DeleteAsync(id);
         }
     }
 }

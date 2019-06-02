@@ -33,6 +33,45 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
             this.assetOrganizationUnitRepository = assetOrganizationUnitRepository;
             this.userOrganizationUnitRepository = userOrganizationUnitRepository;
         }
+        public IQueryable<Asset> GetAssetsOfCurrentUser()
+        {
+            var user = GetCurrentUser();
+            var organizationUnitId = userOrganizationUnitRepository.FirstOrDefault(uo => uo.UserId == user.Id)?.OrganizationUnitId;
+            if (organizationUnitId == null)
+                return null;
+            return from po in assetOrganizationUnitRepository.GetAll()
+                   where organizationUnitId == po.OrganizationUnitId
+                   select po.Asset;
+        }
+        public async Task<PagedResultDto<AssetDto>> GetsForView(AssetFilter filter)
+        {
+            var query = GetAssetsOfCurrentUser().Where(x => !x.IsDelete).AsNoTracking();
+            if (filter.AssetLineId > 0)
+            {
+                query = query.Where(x => x.AssetLineId == filter.AssetLineId);
+            }
+
+            if (filter.Term != null)
+            {
+                query = query.Where(x => x.Code.ToLower().Contains(filter.Term));
+            }
+
+            var totalCount = query.Count();
+
+            if (!string.IsNullOrWhiteSpace(filter.Sorting))
+            {
+                query = query.OrderBy(filter.Sorting);
+            }
+
+            var items = await query.PageBy(filter)
+                .Include(i => i.AssetLine).ThenInclude(al => al.AssetType)
+                .Include(i => i.AssetLine).ThenInclude(al => al.Manufacturer).ToListAsync();
+
+            return new PagedResultDto<AssetDto>(
+                totalCount,
+                items.Select(item => ObjectMapper.Map<AssetDto>(item)).ToList());
+        }
+
 
         public async Task<AssetDto> GetAsyncForView(int id)
         {
@@ -122,6 +161,18 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
             SetAuditEdit(assetEntity);
             await assetRepository.UpdateAsync(assetEntity);
             await CurrentUnitOfWork.SaveChangesAsync();
+        }
+
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_Asset_Delete)]
+        public async Task DeleteAsync(int id)
+        {
+            var assetEntity = assetRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == id);
+            if (assetEntity != null)
+            {
+                assetEntity.IsDelete = true;
+                await assetRepository.UpdateAsync(assetEntity);
+                await CurrentUnitOfWork.SaveChangesAsync();
+            }
         }
     }
 }

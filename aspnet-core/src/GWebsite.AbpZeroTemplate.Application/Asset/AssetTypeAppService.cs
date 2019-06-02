@@ -14,14 +14,39 @@ using System.Threading.Tasks;
 
 namespace GWebsite.AbpZeroTemplate.Web.Core.AssetTypes
 {
-    [AbpAuthorize(GWebsitePermissions.Pages_Administration_Asset)]
+    [AbpAuthorize(GWebsitePermissions.Pages_Administration_AssetType)]
     public class AssetTypeAppService : GWebsiteAppServiceBase, IAssetTypeAppService
     {
         private readonly IRepository<AssetType> assetTypeRepository;
+        private readonly IRepository<AssetLine> assetLineRepository;
 
-        public AssetTypeAppService(IRepository<AssetType> assetTypeRepository)
+        public AssetTypeAppService(IRepository<AssetType> assetTypeRepository, IRepository<AssetLine> assetLineRepository)
         {
             this.assetTypeRepository = assetTypeRepository;
+            this.assetLineRepository = assetLineRepository;
+        }
+
+        public async Task<PagedResultDto<AssetTypeDto>> GetsForView(AssetTypeFilter filter)
+        {
+            var query = assetTypeRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking();
+           
+            if (filter.Term != null)
+            {
+                query = query.Where(x => x.Name.ToLower().Contains(filter.Term));
+            }
+
+            var totalCount = query.Count();
+
+            if (!string.IsNullOrWhiteSpace(filter.Sorting))
+            {
+                query = query.OrderBy(filter.Sorting);
+            }
+
+            var items = await query.PageBy(filter).ToListAsync();
+
+            return new PagedResultDto<AssetTypeDto>(
+                totalCount,
+                items.Select(item => ObjectMapper.Map<AssetTypeDto>(item)).ToList());
         }
 
         public async Task<AssetTypeDto> GetAsyncForView(int id)
@@ -53,7 +78,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.AssetTypes
             return assetTypeEntity;
         }
 
-        [AbpAuthorize(GWebsitePermissions.Pages_Administration_Asset_Create_Edit)]
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_AssetType_Create_Edit)]
         public async Task CreateOrEdit(AssetTypeInput assetTypeInput)
         {
             if (assetTypeInput.Id == 0)
@@ -82,6 +107,28 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.AssetTypes
             SetAuditEdit(assetTypeEntity);
             await assetTypeRepository.UpdateAsync(assetTypeEntity);
             await CurrentUnitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<bool> HasAnyRecordsPointTo(int id)
+        {
+            var assetTypeEntity = assetTypeRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == id);
+            if (assetTypeEntity != null)
+            {
+                return await assetLineRepository.GetAll().AnyAsync(x => x.AssetTypeID == id);
+            }
+            return false;
+        }
+
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_AssetType_Delete)]
+        public async Task DeleteAsync(int id)
+        {
+            var assetTypeEntity = assetTypeRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == id);
+            if (assetTypeEntity != null)
+            {
+                assetTypeEntity.IsDelete = true;
+                await assetTypeRepository.UpdateAsync(assetTypeEntity);
+                await CurrentUnitOfWork.SaveChangesAsync();
+            }
         }
     }
 }

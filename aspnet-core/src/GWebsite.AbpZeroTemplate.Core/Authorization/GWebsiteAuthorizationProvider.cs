@@ -46,9 +46,21 @@ namespace GWebsite.AbpZeroTemplate.Core.Authorization
             customer.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_Edit, L("EditingCustomer"));
             customer.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_Delete, L("DeletingCustomer"));
 
-            var asset = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Asset, L("Product"));
-            asset.CreateChildPermission(GWebsitePermissions.Pages_Administration_Asset_Create_Edit, L("CreatingOrEditingProduct"));
-            asset.CreateChildPermission(GWebsitePermissions.Pages_Administration_Asset_Delete, L("DeletingProduct"));
+            var asset = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Asset, L("Asset"));
+            asset.CreateChildPermission(GWebsitePermissions.Pages_Administration_Asset_Create_Edit, L("CreatingOrEditingAsset"));
+            asset.CreateChildPermission(GWebsitePermissions.Pages_Administration_Asset_Delete, L("DeletingAsset"));
+
+            var assetLine = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_AssetLine, L("AssetLine"));
+            assetLine.CreateChildPermission(GWebsitePermissions.Pages_Administration_AssetLine_Create_Edit, L("CreatingOrEditingAssetLine"));
+            assetLine.CreateChildPermission(GWebsitePermissions.Pages_Administration_AssetLine_Delete, L("DeletingAssetLine"));
+
+            var assetType = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_AssetType, L("AssetType"));
+            assetType.CreateChildPermission(GWebsitePermissions.Pages_Administration_AssetType_Create_Edit, L("CreatingOrEditingAssetType"));
+            assetType.CreateChildPermission(GWebsitePermissions.Pages_Administration_AssetType_Delete, L("DeletingAssetType"));
+
+            var manufacturer = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Manufacturer, L("Manufacturer"));
+            manufacturer.CreateChildPermission(GWebsitePermissions.Pages_Administration_Manufacturer_Create_Edit, L("CreatingOrEditingManufacturer"));
+            manufacturer.CreateChildPermission(GWebsitePermissions.Pages_Administration_Manufacturer_Delete, L("DeletingManufacturer"));
         }
 
         private static ILocalizableString L(string name)

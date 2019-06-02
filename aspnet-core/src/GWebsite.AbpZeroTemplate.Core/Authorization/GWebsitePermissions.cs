@@ -24,9 +24,22 @@
         public const string Pages_Administration_Customer_Edit = "Pages.Administration.Customer.Edit";
         public const string Pages_Administration_Customer_Delete = "Pages.Administration.Customer.Delete";
 
+        #region Permissions related to Asset
         public const string Pages_Administration_Asset = "Pages.Administration.Asset";
         public const string Pages_Administration_Asset_Create_Edit = "Pages.Administration.Asset.Create_Edit";
         public const string Pages_Administration_Asset_Delete = "Pages.Administration.Asset.Delete";
 
+        public const string Pages_Administration_AssetType = "Pages.Administration.AssetType";
+        public const string Pages_Administration_AssetType_Create_Edit = "Pages.Administration.AssetType.Create_Edit";
+        public const string Pages_Administration_AssetType_Delete = "Pages.Administration.AssetType.Delete";
+
+        public const string Pages_Administration_AssetLine = "Pages.Administration.AssetLine";
+        public const string Pages_Administration_AssetLine_Create_Edit = "Pages.Administration.AssetLine.Create_Edit";
+        public const string Pages_Administration_AssetLine_Delete = "Pages.Administration.AssetLine.Delete";
+
+        public const string Pages_Administration_Manufacturer = "Pages.Administration.Manufacturer";
+        public const string Pages_Administration_Manufacturer_Create_Edit = "Pages.Administration.Manufacturer.Create_Edit";
+        public const string Pages_Administration_Manufacturer_Delete = "Pages.Administration.Manufacturer.Delete";
+        #endregion
     }
 }

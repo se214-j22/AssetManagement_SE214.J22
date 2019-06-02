@@ -19,6 +19,12 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpGet]
+        public async Task<PagedResultDto<ManufacturerDto>> GetByFilter(ManufacturerFilter filter)
+        {
+            return await manufacturerAppService.GetsForView(filter);
+        }
+
+        [HttpGet]
         public async Task<ManufacturerDto> GetById(int id)
         {
             return await manufacturerAppService.GetAsyncForView(id);
@@ -33,6 +39,15 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         public async Task CreateOrEdit([FromBody] ManufacturerInput input)
         {
             await manufacturerAppService.CreateOrEdit(input);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            if (await manufacturerAppService.HasAnyRecordsPointTo(id))
+                return BadRequest("This record has anything point to!");
+            await manufacturerAppService.DeleteAsync(id);
+            return Ok();
         }
     }
 }
