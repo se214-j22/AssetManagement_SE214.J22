@@ -11,7 +11,8 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Plans
 {
     public interface IPlanAppService
     {
-        Task<PagedResultDto<Plan>> GetPlanWithFilterAsync(PlanListInputDto input);
+        Task<PagedResultDto<PlanDto>> GetPlanWithFilterAsync(PlanListInputDto input);
+        Task<IEnumerable<string>> GetAllDepartmentAsync();
 
     }
 }

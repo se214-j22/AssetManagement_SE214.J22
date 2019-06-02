@@ -3,6 +3,7 @@ using GWebsite.AbpZeroTemplate.Application.Share.Bidding.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Contract.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.DemoModels.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.Plans.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Product.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Products.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.ProductType.Dto;
@@ -19,6 +20,7 @@ namespace GWebsite.AbpZeroTemplate.Applications
         {
             configuration.CreateMap<MenuClient, MenuClientDto>();
             configuration.CreateMap<Product, ProductDto>();
+            configuration.CreateMap<Plan, PlanDto>();
             //.ForMember(dto => dto.Name, opt => opt.MapFrom(model => model.ProductType.Name));
             configuration.CreateMap<ProductType, ProductTypeDto>()
                          .ForMember(dto => dto.Id, opt => opt.MapFrom(model => model.Id));
@@ -32,7 +34,8 @@ namespace GWebsite.AbpZeroTemplate.Applications
                          .ForMember(dto => dto.Id, opt => opt.MapFrom(model => model.Id));
             configuration.CreateMap<SupplierTypeDto, SupplierType>()
                          .ForMember(dto => dto.Suppliers, opt => opt.Ignore());
-
+            
+            
             configuration.CreateMap<PurchaseDto, Purchase>();
             configuration.CreateMap<MenuClient, MenuClientListDto>();
             configuration.CreateMap<CreateMenuClientInput, MenuClient>();

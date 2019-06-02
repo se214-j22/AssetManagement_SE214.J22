@@ -323,6 +323,16 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
                 .OnDelete(DeleteBehavior.Cascade);
 
             });
+
+            modelBuilder.Entity<Plan>(entity =>
+            {
+                entity
+                    .HasMany(p => p.SubPlans)
+                     .WithOne(i => i.Plan)
+                     .HasForeignKey(i => i.PlanId)
+                     .OnDelete(DeleteBehavior.Restrict);
+
+            });
             modelBuilder.Entity<Bidding>(entity =>
             {
                 //entity
@@ -343,6 +353,12 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
             {
                 entity
                .HasMany(p => p.Purchases)
+                .WithOne(i => i.Department)
+                .HasForeignKey(i => i.DepartmentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+                entity
+               .HasMany(p => p.Plans)
                 .WithOne(i => i.Department)
                 .HasForeignKey(i => i.DepartmentId)
                 .OnDelete(DeleteBehavior.Cascade);

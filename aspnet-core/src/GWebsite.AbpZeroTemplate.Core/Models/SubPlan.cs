@@ -16,6 +16,8 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public float ImplementPrice { get; set; }
         public float PesidualQuantity { get; set; }
         public float PesidualPrice { get; set; }
+        public int PlanId { get; set; }
+        public Plan Plan { get; set; }
 
     }
 }

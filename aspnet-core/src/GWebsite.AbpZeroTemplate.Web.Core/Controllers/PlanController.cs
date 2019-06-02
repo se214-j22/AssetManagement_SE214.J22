@@ -22,9 +22,15 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
 
 
         [HttpGet]
-        public async Task<ListResultDto<Plan>> GetProductTypes(PlanListInputDto input)
+        public async Task<ListResultDto<PlanDto>> GetPlans(PlanListInputDto input)
         {
             return await this._PlanAppService.GetPlanWithFilterAsync(input);
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<string>> GetAllDepartment()
+        {
+            return await this._PlanAppService.GetAllDepartmentAsync();
         }
     }
 }
