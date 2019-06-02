@@ -24,14 +24,14 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
             return await this.productTypeAppService.GetProductTypesWithFilterAsync(input);
         }
 
-        [HttpPost("status/{id}")]
+        [HttpPut("status/{id}")]
         public async Task<ProductTypeDto> ToggleStatusProductCatalogAsync(int id)
         {
             return await this.productTypeAppService.ToggleStatusProductCatalogAsync(id);
         }
 
         [HttpPost]
-        public async Task<ProductTypeDto> CreateProductCatalogAsync(ProductTypeSavedDto dto)
+        public async Task<ProductTypeDto> CreateProductCatalogAsync([FromBody] ProductTypeSavedDto dto)
         {
             return await this.productTypeAppService.CreateProductCatalogAsync(dto);
         }
@@ -42,8 +42,8 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
             await this.productTypeAppService.DeleteProductCatalogAsync(id);
         }
 
-        [HttpPost("edit")]
-        public async Task<ProductTypeDto> UpdateProductCatalogAsync(ProductTypeSavedDto dto)
+        [HttpPut("edit")]
+        public async Task<ProductTypeDto> UpdateProductCatalogAsync([FromBody] ProductTypeSavedDto dto)
         {
             return await this.productTypeAppService.UpdateProductCatalogAsync(dto);
         }

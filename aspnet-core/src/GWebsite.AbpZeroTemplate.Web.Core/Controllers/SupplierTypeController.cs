@@ -25,12 +25,12 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpPost]
-        public async Task<SupplierTypeDto> CreateSupplierTypeDto(SupplierTypeDto dto)
+        public async Task<SupplierTypeDto> CreateSupplierTypeDto([FromBody] SupplierTypeDto dto)
         {
             return await this.supplierTypeAppService.CreateSupplierTypeAsync(dto);
         }
 
-        [HttpPost("status/{id}")]
+        [HttpPut("status/{id}")]
         public async Task<SupplierTypeDto> SetStatusSupplierTypeAsync(int id)
         {
             return await this.supplierTypeAppService.SetStatusSupplierTypeAsync(id);
@@ -42,8 +42,8 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
             await this.supplierTypeAppService.DeleteSupplierTypeAsync(id);
         }
 
-        [HttpPost("edit")]
-        public async Task<SupplierTypeDto> EditNameSupplierTypeAsync(SupplierTypeDto dto)
+        [HttpPut("edit")]
+        public async Task<SupplierTypeDto> EditNameSupplierTypeAsync([FromBody] SupplierTypeDto dto)
         {
             return await this.supplierTypeAppService.EditNameSupplierTypeAsync(dto.Id, dto.Name, dto.Note);
         }
