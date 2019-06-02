@@ -57,9 +57,8 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
 
         public async Task<AssetLineDto> GetAsyncForView(int id)
         {
-            var assetLineEntity = assetLineRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking()
-                .Include(b => b.AssetType).Include(b => b.Manufacturer).SingleOrDefault(x => x.Id == id)
-                ;
+            var assetLineEntity = await assetLineRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking()
+                .Include(b => b.AssetType).Include(b => b.Manufacturer).SingleOrDefaultAsync(x => x.Id == id);
             if (assetLineEntity == null)
             {
                 return null;
@@ -69,7 +68,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
 
         public async Task<AssetLineDto> GetAsyncForView(string code)
         {
-            var assetLineEntity = assetLineRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking().SingleOrDefault(x => x.Code == code);
+            var assetLineEntity = await assetLineRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking().SingleOrDefaultAsync(x => x.Code == code);
             if (assetLineEntity == null)
             {
                 return null;
@@ -78,7 +77,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
         }
         public async Task<AssetLine> GetAsyncForEdit(string code)
         {
-            var assetLineEntity = assetLineRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Code == code);
+            var assetLineEntity = await assetLineRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefaultAsync(x => x.Code == code);
             if (assetLineEntity == null)
             {
                 return null;

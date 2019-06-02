@@ -30,7 +30,7 @@ namespace GWebsite.AbpZeroTemplate.Applications
 
             //Asset
             configuration.CreateMap<Asset, AssetDto>();
-            configuration.CreateMap<AssetInput, Asset>();
+            configuration.CreateMap<AssetInput, Asset>().ReverseMap();
             configuration.CreateMap<AssetType, AssetTypeDto>();
             configuration.CreateMap<AssetTypeInput, AssetType>().AfterMap((ati, at) => at.Code=ati.Code.ToUpper());
             configuration.CreateMap<AssetLine, AssetLineDto>();

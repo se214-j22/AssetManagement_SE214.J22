@@ -37,9 +37,14 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         {
             return await assetAppService.GetAsyncForView(code);
         }
+        [HttpGet]
+        public async Task<AssetInput> GetForEdit(int id)
+        {
+            return await assetAppService.GetForEdit(id);
+        }
 
         [HttpPost]
-        public async Task<ActionResult> Create([FromBody] AssetInput input)
+        public async Task<ActionResult> CreateOrEdit([FromBody] AssetInput input)
         {
             try
             {

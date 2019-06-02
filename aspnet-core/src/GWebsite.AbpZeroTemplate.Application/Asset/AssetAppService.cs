@@ -75,8 +75,8 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
 
         public async Task<AssetDto> GetAsyncForView(int id)
         {
-            var assetEntity = assetRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking()
-                .SingleOrDefault(x => x.Id == id);
+            var assetEntity = await assetRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking()
+                .SingleOrDefaultAsync(x => x.Id == id);
 
             if (assetEntity == null)
             {
@@ -89,8 +89,8 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
 
         public async Task<AssetDto> GetAsyncForView(string code)
         {
-            var assetEntity = assetRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking()
-                 .SingleOrDefault(x => x.Code == code);
+            var assetEntity = await assetRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking()
+                 .SingleOrDefaultAsync(x => x.Code == code);
             if (assetEntity == null)
             {
                 return null;
@@ -100,17 +100,15 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
 
             return ObjectMapper.Map<AssetDto>(assetEntity);
         }
-        public async Task<Asset> GetAsyncForEdit(string code)
+        public async Task<AssetInput> GetForEdit(int id)
         {
-            var assetEntity = assetRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Code == code);
+            var assetEntity = await assetRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefaultAsync(x => x.Id == id);
 
             if (assetEntity == null)
             {
                 return null;
             }
-            assetEntity.AssetLine = this.assetLineRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking()
-              .Include(b => b.AssetType).Include(b => b.Manufacturer).SingleOrDefault(x => x.Id == assetEntity.AssetLineId);
-            return assetEntity;
+            return ObjectMapper.Map<AssetInput>(assetEntity);
         }
 
         [AbpAuthorize(GWebsitePermissions.Pages_Administration_Asset_Create_Edit)]

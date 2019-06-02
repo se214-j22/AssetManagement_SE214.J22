@@ -208,7 +208,7 @@ namespace GSoft.AbpZeroTemplate.Organizations
         public async Task<WarehouseStatus> GetWarehouseStatus()
         {
             var user = GetCurrentUser();
-            var organizationUnitId = _userOrganizationUnitRepository.FirstOrDefault(uo => uo.UserId == user.Id)?.OrganizationUnitId;
+            var organizationUnitId = (await _userOrganizationUnitRepository.FirstOrDefaultAsync(uo => uo.UserId == user.Id))?.OrganizationUnitId;
             if(organizationUnitId == null)  //this case occurs when current user granted organization unit permission don't have organization unit.
                 return new WarehouseStatus { AllNumber = 0, ParentNumber = 0, ChildrenNumber = 0 };
             var childrendOrgIds = from o in _organizationUnitRepository.GetAll() where (o.ParentId == organizationUnitId) select o.Id;

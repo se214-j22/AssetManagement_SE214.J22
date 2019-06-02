@@ -51,7 +51,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
 
         public async Task<ManufacturerDto> GetAsyncForView(int id)
         {
-                var manufacturerEntity = manufacturerRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking().SingleOrDefault(x => x.Id == id);
+                var manufacturerEntity = await manufacturerRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
                 if (manufacturerEntity == null)
                 {
                     return null;
@@ -61,7 +61,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
 
         public async Task<ManufacturerDto> GetAsyncForView(string code)
         {
-            var manufacturerEntity = manufacturerRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking().SingleOrDefault(x => x.Code == code);
+            var manufacturerEntity = await manufacturerRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking().SingleOrDefaultAsync(x => x.Code == code);
             if (manufacturerEntity == null)
             {
                 return null;
@@ -70,7 +70,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
         }
         public async Task<Manufacturer> GetAsyncForEdit(string code)
         {
-            var manufacturerEntity = manufacturerRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Code == code);
+            var manufacturerEntity = await manufacturerRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefaultAsync(x => x.Code == code);
             if (manufacturerEntity == null)
             {
                 return null;
