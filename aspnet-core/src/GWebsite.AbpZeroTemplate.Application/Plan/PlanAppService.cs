@@ -6,8 +6,10 @@ using GSoft.AbpZeroTemplate.Authorization.Users;
 using GWebsite.AbpZeroTemplate.Application;
 using GWebsite.AbpZeroTemplate.Application.Share.Plans;
 using GWebsite.AbpZeroTemplate.Application.Share.Plans.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.SubPlans.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
@@ -19,15 +21,17 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Plans
     {
         private readonly IRepository<Plan, int> planRepository;
         private readonly IRepository<Department, int> departmentRepository;
+        private readonly IRepository<Product, int> productRepository;
 
-        public PlanAppService(IRepository<Plan, int> planRepository, IRepository<Department, int> departmentRepository)
+        public PlanAppService(IRepository<Plan, int> planRepository, IRepository<Department, int> departmentRepository, IRepository<Product, int> productRepository)
         {
             this.planRepository = planRepository;
             this.departmentRepository = departmentRepository;
+            this.productRepository = productRepository;
         }
         public async Task<PagedResultDto<PlanDto>> GetPlanWithFilterAsync(PlanListInputDto input)
         {
-            IQueryable<Plan> query = planRepository.GetAll().Where(p => p.Id.Equals(input.Id) || p.ImplementDate.Year.Equals(input.Year) || p.Status.Equals(input.Status) || p.UnitCode.Equals(input.UnitCode) || p.DepartmentCode.Equals(input.DepartmentCode));
+            IQueryable<Plan> query = planRepository.GetAll().Where(p => p.Id.Equals(input.Id) && p.ImplementDate.Year.Equals(input.Year) && p.Status.Equals(input.Status) && p.UnitCode.Equals(input.UnitCode) && p.DepartmentCode.Equals(input.DepartmentCode));
             int totalCount = await query.CountAsync();
             if (totalCount == 0)
             {
@@ -60,6 +64,38 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Plans
             return await GetCurrentUserAsync();
         }
 
+        public async Task<PlanDto> CreatePlanAsync(PlanSavedDto PlanSavedDto)
+        {
+            //Plan productType = ObjectMapper.Map<Plan>(PlanSavedDto);
+            User user = await GetCurrentUserAsync();
+            Plan plan = new Plan();
+            plan.UnitCode = user.UnitCode;
+            plan.DepartmentCode = user.DepartmentCode;
+            plan.EffectiveDate = DateTime.Now;
+            plan.CountChange = 0;
+            plan.ImplementDate = DateTime.Now;
+            plan.TotalPrice = 0;
+            plan.Status = 0;
+            foreach (SubPlanSavedDto subplan in PlanSavedDto.SubPlans)
+            {
+                Product product = this.productRepository.FirstOrDefault(p => p.Id == subplan.ProductId);
+                plan.SubPlans.Add(new SubPlan()
+                {
+                    Totalprice = product.Price * subplan.Quantity,
+                    ScheduleMonth = DateTime.Now.ToString("MMM"),
+                    ImplementQantity = 0,
+                    ImplementPrice = 0,
+                    PesidualQuantity = 0,
+                    PesidualPrice = 0,
+                    ProductId=subplan.ProductId,
+                    Quantity=subplan.Quantity,
+                    PlanId=plan.Id
+            });
+        };
 
-    }
+        await planRepository.InsertAndGetIdAsync(plan);
+        await CurrentUnitOfWork.SaveChangesAsync();
+            return ObjectMapper.Map<PlanDto>(plan);
+        }
+}
 }

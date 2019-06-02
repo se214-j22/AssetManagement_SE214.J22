@@ -16,5 +16,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Plans
         Task<IEnumerable<string>> GetAllDepartmentAsync();
         Task<PlanDto> ApprovedPlanAsync(int id);
         Task<User> CurrentUserInfoAsync();
+        Task<PlanDto> CreatePlanAsync(PlanSavedDto PlanSavedDto);
     }
 }

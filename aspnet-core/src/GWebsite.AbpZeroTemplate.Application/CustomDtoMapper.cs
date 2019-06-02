@@ -26,7 +26,7 @@ namespace GWebsite.AbpZeroTemplate.Applications
             configuration.CreateMap<ProductType, ProductTypeDto>()
                          .ForMember(dto => dto.Id, opt => opt.MapFrom(model => model.Id));
             configuration.CreateMap<ProductTypeSavedDto, ProductType>()
-                         .ForMember(dto=>dto.Products,opt=>opt.Ignore());
+                         .ForMember(dto => dto.Products, opt => opt.Ignore());
             configuration.CreateMap<Purchase, PurchaseDto>();
             configuration.CreateMap<Bidding, BiddingProduct>();
             configuration.CreateMap<Supplier, SupplierDto>();
@@ -52,8 +52,28 @@ namespace GWebsite.AbpZeroTemplate.Applications
             // revert mapper 
             configuration.CreateMap<SupplierTypeSavedDto, SupplierType>();
             configuration.CreateMap<SubPlanSavedDto, SubPlan>();
+            configuration.CreateMap<PlanSavedDto, Plan>();
             configuration.CreateMap<BiddingSaved, Bidding>();
             configuration.CreateMap<ContractSaved, Contract>();
+            configuration.CreateMap<PlanSavedDto, Plan>();
+                 //.ForMember(p => p.SubPlans, opt => opt.Ignore())
+                 //.AfterMap((pr, p) =>
+                 //{
+                 //    p.SubPlans = new Collection<SubPlan>();
+                 //    var addedProduct = pr.SubPlans.Where(id => p.SubPlans.All(pc => pc.ProductId != id.ProductId && pc.PlanId != id.PlanId))
+                 //        .Select(id => new SubPlan() { ProductId = id.ProductId, PlanId = pr.Id, Quantity = id.Quantity,ImplementPrice=0, }).ToList();
+                 //    foreach (var pc in addedProduct)
+                 //    {
+                 //        p.SubPlans.Add(pc);
+                 //    }
+
+                 //    var removedProduct =
+                 //        p.SubPlans.Where(c => pr.SubPlans.FirstOrDefault(x => x.ProductId == c.ProductId).Equals(null)).ToList();
+                 //    foreach (var pc in removedProduct)
+                 //    {
+                 //        p.SubPlans.Remove(pc);
+                 //    }
+                 //});
             configuration.CreateMap<PurchaseSave, Purchase>()
                 .ForMember(p => p.PurchaseProducts, opt => opt.Ignore())
                 .AfterMap((pr, p) =>

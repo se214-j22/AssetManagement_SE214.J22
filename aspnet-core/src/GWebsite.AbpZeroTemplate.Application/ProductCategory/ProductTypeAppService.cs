@@ -29,7 +29,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.ProductCategory
 
         public async Task<PagedResultDto<ProductTypeDto>> GetProductTypesWithFilterAsync(ProductTypeListInputDto input)
         {
-            IQueryable<ProductType> query = productTypeRepository.GetAllIncluding(p => p.Products).Where(p => p.Name.Contains(input.Name) || p.Code.Contains(input.Code) || p.Status.Equals(input.Status));
+            IQueryable<ProductType> query = productTypeRepository.GetAllIncluding(p => p.Products).Where(p => p.Name.Contains(input.Name) && p.Code.Contains(input.Code) && p.Status.Equals(input.Status));
             int totalCount = await query.CountAsync();
             if (totalCount == 0)
             {
