@@ -34,7 +34,9 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
         public virtual DbSet<Guarantee> Guarantees { get; set; }
         public virtual DbSet<GaranteeContract> GaranteeContracts { get; set; }
         public virtual DbSet<Contract> Contracts { get; set; }
-        
+        public virtual DbSet<Plan> Plans { get; set; }
+        public virtual DbSet<SubPlan> SubPlans { get; set; }
+
         /// <summary>
         /// GPermissions dùng cho bên Gwebsite
         /// </summary>
