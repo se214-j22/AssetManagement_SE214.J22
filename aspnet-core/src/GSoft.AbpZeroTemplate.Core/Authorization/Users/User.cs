@@ -25,6 +25,9 @@ namespace GSoft.AbpZeroTemplate.Authorization.Users
         //Can add application specific user properties here
 
         public int Level { get; set; }
+        public string DepartmentCode { get; set; }
+
+        public string UnitCode { get; set; }
 
         public User()
         {

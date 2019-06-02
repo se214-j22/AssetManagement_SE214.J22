@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using GSoft.AbpZeroTemplate.Authorization.Users;
 using GWebsite.AbpZeroTemplate.Application.Share.Plans;
 using GWebsite.AbpZeroTemplate.Application.Share.Plans.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
@@ -32,5 +33,17 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         {
             return await this._PlanAppService.GetAllDepartmentAsync();
         }
+
+        [HttpPut("status/{id}")]
+        public async Task<PlanDto> ApprovedPlanAsync(int id)
+        {
+            return await this._PlanAppService.ApprovedPlanAsync(id);
+        }
+        [HttpGet]
+        public async Task<User> CurrentUserInfo()
+        {
+            return await this._PlanAppService.CurrentUserInfoAsync();
+        }
+
     }
 }

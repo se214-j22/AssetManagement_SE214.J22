@@ -21,4 +21,16 @@
     <Folder Include="Budget\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Data.Entity" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
 </Project>

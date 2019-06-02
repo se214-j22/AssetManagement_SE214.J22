@@ -4,14 +4,16 @@ using GSoft.AbpZeroTemplate.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GSoft.AbpZeroTemplate.Migrations
 {
     [DbContext(typeof(AbpZeroTemplateDbContext))]
-    partial class AbpZeroTemplateDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190602082403_add-infouser")]
+    partial class addinfouser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1995,7 +1997,7 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<int>("PlanId");
 
-                    b.Property<int>("ProductId");
+                    b.Property<string>("ProductCode");
 
                     b.Property<string>("ScheduleMonth");
 
@@ -2004,8 +2006,6 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PlanId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("SubPlans");
                 });
@@ -2417,11 +2417,6 @@ namespace GSoft.AbpZeroTemplate.Migrations
                         .WithMany("SubPlans")
                         .HasForeignKey("PlanId")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("GWebsite.AbpZeroTemplate.Core.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.Supplier", b =>

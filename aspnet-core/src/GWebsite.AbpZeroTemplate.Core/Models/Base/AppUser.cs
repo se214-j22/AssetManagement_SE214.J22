@@ -69,7 +69,8 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public string ValueString1 { get; set; }
         public string ValueString2 { get; set; }
         public string PriceCode { get; set; }
-
+        public int DepartmentId { get; set; }
+        
         //public ICollection<Purchase> Purchases { get; set; }
         public ICollection<AnnouncementUser> AnnouncementUsers { get; set; }
         public ICollection<Announcement> Announcements { get; set; }

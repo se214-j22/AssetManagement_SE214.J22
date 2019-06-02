@@ -14,8 +14,4 @@
     <ProjectReference Include="..\GWebsite.AbpZeroTemplate.Core\GWebsite.AbpZeroTemplate.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="SubPlan\" />
-  </ItemGroup>
-
 </Project>

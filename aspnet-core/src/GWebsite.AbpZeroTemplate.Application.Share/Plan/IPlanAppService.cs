@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using GSoft.AbpZeroTemplate.Authorization.Users;
 using GWebsite.AbpZeroTemplate.Application.Share.Plans.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using System;
@@ -13,6 +14,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Plans
     {
         Task<PagedResultDto<PlanDto>> GetPlanWithFilterAsync(PlanListInputDto input);
         Task<IEnumerable<string>> GetAllDepartmentAsync();
-
+        Task<PlanDto> ApprovedPlanAsync(int id);
+        Task<User> CurrentUserInfoAsync();
     }
 }

@@ -8,6 +8,7 @@ using GWebsite.AbpZeroTemplate.Application.Share.Product.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Products.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.ProductType.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Purchases.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.SubPlans.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -34,8 +35,8 @@ namespace GWebsite.AbpZeroTemplate.Applications
                          .ForMember(dto => dto.Id, opt => opt.MapFrom(model => model.Id));
             configuration.CreateMap<SupplierTypeDto, SupplierType>()
                          .ForMember(dto => dto.Suppliers, opt => opt.Ignore());
-            
-            
+
+            configuration.CreateMap<SubPlan, SubPlanDto>();
             configuration.CreateMap<PurchaseDto, Purchase>();
             configuration.CreateMap<MenuClient, MenuClientListDto>();
             configuration.CreateMap<CreateMenuClientInput, MenuClient>();
