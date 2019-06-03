@@ -216,6 +216,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
                 bool isIncludeSupplier = item.Suppliers?.Count > 0;
 
                 respones.Add(new FilterSupplierTypeResponeModel {
+                    Id=item.Id,
                     Code = item.Code,
                     Name = item.Name,
                     Note = item.Note,

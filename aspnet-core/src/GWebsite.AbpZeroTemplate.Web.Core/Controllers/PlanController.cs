@@ -46,10 +46,14 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpPost]
-        public async Task<PlanDto> CreateProductCatalogAsync([FromBody] PlanSavedDto planSavedDto)
+        public async Task<PlanDto> CreatePlanAsync([FromBody] PlanSavedDto planSavedDto)
         {
             return await this._PlanAppService.CreatePlanAsync(planSavedDto);
         }
-
+        [HttpGet]
+        public async Task<PlanDto> GetPlanForEdit(int id)
+        {
+            return await _PlanAppService.GetPlanForEditAsync(new NullableIdDto() { Id = id });
+        }
     }
 }

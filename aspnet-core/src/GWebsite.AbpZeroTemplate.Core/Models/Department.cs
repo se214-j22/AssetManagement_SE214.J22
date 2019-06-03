@@ -14,11 +14,11 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public string Description { get; set; }
         public string Major { get; set; }
         public ICollection<Purchase> Purchases { get; set; }
-        public ICollection<Plan> Plans { get; set; }
+        
         public Department()
         {
             Purchases = new Collection<Purchase>();
-            Plans = new Collection<Plan>();
+         
         }
     }
 }

@@ -17,5 +17,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Plans
         Task<PlanDto> ApprovedPlanAsync(int id);
         Task<User> CurrentUserInfoAsync();
         Task<PlanDto> CreatePlanAsync(PlanSavedDto PlanSavedDto);
+        Task<PlanDto> GetPlanForEditAsync(NullableIdDto input);
     }
 }

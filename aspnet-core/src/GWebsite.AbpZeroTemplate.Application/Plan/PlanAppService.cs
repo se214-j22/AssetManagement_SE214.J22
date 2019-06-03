@@ -87,15 +87,21 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Plans
                     ImplementPrice = 0,
                     PesidualQuantity = 0,
                     PesidualPrice = 0,
-                    ProductId=subplan.ProductId,
-                    Quantity=subplan.Quantity,
-                    PlanId=plan.Id
-            });
-        };
+                    ProductId = subplan.ProductId,
+                    Quantity = subplan.Quantity,
+                    PlanId = plan.Id
+                });
+            };
 
-        await planRepository.InsertAndGetIdAsync(plan);
+            await planRepository.InsertAndGetIdAsync(plan);
         await CurrentUnitOfWork.SaveChangesAsync();
             return ObjectMapper.Map<PlanDto>(plan);
         }
-}
+
+        public async Task<PlanDto> GetPlanForEditAsync(NullableIdDto input)
+        {
+            var item = await planRepository.GetAllIncluding(p => p.SubPlans).FirstOrDefaultAsync(x => x.Id == input.Id);
+            return ObjectMapper.Map<PlanDto>(item);
+        }
+    }
 }
