@@ -31,7 +31,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core
 
         public async Task<PagedResultDto<ProductDto>> GetProductsAsync(GetProductInput input)
         {
-            IQueryable<Product> query = this.productRepository.GetAllIncluding().Include(p => p.Biddings).ThenInclude(p => p.Supplier).Where(p=>p.Name.Contains(input.Name)&& p.Code.Contains(input.Code));
+            IQueryable<Product> query = this.productRepository.GetAllIncluding().Include(p => p.ProductType).Include(p => p.Supplier).Where(p=>p.Name.Contains(input.Name)&& p.Code.Contains(input.Code));
             if (input.Status == 1 || input.Status == 2)
             {
                 query = query.Where(p => p.Status == input.Status);
@@ -45,7 +45,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core
 
         public async Task<ProductDto> UpdateProductAsync(ProductSavedDto productSavedDto)
         {
-            Product entity = await this.productRepository.GetAllIncluding().Include(p => p.Biddings).ThenInclude(p => p.Supplier).FirstOrDefaultAsync(item => item.Id == productSavedDto.Id);
+            Product entity = await this.productRepository.GetAllIncluding().Include(p => p.ProductType).Include(p => p.Supplier).FirstOrDefaultAsync(item => item.Id == productSavedDto.Id);
             this.ObjectMapper.Map(productSavedDto, entity);
             entity = await this.productRepository.UpdateAsync(entity);
             await this.CurrentUnitOfWork.SaveChangesAsync();
@@ -54,12 +54,12 @@ namespace GWebsite.AbpZeroTemplate.Web.Core
 
         public async Task<ProductDto> GetProductAsync(EntityDto<int> input)
         {
-            var entity = await this.productRepository.GetAllIncluding().Include(p => p.Biddings).ThenInclude(p => p.Supplier).FirstOrDefaultAsync(x => x.Id == input.Id);
+            var entity = await this.productRepository.GetAllIncluding().Include(p => p.ProductType).Include(p => p.Supplier).FirstOrDefaultAsync(x => x.Id == input.Id);
             return this.ObjectMapper.Map<ProductDto>(entity);
         }
         public async Task<ProductDto> ActiveProductAsync(int id)
         {
-            Product entity = await this.productRepository.GetAllIncluding().Include(p => p.Biddings).ThenInclude(p => p.Supplier).FirstOrDefaultAsync(item => item.Id == id);
+            Product entity = await this.productRepository.GetAllIncluding().Include(p => p.ProductType).Include(p => p.Supplier).FirstOrDefaultAsync(item => item.Id == id);
             entity.Status = 1;
             entity = await this.productRepository.UpdateAsync(entity);
             await this.CurrentUnitOfWork.SaveChangesAsync();
@@ -70,12 +70,12 @@ namespace GWebsite.AbpZeroTemplate.Web.Core
         {
             await this.productRepository.DeleteAsync(id);
         }
-        //public async Task<ProductDto> CreateProductCatalogAsync(ProductSavedDto productTypeSavedDto)
-        //{
-        //    ProductType productType = ObjectMapper.Map<ProductType>(productTypeSavedDto);
-        //    await productTypeRepository.InsertAndGetIdAsync(productType);
-        //    await CurrentUnitOfWork.SaveChangesAsync();
-        //    return ObjectMapper.Map<ProductDto>(productType);
-        //}
+        public async Task<ProductDto> CreateProductAsync(ProductSavedCreate productSavedCreate)
+        {
+            Product product = ObjectMapper.Map<Product>(productSavedCreate);
+            await productRepository.InsertAndGetIdAsync(product);
+            await CurrentUnitOfWork.SaveChangesAsync();
+            return ObjectMapper.Map<ProductDto>(product);
+        }
     }
 }

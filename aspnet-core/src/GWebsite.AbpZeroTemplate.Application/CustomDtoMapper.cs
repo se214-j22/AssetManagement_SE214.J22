@@ -52,6 +52,7 @@ namespace GWebsite.AbpZeroTemplate.Applications
             // revert mapper 
             configuration.CreateMap<SupplierTypeSavedDto, SupplierType>();
             configuration.CreateMap<ProductSavedDto, Product>();
+            configuration.CreateMap<ProductSavedCreate, Product>();
             configuration.CreateMap<SubPlanSavedDto, SubPlan>();
             configuration.CreateMap<PlanSavedDto, Plan>();
             configuration.CreateMap<BiddingSaved, Bidding>();
@@ -94,24 +95,24 @@ namespace GWebsite.AbpZeroTemplate.Applications
                         p.PurchaseProducts.Remove(pc);
                     }
                 });
-            configuration.CreateMap<SupplierSavedDto, Supplier>()
-                .ForMember(p => p.Biddings, opt => opt.Ignore())
-                .AfterMap((pr, p) =>
-                {
-                    var biddingAdded = pr.Biddings.Where(id => p.Biddings.All(pc => pc.ProductId != id.ProductId && pc.SupplierId != id.SupplierId))
-                                            .Select(id => new Bidding() { ProductId = id.ProductId, SupplierId = pr.Id, StartDate = id.StartDate, EndDate = id.EndDate, Status = id.Status }).ToList();
-                    foreach (var pc in biddingAdded)
-                    {
-                        p.Biddings.Add(pc);
-                    }
+            configuration.CreateMap<SupplierSavedDto, Supplier>();
+                //.ForMember(p => p.Biddings, opt => opt.Ignore())
+                //.AfterMap((pr, p) =>
+                //{
+                //    var biddingAdded = pr.Biddings.Where(id => p.Biddings.All(pc => pc.ProductId != id.ProductId && pc.SupplierId != id.SupplierId))
+                //                            .Select(id => new Bidding() { ProductId = id.ProductId, SupplierId = pr.Id, StartDate = id.StartDate, EndDate = id.EndDate, Status = id.Status }).ToList();
+                //    foreach (var pc in biddingAdded)
+                //    {
+                //        p.Biddings.Add(pc);
+                //    }
 
-                    var removedProduct =
-                        p.Biddings.Where(c => pr.Biddings.FirstOrDefault(x => x.ProductId == c.ProductId && x.SupplierId == c.SupplierId).Equals(null)).ToList();
-                    foreach (var pc in removedProduct)
-                    {
-                        p.Biddings.Remove(pc);
-                    }
-                });
+                //    var removedProduct =
+                //        p.Biddings.Where(c => pr.Biddings.FirstOrDefault(x => x.ProductId == c.ProductId && x.SupplierId == c.SupplierId).Equals(null)).ToList();
+                //    foreach (var pc in removedProduct)
+                //    {
+                //        p.Biddings.Remove(pc);
+                //    }
+                //});
         }
     }
 }

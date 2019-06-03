@@ -25,11 +25,11 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
             this._SupplierAppService = SuppllierService;
         }
 
-        [HttpGet]
-        public async Task<ListResultDto<SupplierDto>> GetSupplierByProduct(GetMenuClientInput input, int productId = 0)
-        {
-            return await this._SupplierAppService.GetSupplierByProductAsync(input, productId);
-        }
+        //[HttpGet]
+        //public async Task<ListResultDto<SupplierDto>> GetSupplierByProduct(GetMenuClientInput input, int productId = 0)
+        //{
+        //    return await this._SupplierAppService.GetSupplierByProductAsync(input, productId);
+        //}
 
         [HttpGet]
         public async Task<IActionResult> GetSupplierByProductType(GetMenuClientInput input, string supplierType = null)
@@ -47,11 +47,11 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         //    return await this._SupplierAppService.GetSupplierTypesAsync();
         //}
 
-        [HttpGet]
-        public async Task<ListResultDto<SupplierDto>> GetAllBiddingPass(GetMenuClientInput input)
-        {
-            return await this._SupplierAppService.GetAllBiddingPassAsync(input);
-        }
+        //[HttpGet]
+        //public async Task<ListResultDto<SupplierDto>> GetAllBiddingPass(GetMenuClientInput input)
+        //{
+        //    return await this._SupplierAppService.GetAllBiddingPassAsync(input);
+        //}
 
         [HttpGet]
         public async Task<SupplierDto> GetSupplierById(EntityDto<int> input)
@@ -86,17 +86,17 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
             return await this._SupplierAppService.GetSupplierTypesWithFilterAsync(skipCount.Value, maxResultCount.Value, code, name, status.Value);
         }
 
-        [HttpPost]
-        public async Task<BiddingProduct> CreateBidding([FromBody]  BiddingSaved BiddingSaved)
-        {
-            return await this._SupplierAppService.BiddingProductAsync(BiddingSaved);
-        }
+        //[HttpPost]
+        //public async Task<BiddingProduct> CreateBidding([FromBody]  BiddingSaved BiddingSaved)
+        //{
+        //    return await this._SupplierAppService.BiddingProductAsync(BiddingSaved);
+        //}
 
-        [HttpPut]
-        public async Task<BiddingProduct> ChangeOwnerBiddingProduct([FromBody]  BiddingSaved BiddingSaved)
-        {
-            return await this._SupplierAppService.ChangeOwnerBiddingProductAsync(BiddingSaved);
-        }
+        //[HttpPut]
+        //public async Task<BiddingProduct> ChangeOwnerBiddingProduct([FromBody]  BiddingSaved BiddingSaved)
+        //{
+        //    return await this._SupplierAppService.ChangeOwnerBiddingProductAsync(BiddingSaved);
+        //}
 
         [HttpPost]
         public async Task<SupplierDto> CreateSupplier([FromBody]  SupplierSavedDto supplierSavedDto)
@@ -109,11 +109,11 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
             return await this._SupplierAppService.UpdateSupplierAsync(supplierSavedDto);
         }
 
-        [HttpPut]
-        public async Task<SupplierTypeDto> ToggleStatusSupplierCatalog([FromBody]  EntityDto<int> input)
-        {
-            return await this._SupplierAppService.ToggleStatusSupplierCatalogAsync(input);
-        }
+        //[HttpPut]
+        //public async Task<SupplierTypeDto> ToggleStatusSupplierCatalog([FromBody]  EntityDto<int> input)
+        //{
+        //    return await this._SupplierAppService.ToggleStatusSupplierCatalogAsync(input);
+        //}
 
         [HttpDelete("{id}")]
         public async Task DeleteSupplierCatalog(int id)

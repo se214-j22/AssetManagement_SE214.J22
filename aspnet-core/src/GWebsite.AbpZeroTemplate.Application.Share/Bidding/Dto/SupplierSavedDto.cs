@@ -15,6 +15,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Bidding.Dto
         public string Fax { get; set; }
         public string Phone { get; set; }
         public string Contact { get; set; }
-        public ICollection<BiddingSaved> Biddings { get; set; }
+        public ICollection<int> Products { get; set; }
     }
 }

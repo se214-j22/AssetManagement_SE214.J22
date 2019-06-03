@@ -41,7 +41,7 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
         /// GPermissions dùng cho bên Gwebsite
         /// </summary>
         public virtual DbSet<Permission> GPermissions { get; set; }
-        public virtual DbSet<Bidding> Biddings { get; set; }
+        //public virtual DbSet<Bidding> Biddings { get; set; }
 
         /// <summary>
         /// 
@@ -333,22 +333,32 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
                      .OnDelete(DeleteBehavior.Restrict);
 
             });
-            modelBuilder.Entity<Bidding>(entity =>
+
+            modelBuilder.Entity<Product>(entity =>
             {
-                //entity
-                //      .HasKey(oi => new { oi.ProductId, oi.SupplierId });
                 entity
-                       .HasOne(p => p.Product)
-                        .WithMany(i => i.Biddings)
-                        .HasForeignKey(i => i.ProductId)
-                        .OnDelete(DeleteBehavior.Restrict);
-                entity
-                     .HasOne(p => p.Supplier)
-                      .WithMany(i => i.Biddings)
-                      .HasForeignKey(i => i.SupplierId)
-                      .OnDelete(DeleteBehavior.Restrict);
+                    .HasOne(p => p.Supplier)
+                     .WithMany(i => i.Products)
+                     .HasForeignKey(i => i.SupplierId)
+                     .OnDelete(DeleteBehavior.Restrict);
 
             });
+            //modelBuilder.Entity<Bidding>(entity =>
+            //{
+            //    //entity
+            //    //      .HasKey(oi => new { oi.ProductId, oi.SupplierId });
+            //    entity
+            //           .HasOne(p => p.Product)
+            //            .WithMany(i => i.Biddings)
+            //            .HasForeignKey(i => i.ProductId)
+            //            .OnDelete(DeleteBehavior.Restrict);
+            //    entity
+            //         .HasOne(p => p.Supplier)
+            //          .WithMany(i => i.Biddings)
+            //          .HasForeignKey(i => i.SupplierId)
+            //          .OnDelete(DeleteBehavior.Restrict);
+
+            //});
             //modelBuilder.Entity<Department>(entity =>
             //{
             //    entity
@@ -357,7 +367,7 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
             //    .HasForeignKey(i => i.DepartmentId)
             //    .OnDelete(DeleteBehavior.Cascade);
 
-              
+
 
             //});
 

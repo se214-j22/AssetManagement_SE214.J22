@@ -47,5 +47,11 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         {
             await this._ProductAppService.DeleteProductAsync(id);
         }
+
+        [HttpPost]
+        public async Task<ProductDto> CreateProductAsync([FromBody] ProductSavedCreate productSavedCreate)
+        {
+            return await this._ProductAppService.CreateProductAsync(productSavedCreate);
+        }
     }
 }

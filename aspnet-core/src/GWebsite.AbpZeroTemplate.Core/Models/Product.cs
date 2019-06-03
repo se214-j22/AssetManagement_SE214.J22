@@ -25,12 +25,12 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public ProductType ProductType { get; set; }
         public int? ProductTypeId { get; set; }
         //public ICollection<PurchaseProduct> PurchaseProducts { get; set; }
-        public ICollection<Bidding> Biddings { get; set; }
+        //public ICollection<Bidding> Biddings { get; set; }
         public Product()
         {
             CreateDate = DateTime.Now;
             //PurchaseProducts = new Collection<PurchaseProduct>();
-            Biddings = new Collection<Bidding>();
+            //Biddings = new Collection<Bidding>();
         }
     }
 }

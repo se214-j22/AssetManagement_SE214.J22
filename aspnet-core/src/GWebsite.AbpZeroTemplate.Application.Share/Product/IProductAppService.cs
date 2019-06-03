@@ -13,5 +13,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Products
         Task<ProductDto> UpdateProductAsync(ProductSavedDto productSavedDto);
         Task<ProductDto> ActiveProductAsync(int id);
         Task DeleteProductAsync(int id);
+        Task<ProductDto> CreateProductAsync(ProductSavedCreate productSavedCreate);
     }
 }

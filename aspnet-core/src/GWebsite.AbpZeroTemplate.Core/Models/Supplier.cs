@@ -21,10 +21,10 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public string Status { get; set; }
         public SupplierType SupplierType { get; set; }
         public int SupplierTypeId { get; set; }
-        public ICollection<Bidding> Biddings { get; set; }
+        public ICollection<Product> Products { get; set; }
         public Supplier()
         {
-            Biddings = new Collection<Bidding>();
+            Products = new Collection<Product>();
         }
     }
 }
