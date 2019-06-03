@@ -12,21 +12,24 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
     {
         public string Name { get; set; }
         public float Price { get; set; }
-        public float Discount { get; set; }
-        public string Summary { get; set; }
-        public string AvailableAddress { get; set; }
-        public DateTime AddedDate { get; set; }
-        public Image Image { get; set; }
+        public string Code { get; set; }
+        public string Address { get; set; }
+        public string UnitPrice { get; set; }
+        public string CalUnit { get; set; }
+        public DateTime CreateDate { get; set; }
+        public int Status { get; set; }
+        public string Description { get; set; }
+        //public Image Image { get; set; }
         public Supplier Supplier { get; set; }
-        public int SupplierId { get; set; }
+        public int? SupplierId { get; set; }
         public ProductType ProductType { get; set; }
-        public int ProductTypeId { get; set; }
-        public ICollection<PurchaseProduct> PurchaseProducts { get; set; }
+        public int? ProductTypeId { get; set; }
+        //public ICollection<PurchaseProduct> PurchaseProducts { get; set; }
         public ICollection<Bidding> Biddings { get; set; }
         public Product()
         {
-            AddedDate = DateTime.Now;
-            PurchaseProducts = new Collection<PurchaseProduct>();
+            CreateDate = DateTime.Now;
+            //PurchaseProducts = new Collection<PurchaseProduct>();
             Biddings = new Collection<Bidding>();
         }
     }

@@ -23,13 +23,13 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
         public virtual DbSet<Function> Functions { get; set; }
         public virtual DbSet<MenuClient> MenuClients { get; set; }
         public virtual DbSet<DemoModel> DemoModels { get; set; }
-        public virtual DbSet<Image> Images { get; set; }
+        //public virtual DbSet<Image> Images { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<SupplierType> SupplierTypes { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductType> ProductTypes { get; set; }
-        public virtual DbSet<Purchase> Purchases { get; set; }
-        public virtual DbSet<PurchaseProduct> PurchaseProducts { get; set; }
+        //public virtual DbSet<Purchase> Purchases { get; set; }
+        //public virtual DbSet<PurchaseProduct> PurchaseProducts { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Guarantee> Guarantees { get; set; }
         public virtual DbSet<GaranteeContract> GaranteeContracts { get; set; }
@@ -314,15 +314,15 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
             // configuration for product entity
-            modelBuilder.Entity<Image>(entity =>
-            {
-                entity
-                .HasOne(i => i.Product)
-                .WithOne(p => p.Image)
-                .HasForeignKey<Image>(i => i.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<Image>(entity =>
+            //{
+            //    entity
+            //    .HasOne(i => i.Product)
+            //    .WithOne(p => p.Image)
+            //    .HasForeignKey<Image>(i => i.ProductId)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
-            });
+            //});
 
             modelBuilder.Entity<Plan>(entity =>
             {
@@ -349,17 +349,17 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
                       .OnDelete(DeleteBehavior.Restrict);
 
             });
-            modelBuilder.Entity<Department>(entity =>
-            {
-                entity
-               .HasMany(p => p.Purchases)
-                .WithOne(i => i.Department)
-                .HasForeignKey(i => i.DepartmentId)
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<Department>(entity =>
+            //{
+            //    entity
+            //   .HasMany(p => p.Purchases)
+            //    .WithOne(i => i.Department)
+            //    .HasForeignKey(i => i.DepartmentId)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
               
 
-            });
+            //});
 
             modelBuilder.Entity<SupplierType>(entity =>
             {
@@ -379,22 +379,22 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
                 .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<PurchaseProduct>(entity =>
-            {
-                entity
-              .HasKey(oi => new { oi.ProductId, oi.PurchaseId });
-                entity
-                .HasOne(oi => oi.Product)
-                .WithMany(p => p.PurchaseProducts)
-                .HasForeignKey(ot => ot.ProductId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<PurchaseProduct>(entity =>
+            //{
+            //    entity
+            //  .HasKey(oi => new { oi.ProductId, oi.PurchaseId });
+            //    entity
+            //    .HasOne(oi => oi.Product)
+            //    .WithMany(p => p.PurchaseProducts)
+            //    .HasForeignKey(ot => ot.ProductId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
-                entity
-                    .HasOne(oi => oi.Purchase)
-                    .WithMany(p => p.PurchaseProducts)
-                    .HasForeignKey(ot => ot.PurchaseId)
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
+            //    entity
+            //        .HasOne(oi => oi.Purchase)
+            //        .WithMany(p => p.PurchaseProducts)
+            //        .HasForeignKey(ot => ot.PurchaseId)
+            //        .OnDelete(DeleteBehavior.Cascade);
+            //});
             modelBuilder.Entity<Permission>(entity =>
             {
                 //entity.HasIndex(e => e.FunctionId)

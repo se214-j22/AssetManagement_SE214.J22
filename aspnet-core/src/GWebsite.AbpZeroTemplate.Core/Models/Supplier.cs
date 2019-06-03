@@ -15,6 +15,10 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public string Fax { get; set; }
         public string Phone { get; set; }
         public string Contact { get; set; }
+        public string Code { get; set; }
+        public string Description { get; set; }
+        public string CreateDate { get; set; }
+        public string Status { get; set; }
         public SupplierType SupplierType { get; set; }
         public int SupplierTypeId { get; set; }
         public ICollection<Bidding> Biddings { get; set; }

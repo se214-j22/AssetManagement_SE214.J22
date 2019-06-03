@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.Product.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Products;
 using GWebsite.AbpZeroTemplate.Application.Share.Products.Dto;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<ListResultDto<ProductDto>> GetProducts(GetMenuClientInput input)
+        public async Task<ListResultDto<ProductDto>> GetProducts(GetProductInput input)
         {
             return await _ProductAppService.GetProductsAsync(input);
         }
@@ -27,6 +28,24 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         public async Task<ProductDto> GetProduct(EntityDto<int> input)
         {
             return await _ProductAppService.GetProductAsync(input);
+        }
+
+        [HttpPut]
+        public async Task<ProductDto> UpdateProductAsync([FromBody] ProductSavedDto productSavedDto)
+        {
+            return await this._ProductAppService.UpdateProductAsync(productSavedDto);
+        }
+
+        [HttpPut]
+        public async Task<ProductDto> ActiveProductAsync(int id)
+        {
+            return await this._ProductAppService.ActiveProductAsync(id);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task DeleteProductAsync(int id)
+        {
+            await this._ProductAppService.DeleteProductAsync(id);
         }
     }
 }

@@ -135,7 +135,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
         /// <returns></returns>
         public async Task<PagedResultDto<SupplierDto>> GetSupplierByProductAsync(GetMenuClientInput input, int productId)
         {
-            var query = this.supplierRepository.GetAllIncluding().Include(p => p.Biddings).ThenInclude(p => p.Product).ThenInclude(p => p.Image);
+            var query = this.supplierRepository.GetAllIncluding().Include(p => p.Biddings).ThenInclude(p => p.Product);
             var select = query.Where(p => p.Biddings.FirstOrDefault(b => b.ProductId == productId) != null);
             var totalCount = await select.CountAsync();
             var items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
@@ -146,7 +146,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
 
         public async Task<PagedResultDto<SupplierDto>> GetSupplierByTypeAsync(GetMenuClientInput input, string SupplierType)
         {
-            var query = this.supplierRepository.GetAllIncluding().Include(p => p.SupplierType).Include(p => p.Biddings).ThenInclude(p => p.Product).ThenInclude(p => p.Image);
+            var query = this.supplierRepository.GetAllIncluding().Include(p => p.SupplierType).Include(p => p.Biddings).ThenInclude(p => p.Product);
             var select = query.Where(sup => sup.SupplierType.Name.Equals(SupplierType));
             var totalCount = await select.CountAsync();
             var items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
