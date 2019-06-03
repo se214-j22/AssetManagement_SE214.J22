@@ -583,6 +583,73 @@ export class AssetServiceProxy {
     }
 
     /**
+     * @term (optional) 
+     * @assetLineId (optional) 
+     * @sorting (optional) 
+     * @maxResultCount (optional) 
+     * @skipCount (optional) 
+     * @return Success
+     */
+    getByFilter(term: string | null | undefined, assetLineId: number | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfAssetDto> {
+        let url_ = this.baseUrl + "/api/Asset/GetByFilter?";
+        if (term !== undefined)
+            url_ += "Term=" + encodeURIComponent("" + term) + "&"; 
+        if (assetLineId !== undefined)
+            url_ += "AssetLineId=" + encodeURIComponent("" + assetLineId) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetByFilter(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetByFilter(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfAssetDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfAssetDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetByFilter(response: HttpResponseBase): Observable<PagedResultDtoOfAssetDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultDtoOfAssetDto.fromJS(resultData200) : new PagedResultDtoOfAssetDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfAssetDto>(<any>null);
+    }
+
+    /**
      * @id (optional) 
      * @return Success
      */
@@ -693,11 +760,66 @@ export class AssetServiceProxy {
     }
 
     /**
+     * @id (optional) 
+     * @return Success
+     */
+    getForEdit(id: number | null | undefined): Observable<AssetInput> {
+        let url_ = this.baseUrl + "/api/Asset/GetForEdit?";
+        if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetForEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<AssetInput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<AssetInput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetForEdit(response: HttpResponseBase): Observable<AssetInput> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? AssetInput.fromJS(resultData200) : new AssetInput();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<AssetInput>(<any>null);
+    }
+
+    /**
      * @input (optional) 
      * @return Success
      */
-    create(input: AssetInput | null | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/Asset/Create";
+    createOrEdit(input: AssetInput | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/Asset/CreateOrEdit";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(input);
@@ -712,11 +834,11 @@ export class AssetServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreate(response_);
+            return this.processCreateOrEdit(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processCreate(<any>response_);
+                    return this.processCreateOrEdit(<any>response_);
                 } catch (e) {
                     return <Observable<void>><any>_observableThrow(e);
                 }
@@ -725,7 +847,58 @@ export class AssetServiceProxy {
         }));
     }
 
-    protected processCreate(response: HttpResponseBase): Observable<void> {
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    delete(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/Asset/Delete/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -754,6 +927,76 @@ export class AssetLineServiceProxy {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @term (optional) 
+     * @assetTypeId (optional) 
+     * @manufacturerId (optional) 
+     * @sorting (optional) 
+     * @maxResultCount (optional) 
+     * @skipCount (optional) 
+     * @return Success
+     */
+    getByFilter(term: string | null | undefined, assetTypeId: number | null | undefined, manufacturerId: number | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfAssetLineDto> {
+        let url_ = this.baseUrl + "/api/AssetLine/GetByFilter?";
+        if (term !== undefined)
+            url_ += "Term=" + encodeURIComponent("" + term) + "&"; 
+        if (assetTypeId !== undefined)
+            url_ += "AssetTypeId=" + encodeURIComponent("" + assetTypeId) + "&"; 
+        if (manufacturerId !== undefined)
+            url_ += "ManufacturerId=" + encodeURIComponent("" + manufacturerId) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetByFilter(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetByFilter(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfAssetLineDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfAssetLineDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetByFilter(response: HttpResponseBase): Observable<PagedResultDtoOfAssetLineDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultDtoOfAssetLineDto.fromJS(resultData200) : new PagedResultDtoOfAssetLineDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfAssetLineDto>(<any>null);
     }
 
     /**
@@ -917,6 +1160,57 @@ export class AssetLineServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
+    /**
+     * @return Success
+     */
+    delete(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/AssetLine/Delete/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
 }
 
 @Injectable()
@@ -928,6 +1222,70 @@ export class AssetTypeServiceProxy {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @term (optional) 
+     * @sorting (optional) 
+     * @maxResultCount (optional) 
+     * @skipCount (optional) 
+     * @return Success
+     */
+    getByFilter(term: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfAssetTypeDto> {
+        let url_ = this.baseUrl + "/api/AssetType/GetByFilter?";
+        if (term !== undefined)
+            url_ += "Term=" + encodeURIComponent("" + term) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetByFilter(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetByFilter(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfAssetTypeDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfAssetTypeDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetByFilter(response: HttpResponseBase): Observable<PagedResultDtoOfAssetTypeDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultDtoOfAssetTypeDto.fromJS(resultData200) : new PagedResultDtoOfAssetTypeDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfAssetTypeDto>(<any>null);
     }
 
     /**
@@ -1074,6 +1432,57 @@ export class AssetTypeServiceProxy {
     }
 
     protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    delete(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/AssetType/Delete/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -4627,6 +5036,70 @@ export class ManufacturerServiceProxy {
     }
 
     /**
+     * @term (optional) 
+     * @sorting (optional) 
+     * @maxResultCount (optional) 
+     * @skipCount (optional) 
+     * @return Success
+     */
+    getByFilter(term: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfManufacturerDto> {
+        let url_ = this.baseUrl + "/api/Manufacturer/GetByFilter?";
+        if (term !== undefined)
+            url_ += "Term=" + encodeURIComponent("" + term) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetByFilter(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetByFilter(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfManufacturerDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfManufacturerDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetByFilter(response: HttpResponseBase): Observable<PagedResultDtoOfManufacturerDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultDtoOfManufacturerDto.fromJS(resultData200) : new PagedResultDtoOfManufacturerDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfManufacturerDto>(<any>null);
+    }
+
+    /**
      * @id (optional) 
      * @return Success
      */
@@ -4770,6 +5243,57 @@ export class ManufacturerServiceProxy {
     }
 
     protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    delete(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/Manufacturer/Delete/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -11017,9 +11541,57 @@ export interface ISwitchToLinkedAccountOutput {
     tenancyName: string | undefined;
 }
 
+export class PagedResultDtoOfAssetDto implements IPagedResultDtoOfAssetDto {
+    totalCount!: number | undefined;
+    items!: AssetDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfAssetDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(AssetDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfAssetDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfAssetDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfAssetDto {
+    totalCount: number | undefined;
+    items: AssetDto[] | undefined;
+}
+
 export class AssetDto implements IAssetDto {
     code!: string | undefined;
-    isDamed!: boolean | undefined;
+    isDamaged!: boolean | undefined;
     assetLine!: AssetLine | undefined;
     id!: number | undefined;
 
@@ -11035,7 +11607,7 @@ export class AssetDto implements IAssetDto {
     init(data?: any) {
         if (data) {
             this.code = data["code"];
-            this.isDamed = data["isDamed"];
+            this.isDamaged = data["isDamaged"];
             this.assetLine = data["assetLine"] ? AssetLine.fromJS(data["assetLine"]) : <any>undefined;
             this.id = data["id"];
         }
@@ -11051,7 +11623,7 @@ export class AssetDto implements IAssetDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["code"] = this.code;
-        data["isDamed"] = this.isDamed;
+        data["isDamaged"] = this.isDamaged;
         data["assetLine"] = this.assetLine ? this.assetLine.toJSON() : <any>undefined;
         data["id"] = this.id;
         return data; 
@@ -11060,7 +11632,7 @@ export class AssetDto implements IAssetDto {
 
 export interface IAssetDto {
     code: string | undefined;
-    isDamed: boolean | undefined;
+    isDamaged: boolean | undefined;
     assetLine: AssetLine | undefined;
     id: number | undefined;
 }
@@ -11280,6 +11852,7 @@ export interface IManufacturer {
 export class AssetInput implements IAssetInput {
     number!: number | undefined;
     assetLineID!: number | undefined;
+    isDamaged!: boolean | undefined;
     id!: number | undefined;
 
     constructor(data?: IAssetInput) {
@@ -11295,6 +11868,7 @@ export class AssetInput implements IAssetInput {
         if (data) {
             this.number = data["number"];
             this.assetLineID = data["assetLineID"];
+            this.isDamaged = data["isDamaged"];
             this.id = data["id"];
         }
     }
@@ -11310,6 +11884,7 @@ export class AssetInput implements IAssetInput {
         data = typeof data === 'object' ? data : {};
         data["number"] = this.number;
         data["assetLineID"] = this.assetLineID;
+        data["isDamaged"] = this.isDamaged;
         data["id"] = this.id;
         return data; 
     }
@@ -11318,7 +11893,56 @@ export class AssetInput implements IAssetInput {
 export interface IAssetInput {
     number: number | undefined;
     assetLineID: number | undefined;
+    isDamaged: boolean | undefined;
     id: number | undefined;
+}
+
+export class PagedResultDtoOfAssetLineDto implements IPagedResultDtoOfAssetLineDto {
+    totalCount!: number | undefined;
+    items!: AssetLineDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfAssetLineDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(AssetLineDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfAssetLineDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfAssetLineDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfAssetLineDto {
+    totalCount: number | undefined;
+    items: AssetLineDto[] | undefined;
 }
 
 export class AssetLineDto implements IAssetLineDto {
@@ -11515,6 +12139,54 @@ export interface IAssetLineInput {
     assetTypeID: number | undefined;
     manufacturerID: number | undefined;
     id: number | undefined;
+}
+
+export class PagedResultDtoOfAssetTypeDto implements IPagedResultDtoOfAssetTypeDto {
+    totalCount!: number | undefined;
+    items!: AssetTypeDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfAssetTypeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(AssetTypeDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfAssetTypeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfAssetTypeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfAssetTypeDto {
+    totalCount: number | undefined;
+    items: AssetTypeDto[] | undefined;
 }
 
 export class AssetTypeInput implements IAssetTypeInput {
@@ -15501,6 +16173,54 @@ export interface IUpdateLanguageTextInput {
     sourceName: string;
     key: string;
     value: string;
+}
+
+export class PagedResultDtoOfManufacturerDto implements IPagedResultDtoOfManufacturerDto {
+    totalCount!: number | undefined;
+    items!: ManufacturerDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfManufacturerDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(ManufacturerDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfManufacturerDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfManufacturerDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfManufacturerDto {
+    totalCount: number | undefined;
+    items: ManufacturerDto[] | undefined;
 }
 
 export class ManufacturerInput implements IManufacturerInput {

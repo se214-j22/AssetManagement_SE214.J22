@@ -21,6 +21,7 @@ import { ViewCustomerModalComponent } from './customer/view-customer-modal.compo
 import { CreateOrEditCustomerModalComponent } from './customer/create-or-edit-customer-modal.component';
 import { AssetComponent } from './asset/asset.component';
 import { ViewAssetModalComponent } from './asset/view-asset-modal.component';
+import { CreateOrEditAssetModalComponent } from './asset/create-or-edit-asset-modal.component';
 
 @NgModule({
     imports: [
@@ -47,7 +48,8 @@ import { ViewAssetModalComponent } from './asset/view-asset-modal.component';
         DemoModelComponent, CreateOrEditDemoModelModalComponent, ViewDemoModelModalComponent,
         CustomerComponent, CreateOrEditCustomerModalComponent, ViewCustomerModalComponent,
         AssetComponent,
-        ViewAssetModalComponent
+        ViewAssetModalComponent,
+        CreateOrEditAssetModalComponent
     ],
     providers: [
         DemoModelServiceProxy,

@@ -10,23 +10,25 @@ import { Table } from 'primeng/components/table/table';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import { DemoModelServiceProxy, AssetServiceProxy, AssetDto } from '@shared/service-proxies/service-proxies';
 import jsQR from "jsqr";
+import { ViewAssetModalComponent } from './view-asset-modal.component';
+import { CreateOrEditAssetModalComponent } from './create-or-edit-asset-modal.component';
 
 @Component({
   templateUrl: './asset.component.html',
   animations: [appModuleAnimation()]
 })
-export class AssetComponent extends AppComponentBase
-  implements AfterViewInit {
+export class AssetComponent extends AppComponentBase implements AfterViewInit {
   // @ViewChild('textsTable') textsTable: ElementRef;
-  // @ViewChild('dataTable') dataTable: Table;
-  // @ViewChild('paginator') paginator: Paginator;
-  // @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditAssetModalComponent;
-  // @ViewChild('viewModal') viewDemoModelModal: ViewAssetModalComponent;
-  filterText: string;
+  @ViewChild('dataTable') dataTable: Table;
+  @ViewChild('paginator') paginator: Paginator;
+  @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditAssetModalComponent;
+  @ViewChild('viewModal') viewModal: ViewAssetModalComponent;
+  filterTerm: string;
   asset: AssetDto;
   assetId: number;
   assetCode: string;
   chooseBy: 'id' | 'detecting';
+
   constructor(
     injector: Injector,
     private _assetService: AssetServiceProxy,
@@ -36,6 +38,80 @@ export class AssetComponent extends AppComponentBase
   ) {
     super(injector);
   }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.init();
+    });
+  }
+  init(): void {
+    this._activatedRoute.params.subscribe((params: Params) => {
+      this.filterTerm = params['term'] || '';
+      this.reloadList(this.filterTerm, null);
+    });
+  }
+  getAssets(event?: LazyLoadEvent) {
+    if (!this.paginator || !this.dataTable) {
+      return;
+    }
+
+    //show loading trong gridview
+    this.primengTableHelper.showLoadingIndicator();
+
+    /**
+     * mặc định ban đầu lấy hết dữ liệu nên dữ liệu filter = null
+     */
+
+    this.reloadList(null, event);
+
+  }
+
+  createAsset() {
+    this.createOrEditModal.show();
+}
+  reloadList(filterTerm, event?: LazyLoadEvent) {
+    this._assetService.getByFilter(filterTerm,0 ,  this.primengTableHelper.getSorting(this.dataTable),
+      this.primengTableHelper.getMaxResultCount(this.paginator, event),
+      this.primengTableHelper.getSkipCount(this.paginator, event),
+    ).subscribe(result => {
+      this.primengTableHelper.totalRecordsCount = result.totalCount;
+      this.primengTableHelper.records = result.items;
+      this.primengTableHelper.hideLoadingIndicator();
+    });
+  }
+
+  deleteCustomer(id): void {
+    this._assetService.delete(id).subscribe(() => {
+        this.reloadPage();
+    })
+  }
+
+
+  reloadPage(): void {
+    this.paginator.changePage(this.paginator.getPage());
+  }
+
+  applyFilters(): void {
+    this.reloadList(this.filterTerm, null);
+
+    if (this.paginator.getPage() !== 0) {
+      this.paginator.changePage(0);
+      return;
+    }
+  }
+
+  // createCustomer() {
+  //   this.createOrEditModal.show();
+  // }
+
+  /**
+  * @param text
+  */
+  truncateString(text): string {
+    return abp.utils.truncateStringWithPostfix(text, 32, '...');
+  }
+
+  
   choose() {
     this.assetCode = null;
     this.assetId = null;
@@ -47,9 +123,8 @@ export class AssetComponent extends AppComponentBase
     else {
       if (this.chooseBy == 'id') {
         this.chooseBy = 'detecting';
-        // this.startup();
         document.getElementById('detectingByCamera').style.display = 'block';
-        setTimeout(() => 
+        setTimeout(() =>
           this.startup()
         )
       } else {
@@ -69,80 +144,6 @@ export class AssetComponent extends AppComponentBase
       this.asset = asset;
     });
   }
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      // this.startup();
-      // this.init();
-
-    });
-  }
-  // getDemoModels(event?: LazyLoadEvent) {
-  //   if (!this.paginator || !this.dataTable) {
-  //       return;
-  //   }
-
-  //   //show loading trong gridview
-  //   this.primengTableHelper.showLoadingIndicator();
-
-  //   /**
-  //    * Sử dụng _apiService để call các api của backend
-  //    */
-
-  //   // this._assetService.getDemoModelsByFilter(null, null, this.primengTableHelper.getSorting(this.dataTable),
-  //   //     this.primengTableHelper.getMaxResultCount(this.paginator, event),
-  //   //     this.primengTableHelper.getSkipCount(this.paginator, event),
-  //   // ).subscribe(result => {
-  //   //     this.primengTableHelper.totalRecordsCount = result.totalCount;
-  //   //     this.primengTableHelper.records = result.items;
-  //   //     this.primengTableHelper.hideLoadingIndicator();
-  //   // });
-
-  // }
-
-  // deleteDemoModel(id): void {
-  //   // this._assetService.deleteDemoModel(id).subscribe(() => {
-  //   //     this.reloadPage();
-  //   // })
-  // }
-
-  // init(): void {
-  //   //get params từ url để thực hiện filter
-  //   this._activatedRoute.params.subscribe((params: Params) => {
-  //       this.filterText = params['filterText'] || '';
-  //       //reload lại gridview
-  //       this.reloadPage();
-  //   });
-  // }
-
-  // reloadPage(): void {
-  //   this.paginator.changePage(this.paginator.getPage());
-  // }
-
-  // applyFilters(): void {
-  //   //truyền params lên url thông qua router
-  //   this._router.navigate(['app/gwebsite/menu-client', {
-  //       filterText: this.filterText
-  //   }]);
-
-  //   if (this.paginator.getPage() !== 0) {
-  //       this.paginator.changePage(0);
-  //       return;
-  //   }
-  // }
-
-  // //hàm show view create MenuClient
-  // createDemoModel() {
-  //   // this.createOrEditModal.show();
-  // }
-
-  // /**
-  // * Tạo pipe thay vì tạo từng hàm truncate như thế này
-  // * @param text
-  // */
-  // truncateString(text): string {
-  //   return abp.utils.truncateStringWithPostfix(text, 32, '...');
-  // }
-
   startup() {
     // this.video = document.createElement("video");
     this.video = document.getElementById('video');
