@@ -15,6 +15,11 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Bidding.Dto
         public string Fax { get; set; }
         public string Phone { get; set; }
         public string Contact { get; set; }
-        public ICollection<int> Products { get; set; }
+        public string Code { get; set; }
+        public string Description { get; set; }
+        public DateTime CreateDate { get; set; }
+        public int Status { get; set; }
+        public int SupplierTypeId { get; set; }
+        //public ICollection<int> Products { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Abp.Application.Services.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Bidding.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.Product.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,8 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Bidding
         Task<SupplierDto> CreateSupplierAsync(SupplierSavedDto supplierSavedDto);
         Task<SupplierDto> UpdateSupplierAsync(SupplierSavedDto supplierSavedDto);
         Task<SupplierDto> GetSupplierByIdAsync(EntityDto<int> input);
-        Task DeleteBiddingAsync(EntityDto<int> input);
+        Task DeleteSupplierAsync(EntityDto<int> input);
+        Task<PagedResultDto<SupplierDto>> GetSupplierWithFilterAsync(GetProductInput input);
 
     }
 }

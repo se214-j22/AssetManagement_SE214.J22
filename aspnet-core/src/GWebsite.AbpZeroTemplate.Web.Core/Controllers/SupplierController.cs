@@ -4,6 +4,7 @@ using GWebsite.AbpZeroTemplate.Application.Share;
 using GWebsite.AbpZeroTemplate.Application.Share.Bidding;
 using GWebsite.AbpZeroTemplate.Application.Share.Bidding.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.Product.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -86,6 +87,12 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
             return await this._SupplierAppService.GetSupplierTypesWithFilterAsync(skipCount.Value, maxResultCount.Value, code, name, status.Value);
         }
 
+
+        [HttpGet]
+        public async Task<ListResultDto<SupplierDto>> GetSupplierWithFilterAsync(GetProductInput input)
+        {
+            return await this._SupplierAppService.GetSupplierWithFilterAsync(input);
+        }
         //[HttpPost]
         //public async Task<BiddingProduct> CreateBidding([FromBody]  BiddingSaved BiddingSaved)
         //{
@@ -114,6 +121,12 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         //{
         //    return await this._SupplierAppService.ToggleStatusSupplierCatalogAsync(input);
         //}
+
+        [HttpDelete("{id}")]
+        public async Task DeleteSupplierAsync(int id)
+        {
+            await this._SupplierAppService.DeleteSupplierAsync(new EntityDto<int>() { Id = id });
+        }
 
         [HttpDelete("{id}")]
         public async Task DeleteSupplierCatalog(int id)

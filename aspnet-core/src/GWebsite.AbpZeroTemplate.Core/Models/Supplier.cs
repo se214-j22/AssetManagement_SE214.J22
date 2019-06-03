@@ -17,8 +17,8 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public string Contact { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }
-        public string CreateDate { get; set; }
-        public string Status { get; set; }
+        public DateTime CreateDate { get; set; }
+        public int Status { get; set; }
         public SupplierType SupplierType { get; set; }
         public int SupplierTypeId { get; set; }
         public ICollection<Product> Products { get; set; }

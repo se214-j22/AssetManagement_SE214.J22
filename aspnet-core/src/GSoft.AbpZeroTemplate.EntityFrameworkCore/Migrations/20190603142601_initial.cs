@@ -201,9 +201,9 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     CreatorUserId = table.Column<long>(nullable: true),
                     LastModificationTime = table.Column<DateTime>(nullable: true),
                     LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
                     DeleterUserId = table.Column<long>(nullable: true),
                     DeletionTime = table.Column<DateTime>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
                     TenantId = table.Column<int>(nullable: true),
                     ParentId = table.Column<long>(nullable: true),
                     Code = table.Column<string>(maxLength: 95, nullable: false),
@@ -268,9 +268,9 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     CreatorUserId = table.Column<long>(nullable: true),
                     LastModificationTime = table.Column<DateTime>(nullable: true),
                     LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
                     DeleterUserId = table.Column<long>(nullable: true),
                     DeletionTime = table.Column<DateTime>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
                     TenantId = table.Column<int>(nullable: true),
                     UserId = table.Column<long>(nullable: false),
                     UserLinkId = table.Column<long>(nullable: true),
@@ -348,9 +348,9 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     CreatorUserId = table.Column<long>(nullable: true),
                     LastModificationTime = table.Column<DateTime>(nullable: true),
                     LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
                     DeleterUserId = table.Column<long>(nullable: true),
                     DeletionTime = table.Column<DateTime>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     IsEmailConfirmed = table.Column<bool>(nullable: false),
@@ -378,7 +378,9 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     SignInTokenExpireTimeUtc = table.Column<DateTime>(nullable: true),
                     SignInToken = table.Column<string>(nullable: true),
                     GoogleAuthenticatorKey = table.Column<string>(nullable: true),
-                    Level = table.Column<int>(nullable: false)
+                    Level = table.Column<int>(nullable: false),
+                    DepartmentCode = table.Column<string>(nullable: true),
+                    UnitCode = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -546,7 +548,8 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     SqlPass = table.Column<string>(nullable: true),
                     ValueString1 = table.Column<string>(nullable: true),
                     ValueString2 = table.Column<string>(nullable: true),
-                    PriceCode = table.Column<string>(nullable: true)
+                    PriceCode = table.Column<string>(nullable: true),
+                    DepartmentId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -675,12 +678,34 @@ namespace GSoft.AbpZeroTemplate.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Plans",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ImplementDate = table.Column<DateTime>(nullable: false),
+                    EffectiveDate = table.Column<DateTime>(nullable: false),
+                    TotalPrice = table.Column<float>(nullable: false),
+                    UnitCode = table.Column<string>(nullable: true),
+                    DepartmentCode = table.Column<string>(nullable: true),
+                    Status = table.Column<int>(nullable: false),
+                    CountChange = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Plans", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true)
+                    Code = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    Note = table.Column<string>(nullable: true),
+                    Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -693,7 +718,10 @@ namespace GSoft.AbpZeroTemplate.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true)
+                    Code = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    Note = table.Column<string>(nullable: true),
+                    Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -735,9 +763,9 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     CreatorUserId = table.Column<long>(nullable: true),
                     LastModificationTime = table.Column<DateTime>(nullable: true),
                     LastModifierUserId = table.Column<long>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
                     DeleterUserId = table.Column<long>(nullable: true),
                     DeletionTime = table.Column<DateTime>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
                     Gateway = table.Column<int>(nullable: false),
                     Amount = table.Column<decimal>(nullable: false),
                     Status = table.Column<int>(nullable: false),
@@ -1090,40 +1118,6 @@ namespace GSoft.AbpZeroTemplate.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Purchases",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId1 = table.Column<long>(nullable: true),
-                    UserId = table.Column<int>(nullable: true),
-                    Level = table.Column<int>(nullable: false),
-                    Status = table.Column<int>(nullable: false),
-                    Comment = table.Column<string>(nullable: true),
-                    DepartmentId = table.Column<int>(nullable: true),
-                    RaisedDate = table.Column<DateTime>(nullable: true),
-                    AuthorizedDate = table.Column<DateTime>(nullable: true),
-                    RequiredDate = table.Column<DateTime>(nullable: true),
-                    ReceivedDate = table.Column<DateTime>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Purchases", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Purchases_Departments_DepartmentId",
-                        column: x => x.DepartmentId,
-                        principalTable: "Departments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Purchases_AbpUsers_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "AbpUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "GPermissions",
                 columns: table => new
                 {
@@ -1165,6 +1159,10 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     Fax = table.Column<string>(nullable: true),
                     Phone = table.Column<string>(nullable: true),
                     Contact = table.Column<string>(nullable: true),
+                    Code = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    CreateDate = table.Column<string>(nullable: true),
+                    Status = table.Column<int>(nullable: false),
                     SupplierTypeId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -1210,9 +1208,9 @@ namespace GSoft.AbpZeroTemplate.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CreationTime = table.Column<DateTime>(nullable: false),
                     CreatorUserId = table.Column<long>(nullable: true),
-                    IsGranted = table.Column<bool>(nullable: false),
                     TenantId = table.Column<int>(nullable: true),
                     Name = table.Column<string>(maxLength: 128, nullable: false),
+                    IsGranted = table.Column<bool>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
                     RoleId = table.Column<int>(nullable: true),
                     UserId = table.Column<long>(nullable: true)
@@ -1290,13 +1288,16 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
-                    Price = table.Column<double>(nullable: false),
-                    Discount = table.Column<double>(nullable: false),
-                    Summary = table.Column<string>(nullable: true),
-                    AvailableAddress = table.Column<string>(nullable: true),
-                    AddedDate = table.Column<DateTime>(nullable: false),
-                    SupplierId = table.Column<int>(nullable: false),
-                    ProductTypeId = table.Column<int>(nullable: false)
+                    Price = table.Column<float>(nullable: false),
+                    Code = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    UnitPrice = table.Column<string>(nullable: true),
+                    CalUnit = table.Column<string>(nullable: true),
+                    CreateDate = table.Column<DateTime>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    SupplierId = table.Column<int>(nullable: true),
+                    ProductTypeId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1312,11 +1313,11 @@ namespace GSoft.AbpZeroTemplate.Migrations
                         column: x => x.SupplierId,
                         principalTable: "Suppliers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Biddings",
+                name: "Bidding",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -1331,36 +1332,48 @@ namespace GSoft.AbpZeroTemplate.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Biddings", x => x.Id);
+                    table.PrimaryKey("PK_Bidding", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Biddings_Products_ProductId",
+                        name: "FK_Bidding_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Biddings_Suppliers_SupplierId",
+                        name: "FK_Bidding_Suppliers_SupplierId",
                         column: x => x.SupplierId,
                         principalTable: "Suppliers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Images",
+                name: "SubPlans",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Url = table.Column<string>(nullable: true),
-                    ProductId = table.Column<int>(nullable: false)
+                    ProductId = table.Column<int>(nullable: false),
+                    Totalprice = table.Column<float>(nullable: false),
+                    ScheduleMonth = table.Column<string>(nullable: true),
+                    ImplementQantity = table.Column<int>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
+                    ImplementPrice = table.Column<float>(nullable: false),
+                    PesidualQuantity = table.Column<int>(nullable: false),
+                    PesidualPrice = table.Column<float>(nullable: false),
+                    PlanId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Images", x => x.Id);
+                    table.PrimaryKey("PK_SubPlans", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Images_Products_ProductId",
+                        name: "FK_SubPlans_Plans_PlanId",
+                        column: x => x.PlanId,
+                        principalTable: "Plans",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SubPlans_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -1368,26 +1381,40 @@ namespace GSoft.AbpZeroTemplate.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PurchaseProducts",
+                name: "Contracts",
                 columns: table => new
                 {
-                    ProductId = table.Column<int>(nullable: false),
-                    PurchaseId = table.Column<int>(nullable: false),
-                    Quantity = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Index = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    BiddingId = table.Column<int>(nullable: false),
+                    TotalValueOfContract = table.Column<float>(nullable: false),
+                    TotalValueOfImplementation = table.Column<float>(nullable: false),
+                    DeliveryTime = table.Column<DateTime>(nullable: false),
+                    Note = table.Column<string>(nullable: true),
+                    GuaranteeId = table.Column<int>(nullable: false),
+                    GaranteeContractId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PurchaseProducts", x => new { x.ProductId, x.PurchaseId });
+                    table.PrimaryKey("PK_Contracts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PurchaseProducts_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
+                        name: "FK_Contracts_Bidding_BiddingId",
+                        column: x => x.BiddingId,
+                        principalTable: "Bidding",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PurchaseProducts_Purchases_PurchaseId",
-                        column: x => x.PurchaseId,
-                        principalTable: "Purchases",
+                        name: "FK_Contracts_GaranteeContracts_GaranteeContractId",
+                        column: x => x.GaranteeContractId,
+                        principalTable: "GaranteeContracts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Contracts_Guarantees_GuaranteeId",
+                        column: x => x.GuaranteeId,
+                        principalTable: "Guarantees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1798,14 +1825,29 @@ namespace GSoft.AbpZeroTemplate.Migrations
                 column: "IdentityRole_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Biddings_ProductId",
-                table: "Biddings",
+                name: "IX_Bidding_ProductId",
+                table: "Bidding",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Biddings_SupplierId",
-                table: "Biddings",
+                name: "IX_Bidding_SupplierId",
+                table: "Bidding",
                 column: "SupplierId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contracts_BiddingId",
+                table: "Contracts",
+                column: "BiddingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contracts_GaranteeContractId",
+                table: "Contracts",
+                column: "GaranteeContractId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contracts_GuaranteeId",
+                table: "Contracts",
+                column: "GuaranteeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Functions_ParentId",
@@ -1823,12 +1865,6 @@ namespace GSoft.AbpZeroTemplate.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Images_ProductId",
-                table: "Images",
-                column: "ProductId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Products_ProductTypeId",
                 table: "Products",
                 column: "ProductTypeId");
@@ -1839,19 +1875,14 @@ namespace GSoft.AbpZeroTemplate.Migrations
                 column: "SupplierId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PurchaseProducts_PurchaseId",
-                table: "PurchaseProducts",
-                column: "PurchaseId");
+                name: "IX_SubPlans_PlanId",
+                table: "SubPlans",
+                column: "PlanId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Purchases_DepartmentId",
-                table: "Purchases",
-                column: "DepartmentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Purchases_UserId1",
-                table: "Purchases",
-                column: "UserId1");
+                name: "IX_SubPlans_ProductId",
+                table: "SubPlans",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Suppliers_SupplierTypeId",
@@ -1958,28 +1989,22 @@ namespace GSoft.AbpZeroTemplate.Migrations
                 name: "AppUserRoles");
 
             migrationBuilder.DropTable(
-                name: "Biddings");
+                name: "Contracts");
 
             migrationBuilder.DropTable(
                 name: "DemoModels");
 
             migrationBuilder.DropTable(
-                name: "GaranteeContracts");
+                name: "Departments");
 
             migrationBuilder.DropTable(
                 name: "GPermissions");
 
             migrationBuilder.DropTable(
-                name: "Guarantees");
-
-            migrationBuilder.DropTable(
-                name: "Images");
-
-            migrationBuilder.DropTable(
                 name: "MenuClients");
 
             migrationBuilder.DropTable(
-                name: "PurchaseProducts");
+                name: "SubPlans");
 
             migrationBuilder.DropTable(
                 name: "AbpEntityChanges");
@@ -1994,34 +2019,40 @@ namespace GSoft.AbpZeroTemplate.Migrations
                 name: "AbpEditions");
 
             migrationBuilder.DropTable(
+                name: "Bidding");
+
+            migrationBuilder.DropTable(
+                name: "GaranteeContracts");
+
+            migrationBuilder.DropTable(
+                name: "Guarantees");
+
+            migrationBuilder.DropTable(
                 name: "Functions");
 
             migrationBuilder.DropTable(
                 name: "AppRoles");
 
             migrationBuilder.DropTable(
-                name: "Products");
-
-            migrationBuilder.DropTable(
-                name: "Purchases");
+                name: "Plans");
 
             migrationBuilder.DropTable(
                 name: "AbpEntityChangeSets");
 
             migrationBuilder.DropTable(
+                name: "AbpUsers");
+
+            migrationBuilder.DropTable(
                 name: "AppUsers");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "ProductTypes");
 
             migrationBuilder.DropTable(
                 name: "Suppliers");
-
-            migrationBuilder.DropTable(
-                name: "Departments");
-
-            migrationBuilder.DropTable(
-                name: "AbpUsers");
 
             migrationBuilder.DropTable(
                 name: "SupplierTypes");

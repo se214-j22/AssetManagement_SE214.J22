@@ -6,6 +6,7 @@ using GWebsite.AbpZeroTemplate.Application.Share;
 using GWebsite.AbpZeroTemplate.Application.Share.Bidding;
 using GWebsite.AbpZeroTemplate.Application.Share.Bidding.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.Product.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -78,7 +79,31 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
             return this.ObjectMapper.Map<SupplierDto>(supplier);
         }
 
-        public async Task DeleteBiddingAsync(EntityDto<int> input)
+        public async Task<PagedResultDto<SupplierDto>> GetSupplierWithFilterAsync(GetProductInput input)
+        {
+            IQueryable<Supplier> query = supplierRepository.GetAllIncluding(p => p.Products).Where(p => p.Name.Contains(input.Name) && p.Code.Contains(input.Code));
+            if (input.Status == 1 || input.Status == 2)
+            {
+                query = query.Where(p => p.Status == input.Status);
+            }
+            int totalCount = await query.CountAsync();
+            if (totalCount == 0)
+            {
+                query = supplierRepository.GetAllIncluding(p => p.Products);
+                totalCount = await query.CountAsync();
+            }
+            List<Supplier> items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
+            return new PagedResultDto<SupplierDto>(
+            totalCount,
+            items.Select(item =>
+            {
+                SupplierDto data = this.ObjectMapper.Map<SupplierDto>(item);
+                data.isIncludeProduct = item.Products.Count > 0;
+                return data;
+            }).ToList());
+        }
+
+        public async Task DeleteSupplierAsync(EntityDto<int> input)
         {
             var query = await this.supplierRepository.FirstOrDefaultAsync(item => item.Id == input.Id);
             await this.supplierRepository.DeleteAsync(query);
