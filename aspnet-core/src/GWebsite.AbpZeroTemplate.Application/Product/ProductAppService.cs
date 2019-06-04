@@ -37,6 +37,11 @@ namespace GWebsite.AbpZeroTemplate.Web.Core
                 query = query.Where(p => p.Status == input.Status);
             }
             var totalCount = await query.CountAsync();
+            if (totalCount == 0)
+            {
+                query = this.productRepository.GetAllIncluding().Include(p => p.ProductType).Include(p => p.Supplier);
+                totalCount = await query.CountAsync();
+            }
             List<Product> items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
             return new PagedResultDto<ProductDto>(
              totalCount,

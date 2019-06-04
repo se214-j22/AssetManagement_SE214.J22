@@ -29,7 +29,15 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.ProductCategory
 
         public async Task<PagedResultDto<ProductTypeDto>> GetProductTypesWithFilterAsync(ProductTypeListInputDto input)
         {
-            IQueryable<ProductType> query = productTypeRepository.GetAllIncluding(p => p.Products).Where(p => p.Name.Contains(input.Name) && p.Code.Contains(input.Code));
+            IQueryable<ProductType> query = productTypeRepository.GetAllIncluding(p => p.Products);
+            if (input.Name != null)
+            {
+                query = query.Where(p => p.Name.Contains(input.Name));
+            }
+            if (input.Code != null)
+            {
+                query = query.Where(p => p.Code.Contains(input.Code));
+            }
             if (input.Status == 1 || input.Status == 2)
             {
                 query = query.Where(p => p.Status == input.Status);
@@ -38,7 +46,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.ProductCategory
             if (totalCount == 0)
             {
                 query = productTypeRepository.GetAllIncluding(p => p.Products);
-               totalCount = await query.CountAsync();
+                totalCount = await query.CountAsync();
             }
             List<ProductType> items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
             return new PagedResultDto<ProductTypeDto>(
