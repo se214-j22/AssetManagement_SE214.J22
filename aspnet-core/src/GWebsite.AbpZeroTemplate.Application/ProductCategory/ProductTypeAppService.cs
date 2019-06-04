@@ -38,6 +38,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.ProductCategory
             if (totalCount == 0)
             {
                 query = productTypeRepository.GetAllIncluding(p => p.Products);
+               totalCount = await query.CountAsync();
             }
             List<ProductType> items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
             return new PagedResultDto<ProductTypeDto>(
