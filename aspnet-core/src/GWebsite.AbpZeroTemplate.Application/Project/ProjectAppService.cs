@@ -37,5 +37,43 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Projects
             totalCount,
             items.Select(item => this.ObjectMapper.Map<ProjectDto>(item)).ToList());
         }
+
+        public async Task<ProjectDto> ChangeNameAsync(ModelName modelName)
+        {
+            Project query = await projectRepository.GetAllIncluding(p => p.BidProfiles).FirstOrDefaultAsync(item => item.Id == modelName.Id);
+            query.Name = modelName.Name;
+            query = await projectRepository.UpdateAsync(query);
+            await CurrentUnitOfWork.SaveChangesAsync();
+            return ObjectMapper.Map<ProjectDto>(query);
+        }
+
+        public async Task<ProjectDto> CloseProjectAsync(int id)
+        {
+            Project query = await projectRepository.GetAllIncluding(p => p.BidProfiles).FirstOrDefaultAsync(item => item.Id == id);
+            query.Status = query.Status==2?3: query.Status;
+            query = await projectRepository.UpdateAsync(query);
+            await CurrentUnitOfWork.SaveChangesAsync();
+            return ObjectMapper.Map<ProjectDto>(query);
+        }
+
+        public async Task<ProjectDto> ActiveProjectAsync(int id)
+        {
+            Project query = await projectRepository.GetAllIncluding(p => p.BidProfiles).FirstOrDefaultAsync(item => item.Id == id);
+            query.Status = query.Status == 2 ? 1 : query.Status;
+            query = await projectRepository.UpdateAsync(query);
+            await CurrentUnitOfWork.SaveChangesAsync();
+            return ObjectMapper.Map<ProjectDto>(query);
+        }
+
+        public async Task<ProjectDto> CreateProjectAsync(ProjectSavedDto projectSavedDto)
+        {
+            Project project = ObjectMapper.Map<Project>(projectSavedDto);
+            project.ActiveDate = project.Status == 1 ? DateTime.Now : (DateTime?)null;
+            await projectRepository.InsertAndGetIdAsync(project);
+            await CurrentUnitOfWork.SaveChangesAsync();
+            return ObjectMapper.Map<ProjectDto>(project);
+        }
+
+
     }
 }

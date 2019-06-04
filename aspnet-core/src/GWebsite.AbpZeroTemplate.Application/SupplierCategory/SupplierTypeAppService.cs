@@ -44,7 +44,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.SupplierCategory
             }
 
             int totalCount = await query.CountAsync();
-            List<SupplierType> items = await query.PageBy(input.CountSkip, input.PageSize).ToListAsync();
+            List<SupplierType> items = await query.PageBy(input).ToListAsync();
             return new PagedResultDto<SupplierTypeDto>(
              totalCount,
              items.Select(model => this.ObjectMapper.Map<SupplierTypeDto>(model)).ToList());

@@ -11,6 +11,9 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Projects
    public  interface IProjectAppService
     {
         Task<PagedResultDto<ProjectDto>> GetSupplierWithFilterAsync(GetProjectInput input);
-
+        Task<ProjectDto> ChangeNameAsync(ModelName modelName);
+        Task<ProjectDto> ActiveProjectAsync(int id);
+        Task<ProjectDto> CloseProjectAsync(int id);
+        Task<ProjectDto> CreateProjectAsync(ProjectSavedDto projectSavedDto);
     }
 }

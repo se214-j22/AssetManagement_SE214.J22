@@ -37,6 +37,7 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
         public virtual DbSet<Plan> Plans { get; set; }
         public virtual DbSet<SubPlan> SubPlans { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
+        public virtual DbSet<BidProfile> BidProfiles { get; set; }
         /// <summary>
         /// GPermissions dùng cho bên Gwebsite
         /// </summary>

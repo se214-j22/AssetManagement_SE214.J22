@@ -81,7 +81,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Plans
                 Product product = this.productRepository.FirstOrDefault(p => p.Id == subplan.ProductId);
                 plan.SubPlans.Add(new SubPlan()
                 {
-                    Totalprice = product.Price * subplan.Quantity,
+                    Totalprice = product.UnitPrice * subplan.Quantity,
                     ScheduleMonth = DateTime.Now.ToString("MMM"),
                     ImplementQantity = 0,
                     ImplementPrice = 0,

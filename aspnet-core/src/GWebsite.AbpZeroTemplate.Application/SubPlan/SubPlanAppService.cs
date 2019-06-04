@@ -54,7 +54,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.SubPlans
         {
             SubPlan subPlan = ObjectMapper.Map<SubPlan>(subPlanSavedDto);
             Product product = this.productRepository.FirstOrDefault(p => p.Id == subPlanSavedDto.ProductId);
-            subPlan.Totalprice = product.Price * subPlanSavedDto.Quantity;
+            subPlan.Totalprice = product.UnitPrice * subPlanSavedDto.Quantity;
             subPlan.ScheduleMonth = DateTime.Now.ToString("MMM");
             subPlan.ImplementQantity = 0;
             subPlan.ImplementPrice = 0;

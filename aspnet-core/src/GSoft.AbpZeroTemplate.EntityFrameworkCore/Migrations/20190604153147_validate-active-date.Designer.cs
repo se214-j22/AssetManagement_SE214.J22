@@ -4,14 +4,16 @@ using GSoft.AbpZeroTemplate.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GSoft.AbpZeroTemplate.Migrations
 {
     [DbContext(typeof(AbpZeroTemplateDbContext))]
-    partial class AbpZeroTemplateDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190604153147_validate-active-date")]
+    partial class validateactivedate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1598,21 +1600,15 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<string>("BidType");
 
-                    b.Property<float>("CautionMoney");
-
                     b.Property<string>("Code");
 
                     b.Property<DateTime>("CreateDate");
-
-                    b.Property<DateTime>("EndReceivedDate");
 
                     b.Property<int>("Index");
 
                     b.Property<string>("Name");
 
                     b.Property<int>("ProjectId");
-
-                    b.Property<DateTime>("StartReceivedDate");
 
                     b.HasKey("Id");
 
@@ -1908,13 +1904,15 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<float>("Price");
+
                     b.Property<int?>("ProductTypeId");
 
                     b.Property<int>("Status");
 
                     b.Property<int?>("SupplierId");
 
-                    b.Property<float>("UnitPrice");
+                    b.Property<string>("UnitPrice");
 
                     b.HasKey("Id");
 

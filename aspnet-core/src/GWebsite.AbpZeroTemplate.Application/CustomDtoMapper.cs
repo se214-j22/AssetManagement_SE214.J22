@@ -7,6 +7,7 @@ using GWebsite.AbpZeroTemplate.Application.Share.Plans.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Product.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Products.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.ProductType.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.Projects.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Purchases.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.SubPlans.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
@@ -43,6 +44,7 @@ namespace GWebsite.AbpZeroTemplate.Applications
             configuration.CreateMap<UpdateMenuClientInput, MenuClient>();
             configuration.CreateMap<ContractDto, Contract>();
             configuration.CreateMap<Contract, ContractDto>();
+            configuration.CreateMap<Project, ProjectDto>();
             // DemoModel
             configuration.CreateMap<DemoModel, DemoModelDto>();
             configuration.CreateMap<DemoModelInput, DemoModel>();
@@ -50,6 +52,7 @@ namespace GWebsite.AbpZeroTemplate.Applications
 
 
             // revert mapper 
+            configuration.CreateMap<ProjectSavedDto, Project>();
             configuration.CreateMap<SupplierTypeSavedDto, SupplierType>();
             configuration.CreateMap<ProductSavedDto, Product>();
             configuration.CreateMap<ProductSavedCreate, Product>();

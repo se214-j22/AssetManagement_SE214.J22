@@ -11,7 +11,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Products.Dto
     public partial class ProductDto
     {
         public string Name { get; set; }
-        public float Price { get; set; }
         public float Discount { get; set; }
         public string Code { get; set; }
         public string Address { get; set; }

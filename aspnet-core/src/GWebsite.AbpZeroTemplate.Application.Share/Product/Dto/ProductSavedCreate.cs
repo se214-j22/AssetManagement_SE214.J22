@@ -9,7 +9,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Product.Dto
    public partial class ProductSavedCreate
     {
         public string Name { get; set; }
-        public float? Price { get; set; }
         public string Code { get; set; }
         public string Address { get; set; }
         public string UnitPrice { get; set; }

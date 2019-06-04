@@ -1,6 +1,7 @@
 ﻿using Abp.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,13 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public string Code { get; set; }
         public string Name { get; set; }
         public DateTime CreateDate { get; set; }
-        public DateTime ActiveDate { get; set; }
+        public DateTime? ActiveDate { get; set; }
         public int Status { get; set; }
+        public ICollection<BidProfile> BidProfiles { get; set; }
+        public Project()
+        {
+            BidProfiles = new Collection<BidProfile>();
+            CreateDate = DateTime.Now;
+        }
     }
 }

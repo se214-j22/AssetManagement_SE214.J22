@@ -11,10 +11,9 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
     public partial class Product : Entity<int>
     {
         public string Name { get; set; }
-        public float Price { get; set; }
         public string Code { get; set; }
         public string Address { get; set; }
-        public string UnitPrice { get; set; }
+        public float UnitPrice { get; set; }
         public string CalUnit { get; set; }
         public DateTime CreateDate { get; set; }
         public int Status { get; set; }

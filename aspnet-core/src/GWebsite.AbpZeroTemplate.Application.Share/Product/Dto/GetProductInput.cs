@@ -8,11 +8,17 @@ using System.Threading.Tasks;
 
 namespace GWebsite.AbpZeroTemplate.Application.Share.Product.Dto
 {
-    public class GetProductInput : PagedAndSortedInputDto
+    public class GetProductInput : PagedAndSortedInputDto  , IShouldNormalize
     {
         public string Name { get; set; }
         public int Status { get; set; }
         public string Code { get; set; }
-     
+        public void Normalize()
+        {
+            if (string.IsNullOrEmpty(Sorting))
+            {
+                Sorting = "Name";
+            }
+        }
     }
 }
