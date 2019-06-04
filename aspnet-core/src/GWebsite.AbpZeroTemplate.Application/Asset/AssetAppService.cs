@@ -62,9 +62,13 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
             {
                 query = query.OrderBy(filter.Sorting);
             }
+            //if (filter.MaxResultCount > 0)
+            //{
+            //    query = query.PageBy(filter);
+            //}
 
-            var items = await query.PageBy(filter)
-                .Include(i => i.AssetLine).ThenInclude(al => al.AssetType)
+
+            var items = await query.PageBy(filter).Include(i => i.AssetLine).ThenInclude(al => al.AssetType)
                 .Include(i => i.AssetLine).ThenInclude(al => al.Manufacturer).ToListAsync();
 
             return new PagedResultDto<AssetDto>(

@@ -5,7 +5,7 @@ namespace GSoft.AbpZeroTemplate.Dto
 {
     public class PagedInputDto : IPagedResultRequest
     {
-        [Range(1, AppConsts.MaxPageSize)]
+        [Range(0, AppConsts.MaxPageSize)]
         public int MaxResultCount { get; set; }
 
         [Range(0, int.MaxValue)]

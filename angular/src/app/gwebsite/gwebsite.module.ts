@@ -1,9 +1,9 @@
-import { CustomerServiceProxy, AssetServiceProxy } from './../../shared/service-proxies/service-proxies';
+import { CustomerServiceProxy, AssetServiceProxy, AssetLineServiceProxy } from './../../shared/service-proxies/service-proxies';
 import { ViewDemoModelModalComponent } from './demo-model/view-demo-model-modal.component';
 import { NgModule } from '@angular/core';
 import { QRCodeModule } from 'angular2-qrcode';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppCommonModule } from '@app/shared/common/app-common.module';
 import { UtilsModule } from '@shared/utils/utils.module';
 import { FileUploadModule } from 'ng2-file-upload';
@@ -22,9 +22,13 @@ import { CreateOrEditCustomerModalComponent } from './customer/create-or-edit-cu
 import { AssetComponent } from './asset/asset.component';
 import { ViewAssetModalComponent } from './asset/view-asset-modal.component';
 import { CreateOrEditAssetModalComponent } from './asset/create-or-edit-asset-modal.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
     imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        NgSelectModule,
         FormsModule,
         CommonModule,
         FileUploadModule,
@@ -54,7 +58,8 @@ import { CreateOrEditAssetModalComponent } from './asset/create-or-edit-asset-mo
     providers: [
         DemoModelServiceProxy,
         CustomerServiceProxy,
-        AssetServiceProxy
+        AssetServiceProxy,
+        AssetLineServiceProxy
     ]
 })
 export class GWebsiteModule { }
