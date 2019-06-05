@@ -46,35 +46,51 @@ namespace GWebsite.AbpZeroTemplate.Core.Authorization
             customer.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_Edit, L("EditingCustomer"));
             customer.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_Delete, L("DeletingCustomer"));
 
-            var provider = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Provider, L("Provider"));
-            provider.CreateChildPermission(GWebsitePermissions.Pages_Administration_Provider_Create, L("CreatingNewProvider"));
-            provider.CreateChildPermission(GWebsitePermissions.Pages_Administration_Provider_Edit, L("EditingProvider"));
-            provider.CreateChildPermission(GWebsitePermissions.Pages_Administration_Provider_Delete, L("DeletingProvider"));
-
-            var assetdetail = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_AssetDetail, L("AssetDetail"));
-            assetdetail.CreateChildPermission(GWebsitePermissions.Pages_Administration_AssetDetail_Create, L("CreatingNewAssetDetail"));
-            assetdetail.CreateChildPermission(GWebsitePermissions.Pages_Administration_AssetDetail_Edit, L("EditingAssetDetail"));
-            assetdetail.CreateChildPermission(GWebsitePermissions.Pages_Administration_AssetDetail_Delete, L("DeletingAssetDetail"));
-
-            var liquidation = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Liquidation, L("Liquidation"));
-            liquidation.CreateChildPermission(GWebsitePermissions.Pages_Administration_Liquidation_Create, L("CreatingNewLiquidation"));
-            liquidation.CreateChildPermission(GWebsitePermissions.Pages_Administration_Liquidation_Edit, L("EditingLiquidation"));
-            liquidation.CreateChildPermission(GWebsitePermissions.Pages_Administration_Liquidation_Delete, L("DeletingLiquidation"));
-
-            var liquidationdetail = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_LiquidationDetail, L("LiquidationDetail"));
-            liquidationdetail.CreateChildPermission(GWebsitePermissions.Pages_Administration_LiquidationDetail_Create, L("CreatingNewLiquidationDetail"));
-            liquidationdetail.CreateChildPermission(GWebsitePermissions.Pages_Administration_LiquidationDetail_Edit, L("EditingLiquidationDetail"));
-            liquidationdetail.CreateChildPermission(GWebsitePermissions.Pages_Administration_LiquidationDetail_Delete, L("DeletingLiquidationDetail"));
-
-            var category = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Category, L("Category"));
-            category.CreateChildPermission(GWebsitePermissions.Pages_Administration_Category_Create, L("CreatingNewCategory"));
-            category.CreateChildPermission(GWebsitePermissions.Pages_Administration_Category_Edit, L("EditingCategory"));
-            category.CreateChildPermission(GWebsitePermissions.Pages_Administration_Category_Delete, L("DeletingCategory"));
+            /// <summary>
+            /// Entity Nhóm tài sản
+            /// </summary>
+            /// 
 
             var asset = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Asset, L("Asset"));
             asset.CreateChildPermission(GWebsitePermissions.Pages_Administration_Asset_Create, L("CreatingNewAsset"));
             asset.CreateChildPermission(GWebsitePermissions.Pages_Administration_Asset_Edit, L("EditingAsset"));
             asset.CreateChildPermission(GWebsitePermissions.Pages_Administration_Asset_Delete, L("DeletingAsset"));
+            asset.CreateChildPermission(GWebsitePermissions.Pages_Administration_Asset_Approve, L("ApproveAsset"));
+
+            var assetGroup = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_AssetGroup, L("AssetGroup"));
+            assetGroup.CreateChildPermission(GWebsitePermissions.Pages_Administration_AssetGroup_Create, L("CreatingNewAssetGroup"));
+            assetGroup.CreateChildPermission(GWebsitePermissions.Pages_Administration_AssetGroup_Edit, L("EditingAssetGroup"));
+            assetGroup.CreateChildPermission(GWebsitePermissions.Pages_Administration_AssetGroup_Delete, L("DeletingAssetGroup"));
+
+            var liquidation = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Liquidation, L("Liquidation"));
+            liquidation.CreateChildPermission(GWebsitePermissions.Pages_Administration_Liquidation_Create, L("CreatingNewLiquidation"));
+            liquidation.CreateChildPermission(GWebsitePermissions.Pages_Administration_Liquidation_Edit, L("EditingLiquidation"));
+            liquidation.CreateChildPermission(GWebsitePermissions.Pages_Administration_Liquidation_Delete, L("DeletingLiquidation"));
+            liquidation.CreateChildPermission(GWebsitePermissions.Pages_Administration_Liquidation_Approve, L("ApproveLiquidation"));
+
+            var repair = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Repair, L("Repair"));
+            repair.CreateChildPermission(GWebsitePermissions.Pages_Administration_Repair_Create, L("CreatingNewRepair"));
+            repair.CreateChildPermission(GWebsitePermissions.Pages_Administration_Repair_Edit, L("EditingRepair"));
+            repair.CreateChildPermission(GWebsitePermissions.Pages_Administration_Repair_Delete, L("DeletingRepair"));
+            repair.CreateChildPermission(GWebsitePermissions.Pages_Administration_Repair_Approve, L("ApproveRepair"));
+
+            var revoke = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Revoke, L("Revoke"));
+            revoke.CreateChildPermission(GWebsitePermissions.Pages_Administration_Revoke_Create, L("CreatingNewRevoke"));
+            revoke.CreateChildPermission(GWebsitePermissions.Pages_Administration_Revoke_Edit, L("EditingRevoke"));
+            revoke.CreateChildPermission(GWebsitePermissions.Pages_Administration_Revoke_Delete, L("DeletingRevoke"));
+            revoke.CreateChildPermission(GWebsitePermissions.Pages_Administration_Revoke_Approve, L("ApproveRevoke"));
+
+            var transfer = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Transfer, L("Transfer"));
+            transfer.CreateChildPermission(GWebsitePermissions.Pages_Administration_Transfer_Create, L("CreatingNewTransfer"));
+            transfer.CreateChildPermission(GWebsitePermissions.Pages_Administration_Transfer_Edit, L("EditingTransfer"));
+            transfer.CreateChildPermission(GWebsitePermissions.Pages_Administration_Transfer_Delete, L("DeletingTransfer"));
+            transfer.CreateChildPermission(GWebsitePermissions.Pages_Administration_Transfer_Approve, L("ApproveTransfer"));
+
+            var useAsset = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_UseAsset, L("UseAsset"));
+            useAsset.CreateChildPermission(GWebsitePermissions.Pages_Administration_UseAsset_Create, L("CreatingNewUseAsset"));
+            useAsset.CreateChildPermission(GWebsitePermissions.Pages_Administration_UseAsset_Edit, L("EditingUseAsset"));
+            useAsset.CreateChildPermission(GWebsitePermissions.Pages_Administration_UseAsset_Delete, L("DeletingUseAsset"));
+            useAsset.CreateChildPermission(GWebsitePermissions.Pages_Administration_UseAsset_Approve, L("ApproveUseAsset"));
         }
 
         private static ILocalizableString L(string name)

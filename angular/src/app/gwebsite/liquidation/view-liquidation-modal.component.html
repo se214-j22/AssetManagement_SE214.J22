@@ -1,5 +1,5 @@
-<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
-aria-hidden="true" [config]="{backdrop: 'static'}">
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-bledby="viewModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -7,38 +7,100 @@ aria-hidden="true" [config]="{backdrop: 'static'}">
                     <span *ngIf="liquidation.id">{{l("EditLiquidation")}}: {{liquidation.name}}</span>
                     <span *ngIf="!liquidation.id">{{l("CreateNewLiquidation")}}</span>
                 </h4>
-                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                <button type="button" class="close" (click)="close()" [attr.aria-b]="l('Close')">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Tên nhà thanh lý</label>
-                    <p>{{liquidation.liquidatorName}}</p>
+                    <b>Ngày thanh lý: </b>
+                    <span>{{liquidation.liquidationDate}}</span>
                 </div>
                 <div class="form-group">
-                    <label>Số hợp đồng</label>
-                    <p>{{liquidation.contractCode}}</p>
+                    <b>Mã tài sản: </b>
+                    <span>{{liquidation.assetID}}</span>
                 </div>
                 <div class="form-group">
-                    <label>Ngày thanh lý</label>
-                    <p>{{liquidation.date}}</p>
+                    <b>Tên tài sản: </b>
+                    <span>{{asset.assetName}}</span>
                 </div>
                 <div class="form-group">
-                    <label>Tổng tài sản thanh lý</label>
-                    <p>{{liquidation.totalAsset}}</p>
+                    <b>Loại tài sản: </b>
+                    <span *ngIf="asset.assetType == 0">Công cụ lao động</span>
+                    <span *ngIf="asset.assetType == 1">Tài sản cố định</span>
                 </div>
                 <div class="form-group">
-                    <label>Tổng tiền thanh lý</label>
-                    <p>{{liquidation.totalPrice}}</p>
+                    <b>Nhóm tài sản: </b>
+                    <span>{{assetGroup.assetGroupName}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Thông tin mô tả: </b>
+                    <span>{{asset.describe}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Ngày bắt đầu khấu hao: </b>
+                    <span>{{asset.dateAdded}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Số tháng khấu hao: </b>
+                    <span>{{asset.monthOfDepreciation}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Ngày kết thúc khấu hao: </b>
+                    <span>{{dateEndDepreciation}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Nguyên giá tài sản: </b>
+                    <span>{{asset.originalPrice}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Giá trị khấu hao: </b>
+                    <span></span>
+                </div>
+                <div class="form-group">
+                    <b>Giá trị khấu hao còn lại: </b>
+                    <span></span>
+                </div>
+                <div class="form-group">
+                    <b>Đơn vị sử dụng: </b>
+                    <span></span>
+                </div>
+                <div class="form-group">
+                    <b>Người sử dụng: </b>
+                    <span></span>
+                </div>
+                <div class="form-group">
+                    <b>Tình trạng khấu hao: </b>
+                    <span></span>
+                </div>
+                <div class="form-group">
+                    <b>Vị trí tài sản: </b>
+                    <span></span>
+                </div>
+                <div class="form-group">
+                    <b>Đơn vị mua tài sản thanh lý: </b>
+                    <span *ngIf="liquidation.purchaseUnit == 0">Đơn vị mua tài sản 1</span>
+                    <span *ngIf="liquidation.purchaseUnit == 1">Đơn vị mua tài sản 2</span>
+                    <span *ngIf="liquidation.purchaseUnit == 2">Đơn vị mua tài sản 3</span>
+                    <span *ngIf="liquidation.purchaseUnit == 3">Đơn vị mua tài sản 4</span>
+                </div>
+                <div class="form-group">
+                    <b>Hình thức thanh lý: </b>
+                    <span *ngIf="!liquidation.liquidationForm">Một phần</span>
+                    <span *ngIf="liquidation.liquidationForm">Toàn phần</span>
+                </div>
+                <div class="form-group">
+                    <b>Số tiền thanh lý: </b>
+                    <span>{{liquidation.liquidationPrice}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Ghi chú: </b>
+                    <span>{{liquidation.note}}</span>
                 </div>
             </div>
             <div class="modal-footer">
-                <button [disabled]="saving" type="button" class="btn btn-default"
-                    (click)="close()">{{l("Cancel")}}</button>
-                <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
-                    [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
-                    <span>{{l("Save")}}</span></button>
+                <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">
+                    {{l("Cancel")}}</button>
             </div>
         </div>
     </div>

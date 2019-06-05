@@ -89,6 +89,12 @@ export class AssetComponent extends AppComponentBase implements AfterViewInit, O
         })
     }
 
+    approvedAsset(id): void {
+        this._assetService.approveAsset(id).subscribe(() => {
+            this.reloadPage();
+        })
+    }
+
     init(): void {
         //get params từ url để thực hiện filter
         this._activatedRoute.params.subscribe((params: Params) => {

@@ -1,7 +1,8 @@
 import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
-import { LiquidationServiceProxy, LiquidationInput } from '@shared/service-proxies/service-proxies';
+import { LiquidationServiceProxy, LiquidationInput, AssetForViewDto, AssetServiceProxy, AssetGroupServiceProxy, AssetGroupForViewDto, LiquidationDto } from '@shared/service-proxies/service-proxies';
+import { moment } from 'ngx-bootstrap/chronos/test/chain';
 
 
 @Component({
@@ -25,22 +26,41 @@ export class CreateOrEditLiquidationModalComponent extends AppComponentBase {
     saving = false;
 
     liquidation: LiquidationInput = new LiquidationInput();
+    listAssetInStock: AssetForViewDto[];
+    assetSelect: AssetForViewDto = new AssetForViewDto();
+    assetType: string = "";
+    assetGroup: AssetGroupForViewDto = new AssetGroupForViewDto();
+    dateEndDepreciation: string = "";
 
+    listLiquidation: LiquidationDto[];
     constructor(
         injector: Injector,
-        private _liquidationService: LiquidationServiceProxy
+        private _liquidationService: LiquidationServiceProxy,
+        private _assetService: AssetServiceProxy,
+        private _assetgroupService: AssetGroupServiceProxy,
     ) {
         super(injector);
     }
 
+    ngOnInit(): void {
+        //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+        //Add 'implements OnInit' to the class.
+        this.getListAssetsInStock();
+    }
+
     show(liquidationId?: number | null | undefined): void {
         this.saving = false;
-
-
+        this.getListAssetsInStock();
         this._liquidationService.getLiquidationForEdit(liquidationId).subscribe(result => {
             this.liquidation = result;
+            if (!this.liquidation.id) {
+                this.liquidation.liquidationDate = moment().format('YYYY-MM-DD');
+            }
+            else {
+                this.getAssetByID(this.liquidation.assetID);
+            }
             this.modal.show();
-
+            console.log(this);
         })
     }
 
@@ -57,5 +77,61 @@ export class CreateOrEditLiquidationModalComponent extends AppComponentBase {
     close(): void {
         this.modal.hide();
         this.modalSave.emit(null);
+    }
+
+    getListAssetsInStock(): void {
+        this._assetService.getListAssetsInStock().subscribe(result => {
+            this.listAssetInStock = result;
+            this.getListLiquidation();
+        });
+    }
+
+    getAssetByID(assetID: string): void {
+        this._assetService.getAssetByAssetID(assetID).subscribe(result => {
+            this.assetSelect = result;
+            if (this.assetSelect.assetType == 0) {
+                this.assetType = "Công cụ lao động";
+            }
+            else {
+                this.assetType = "Tài sản cố định";
+            }
+            
+            let date = new Date(this.assetSelect.dateAdded);
+            date.setMonth(date.getMonth() + this.assetSelect.monthOfDepreciation);
+            this.dateEndDepreciation = moment(date).format('YYYY-MM-DD');
+            this.getAssetGroup();
+        });
+    }
+
+    getAssetGroup(): void {
+        this._assetgroupService.getAssetGroupByAssetID(this.assetSelect.assetGrouptId).subscribe(result => {
+            if (result != null)
+                this.assetGroup = result;
+        });
+    }
+
+    filterListAssetInStock(): void {
+        this.listLiquidation.forEach(liqui => {
+            this.listAssetInStock = this.listAssetInStock.filter(item => {
+                if(item.assetId.toLowerCase() != liqui.assetID.toLowerCase()){
+                    return item;
+                }
+            }
+            );
+        });
+
+        if (this.listAssetInStock.length > 0) {
+            this.getAssetByID(this.listAssetInStock[0].assetId);
+            this.liquidation.assetID = this.listAssetInStock[0].assetId;
+        }
+    }
+
+    getListLiquidation(): void {
+        this._liquidationService.getListLiquidation().subscribe(
+            result => {
+                this.listLiquidation = result;
+                this.filterListAssetInStock();
+            }
+        );
     }
 }

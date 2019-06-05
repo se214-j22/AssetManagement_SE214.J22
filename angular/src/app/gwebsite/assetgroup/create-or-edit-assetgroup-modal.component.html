@@ -1,0 +1,68 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="assetgroup.id">Cập nhật nhóm tài sản: {{assetgroup.name}}</span>
+                        <span *ngIf="!assetgroup.id">Tạo mới nhóm tài sản</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Mã nhóm tài sản *</label>
+                        <input *ngIf="assetgroup.id" readonly #nameInput="ngModel" class="form-control" type="text"
+                            name="assetGrouptId" [(ngModel)]="assetgroup.assetGrouptId" required maxlength="3">
+                        <input *ngIf="!assetgroup.id" #nameInput="ngModel" class="form-control" type="text"
+                            name="assetGrouptId" [(ngModel)]="assetgroup.assetGrouptId" required maxlength="3">
+                    </div>
+                    <div class="form-group">
+                        <label>Tên nhóm tài sản *</label>
+                        <input #nameInput="ngModel" class="form-control" type="text" name="AssetGroupName"
+                            [(ngModel)]="assetgroup.assetGroupName" required maxlength="64">
+                    </div>
+                    <div class="form-group">
+                        <label>Loại tài sản *</label>
+                        <select #noteInput="ngModel" required [(ngModel)]='assetgroup.assetType' class='form-control'
+                            name="AssetType">
+                            <option value='0'>Công cụ lao động</option>
+                            <option value='1'>Tài sản cố định</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Nhóm tài sản cha *</label>
+                        <select #noteInput="ngModel" required [(ngModel)]='assetgroup.assetGroupParentId'
+                            class='form-control' name="AssetGroupParentId">
+                            <option value="">Không có nhóm cha</option>
+                            <option *ngFor="let item of assetGroupParents" [value]="item.assetGrouptId">
+                                {{item.assetGrouptId}} - {{item.assetGroupName}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Số tháng khấu hao *</label>
+                        <input #nameInput="ngModel" class="form-control" type="number" name="MonthOfDepreciation"
+                            [(ngModel)]="assetgroup.monthOfDepreciation" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tỷ lệ khấu hao *</label>
+                        <input #nameInput="ngModel" class="form-control" type="number" step="0.01"
+                            name="DepreciationRates" min="0" max="1" [(ngModel)]="assetgroup.depreciationRates"
+                            required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -4,12 +4,14 @@ import { MenuClientComponent } from '@app/gwebsite/menu-client/menu-client.compo
 import { DemoModelComponent } from './demo-model/demo-model.component';
 import { CustomerComponent } from './customer/customer.component';
 //qlts
-import { CategoryComponent } from './category/category.component';
+import { AssetGroupComponent } from './assetgroup/assetgroup.component';
 import { AssetComponent } from './asset/asset.component';
-import { AssetDetailComponent } from './assetdetail/assetdetail.component';
-import { ProviderComponent } from './provider/provider.component';
 import { LiquidationComponent } from './liquidation/liquidation.component';
-import { LiquidationDetailComponent } from './liquidationdetail/liquidationdetail.component';
+// import { RepairComponent } from './repair/repair.component';
+import { RevokeComponent } from './revoke/revoke.component';
+// import { TransferComponent } from './transfer/transfer.component';
+// import { UseAssetComponent } from './useasset/useasset.component';
+
 
 @NgModule({
     imports: [
@@ -45,8 +47,8 @@ import { LiquidationDetailComponent } from './liquidationdetail/liquidationdetai
                 path: '',
                 children: [
                     {
-                        path: 'category', component: CategoryComponent,
-                        data: { permission: 'Pages.Administration.Category' }
+                        path: 'assetgroup', component: AssetGroupComponent,
+                        data: { permission: 'Pages.Administration.AssetGroup' }
                     },
                 ]
             },
@@ -63,38 +65,47 @@ import { LiquidationDetailComponent } from './liquidationdetail/liquidationdetai
                 path: '',
                 children: [
                     {
-                        path: 'assetdetail', component: AssetDetailComponent,
-                        data: { permission: 'Pages.Administration.AssetDetail' }
-                    },
-                ]
-            },
-            {
-                path: '',
-                children: [
-                    {
-                        path: 'provider', component: ProviderComponent,
-                        data: { permission: 'Pages.Administration.Provider' }
-                    },
-                ]
-            },
-            {
-                path: '',
-                children: [
-                    {
                         path: 'liquidation', component: LiquidationComponent,
                         data: { permission: 'Pages.Administration.Liquidation' }
                     },
                 ]
             },
+            // {
+            //     path: '',
+            //     children: [
+            //         {
+            //             path: 'repair', component: RepairComponent,
+            //             data: { permission: 'Pages.Administration.Repair' }
+            //         },
+            //     ]
+            // },
             {
                 path: '',
                 children: [
                     {
-                        path: 'liquidationdetail', component: LiquidationDetailComponent,
-                        data: { permission: 'Pages.Administration.LiquidationDetail' }
+                        path: 'revoke', component: RevokeComponent,
+                        data: { permission: 'Pages.Administration.Revoke' }
                     },
                 ]
             },
+            // {
+            //     path: '',
+            //     children: [
+            //         {
+            //             path: 'transfer', component: TransferComponent,
+            //             data: { permission: 'Pages.Administration.Transfer' }
+            //         },
+            //     ]
+            // },
+            // {
+            //     path: '',
+            //     children: [
+            //         {
+            //             path: 'useasset', component: UseAssetComponent,
+            //             data: { permission: 'Pages.Administration.UseAsset' }
+            //         },
+            //     ]
+            // },
         ])
     ],
     exports: [

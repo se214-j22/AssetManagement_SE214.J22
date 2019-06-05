@@ -9,6 +9,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Assets.Dto
     /// </summary>
     public class AssetFilter : PagedAndSortedInputDto
     {
-        public string Name { get; set; }
+        //Tên tài sản
+        public string AssetName { get; set; }
     }
 }

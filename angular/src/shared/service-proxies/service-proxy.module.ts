@@ -41,12 +41,14 @@ import { WebApiServiceProxy } from './webapi.service';
         ApiServiceProxies.UiCustomizationSettingsServiceProxy,
         WebApiServiceProxy,
         ApiServiceProxies.CustomerServiceProxy,
-        ApiServiceProxies.CategoryServiceProxy,
+
+        ApiServiceProxies.AssetGroupServiceProxy,
         ApiServiceProxies.AssetServiceProxy,
-        ApiServiceProxies.AssetDetailServiceProxy,
-        ApiServiceProxies.ProviderServiceProxy,
         ApiServiceProxies.LiquidationServiceProxy,
-        ApiServiceProxies.LiquidationDetailServiceProxy,
+        // ApiServiceProxies.RepairServiceProxy,
+        ApiServiceProxies.RevokeServiceProxy,
+        // ApiServiceProxies.TransferServiceProxy,
+        // ApiServiceProxies.UseAssetServiceProxy,
         { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true }
     ]
 })

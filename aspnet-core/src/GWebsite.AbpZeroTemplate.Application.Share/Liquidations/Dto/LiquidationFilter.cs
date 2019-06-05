@@ -9,6 +9,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Liquidations.Dto
     /// </summary>
     public class LiquidationFilter : PagedAndSortedInputDto
     {
-        public string LiquidatorName { get; set; }
+        //Mã tài sản
+        public string AssetID { get; set; }
     }
 }

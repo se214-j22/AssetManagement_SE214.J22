@@ -1,8 +1,9 @@
 import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
-import { AssetServiceProxy, AssetInput } from '@shared/service-proxies/service-proxies';
-
+import { AssetServiceProxy, AssetInput, AssetGroupDto, AssetGroupServiceProxy, AssetGroupForViewDto } from '@shared/service-proxies/service-proxies';
+import { moment } from 'ngx-bootstrap/chronos/test/chain';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'createOrEditAssetModal',
@@ -25,23 +26,39 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase {
     saving = false;
 
     asset: AssetInput = new AssetInput();
+    assetGroups: AssetGroupDto[];
+    assetGroup: AssetGroupForViewDto = new AssetGroupForViewDto();
+    assetId: string;
+    total: number;
 
     constructor(
         injector: Injector,
-        private _assetService: AssetServiceProxy
+        private _assetService: AssetServiceProxy,
+        private _assetGroupService: AssetGroupServiceProxy
     ) {
         super(injector);
     }
 
+    ngOnInit(): void {
+        //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+        //Add 'implements OnInit' to the class.
+        this.assetId = '';
+    }
+
     show(assetId?: number | null | undefined): void {
         this.saving = false;
-
+        this.getTotalAsset();
 
         this._assetService.getAssetForEdit(assetId).subscribe(result => {
             this.asset = result;
             this.modal.show();
-
-        })
+            if (!this.asset.id) {
+                this.asset.dateAdded = moment().format('YYYY-MM-DD');
+            }
+            else {
+                this.getAssetGroupByID(this.asset.assetGrouptId);
+            }
+        });
     }
 
     save(): void {
@@ -51,11 +68,61 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase {
             this.notify.info(this.l('SavedSuccessfully'));
             this.close();
         })
-
     }
 
     close(): void {
         this.modal.hide();
         this.modalSave.emit(null);
+    }
+
+    getListAssetGroupsByAssetType(assetType: number): void {
+        this._assetGroupService.getListAssetGroupsByAssetType(assetType).subscribe(result => {
+            this.assetGroups = result;
+            if (this.assetGroup.assetGrouptId != null) {
+                this.getAssetGroupByID(this.assetGroups[0].assetGrouptId);
+            }
+        });
+    }
+
+    getTotalAsset(): void {
+        this._assetService.getTotalAsset().subscribe(result => {
+            if (result == null) {
+                this.total = 1;
+            }
+            else {
+                this.total = result + 1;
+            }
+        });
+    }
+
+    getAssetGroupByID(assetGroupId: string): void {
+        this._assetGroupService.getAssetGroupByAssetID(assetGroupId).subscribe(result => {
+            this.assetGroup = result;
+
+            if (this.asset.assetType == 0) {
+                this.assetId = 'C' + this.assetGroup.assetGrouptId + this.formatAssetID(this.total);
+            }
+            else {
+                this.assetId = 'T' + this.assetGroup.assetGrouptId + this.formatAssetID(this.total);
+            }
+            this.asset.assetId = this.assetId.toUpperCase();
+            if (!this.asset.id) {
+                this.asset.monthOfDepreciation = this.assetGroup.monthOfDepreciation;
+            }
+        });
+    }
+
+    formatAssetID(total: number): string {
+        let result: string = total + '';
+        let len: number = 6 - result.length;
+        for (let index = 0; index < len; index++) {
+            result = '0' + result;
+        }
+        return result;
+    }
+
+    onChange(event: any) {
+        // console.log(this.asset.dateAdded);
+        // console.log(event.target.value);
     }
 }

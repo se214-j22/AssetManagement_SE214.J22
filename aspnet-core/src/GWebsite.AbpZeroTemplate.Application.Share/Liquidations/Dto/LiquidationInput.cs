@@ -1,6 +1,5 @@
 ﻿using Abp.Domain.Entities;
 using GWebsite.AbpZeroTemplate.Core.Models;
-using System;
 
 namespace GWebsite.AbpZeroTemplate.Application.Share.Liquidations.Dto
 {
@@ -9,15 +8,21 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Liquidations.Dto
     /// </summary>
     public class LiquidationInput : Entity<int>
     {
-        // tên nhà thanh lý
-        public string LiquidatorName { get; set; }
-        // số hợp đồng
-        public string ContractCode { get; set; }
-        // ngày thanh lý
-        public DateTime Date { get; set; }
-        // tổng tài sản thanh lý
-        public string TotalAsset { get; set; }
-        // tổng giá tiền thanh lý
-        public string TotalPrice { get; set; }
+        //Mã tài sản
+        public string AssetID { get; set; }
+        //Ngày thanh lý
+        public string LiquidationDate { get; set; }
+        //Đơn vị mua
+        public int PurchaseUnit { get; set; }
+        //Tình trạng tài sản/ công cụ
+        public string AssetStatus { get; set; }
+        //Hình thức thanh lý
+        public int LiquidationForm { get; set; }
+        //Giá tiền thanh lý
+        public string LiquidationPrice { get; set; }
+        //Ghi chú
+        public string Note { get; set; }
+        //Trạng thái duyệt
+        public bool StatusApproved { get; set; }
     }
 }

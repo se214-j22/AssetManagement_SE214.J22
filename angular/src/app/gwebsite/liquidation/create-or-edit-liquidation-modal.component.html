@@ -1,11 +1,11 @@
 <div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form #editForm="ngForm" novalidate (ngSubmit)="save()">
                 <div class="modal-header">
                     <h4 class="modal-title">
-                        <span *ngIf="liquidation.id">Cập nhật thanh lý: {{liquidation.name}}</span>
+                        <span *ngIf="liquidation.id">Cập nhật thanh lý: {{liquidation.id}}</span>
                         <span *ngIf="!liquidation.id">Tạo mới thanh lý</span>
                     </h4>
                     <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
@@ -14,34 +14,111 @@ aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'sta
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Tên nhà thanh lý *</label>
-                        <input #nameInput="ngModel" class="form-control" type="text" name="LiquidatorName"
-                            [(ngModel)]="liquidation.liquidatorName" required maxlength="64">
-                        <validation-messages [formCtrl]="liquidatorNameInput"></validation-messages>
-                    </div>
-                    <div class="form-group">
-                        <label>Số hợp đồng *</label>
-                        <input #noteInput="ngModel" class="form-control" type="text" name="ContractCode"
-                            [(ngModel)]="liquidation.contractCode" required maxlength="64">
-                        <validation-messages [formCtrl]="contractCodeInput"></validation-messages>
-                    </div>
-                    <div class="form-group">
                         <label>Ngày thanh lý *</label>
-                        <input #noteInput="ngModel" class="form-control" type="date" name="Date"
-                            [(ngModel)]="liquidation.date" required>
-                        <validation-messages [formCtrl]="dateInput"></validation-messages>
+                        <input #nameInput="ngModel" readonly class="form-control" type="text" name="LiquidationDate"
+                            [(ngModel)]="liquidation.liquidationDate" required maxlength="64">
                     </div>
                     <div class="form-group">
-                        <label>Tổng tài sản thanh lý *</label>
-                        <input #noteInput="ngModel" class="form-control" type="number" name="TotalAsset"
-                            [(ngModel)]="liquidation.totalAsset" required>
-                        <validation-messages [formCtrl]="totalAssetInput"></validation-messages>
+                        <label>Tài sản *</label>
+                        <select *ngIf="!liquidation.id" #nameInput="ngModel" required [(ngModel)]='liquidation.assetID'
+                            class='form-control' name="AssetID" (change)="getAssetByID($event.target.value)">
+                            <option *ngFor="let item of listAssetInStock" [value]="item.assetId">
+                                {{item.assetId}} - {{item.assetName}}
+                            </option>
+                        </select>
+                        <input *ngIf="liquidation.id" readonly name="AssetID" [value]="assetSelect.assetName"
+                            class="form-control" type="text">
                     </div>
                     <div class="form-group">
-                        <label>Tổng tiền thanh lý *</label>
-                        <input #noteInput="ngModel" class="form-control" type="number" name="TotalPrice"
-                            [(ngModel)]="liquidation.totalPrice" required>
-                        <validation-messages [formCtrl]="totalPriceInput"></validation-messages>
+                        <label>Loại tài sản *</label>
+                        <input readonly name="assetType" [value]="assetType" class="form-control" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Nhóm tài sản *</label>
+                        <input readonly name="assetGroupName" [value]="assetGroup.assetGroupName" class="form-control"
+                            type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Thông tin mô tả *</label>
+                        <input readonly name="describe" [value]="assetSelect.describe" class="form-control" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày bắt đầu khấu hao *</label>
+                        <input readonly name="DateAdded" [value]="assetSelect.dateAdded" class="form-control"
+                            type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Số tháng khấu hao *</label>
+                        <input readonly name="monthOfDepreciation" [value]="assetSelect.monthOfDepreciation"
+                            class="form-control" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày kết thúc khấu hao *</label>
+                        <input readonly class="form-control" [value]="dateEndDepreciation" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Nguyên giá tài sản *</label>
+                        <input readonly name="originalPrice" [value]="assetSelect.originalPrice" class="form-control"
+                            type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Giá trị khấu hao *</label>
+                        <input readonly name="depreciationValue" [value]="assetSelect.depreciationValue"
+                            class="form-control" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Giá trị khấu hao còn lại *</label>
+                        <input readonly class="form-control" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Vị trí tài sản *</label>
+                        <input readonly class="form-control" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Đơn vị mua tài sản thanh lý *</label>
+                        <select #nameInput="ngModel" required [(ngModel)]="liquidation.purchaseUnit"
+                            class='form-control' name="ProviderId">
+                            <option value='0'>Đơn vị mua tài sản 1</option>
+                            <option value='1'>Đơn vị mua tài sản 2</option>
+                            <option value='2'>Đơn vị mua tài sản 3</option>
+                            <option value='3'>Đơn vị mua tài sản 4</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Hình thức thanh lý *</label><br>
+                        <div *ngIf="!liquidation.id">
+                            <label class="radio-inline" style="margin-left: 5px">
+                                <input type="radio" [(ngModel)]="liquidation.liquidationForm" name="LiquidationForm"
+                                    value="0" required>Một phần
+                            </label>
+                            <label class="radio-inline" style="margin-left: 5px">
+                                <input type="radio" [(ngModel)]="liquidation.liquidationForm" name="LiquidationForm"
+                                    value="1" required>Toàn phần
+                            </label>
+                        </div>
+                        <div *ngIf="liquidation.id">
+                            <label class="radio-inline" style="margin-left: 5px">
+                                <input [checked]="liquidation.liquidationForm == 0" checked type="radio"
+                                    [(ngModel)]="liquidation.liquidationForm" name="LiquidationForm" value="0"
+                                    required>Một phần
+                            </label>
+                            <label class="radio-inline" style="margin-left: 5px">
+                                <input [checked]="liquidation.liquidationForm == 1" type="radio"
+                                    [(ngModel)]="liquidation.liquidationForm" name="LiquidationForm" value="1"
+                                    required>Toàn phần
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Số tiền thanh lý *</label>
+                        <input #addressInput="ngModel" class="form-control" type="number" name="LiquidationPrice"
+                            [(ngModel)]="liquidation.liquidationPrice" required maxlength="64">
+                    </div>
+                    <div class="form-group">
+                        <label>Ghi chú *</label>
+                        <textarea #addressInput="ngModel" class="form-control" name="Note"
+                            [(ngModel)]="liquidation.note" required>
+                        </textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

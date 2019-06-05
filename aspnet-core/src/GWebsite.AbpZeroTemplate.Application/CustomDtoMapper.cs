@@ -1,13 +1,16 @@
 using AutoMapper;
 using GWebsite.AbpZeroTemplate.Application.Share.Customers.Dto;
-using GWebsite.AbpZeroTemplate.Application.Share.Providers.Dto;
-using GWebsite.AbpZeroTemplate.Application.Share.AssetDetails.Dto;
-using GWebsite.AbpZeroTemplate.Application.Share.Liquidations.Dto;
-using GWebsite.AbpZeroTemplate.Application.Share.LiquidationDetails.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.DemoModels.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
-using GWebsite.AbpZeroTemplate.Application.Share.Categories.Dto;
+
+//
 using GWebsite.AbpZeroTemplate.Application.Share.Assets.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.AssetGroups.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.Liquidations.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.Repairs.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.Revokes.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.Transfers.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.UseAssets.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
 
 namespace GWebsite.AbpZeroTemplate.Applications
@@ -33,11 +36,9 @@ namespace GWebsite.AbpZeroTemplate.Applications
             configuration.CreateMap<Customer, CustomerInput>();
             configuration.CreateMap<Customer, CustomerForViewDto>();
 
-            // Category
-            configuration.CreateMap<Category, CategoryDto>();
-            configuration.CreateMap<CategoryInput, Category>();
-            configuration.CreateMap<Category, CategoryInput>();
-            configuration.CreateMap<Category, CategoryForViewDto>();
+            /// <summary>
+            /// qlts
+            /// </summary>
 
             // Asset
             configuration.CreateMap<Asset, AssetDto>();
@@ -45,17 +46,11 @@ namespace GWebsite.AbpZeroTemplate.Applications
             configuration.CreateMap<Asset, AssetInput>();
             configuration.CreateMap<Asset, AssetForViewDto>();
 
-            //Provider
-            configuration.CreateMap<Provider, ProviderDto>();
-            configuration.CreateMap<ProviderInput, Provider>();
-            configuration.CreateMap<Provider, ProviderInput>();
-            configuration.CreateMap<Provider, ProviderForViewDto>();
-
-            //AssetDetail
-            configuration.CreateMap<AssetDetail, AssetDetailDto>();
-            configuration.CreateMap<AssetDetailInput, AssetDetail>();
-            configuration.CreateMap<AssetDetail, AssetDetailInput>();
-            configuration.CreateMap<AssetDetail, AssetDetailForViewDto>();
+            //AssetGroup
+            configuration.CreateMap<AssetGroup, AssetGroupDto>();
+            configuration.CreateMap<AssetGroupInput, AssetGroup>();
+            configuration.CreateMap<AssetGroup, AssetGroupInput>();
+            configuration.CreateMap<AssetGroup, AssetGroupForViewDto>();
 
             //Liquidation
             configuration.CreateMap<Liquidation, LiquidationDto>();
@@ -63,11 +58,29 @@ namespace GWebsite.AbpZeroTemplate.Applications
             configuration.CreateMap<Liquidation, LiquidationInput>();
             configuration.CreateMap<Liquidation, LiquidationForViewDto>();
 
-            //LiquidationDetail
-            configuration.CreateMap<LiquidationDetail, LiquidationDetailDto>();
-            configuration.CreateMap<LiquidationDetailInput, LiquidationDetail>();
-            configuration.CreateMap<LiquidationDetail, LiquidationDetailInput>();
-            configuration.CreateMap<LiquidationDetail, LiquidationDetailForViewDto>();
+            //Repair
+            configuration.CreateMap<Repair, RepairDto>();
+            configuration.CreateMap<RepairInput, Repair>();
+            configuration.CreateMap<Repair, RepairInput>();
+            configuration.CreateMap<Repair, RepairForViewDto>();
+
+            //Revoke
+            configuration.CreateMap<Revoke, RevokeDto>();
+            configuration.CreateMap<RevokeInput, Revoke>();
+            configuration.CreateMap<Revoke, RevokeInput>();
+            configuration.CreateMap<Revoke, RevokeForViewDto>();
+
+            //Transfer
+            configuration.CreateMap<Transfer, TransferDto>();
+            configuration.CreateMap<TransferInput, Transfer>();
+            configuration.CreateMap<Transfer, TransferInput>();
+            configuration.CreateMap<Transfer, TransferForViewDto>();
+
+            //UseAsset
+            configuration.CreateMap<UseAsset, UseAssetDto>();
+            configuration.CreateMap<UseAssetInput, UseAsset>();
+            configuration.CreateMap<UseAsset, UseAssetInput>();
+            configuration.CreateMap<UseAsset, UseAssetForViewDto>();
         }
     }
 }

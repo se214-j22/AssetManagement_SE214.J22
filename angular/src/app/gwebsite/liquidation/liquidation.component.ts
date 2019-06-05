@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
-import { LiquidationServiceProxy } from '@shared/service-proxies/service-proxies';
+import { LiquidationServiceProxy, AssetServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOrEditLiquidationModalComponent } from './create-or-edit-liquidation-modal.component';
 
 @Component({
@@ -27,11 +27,11 @@ export class LiquidationComponent extends AppComponentBase implements AfterViewI
     /**
     * tạo các biến dể filters
     */
-    liquidatorName: string;
-
+    liquidationName: string;
     constructor(
         injector: Injector,
         private _liquidationService: LiquidationServiceProxy,
+        private _assetService: AssetServiceProxy,
         private _activatedRoute: ActivatedRoute,
     ) {
         super(injector);
@@ -72,8 +72,8 @@ export class LiquidationComponent extends AppComponentBase implements AfterViewI
 
     }
 
-    reloadList(liquidatorName, event?: LazyLoadEvent) {
-        this._liquidationService.getLiquidationsByFilter(liquidatorName, this.primengTableHelper.getSorting(this.dataTable),
+    reloadList(liquidationName, event?: LazyLoadEvent) {
+        this._liquidationService.getLiquidationsByFilter(liquidationName, this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getMaxResultCount(this.paginator, event),
             this.primengTableHelper.getSkipCount(this.paginator, event),
         ).subscribe(result => {
@@ -92,8 +92,8 @@ export class LiquidationComponent extends AppComponentBase implements AfterViewI
     init(): void {
         //get params từ url để thực hiện filter
         this._activatedRoute.params.subscribe((params: Params) => {
-            this.liquidatorName = params['liquidatorName'] || '';
-            this.reloadList(this.liquidatorName, null);
+            this.liquidationName = params['name'] || '';
+            this.reloadList(this.liquidationName, null);
         });
     }
 
@@ -103,7 +103,7 @@ export class LiquidationComponent extends AppComponentBase implements AfterViewI
 
     applyFilters(): void {
         //truyền params lên url thông qua router
-        this.reloadList(this.liquidatorName, null);
+        this.reloadList(this.liquidationName, null);
 
         if (this.paginator.getPage() !== 0) {
             this.paginator.changePage(0);
@@ -122,5 +122,15 @@ export class LiquidationComponent extends AppComponentBase implements AfterViewI
     */
     truncateString(text): string {
         return abp.utils.truncateStringWithPostfix(text, 32, '...');
+    }
+
+    approvedLiquidation(id): void {
+        this._liquidationService.approveLiquidation(id).subscribe(() => {
+            this._liquidationService.getLiquidationForView(id).subscribe(result => {
+                this._assetService.updateAssetStatusLiquidated(result.assetID).subscribe(() => {
+                    this.reloadPage();
+                })
+            });
+        })
     }
 }

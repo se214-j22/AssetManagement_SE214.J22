@@ -16,7 +16,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="m-content">
         <div class="m-portlet m-portlet--mobile">
             <div class="m-portlet__body">
@@ -25,8 +25,8 @@
                         <div class="row align-items-center m--margin-bottom-10">
                             <div class="col-sm-12">
                                 <div class="input-group">
-                                    <input [(ngModel)]="liquidationName" name="liquidationName" autoFocus class="form-control"
-                                        placeholder="Nhập tên nhà thanh lý" type="text">
+                                    <input [(ngModel)]="LiquidationName" name="LiquidationName" autoFocus
+                                        class="form-control" placeholder="Nhập mã tài sản" type="text">
                                     <span class="input-group-btn">
                                         <button (click)="applyFilters()" class="btn btn-primary" type="submit"><i
                                                 class="icon-refresh"></i>
@@ -45,21 +45,17 @@
                             [responsive]="primengTableHelper.isResponsive">
                             <ng-template pTemplate="header">
                                 <tr>
-                                    <th pSortableColumn="liquidatorName">
-                                        Tên nhà thanh lý
-                                        <p-sortIcon field="liquidatorName"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="contractCode">
-                                        Số hợp đồng
-                                    </th>
-                                    <th pSortableColumn="date">
+                                    <th pSortableColumn="liquidationDate">
                                         Ngày thanh lý
+                                        <p-sortIcon field="liquidationDate"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="totalAsset">
-                                        Tổng tài sản thanh lý
+                                    <th pSortableColumn="assetID">
+                                        Mã tài sản
+                                        <p-sortIcon field="assetID"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="totalPrice">
-                                        Tổng tiền thanh lý
+                                    <th pSortableColumn="statusApproved">
+                                        Trạng thái duyệt
+                                        <p-sortIcon field="statusApproved"></p-sortIcon>
                                     </th>
                                     <th>{{l('Edit')}}</th>
                                 </tr>
@@ -67,38 +63,38 @@
                             <ng-template pTemplate="body" let-record="$implicit">
                                 <tr>
                                     <td>
-                                        <span class="ui-column-title">Tên nhà thanh lý</span>
-                                        <span title="{{record.liquidatorName}}">{{truncateString(record.liquidatorName)}}</span>
-                                    </td>
-                                    <td>
-                                        <span class="ui-column-title">Số hợp đồng</span>
-                                        <span title="{{record.contractCode}}">{{truncateString(record.contractCode)}}</span>
-                                    </td>
-                                    <td>
                                         <span class="ui-column-title">Ngày thanh lý</span>
-                                        <span title="{{record.date}}">{{truncateString(record.date.format("DD/MM/YYYY"))}}</span>
+                                        <span
+                                            title="{{record.liquidationDate}}">{{truncateString(record.liquidationDate)}}</span>
                                     </td>
                                     <td>
-                                        <span class="ui-column-title">Tổng tài sản thanh lý</span>
-                                        <span title="{{record.totalAsset}}">{{truncateString(record.totalAsset)}}</span>
+                                        <span class="ui-column-title">Mã tài sản</span>
+                                        <span title="{{record.assetID}}">{{truncateString(record.assetID)}}</span>
                                     </td>
                                     <td>
-                                        <span class="ui-column-title">Tổng tiền thanh lý</span>
-                                        <span title="{{record.totalPrice}}">{{truncateString(record.totalPrice)}}</span>
+                                        <span class="ui-column-title">Trạng thái duyệt</span>
+                                        <span *ngIf="!record.statusApproved">Chưa duyệt</span>
+                                        <span *ngIf="record.statusApproved">Đã duyệt</span>
                                     </td>
                                     <td>
-                                        <button
+                                        <button *ngIf="!record.statusApproved"
+                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                            (click)="approvedLiquidation(record.id)" title="{{l('Approve')}}">
+                                            <i class="fa fa-thumbs-up" [attr.aria-label]="l('Approved')"></i>
+                                        </button>
+
+                                        <button *ngIf="!record.statusApproved"
                                             class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
                                             (click)="createOrEditModal.show(record.id)" title="{{l('Edit')}}">
                                             <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
                                         </button>
-    
-                                        <button
+
+                                        <button *ngIf="!record.statusApproved"
                                             class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
                                             (click)="deleteLiquidation(record.id)" title="{{l('Delete')}}">
                                             <i class="fa fa-times" [attr.aria-label]="l('Delete')"></i>
                                         </button>
-    
+
                                         <button
                                             class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
                                             (click)="viewLiquidationModal.show(record.id)" title="{{l('View')}}">
@@ -129,4 +125,4 @@
     </div>
     <createOrEditLiquidationModal #createOrEditModal (modalSave)="reloadPage()"></createOrEditLiquidationModal>
     <viewLiquidationModal #viewLiquidationModal></viewLiquidationModal>
-    </div>
+</div>

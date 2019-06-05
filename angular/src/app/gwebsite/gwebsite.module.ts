@@ -20,29 +20,34 @@ import { ViewCustomerModalComponent } from './customer/view-customer-modal.compo
 import { CreateOrEditCustomerModalComponent } from './customer/create-or-edit-customer-modal.component';
 
 // qlts
-import { CategoryComponent } from './category/category.component';
-import { ViewCategoryModalComponent } from './category/view-category-modal.component';
-import { CreateOrEditCategoryModalComponent } from './category/create-or-edit-category-modal.component';
+import { AssetGroupComponent } from './assetgroup/assetgroup.component';
+import { ViewAssetGroupModalComponent } from './assetgroup/view-assetgroup-modal.component';
+import { CreateOrEditAssetGroupModalComponent } from './assetgroup/create-or-edit-assetgroup-modal.component';
 
 import { AssetComponent } from './asset/asset.component';
 import { ViewAssetModalComponent } from './asset/view-asset-modal.component';
 import { CreateOrEditAssetModalComponent } from './asset/create-or-edit-asset-modal.component';
 
-import { AssetDetailComponent} from './assetdetail/assetdetail.component';
-import { ViewAssetDetailModalComponent } from './assetdetail/view-assetdetail-modal.component';
-import { CreateOrEditAssetDetailModalComponent } from './assetdetail/create-or-edit-assetdetail-modal.component';
-
-import { ProviderComponent } from './provider/provider.component';
-import { ViewProviderModalComponent } from './provider/view-provider-modal.component';
-import { CreateOrEditProviderModalComponent } from './provider/create-or-edit-provider-modal.component';
-
 import { LiquidationComponent } from './liquidation/liquidation.component';
 import { ViewLiquidationModalComponent } from './liquidation/view-liquidation-modal.component';
 import { CreateOrEditLiquidationModalComponent } from './liquidation/create-or-edit-liquidation-modal.component';
 
-import { LiquidationDetailComponent } from './liquidationdetail/liquidationdetail.component';
-import { ViewLiquidationDetailModalComponent } from './liquidationdetail/view-liquidationdetail-modal.component';
-import { CreateOrEditLiquidationDetailModalComponent } from './liquidationdetail/create-or-edit-liquidationdetail-modal.component';
+// import { RepairComponent } from './repair/repair.component';
+// import { ViewRepairModalComponent } from './repair/view-repair-modal.component';
+// import { CreateOrEditRepairModalComponent } from './repair/create-or-edit-repair-modal.component';
+
+import { RevokeComponent } from './revoke/revoke.component';
+import { ViewRevokeModalComponent } from './revoke/view-revoke-modal.component';
+import { CreateOrEditRevokeModalComponent } from './revoke/create-or-edit-revoke-modal.component';
+
+// import { TransferComponent } from './transfer/transfer.component';
+// import { ViewTransferModalComponent } from './transfer/view-transfer-modal.component';
+// import { CreateOrEditTransferModalComponent } from './transfer/create-or-edit-transfer-modal.component';
+
+// import { UseAssetComponent } from './useasset/useasset.component';
+// import { ViewUseAssetModalComponent } from './useasset/view-useasset-modal.component';
+// import { CreateOrEditUseAssetModalComponent } from './useasset/create-or-edit-useasset-modal.component';
+
 @NgModule({
     imports: [
         FormsModule,
@@ -67,16 +72,16 @@ import { CreateOrEditLiquidationDetailModalComponent } from './liquidationdetail
         DemoModelComponent, CreateOrEditDemoModelModalComponent, ViewDemoModelModalComponent,
         CustomerComponent, CreateOrEditCustomerModalComponent, ViewCustomerModalComponent,
 
-        CategoryComponent, CreateOrEditCategoryModalComponent, ViewCategoryModalComponent,
+        AssetGroupComponent, CreateOrEditAssetGroupModalComponent, ViewAssetGroupModalComponent,
         AssetComponent, CreateOrEditAssetModalComponent, ViewAssetModalComponent,
-        AssetDetailComponent, CreateOrEditAssetDetailModalComponent, ViewAssetDetailModalComponent,
-        ProviderComponent, CreateOrEditProviderModalComponent, ViewProviderModalComponent,
         LiquidationComponent, CreateOrEditLiquidationModalComponent, ViewLiquidationModalComponent,
-        LiquidationDetailComponent, CreateOrEditLiquidationDetailModalComponent, ViewLiquidationDetailModalComponent,
+        // RepairComponent, CreateOrEditRepairModalComponent, ViewRepairModalComponent,
+        RevokeComponent, CreateOrEditRevokeModalComponent, ViewRevokeModalComponent,
+        // TransferComponent, CreateOrEditTransferModalComponent, ViewTransferModalComponent,
+        // UseAssetComponent, CreateOrEditUseAssetModalComponent, ViewUseAssetModalComponent,
     ],
     providers: [
-        DemoModelServiceProxy,
-        CustomerServiceProxy
+        DemoModelServiceProxy
     ]
 })
 export class GWebsiteModule { }

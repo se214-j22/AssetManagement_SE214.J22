@@ -20,17 +20,17 @@ export class AppNavigationService {
                 new AppMenuItem('MenuClient', 'Pages.Administration.MenuClient', 'flaticon-menu-1', '/app/gwebsite/menu-client'),
                 new AppMenuItem('DemoModel', 'Pages.Administration.DemoModel', 'flaticon-menu-1', '/app/gwebsite/demo-model'),
                 new AppMenuItem('Customer', 'Pages.Administration.Customer', 'flaticon-menu-1', '/app/gwebsite/customer'),
-                new AppMenuItem('Danh mục tài sản', 'Pages.Administration.Category', 'flaticon-menu-1', '/app/gwebsite/category'),
-                new AppMenuItem('Nhà cung cấp', 'Pages.Administration.Provider', 'flaticon-menu-1', '/app/gwebsite/provider'),
-            
+
                 new AppMenuItem('Quản lý tài sản', '', 'flaticon-squares', '', [
-                    new AppMenuItem('Tài Sản', 'Pages.Administration.Asset', 'flaticon-menu-1', '/app/gwebsite/asset'),
-                    new AppMenuItem('Chi tiết tài sản', 'Pages.Administration.AssetDetail', 'flaticon-menu-1', '/app/gwebsite/assetdetail'),
-                ]),
-                new AppMenuItem('Quản lý thanh lý', '', 'flaticon-truck', '', [
-                    new AppMenuItem('Thanh lý', 'Pages.Administration.Liquidation', 'flaticon-menu-1', '/app/gwebsite/liquidation'),
-                    new AppMenuItem('Chi tiết thanh lý', 'Pages.Administration.LiquidationDetail', 'flaticon-menu-1', '/app/gwebsite/liquidationdetail'),
-                ]),
+                    new AppMenuItem('Nhóm tài sản', 'Pages.Administration.AssetGroup', 'flaticon-menu-1', '/app/gwebsite/assetgroup'),
+                    new AppMenuItem('Tài sản', 'Pages.Administration.Asset', 'flaticon-menu-1', '/app/gwebsite/asset'),
+                    // new AppMenuItem('Sử dụng tài sản', 'Pages.Administration.UseAsset', 'flaticon-menu-1', '/app/gwebsite/useasset'),
+                    // new AppMenuItem('Điều chuyển tài sản', 'Pages.Administration.Transfer', 'flaticon-menu-1', '/app/gwebsite/transfer'),
+                    new AppMenuItem('Thu hồi tài sản', 'Pages.Administration.Revoke', 'flaticon-menu-1', '/app/gwebsite/revoke'),
+                    // new AppMenuItem('Sửa chữa tài sản', 'Pages.Administration.Repair', 'flaticon-menu-1', '/app/gwebsite/repair'),
+                    new AppMenuItem('Thanh lý tài sản', 'Pages.Administration.Liquidation', 'flaticon-menu-1', '/app/gwebsite/liquidation'),
+
+                ])
             ]),
             new AppMenuItem('Systems', '', 'flaticon-layers', '', [
                 new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),

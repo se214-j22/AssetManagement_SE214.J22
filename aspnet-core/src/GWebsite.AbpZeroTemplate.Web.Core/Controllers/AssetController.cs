@@ -2,6 +2,7 @@
 using GWebsite.AbpZeroTemplate.Application.Share.Assets;
 using GWebsite.AbpZeroTemplate.Application.Share.Assets.Dto;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace GWebsite.AbpZeroTemplate.Application.Controllers
 {
@@ -43,6 +44,66 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         public AssetForViewDto GetAssetForView(int id)
         {
             return assetAppService.GetAssetForView(id);
+        }
+
+        [HttpGet]
+        public string GetAssetNameByID(string assetId)
+        {
+            return assetAppService.GetAssetNameByAssetID(assetId);
+        }
+
+        [HttpGet("{id}")]
+        public void ApproveAsset(int id)
+        {
+            assetAppService.ApproveAsset(id);
+        }
+
+        [HttpGet]
+        public AssetForViewDto GetAssetByAssetID(string assetId)
+        {
+            return assetAppService.GetAssetByAssetID(assetId);
+        }
+
+        [HttpGet]
+        public int GetTotalAsset()
+        {
+            return assetAppService.GetTotalAsset();
+        }
+
+        [HttpGet]
+        public List<AssetForViewDto> GetListAssetsInStock()
+        {
+            return assetAppService.GetListAssetsInStock();
+        }
+
+        [HttpGet]
+        public List<AssetForViewDto> GetListAssetsInUse()
+        {
+            return assetAppService.GetListAssetsInUse();
+        }
+
+        [HttpGet]
+        public void updateAssetStatusInStock(string assetID)
+        {
+            assetAppService.updateAssetStatusInStock(assetID);
+        }
+
+        [HttpGet]
+        public void updateAssetStatusUsing(string assetID)
+        {
+            assetAppService.updateAssetStatusUsing(assetID);
+        }
+
+        [HttpGet]
+        public void updateAssetStatusReparing(string assetID)
+        {
+            assetAppService.updateAssetStatusReparing(assetID);
+        }
+
+        [HttpGet]
+        public void updateAssetStatusLiquidated(string assetID)
+        {
+            assetAppService.updateAssetStatusLiquidated(assetID);
         }
     }
 }

@@ -1,84 +1,116 @@
-<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
-aria-hidden="true" [config]="{backdrop: 'static'}">
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-bledby="viewModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    <span *ngIf="asset.id">{{l("EditAsset")}}: {{asset.name}}</span>
-                    <span *ngIf="!asset.id">{{l("CreateNewAsset")}}</span>
+                    <span>{{l("Xem chi tiết tài sản")}}: {{asset.assetName}}</span>
                 </h4>
-                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                <button type="button" class="close" (click)="close()" [attr.aria-b]="l('Close')">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Tên tài sản</label>
-                    <p>{{asset.name}}</p>
+                    <b>Mã tài sản: </b>
+                    <span>{{asset.assetId}}</span>
                 </div>
                 <div class="form-group">
-                    <label>Mã danh mục</label>
-                    <p>{{asset.cateID}}</p>
+                    <b>Tên tài sản: </b>
+                    <span>{{asset.assetName}}</span>
                 </div>
                 <div class="form-group">
-                    <label>Mã nhà cung cấp</label>
-                    <p>{{asset.providerID}}</p>
+                    <b>Loại tài sản: </b>
+                    <span>{{asset.assetType}}</span>
                 </div>
                 <div class="form-group">
-                    <label>Số serial</label>
-                    <p>{{asset.serialNumber}}</p>
+                    <b>Nhóm tài sản: </b>
+                    <span>{{assetGroupName}}</span>
                 </div>
                 <div class="form-group">
-                    <label>Tình trạng</label>
-                    <p>{{asset.status}}</p>
+                    <b>Ngày nhập: </b>
+                    <span>{{asset.dateAdded}}</span>
                 </div>
                 <div class="form-group">
-                    <label>Ngày mua tài sản</label>
-                    <p>{{asset.purchaseDate}}</p>
+                    <b>Tình trạng tài sản: </b>
+                    <span *ngIf="asset.status == 0">Trong kho</span>
+                    <span *ngIf="asset.status == 1">Đang sử dụng</span>
+                    <span *ngIf="asset.status == 2">Sửa chữa</span>
+                    <span *ngIf="asset.status == 3">Đã thanh lý</span>
                 </div>
                 <div class="form-group">
-                    <label>Ngày kết thúc bảo hành</label>
-                    <p>{{asset.warrantyEndDate}}</p>
+                    <b>Thông tin mô tả: </b>
+                    <span>{{asset.describe}}</span>
                 </div>
                 <div class="form-group">
-                    <label>Ngày thanh lý</label>
-                    <p>{{asset.liquidationDate}}</p>
+                    <b>Nhà cung cấp: </b>
+                    <span>{{asset.providerId}}</span>
                 </div>
                 <div class="form-group">
-                    <label>Giá trị đầu tiên</label>
-                    <p>{{asset.purchasePrice}}</p>
+                    <b>Nguyên giá tài sản: </b>
+                    <span>{{asset.originalPrice}}</span>
                 </div>
                 <div class="form-group">
-                    <label>Tỉ lệ khấu hao hằng năm</label>
-                    <p>{{asset.annualDepreciationRate}}</p>
+                    <b>Số tháng khấu hao: </b>
+                    <span>{{asset.monthOfDepreciation}}</span>
                 </div>
                 <div class="form-group">
-                    <label>Giá trị còn lại</label>
-                    <p>{{asset.residualPrice}}</p>
+                    <b>Tỉ lệ khấu hao: </b>
+                    <span></span>
                 </div>
                 <div class="form-group">
-                    <label>Phòng cần theo dõi</label>
-                    <p>{{asset.departmentsNeedFollow}}</p>
+                    <b>Số tháng khấu hao còn lại: </b>
+                    <span></span>
                 </div>
                 <div class="form-group">
-                    <label>Tổng tiền bảo hành</label>
-                    <p>{{asset.totalMaintenanceCosts}}</p>
+                    <b>Tình trạng khấu hao: </b>
+                    <span></span>
                 </div>
                 <div class="form-group">
-                    <label>Tổng tiền sửa chữa</label>
-                    <p>{{asset.totalRepairCost}}</p>
+                    <b>Giá trị khấu hao: </b>
+                    <span>{{asset.depreciationValue}}</span>
                 </div>
                 <div class="form-group">
-                    <label>Mô tả</label>
-                    <p>{{asset.description}}</p>
+                    <b>Giá trị khấu hao còn lại: </b>
+                    <span></span>
                 </div>
+                <div class="form-group">
+                    <b>Ghi chú</b>
+                    <span>{{asset.note}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Ngày hết hạn bảo hành</b>
+                    <span>{{asset.warrantyExpiryDate}}</span>
+                </div>
+                <div *ngIf="liquidation != null" style="border: 1px solid red; border-radius: 3px; padding: 4px;">
+                    <h3>Thông tin thanh lý: </h3>
+                    <div class="form-group">
+                        <b>Ngày thanh lý: </b>
+                        <span>{{liquidation.liquidationDate}}</span>
+                    </div>
+                    <div class="form-group">
+                        <b>Giá trị khấu hao còn lại sau khi thanh lý: </b>
+                        <span></span>
+                    </div>
+                    <div class="form-group">
+                        <b>Số tiền thanh lý: </b>
+                        <span>{{liquidation.liquidationPrice}}</span>
+                    </div>
+                    <div class="form-group">
+                        <b>Hình thức thanh lý: </b>
+                        <span *ngIf="!liquidation.liquidationForm">Một phần</span>
+                        <span *ngIf="liquidation.liquidationForm">Toàn phần</span>
+                    </div>
+                    <div class="form-group">
+                        <b>Ghi chú: </b>
+                        <span>{{liquidation.note}}</span>
+                    </div>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button [disabled]="saving" type="button" class="btn btn-default"
                     (click)="close()">{{l("Cancel")}}</button>
-                <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
-                    [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
-                    <span>{{l("Save")}}</span></button>
             </div>
         </div>
     </div>

@@ -28,12 +28,14 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
         /// <summary>
         /// add database qlts
         /// </summary>
-        public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<Provider> Providers { get; set; }
+
+        public virtual DbSet<AssetGroup> AssetGroups { get; set; }
         public virtual DbSet<Asset> Assets { get; set; }
-        public virtual DbSet<AssetDetail> AssetDetails { get; set; }
         public virtual DbSet<Liquidation> Liquidations { get; set; }
-        public virtual DbSet<LiquidationDetail> LiquidationDetails { get; set; }
+        public virtual DbSet<Repair> Repairs { get; set; }
+        public virtual DbSet<Revoke> Revokes { get; set; }
+        public virtual DbSet<Transfer> Transfers { get; set; }
+        public virtual DbSet<UseAsset> UseAssets { get; set; }
 
         /// <summary>
         /// GPermissions dùng cho bên Gwebsite

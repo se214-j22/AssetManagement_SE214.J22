@@ -49,6 +49,8 @@ namespace GSoft.AbpZeroTemplate.Authorization.Users
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IRepository<OrganizationUnit, long> _organizationUnitRepository;
 
+        private readonly IAbpSession _session;
+
         public UserAppService(
             RoleManager roleManager,
             IUserEmailer userEmailer,
@@ -61,7 +63,9 @@ namespace GSoft.AbpZeroTemplate.Authorization.Users
             IUserPolicy userPolicy,
             IEnumerable<IPasswordValidator<User>> passwordValidators,
             IPasswordHasher<User> passwordHasher,
-            IRepository<OrganizationUnit, long> organizationUnitRepository)
+            IRepository<OrganizationUnit, long> organizationUnitRepository,
+            
+            IAbpSession session)
         {
             _roleManager = roleManager;
             _userEmailer = userEmailer;
@@ -76,8 +80,20 @@ namespace GSoft.AbpZeroTemplate.Authorization.Users
             _passwordHasher = passwordHasher;
             _organizationUnitRepository = organizationUnitRepository;
 
+            _session = session;
+
             AppUrlService = NullAppUrlService.Instance;
         }
+
+
+        public async Task<IList<string>> GetCurrentRolesOfUser()
+        {
+            long userId = _session.GetUserId();
+            User user = await UserManager.GetUserByIdAsync(userId);
+            return await UserManager.GetRolesAsync(user);
+            //return user.Roles;
+        }
+
 
         public async Task<PagedResultDto<UserListDto>> GetUsers(GetUsersInput input)
         {
