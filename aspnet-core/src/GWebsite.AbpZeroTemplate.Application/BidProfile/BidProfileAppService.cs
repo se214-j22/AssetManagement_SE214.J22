@@ -74,12 +74,25 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.BidProfiles
         }
 
 
-        public async Task<BidProfileDto> CreateProductCatalogAsync(BidProfileDto BidProfile)
+        public async Task<BidProfileDto> CreateProductCatalogAsync(BidProfileSaveForCreate BidProfile)
         {
             BidProfile productType = ObjectMapper.Map<BidProfile>(BidProfile);
             await bidProfileRepository.InsertAndGetIdAsync(productType);
             await CurrentUnitOfWork.SaveChangesAsync();
             return ObjectMapper.Map<BidProfileDto>(productType);
+        }
+        public async Task<BidProfileAllDto> GetBidProfileByIdAsync(int id)
+        {
+            BidProfile bidProfile = await bidProfileRepository.GetAllIncluding().Include(p => p.Project).Include(p=>p.BidUnits).ThenInclude(p=>p.Product).FirstOrDefaultAsync(p=>p.Id==id);
+            return this.ObjectMapper.Map<BidProfileAllDto>(bidProfile);
+        }
+        public async Task<BidProfileDto> ApprovalBidProfileAsync(int id)
+        {
+            BidProfile entity = await this.bidProfileRepository.GetAllIncluding(p => p.Project).FirstOrDefaultAsync(item => item.Id == id);
+            entity.Status = 1;
+            entity = await this.bidProfileRepository.UpdateAsync(entity);
+            await this.CurrentUnitOfWork.SaveChangesAsync();
+            return this.ObjectMapper.Map<BidProfileDto>(entity);
         }
     }
 }

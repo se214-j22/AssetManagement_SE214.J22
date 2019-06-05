@@ -38,10 +38,20 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpPost]
-        public async Task<BidProfileDto> CreateBidProfileAsync([FromBody] BidProfileDto dto)
+        public async Task<BidProfileDto> CreateBidProfileAsync([FromBody] BidProfileSaveForCreate dto)
         {
             return await this._BidProfileAppService.CreateProductCatalogAsync(dto);
         }
+        [HttpGet]
+        public async Task<BidProfileAllDto> GetBidProfileByIdAsync(int id)
+        {
+            return await this._BidProfileAppService.GetBidProfileByIdAsync(id);
+        }
 
+        [HttpPut]
+        public async Task<BidProfileDto> ApprovalBidProfileAsync(int id)
+        {
+            return await this._BidProfileAppService.ApprovalBidProfileAsync(id);
+        }
     }
 }

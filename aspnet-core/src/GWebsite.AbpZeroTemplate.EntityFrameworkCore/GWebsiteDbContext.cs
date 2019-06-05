@@ -336,6 +336,16 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
 
             });
 
+            modelBuilder.Entity<BidProfile>(entity =>
+            {
+                entity
+                    .HasMany(p => p.BidUnits)
+                     .WithOne(i => i.BidProfile)
+                     .HasForeignKey(i => i.BidProfileId)
+                     .OnDelete(DeleteBehavior.Restrict);
+
+            });
+
             modelBuilder.Entity<Product>(entity =>
             {
                 entity

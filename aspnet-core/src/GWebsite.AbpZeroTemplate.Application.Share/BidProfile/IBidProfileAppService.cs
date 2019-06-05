@@ -13,6 +13,8 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.BidProfile
         Task<PagedResultDto<BidProfileDto>> GetBidProfileWithFilterAsync(BidProfileImput input);
         Task DeleteBidProfileAsync(int id);
         Task<BidProfileDto> UpdateProductCatalogAsync(BidProfileSaved bidProfileSaved);
-        Task<BidProfileDto> CreateProductCatalogAsync(BidProfileDto BidProfile);
+        Task<BidProfileDto> CreateProductCatalogAsync(BidProfileSaveForCreate BidProfile);
+        Task<BidProfileAllDto> GetBidProfileByIdAsync(int id);
+        Task<BidProfileDto> ApprovalBidProfileAsync(int id);
     }
 }
