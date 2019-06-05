@@ -28,7 +28,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
 
         public async Task<PagedResultDto<ManufacturerDto>> GetsForView(ManufacturerFilter filter)
         {
-            var query = manufacturerRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking();
+            var query = manufacturerRepository.GetAll().Where(x => !x.IsDelete);
 
             if (filter.Term != null)
             {
@@ -41,8 +41,12 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
             {
                 query = query.OrderBy(filter.Sorting);
             }
+            if (filter.MaxResultCount > 0)
+            {
+                query = query.PageBy(filter);
+            }
 
-            var items = await query.PageBy(filter).ToListAsync();
+            var items = await query.AsNoTracking().ToListAsync();
 
             return new PagedResultDto<ManufacturerDto>(
                 totalCount,

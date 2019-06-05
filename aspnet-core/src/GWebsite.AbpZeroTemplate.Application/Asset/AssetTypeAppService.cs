@@ -28,7 +28,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.AssetTypes
 
         public async Task<PagedResultDto<AssetTypeDto>> GetsForView(AssetTypeFilter filter)
         {
-            var query = assetTypeRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking();
+            var query = assetTypeRepository.GetAll().Where(x => !x.IsDelete);
            
             if (filter.Term != null)
             {
@@ -41,8 +41,11 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.AssetTypes
             {
                 query = query.OrderBy(filter.Sorting);
             }
-
-            var items = await query.PageBy(filter).ToListAsync();
+            if (filter.MaxResultCount > 0)
+            {
+                query = query.PageBy(filter);
+            }
+            var items = await query.AsNoTracking().ToListAsync();
 
             return new PagedResultDto<AssetTypeDto>(
                 totalCount,

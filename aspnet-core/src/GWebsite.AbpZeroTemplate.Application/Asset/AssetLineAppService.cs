@@ -28,7 +28,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
 
         public async Task<PagedResultDto<AssetLineDto>> GetsForView(AssetLineFilter filter)
         {
-            var query = assetLineRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking();
+            var query = assetLineRepository.GetAll().Where(x => !x.IsDelete);
             if (filter.AssetTypeId>0)
             {
                 query = query.Where(x => x.AssetTypeID == filter.AssetTypeId);
@@ -52,7 +52,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
             {
                 query = query.PageBy(filter);
             }
-            var items = await query.Include(b => b.AssetType).Include(b => b.Manufacturer).ToListAsync();
+            var items = await query.AsNoTracking().Include(b => b.AssetType).Include(b => b.Manufacturer).ToListAsync();
             return new PagedResultDto<AssetLineDto>(
                 totalCount,
                 items.Select(item => ObjectMapper.Map<AssetLineDto>(item)).ToList());
