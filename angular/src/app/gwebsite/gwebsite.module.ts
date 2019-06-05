@@ -1,4 +1,4 @@
-import { CustomerServiceProxy } from './../../shared/service-proxies/service-proxies';
+import { CustomerServiceProxy, TaiSanServiceProxy, XuatTaiSanServiceProxy, ThuHoiServiceProxy, DieuChuyenServiceProxy, NhomTaiSanServiceProxy } from './../../shared/service-proxies/service-proxies';
 import { ViewDemoModelModalComponent } from './demo-model/view-demo-model-modal.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -18,6 +18,22 @@ import { DemoModelServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CustomerComponent } from './customer/customer.component';
 import { ViewCustomerModalComponent } from './customer/view-customer-modal.component';
 import { CreateOrEditCustomerModalComponent } from './customer/create-or-edit-customer-modal.component';
+import { TaiSanComponent } from './taisan/taisan.component';
+import { CreateOrEditTaiSanModalComponent } from './taisan/create-or-edit-taisan-modal.component';
+import { ViewTaiSanModalComponent } from './taisan/view-taisan-modal.component';
+import { XuatTaiSanComponent } from './xuattaisan/xuattaisan.component';
+import { CreateOrEditXuatTaiSanModalComponent } from './xuattaisan/create-or-edit-xuattaisan-modal.component';
+import { ViewXuatTaiSanModalComponent } from './xuattaisan/view-xuattaisan-modal.component';
+import { ThuHoiComponent } from './thuhoi/thuhoi.component';
+import { CreateOrEditThuHoiModalComponent } from './thuhoi/create-or-edit-thuhoi-modal.component';
+import { ViewThuHoiModalComponent } from './thuhoi/view-thuhoi-modal.component';
+import { DieuChuyenComponent } from './dieuchuyen/dieuchuyen.component';
+import { CreateOrEditDieuChuyenModalComponent } from './dieuchuyen/create-or-edit-dieuchuyen-modal.component';
+import { ViewDieuChuyenModalComponent } from './dieuchuyen/view-dieuchuyen-modal.component';
+import { NhomTaiSanComponent } from './nhomtaisan/nhomtaisan.component';
+import { CreateOrEditNhomTaiSanModalComponent } from './nhomtaisan/create-or-edit-nhomtaisan-modal.component';
+import { ViewNhomTaiSanModalComponent } from './nhomtaisan/view-nhomtaisan-modal.component';
+import { SearchTaiSanComponent } from './nhomtaisan/search-taisan.component';
 
 @NgModule({
     imports: [
@@ -42,10 +58,20 @@ import { CreateOrEditCustomerModalComponent } from './customer/create-or-edit-cu
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
         DemoModelComponent, CreateOrEditDemoModelModalComponent, ViewDemoModelModalComponent,
         CustomerComponent, CreateOrEditCustomerModalComponent, ViewCustomerModalComponent,
+        TaiSanComponent, CreateOrEditTaiSanModalComponent, ViewTaiSanModalComponent,
+        NhomTaiSanComponent, CreateOrEditNhomTaiSanModalComponent, ViewNhomTaiSanModalComponent, SearchTaiSanComponent, //6-3 searchTaiSan
+        XuatTaiSanComponent, CreateOrEditXuatTaiSanModalComponent, ViewXuatTaiSanModalComponent,
+        DieuChuyenComponent, CreateOrEditDieuChuyenModalComponent, ViewDieuChuyenModalComponent,
+        ThuHoiComponent, CreateOrEditThuHoiModalComponent, ViewThuHoiModalComponent
     ],
     providers: [
         DemoModelServiceProxy,
-        CustomerServiceProxy
+        CustomerServiceProxy,
+        TaiSanServiceProxy,
+        NhomTaiSanServiceProxy,
+        XuatTaiSanServiceProxy,
+        DieuChuyenServiceProxy,
+        ThuHoiServiceProxy
     ]
 })
 export class GWebsiteModule { }

@@ -3,6 +3,11 @@ import { RouterModule } from '@angular/router';
 import { MenuClientComponent } from '@app/gwebsite/menu-client/menu-client.component';
 import { DemoModelComponent } from './demo-model/demo-model.component';
 import { CustomerComponent } from './customer/customer.component';
+import { TaiSanComponent } from './taisan/taisan.component';
+import { XuatTaiSanComponent } from './xuattaisan/xuattaisan.component';
+import { DieuChuyenComponent } from './dieuchuyen/dieuchuyen.component';
+import { ThuHoiComponent } from './thuhoi/thuhoi.component';
+import { NhomTaiSanComponent } from './nhomtaisan/nhomtaisan.component';
 
 @NgModule({
     imports: [
@@ -31,6 +36,51 @@ import { CustomerComponent } from './customer/customer.component';
                     {
                         path: 'customer', component: CustomerComponent,
                         data: { permission: 'Pages.Administration.Customer' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'taisan', component: TaiSanComponent,
+                        data: { permission: 'Pages.Administration.TaiSan' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'nhomtaisan', component: NhomTaiSanComponent,
+                        data: { permission: 'Pages.Administration.NhomTaiSan' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'xuattaisan', component: XuatTaiSanComponent,
+                        data: { permission: 'Pages.Administration.XuatTaiSan' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'dieuchuyen', component: DieuChuyenComponent,
+                        data: { permission: 'Pages.Administration.DieuChuyen' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'thuhoi', component: ThuHoiComponent,
+                        data: { permission: 'Pages.Administration.ThuHoi' }
                     },
                 ]
             }

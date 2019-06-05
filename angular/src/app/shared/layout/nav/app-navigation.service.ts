@@ -19,7 +19,12 @@ export class AppNavigationService {
             new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [
                 new AppMenuItem('MenuClient', 'Pages.Administration.MenuClient', 'flaticon-menu-1', '/app/gwebsite/menu-client'),
                 new AppMenuItem('DemoModel', 'Pages.Administration.DemoModel', 'flaticon-menu-1', '/app/gwebsite/demo-model'),
-                new AppMenuItem('Customer', 'Pages.Administration.Customer', 'flaticon-menu-1', '/app/gwebsite/customer')
+                new AppMenuItem('Customer', 'Pages.Administration.Customer', 'flaticon-menu-1', '/app/gwebsite/customer'),
+                new AppMenuItem('TaiSan', 'Pages.Administration.TaiSan', 'flaticon-menu-1', '/app/gwebsite/taisan'),
+                new AppMenuItem('NhomTaiSan', 'Pages.Administration.NhomTaiSan', 'flaticon-menu-1', '/app/gwebsite/nhomtaisan'),
+                new AppMenuItem('XuatTaiSan', 'Pages.Administration.XuatTaiSan', 'flaticon-menu-1', '/app/gwebsite/xuattaisan'),
+                new AppMenuItem('DieuChuyen', 'Pages.Administration.DieuChuyen', 'flaticon-menu-1', '/app/gwebsite/dieuchuyen'),
+                new AppMenuItem('ThuHoi', 'Pages.Administration.ThuHoi', 'flaticon-menu-1', '/app/gwebsite/thuhoi')
             ]),
             new AppMenuItem('Systems', '', 'flaticon-layers', '', [
                 new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),

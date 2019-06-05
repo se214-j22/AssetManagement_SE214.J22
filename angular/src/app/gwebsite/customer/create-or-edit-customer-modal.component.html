@@ -27,7 +27,7 @@
                     </div>
                     <div class="form-group">
                         <label>Thông tin *</label>
-                        <input #addressInput="ngModel" class="form-control" type="text" name="Info"
+                        <input #infoInput="ngModel" class="form-control" type="text" name="Info"
                             [(ngModel)]="customer.info" required maxlength="64">
                         <validation-messages [formCtrl]="infoInput"></validation-messages>
                     </div>

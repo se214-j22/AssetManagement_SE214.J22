@@ -1,0 +1,114 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="taiSan.id">Cập nhật tài sản: {{taiSan.tenTaiSan}}</span>
+                        <span *ngIf="!taiSan.id">Tạo mới tài sản</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Tên tài sản *</label>
+                        <input #TenTsInput="ngModel" class="form-control" type="text" name="tenTs"
+                               [(ngModel)]="taiSan.tenTs" required maxlength="64">
+                        <validation-messages [formCtrl]="TenTsInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Thông tin mô tả *</label>
+                        <input #ThongTinMoTaInput="ngModel" class="form-control" type="text" name="thongTinMoTa"
+                               [(ngModel)]="taiSan.thongTinMoTa" required maxlength="64">
+                        <validation-messages [formCtrl]="ThongTinMoTaInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày nhập *</label>
+                        <input class="form-control" type="text" name="ngayNhap" disabled
+                               value="{{ngayNhap | date}}" required maxlength="64">                        
+                    </div>
+                    <!-- <div class="form-group">
+                        <label>Mã nhóm tài sản *</label>
+                        <input #MaNhomTS="ngModel" class="form-control" type="text" name="maNhomTS"
+                               [(ngModel)]="taiSan.maNhomTS" required maxlength="64">
+                        <validation-messages [formCtrl]="MaNhomTS"></validation-messages>
+                    </div> -->
+                    <div class="form-group">
+                        <label>Tên nhóm tài sản *</label>  
+                        <select #TenNhomTS="ngModel" class="form-control" name="tenNhomTS"
+                                [(ngModel)]="taiSan.tenNhomTS" required maxlength="64">
+                            <option *ngFor="let listTen of listTenNhomTaiSan">
+                                {{listTen}}
+                            </option>
+                        </select>
+                        <validation-messages [formCtrl]="TenNhomTS"></validation-messages>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label>Mã lô *</label>
+                        <input #MaLoInput="ngModel" class="form-control" type="text" name="maLo"
+                               [(ngModel)]="taiSan.maLo" required maxlength="64">
+                        <validation-messages [formCtrl]="MaLoInput"></validation-messages>
+                    </div> -->
+                    <div class="form-group">
+                        <label>Nguyên giá *</label>
+                        <input #NguyenGiaInput="ngModel" class="form-control" type="text" name="nguyenGia"
+                               [(ngModel)]="taiSan.nguyenGia" required maxlength="64">
+                        <validation-messages [formCtrl]="NguyenGiaInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Danh sách số seri *</label>
+                        <input #DSSoseriInput="ngModel" class="form-control" type="text" name="dSSoseri"
+                               [(ngModel)]="taiSan.dSSoseri" required maxlength="64">
+                        <validation-messages [formCtrl]="DSSoseriInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Giá trị khấu hao *</label>
+                        <input #GiaTriKhauHaoInput="ngModel" class="form-control" type="text" name="giaTriKhauHao"
+                               [(ngModel)]="taiSan.giaTriKhauHao" required maxlength="64">
+                        <validation-messages [formCtrl]="GiaTriKhauHaoInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Số tháng khấu hao *</label>
+                        <input #SoThangKhauHaoInput="ngModel" class="form-control" type="text" name="soThangKhauHao"
+                               [(ngModel)]="taiSan.soThangKhauHao" required maxlength="64">
+                        <validation-messages [formCtrl]="SoThangKhauHaoInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Tỷ lệ khấu hao *</label>
+                        <input #TyLeKhauHaoInput="ngModel" class="form-control" type="text" name="tyLeKhauHao"
+                               [(ngModel)]="taiSan.tyLeKhauHao" required maxlength="64">
+                        <validation-messages [formCtrl]="TyLeKhauHaoInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Số tháng bảo hành *</label>
+                        <input #SoThangBaoHanhInput="ngModel" class="form-control" type="text" name="soThangBaoHanh"
+                               [(ngModel)]="taiSan.soThangBaoHanh" required maxlength="64">
+                        <validation-messages [formCtrl]="SoThangBaoHanhInput"></validation-messages>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label>Tình trạng khấu hao *</label>
+                        <input #TinhTrangKhauHaoInput="ngModel" class="form-control" type="text" name="tinhTrangKhauHao"
+                               [(ngModel)]="taiSan.tinhTrangKhauHao" required maxlength="64">
+                        <validation-messages [formCtrl]="TinhTrangKhauHaoInput"></validation-messages>
+                    </div> -->
+                    <div class="form-group">
+                        <label>Số lượng *</label>
+                        <input #SoLuongInput="ngModel" class="form-control" type="text" name="soLuong"
+                               [(ngModel)]="taiSan.soLuong" required maxlength="64">
+                        <validation-messages [formCtrl]="SoLuongInput"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
