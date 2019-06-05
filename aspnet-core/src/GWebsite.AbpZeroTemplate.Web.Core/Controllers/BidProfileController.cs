@@ -1,0 +1,47 @@
+﻿using Abp.Application.Services.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.BidProfile;
+using GWebsite.AbpZeroTemplate.Application.Share.BidProfile.Dto;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GWebsite.AbpZeroTemplate.Application.Controllers
+{
+    [Route("api/[controller]/[action]")]
+    public  class BidProfileController : GWebsiteControllerBase
+    {
+        private readonly IBidProfileAppService _BidProfileAppService;
+        public BidProfileController(IBidProfileAppService BidProfileAppService)
+        {
+            _BidProfileAppService = BidProfileAppService;
+        }
+
+
+        [HttpGet]
+        public async Task<ListResultDto<BidProfileDto>> GetBidProfiles(BidProfileImput input)
+        {
+            return await this._BidProfileAppService.GetBidProfileWithFilterAsync(input);
+        }
+        [HttpDelete("{id}")]
+        public async Task DeleteBidProfileAsync(int id)
+        {
+            await this._BidProfileAppService.DeleteBidProfileAsync(id);
+        }
+
+        [HttpPut("edit")]
+        public async Task<BidProfileDto> UpdateBidProfileAsync([FromBody] BidProfileSaved dto)
+        {
+            return await this._BidProfileAppService.UpdateProductCatalogAsync(dto);
+        }
+
+        [HttpPost]
+        public async Task<BidProfileDto> CreateBidProfileAsync([FromBody] BidProfileDto dto)
+        {
+            return await this._BidProfileAppService.CreateProductCatalogAsync(dto);
+        }
+
+    }
+}

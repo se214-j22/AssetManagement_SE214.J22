@@ -1,5 +1,6 @@
 using AutoMapper;
 using GWebsite.AbpZeroTemplate.Application.Share.Bidding.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.BidProfile.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Contract.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.DemoModels.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
@@ -45,6 +46,8 @@ namespace GWebsite.AbpZeroTemplate.Applications
             configuration.CreateMap<ContractDto, Contract>();
             configuration.CreateMap<Contract, ContractDto>();
             configuration.CreateMap<Project, ProjectDto>();
+            configuration.CreateMap<BidProfile, BidProfileDto>();
+
             // DemoModel
             configuration.CreateMap<DemoModel, DemoModelDto>();
             configuration.CreateMap<DemoModelInput, DemoModel>();
@@ -52,6 +55,8 @@ namespace GWebsite.AbpZeroTemplate.Applications
 
 
             // revert mapper 
+            configuration.CreateMap<BidProfileDto, BidProfile>();
+            configuration.CreateMap<BidProfileSaved, BidProfile>();
             configuration.CreateMap<ProjectSavedDto, Project>();
             configuration.CreateMap<SupplierTypeSavedDto, SupplierType>();
             configuration.CreateMap<ProductSavedDto, Product>();
