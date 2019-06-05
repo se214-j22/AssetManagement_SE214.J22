@@ -38,6 +38,7 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
         public virtual DbSet<SubPlan> SubPlans { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<BidProfile> BidProfiles { get; set; }
+        public virtual DbSet<BidUnit> BidUnit { get; set; }
         /// <summary>
         /// GPermissions dùng cho bên Gwebsite
         /// </summary>
@@ -331,6 +332,16 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
                     .HasMany(p => p.SubPlans)
                      .WithOne(i => i.Plan)
                      .HasForeignKey(i => i.PlanId)
+                     .OnDelete(DeleteBehavior.Restrict);
+
+            });
+
+            modelBuilder.Entity<BidProfile>(entity =>
+            {
+                entity
+                    .HasMany(p => p.BidUnits)
+                     .WithOne(i => i.BidProfile)
+                     .HasForeignKey(i => i.BidProfileId)
                      .OnDelete(DeleteBehavior.Restrict);
 
             });
