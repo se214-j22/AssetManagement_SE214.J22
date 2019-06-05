@@ -15,16 +15,8 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.ThuHois.Dto
     /// </summary>
     public class ThuHoiFilter: PagedAndSortedInputDto
     {
-        public int MaNhanVien { get; set; }
-        public string TenNhanVien { get; set; }
-        public int MaDV { get; set; }
+   
         public string TenDonVi { get; set; }
-        public int MaTS { get; set; }
-        public string TenTaiSan { get; set; }
-        public int SoLuongTh { get; set; }
-        public DateTime NgayThuHoi { get; set; }
-        public string LyDo { get; set; }
-        public bool TrangThaiDuyet { get; set; }
-        public string NoiDungTh { get; set; }
+     
     }
 }

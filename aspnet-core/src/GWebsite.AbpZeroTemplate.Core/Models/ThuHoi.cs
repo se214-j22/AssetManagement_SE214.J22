@@ -8,8 +8,6 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
 {
     public class ThuHoi:FullAuditModel
     {
-        public int MaNhanVien { get; set; }
-        public string TenNhanVien { get; set; }
         public int MaDV { get; set; }
         public string TenDonVi { get; set; }
         public int MaTS { get; set; }

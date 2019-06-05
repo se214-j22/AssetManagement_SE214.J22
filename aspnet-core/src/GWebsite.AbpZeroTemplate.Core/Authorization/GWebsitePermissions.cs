@@ -76,5 +76,15 @@
         public const string Pages_Administration_SuaChua_Create = "Pages.Administration.SuaChua.Create";
         public const string Pages_Administration_SuaChua_Edit = "Pages.Administration.SuaChua.Edit";
         public const string Pages_Administration_SuaChua_Delete = "Pages.Administration.SuaChua.Delete";
+
+        public const string Pages_Administration_ChiNhanh = "Pages.Administration.ChiNhanh";
+        public const string Pages_Administration_ChiNhanh_Create = "Pages.Administration.ChiNhanh.Create";
+        public const string Pages_Administration_ChiNhanh_Edit = "Pages.Administration.ChiNhanh.Edit";
+        public const string Pages_Administration_ChiNhanh_Delete = "Pages.Administration.ChiNhanh.Delete";
+
+        public const string Pages_Administration_CTDonVi = "Pages.Administration.CTDonVi";
+        public const string Pages_Administration_CTDonVi_Create = "Pages.Administration.CTDonVi.Create";
+        public const string Pages_Administration_CTDonVi_Edit = "Pages.Administration.CTDonVi.Edit";
+        public const string Pages_Administration_CTDonVi_Delete = "Pages.Administration.CTDonVi.Delete";
     }
 }

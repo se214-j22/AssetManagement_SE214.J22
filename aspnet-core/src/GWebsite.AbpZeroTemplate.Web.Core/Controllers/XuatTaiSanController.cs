@@ -51,6 +51,16 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         {
             return xuatTaiSanAppservice.GetXuatTaiSanForView(id);
         }
+        [HttpGet]
+        public string[] GetArrTenDonVi()
+        {
+            return xuatTaiSanAppservice.GetArrTenDonVi();
+        }
+        [HttpGet]
+        public string[] GetArrTenNhanVienTheoDV(string tenDV)
+        {
+            return xuatTaiSanAppservice.GetArrTenNhanVienTheoDV(tenDV);
+        }
     }
 }
 

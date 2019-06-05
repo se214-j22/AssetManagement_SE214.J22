@@ -1,8 +1,8 @@
 <div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+     aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+            <!--<form #editForm="ngForm" novalidate (ngSubmit)="save()">-->
                 <div class="modal-header">
                     <h4 class="modal-title">
                         <span *ngIf="xuatTaiSan.id">Cập nhật xuất tài sản: {{xuatTaiSan.tenTaiSan}}</span>
@@ -15,15 +15,73 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Mã tài sản *</label>
-                        <input #maTaiSanInput="ngModel" class="form-control" type="text" name="maTaiSan"
-                               [(ngModel)]="xuatTaiSan.maTaiSan" required maxlength="64">
-                        <validation-messages [formCtrl]="maTaiSanInput"></validation-messages>
+                        <div class="d-flex ">
+                            <input #maTaiSanInput="ngModel" class="form-control" type="text" name="maTaiSan" disabled
+                                   [(ngModel)]="xuatTaiSan.maTaiSan" required maxlength="64">
+                            <validation-messages [formCtrl]="maTaiSanInput"></validation-messages>
+                            <button class="form-control btn btn-outline-primary"
+                                    (click)="viewThongTinTaiSan.show()"
+                                    style="margin-right: 20px; width: 50px">
+                                ...
+                            </button>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Tên tài sản *</label>
-                        <input #tenTaiSanInput="ngModel" class="form-control" type="text" name="tenTaiSan"
+                        <input #tenTaiSanInput="ngModel" class="form-control" type="text" name="tenTaiSan" disabled
                                [(ngModel)]="xuatTaiSan.tenTaiSan" required maxlength="64">
                         <validation-messages [formCtrl]="tenTaiSanInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày xuất *</label>
+                        <input class="form-control" type="text" name="ngayXuat" disabled
+                               value="{{ngayXuat | date}}" required maxlength="64">
+                    </div>
+                    <!--<div class="form-group">
+        <label>Mã đơn vị *</label>
+        <input #maDonViInput="ngModel" class="form-control" type="text" name="maDonVi"
+               [(ngModel)]="xuatTaiSan.maDonVi" required maxlength="64">
+        <validation-messages [formCtrl]="maDonViInput"></validation-messages>
+    </div>-->
+                    <!--<div class="form-group">
+        <label>Tên đơn vị *</label>
+        <input #tenDonViInput="ngModel" class="form-control" type="text" name="tenDonVi"
+               [(ngModel)]="xuatTaiSan.tenDonVi" required maxlength="64">
+        <validation-messages [formCtrl]="tenDonViInput"></validation-messages>
+    </div>-->
+                    <div class="form-group">
+                        <label>Tên đơn vị *</label>
+                        <select #tenDonViInput="ngModel" class="form-control" name="tenDonVi"
+                                [(ngModel)]="xuatTaiSan.tenDonVi" required maxlength="64"
+                                (change)="getTenNhanVienTheoDV()">
+                            <option>...</option>
+                            <option *ngFor="let listTen of listTenDonVi">
+                                {{listTen}}
+                            </option>
+                        </select>
+                        <validation-messages [formCtrl]="tenDonViInput"></validation-messages>
+                    </div>
+                    <!--<div class="form-group">
+        <label>Mã nhân viên *</label>
+        <input #maNhanVienInput="ngModel" class="form-control" type="text" name="maNhanVien"
+               [(ngModel)]="xuatTaiSan.maNhanVien" required maxlength="64">
+        <validation-messages [formCtrl]="maNhanVienInput"></validation-messages>
+    </div>-->
+                    <!--<div class="form-group">
+                        <label>Tên nhân viên *</label>
+                        <input #tenNhanVienInput="ngModel" class="form-control" type="text" name="tenNhanVien"
+                               [(ngModel)]="xuatTaiSan.tenNhanVien" required maxlength="64">
+                        <validation-messages [formCtrl]="tenNhanVienInput"></validation-messages>
+                    </div>-->
+                    <div class="form-group">
+                        <label>Tên nhân viên *</label>
+                        <select #tenNhanVienInput="ngModel" class="form-control" name="tenNhanVien"
+                                [(ngModel)]="xuatTaiSan.tenNhanVien" required maxlength="64">
+                            <option *ngFor="let listTen of listTenNhanVien">
+                                {{listTen}}
+                            </option>
+                        </select>
+                        <validation-messages [formCtrl]="tenNhanVienInput"></validation-messages>
                     </div>
                     <div class="form-group">
                         <label>Số lượng *</label>
@@ -31,44 +89,22 @@
                                [(ngModel)]="xuatTaiSan.soLuong" required maxlength="64">
                         <validation-messages [formCtrl]="soLuongInput"></validation-messages>
                     </div>
-                    <div class="form-group">
-                        <label>Ngày xuất *</label>   
-                        <input class="form-control" type="text" name="ngayXuat" disabled
-                               value="{{ngayXuat | date}}" required maxlength="64">  
-                    </div>    
-                    <div class="form-group">
-                        <label>Mã đơn vị *</label>
-                        <input #maDonViInput="ngModel" class="form-control" type="text" name="maDonVi"
-                               [(ngModel)]="xuatTaiSan.maDonVi" required maxlength="64">
-                        <validation-messages [formCtrl]="maDonViInput"></validation-messages>
-                    </div>                
-                    <div class="form-group">
-                        <label>Tên đơn vị *</label>
-                        <input #tenDonViInput="ngModel" class="form-control" type="text" name="tenDonVi"
-                               [(ngModel)]="xuatTaiSan.tenDonVi" required maxlength="64">
-                        <validation-messages [formCtrl]="tenDonViInput"></validation-messages>
-                    </div>                    
-                    <div class="form-group">
-                        <label>Mã nhân viên *</label>
-                        <input #maNhanVienInput="ngModel" class="form-control" type="text" name="maNhanVien"
-                               [(ngModel)]="xuatTaiSan.maNhanVien" required maxlength="64">
-                        <validation-messages [formCtrl]="maNhanVienInput"></validation-messages>
-                    </div>
-                    <div class="form-group">
-                        <label>Tên nhân viên *</label>
-                        <input #tenNhanVienInput="ngModel" class="form-control" type="text" name="tenNhanVien"
-                               [(ngModel)]="xuatTaiSan.tenNhanVien" required maxlength="64">
-                        <validation-messages [formCtrl]="tenNhanVienInput"></validation-messages>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button [disabled]="saving" type="button" class="btn btn-default"
-                        (click)="close()">{{l("Cancel")}}</button>
+                            (click)="close()">
+                        {{l("Cancel")}}
+                    </button>
                     <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
-                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
-                        <span>{{l("Save")}}</span></button>
+                            [busyText]="l('SavingWithThreeDot')"
+                            (click)="save()">
+                        <i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span>
+                    </button>
                 </div>
-            </form>
+            <!--</form>-->
         </div>
     </div>
+    <!--<taiSanFindModel #viewThongTinTaiSan></taiSanFindModel>-->
 </div>
+<taiSanFindModel #viewThongTinTaiSan (modalTaiSanSave)="getTaiSan($event)"></taiSanFindModel>

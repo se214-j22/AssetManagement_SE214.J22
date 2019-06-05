@@ -13,8 +13,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.ThuHois.Dto
     /// </summary>
     public class ThuHoiInput:Entity<int>
     {
-        public int MaNhanVien { get; set; }
-        public string TenNhanVien { get; set; }
         public int MaDV { get; set; }
         public string TenDonVi { get; set; }
         public int MaTS { get; set; }

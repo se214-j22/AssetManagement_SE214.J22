@@ -15,5 +15,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.DieuChuyens
         void DeleteDieuChuyen(int id);
         PagedResultDto<DieuChuyenDto> GetDieuChuyens(DieuChuyenFilter input);
         DieuChuyenForViewDto GetDieuChuyenForView(int id);
+        string[] GetArrTenDV();
+        string[] GetArrTenNVNhan(string tenDV);
     }
 }

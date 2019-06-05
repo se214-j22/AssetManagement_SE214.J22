@@ -15,5 +15,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.XuatTaiSans
         void DeleteXuatTaiSan(int id);
         PagedResultDto<XuatTaiSanDto> GetXuatTaiSans(XuatTaiSanFilter input);
         XuatTaiSanForViewDto GetXuatTaiSanForView(int id);
+        string[] GetArrTenDonVi();
+        string[] GetArrTenNhanVienTheoDV(string tenDV);
     }
 }

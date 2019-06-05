@@ -1,4 +1,4 @@
-import { CustomerServiceProxy, TaiSanServiceProxy, XuatTaiSanServiceProxy, ThuHoiServiceProxy, DieuChuyenServiceProxy, NhomTaiSanServiceProxy } from './../../shared/service-proxies/service-proxies';
+import { CustomerServiceProxy, TaiSanServiceProxy, XuatTaiSanServiceProxy, ThuHoiServiceProxy, DieuChuyenServiceProxy, NhomTaiSanServiceProxy, DonViServiceProxy, NhanVienServiceProxy, CTDonViServiceProxy } from './../../shared/service-proxies/service-proxies';
 import { ViewDemoModelModalComponent } from './demo-model/view-demo-model-modal.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -34,6 +34,14 @@ import { NhomTaiSanComponent } from './nhomtaisan/nhomtaisan.component';
 import { CreateOrEditNhomTaiSanModalComponent } from './nhomtaisan/create-or-edit-nhomtaisan-modal.component';
 import { ViewNhomTaiSanModalComponent } from './nhomtaisan/view-nhomtaisan-modal.component';
 import { SearchTaiSanComponent } from './nhomtaisan/search-taisan.component';
+import { TaiSanFindComponent } from './taisan/taisan-find.component';
+import { DonViComponent } from './donvi/donvi.component';
+import { CreateOrEditDonViModalComponent } from './donvi/create-or-edit-donvi-modal.component';
+import { ViewDonViModalComponent } from './donvi/view-donvi-modal.component';
+import { NhanVienComponent } from './nhanvien/nhanvien.component';
+import { CreateOrEditNhanVienModalComponent } from './nhanvien/create-or-edit-nhanvien-modal.component';
+import { ViewNhanVienModalComponent } from './nhanvien/view-nhanvien-modal.component';
+import { CTDonViComponent } from './donvi/donvi-chitiet.component';
 
 @NgModule({
     imports: [
@@ -58,11 +66,13 @@ import { SearchTaiSanComponent } from './nhomtaisan/search-taisan.component';
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
         DemoModelComponent, CreateOrEditDemoModelModalComponent, ViewDemoModelModalComponent,
         CustomerComponent, CreateOrEditCustomerModalComponent, ViewCustomerModalComponent,
-        TaiSanComponent, CreateOrEditTaiSanModalComponent, ViewTaiSanModalComponent,
+        TaiSanComponent, CreateOrEditTaiSanModalComponent, ViewTaiSanModalComponent, TaiSanFindComponent,
         NhomTaiSanComponent, CreateOrEditNhomTaiSanModalComponent, ViewNhomTaiSanModalComponent, SearchTaiSanComponent, //6-3 searchTaiSan
         XuatTaiSanComponent, CreateOrEditXuatTaiSanModalComponent, ViewXuatTaiSanModalComponent,
         DieuChuyenComponent, CreateOrEditDieuChuyenModalComponent, ViewDieuChuyenModalComponent,
-        ThuHoiComponent, CreateOrEditThuHoiModalComponent, ViewThuHoiModalComponent
+        ThuHoiComponent, CreateOrEditThuHoiModalComponent, ViewThuHoiModalComponent,
+        DonViComponent, CreateOrEditDonViModalComponent, ViewDonViModalComponent, CTDonViComponent,
+        NhanVienComponent, CreateOrEditNhanVienModalComponent, ViewNhanVienModalComponent
     ],
     providers: [
         DemoModelServiceProxy,
@@ -71,7 +81,10 @@ import { SearchTaiSanComponent } from './nhomtaisan/search-taisan.component';
         NhomTaiSanServiceProxy,
         XuatTaiSanServiceProxy,
         DieuChuyenServiceProxy,
-        ThuHoiServiceProxy
+        ThuHoiServiceProxy,
+        DonViServiceProxy,
+        CTDonViServiceProxy,
+        NhanVienServiceProxy
     ]
 })
 export class GWebsiteModule { }

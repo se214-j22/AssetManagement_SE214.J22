@@ -100,6 +100,16 @@ namespace GWebsite.AbpZeroTemplate.Core.Authorization
             suaChua.CreateChildPermission(GWebsitePermissions.Pages_Administration_SuaChua_Edit, L("EditingSuaChua"));
             suaChua.CreateChildPermission(GWebsitePermissions.Pages_Administration_SuaChua_Delete, L("DeletingSuaChua"));
 
+            var chiNhanh = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_ChiNhanh, L("ChiNhanh"));
+            chiNhanh.CreateChildPermission(GWebsitePermissions.Pages_Administration_ChiNhanh_Create, L("CreatingNewChiNhanh"));
+            chiNhanh.CreateChildPermission(GWebsitePermissions.Pages_Administration_ChiNhanh_Edit, L("EditingChiNhanh"));
+            chiNhanh.CreateChildPermission(GWebsitePermissions.Pages_Administration_ChiNhanh_Delete, L("DeletingChiNhanh"));
+
+            var ctDonVi = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_CTDonVi, L("CTDonVi"));
+            ctDonVi.CreateChildPermission(GWebsitePermissions.Pages_Administration_CTDonVi_Create, L("CreatingNewCTDonVi"));
+            ctDonVi.CreateChildPermission(GWebsitePermissions.Pages_Administration_CTDonVi_Edit, L("EditingCTDonVi"));
+            ctDonVi.CreateChildPermission(GWebsitePermissions.Pages_Administration_CTDonVi_Delete, L("DeletingCTDonVi"));
+
         }
 
         private static ILocalizableString L(string name)

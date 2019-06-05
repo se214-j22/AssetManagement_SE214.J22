@@ -2,10 +2,10 @@
     aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+            <!--<form #editForm="ngForm" novalidate (ngSubmit)="save()">-->
                 <div class="modal-header">
                     <h4 class="modal-title">
-                        <span *ngIf="thuHoi.id">Cập nhật thu hồi: {{thuHoi.tenDonViThuHoi}}</span>
+                        <span *ngIf="thuHoi.id">Cập nhật thu hồi: {{thuHoi.tenDonVi}}</span>
                         <span *ngIf="!thuHoi.id">Tạo mới thu hồi</span>
                     </h4>
                     <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
@@ -14,38 +14,93 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Tên đv thu hồi *</label>
-                        <input #tenDonViThuHoiInput="ngModel" class="form-control" type="text" name="tenDonViThuHoi"
-                               [(ngModel)]="thuHoi.tenDonViThuHoi" required maxlength="64">
-                        <validation-messages [formCtrl]="tenDonViThuHoiInput"></validation-messages>
-                    </div>
-                    <div class="form-group">
                         <label>Mã tài sản *</label>
-                        <input #maTaiSanInput="ngModel" class="form-control" type="text" name="maTaiSan"
-                               [(ngModel)]="thuHoi.maTaiSan" required maxlength="64">
-                        <validation-messages [formCtrl]="maTaiSanInput"></validation-messages>
+                        <div class="d-flex ">
+                            <input #maTSInput="ngModel" class="form-control" type="text" name="maTS" disabled
+                                   [(ngModel)]="thuHoi.maTS" required maxlength="64">
+                            <validation-messages [formCtrl]="maTSInput"></validation-messages>
+                            <button class="form-control btn btn-outline-primary"
+                                    (click)="viewCTDonVi.show()"
+                                    style="margin-right: 20px; width: 50px">
+                                ...
+                            </button>
+                        </div>
                     </div>
                     <div class="form-group">
+                        <label>Tên tài sản *</label>
+                        <input #tenTaiSanInput="ngModel" class="form-control" type="text" name="tenTaiSan" disabled
+                               [(ngModel)]="thuHoi.tenTaiSan" required maxlength="64">
+                        <validation-messages [formCtrl]="tenTaiSanInput"></validation-messages>
+                    </div>
+                    <!--<div class="form-group">
+        <label>Mã nhân viên *</label>
+        <input #maNhanVienInput="ngModel" class="form-control" type="text" name="maNhanVien"
+               [(ngModel)]="thuHoi.maNhanVien" required maxlength="64">
+        <validation-messages [formCtrl]="maNhanVienInput"></validation-messages>
+    </div>
+    <div class="form-group">
+        <label>Tên nhân viên *</label>
+        <input #tenNhanVienInput="ngModel" class="form-control" type="text" name="tenNhanVien"
+               [(ngModel)]="thuHoi.tenNhanVien" required maxlength="64">
+        <validation-messages [formCtrl]="tenNhanVienInput"></validation-messages>
+    </div>-->
+                    <!--<div class="form-group">
+                        <label>Mã đơn vị *</label>
+                        <input #maDVInput="ngModel" class="form-control" type="text" name="maDV" disabled
+                               [(ngModel)]="thuHoi.maDV" required maxlength="64">
+                        <validation-messages [formCtrl]="maDVInput"></validation-messages>
+                    </div>-->
+                    <div class="form-group">
+                        <label>Vị trí *</label>
+                        <input #tenDonViInput="ngModel" class="form-control" type="text" name="tenDonVi" disabled
+                               [(ngModel)]="thuHoi.tenDonVi" required maxlength="64">
+                        <validation-messages [formCtrl]="tenDonViInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>SL thu hồi *</label>
+                        <input #soLuongThInput="ngModel" class="form-control" type="text" name="soLuongTh"
+                               [(ngModel)]="thuHoi.soLuongTh" required maxlength="64">
+                        <validation-messages [formCtrl]="soLuongThInput"></validation-messages>
+                    </div>
+                    <!--<div class="form-group">
                         <label>Ngày thu hồi *</label>
                         <input #ngayThuHoiInput="ngModel" class="form-control" type="text" name="ngayThuHoi"
                                [(ngModel)]="thuHoi.ngayThuHoi" required maxlength="64">
                         <validation-messages [formCtrl]="ngayThuHoiInput"></validation-messages>
+                    </div>-->
+                    <div class="form-group">
+                        <label>Ngày thu hồi *</label>
+                        <input class="form-control" type="text" name="ngayThuHoi" disabled
+                               value="{{ngayThuHoi | date}}" required maxlength="64">
                     </div>
                     <div class="form-group">
-                        <label>Số lượng *</label>
-                        <input #soLuongInput="ngModel" class="form-control" type="text" name="soLuong"
-                               [(ngModel)]="thuHoi.soLuong" required maxlength="64">
-                        <validation-messages [formCtrl]="soLuongInput"></validation-messages>
+                        <label>Lý do *</label>
+                        <input #lyDoInput="ngModel" class="form-control" type="text" name="lyDo"
+                               [(ngModel)]="thuHoi.lyDo" required maxlength="64">
+                        <validation-messages [formCtrl]="lyDoInput"></validation-messages>
+                    </div>
+                    <!--<div class="form-group">
+        <label>Trạng thái duyệt *</label>
+        <input #trangThaiDuyetInput="ngModel" class="form-control" type="text" name="trangThaiDuyet"
+               [(ngModel)]="thuHoi.trangThaiDuyet" required maxlength="64">
+        <validation-messages [formCtrl]="trangThaiDuyetInput"></validation-messages>
+    </div>-->
+                    <div class="form-group">
+                        <label>Nội dung *</label>
+                        <input #noiDungThInput="ngModel" class="form-control" type="text" name="noiDungTh"
+                               [(ngModel)]="thuHoi.noiDungTh" required maxlength="64">
+                        <validation-messages [formCtrl]="noiDungThInput"></validation-messages>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button [disabled]="saving" type="button" class="btn btn-default"
                         (click)="close()">{{l("Cancel")}}</button>
                     <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
-                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        [busyText]="l('SavingWithThreeDot')" (click)="save()"><i class="fa fa-save"></i>
                         <span>{{l("Save")}}</span></button>
                 </div>
-            </form>
+            <!--</form>-->
         </div>
     </div>
 </div>
+<donViFindModel #viewCTDonVi (modalDonViSave)="getCTDonVi($event)"></donViFindModel>

@@ -27,7 +27,7 @@ export class ThuHoiComponent extends AppComponentBase implements AfterViewInit, 
     /**
      * tạo các biến dể filters
      */
-    tenDonViThuHoi: string;
+    tenDonVi: string;
 
     constructor(
         injector: Injector,
@@ -72,8 +72,8 @@ export class ThuHoiComponent extends AppComponentBase implements AfterViewInit, 
 
     }
 
-    reloadList(tenDonViThuHoi, event?: LazyLoadEvent) {
-        this._thuHoiService.getThuHoisByFilter(tenDonViThuHoi, this.primengTableHelper.getSorting(this.dataTable),
+    reloadList(tenDonVi, event?: LazyLoadEvent) {
+        this._thuHoiService.getThuHoisByFilter(tenDonVi, this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getMaxResultCount(this.paginator, event),
             this.primengTableHelper.getSkipCount(this.paginator, event),
         ).subscribe(result => {
@@ -92,8 +92,8 @@ export class ThuHoiComponent extends AppComponentBase implements AfterViewInit, 
     init(): void {
         //get params từ url để thực hiện filter
         this._activatedRoute.params.subscribe((params: Params) => {
-            this.tenDonViThuHoi = params['tenDonViThuHoi'] || '';
-            this.reloadList(this.tenDonViThuHoi, null);
+            this.tenDonVi = params['tenDonVi'] || '';
+            this.reloadList(this.tenDonVi, null);
         });
     }
 
@@ -103,7 +103,7 @@ export class ThuHoiComponent extends AppComponentBase implements AfterViewInit, 
 
     applyFilters(): void {
         //truyền params lên url thông qua router
-        this.reloadList(this.tenDonViThuHoi, null);
+        this.reloadList(this.tenDonVi, null);
 
         if (this.paginator.getPage() !== 0) {
             this.paginator.changePage(0);

@@ -27,7 +27,7 @@ export class DieuChuyenComponent extends AppComponentBase implements AfterViewIn
     /**
      * tạo các biến dể filters
      */
-    tenDVDieuChuyen: string;
+    tenDonVi: string;
 
     constructor(
         injector: Injector,
@@ -72,8 +72,8 @@ export class DieuChuyenComponent extends AppComponentBase implements AfterViewIn
 
     }
 
-    reloadList(tenDVDieuChuyen, event?: LazyLoadEvent) {
-        this._dieuChuyenService.getDieuChuyensByFilter(tenDVDieuChuyen, this.primengTableHelper.getSorting(this.dataTable),
+    reloadList(tenDonVi, event?: LazyLoadEvent) {
+        this._dieuChuyenService.getDieuChuyensByFilter(tenDonVi, this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getMaxResultCount(this.paginator, event),
             this.primengTableHelper.getSkipCount(this.paginator, event),
         ).subscribe(result => {
@@ -92,8 +92,8 @@ export class DieuChuyenComponent extends AppComponentBase implements AfterViewIn
     init(): void {
         //get params từ url để thực hiện filter
         this._activatedRoute.params.subscribe((params: Params) => {
-            this.tenDVDieuChuyen = params['tenDVDieuChuyen'] || '';
-            this.reloadList(this.tenDVDieuChuyen, null);
+            this.tenDonVi = params['tenDonVi'] || '';
+            this.reloadList(this.tenDonVi, null);
         });
     }
 
@@ -103,7 +103,7 @@ export class DieuChuyenComponent extends AppComponentBase implements AfterViewIn
 
     applyFilters(): void {
         //truyền params lên url thông qua router
-        this.reloadList(this.tenDVDieuChuyen, null);
+        this.reloadList(this.tenDonVi, null);
 
         if (this.paginator.getPage() !== 0) {
             this.paginator.changePage(0);

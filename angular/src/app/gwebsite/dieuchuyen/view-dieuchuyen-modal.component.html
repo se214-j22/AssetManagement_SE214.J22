@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    <span *ngIf="dieuChuyen.id">{{l("Điều chỉnh điều chuyển")}}: {{dieuChuyen.tenDVDieuChuyen}}</span>
+                    <span *ngIf="dieuChuyen.id">{{l("Điều chỉnh điều chuyển")}}: {{dieuChuyen.tenDonVi}}</span>
                     <span *ngIf="!dieuChuyen.id">{{l("Tạo mới điều chuyển")}}</span>
                 </h4>
                 <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
@@ -12,25 +12,49 @@
                 </button>
             </div>
             <div class="modal-body">
+                <!--<div class="form-group">
+                    <label>Mã tài sản</label>
+                    <p>{{dieuChuyen.maTaiSan}}</p>
+                </div>-->
                 <div class="form-group">
-                    <label>Tên đv điều chuyển</label>
-                    <p>{{dieuChuyen.tenDVDieuChuyen}}</p>
+                    <label>Tên tài sản</label>
+                    <p>{{dieuChuyen.tenTaiSan}}</p>
+                </div>
+                <!--<div class="form-group">
+                    <label>Mã NV điều chuyển</label>
+                    <p>{{dieuChuyen.maNhanVienDC}}</p>
+                </div>-->
+                <div class="form-group">
+                    <label>ĐV điều chuyển</label>
+                    <p>{{dieuChuyen.tenNhanVienDC}}</p>
+                </div>
+                <!--<div class="form-group">
+                    <label>Mã ĐV nhận</label>
+                    <p>{{dieuChuyen.maDonVi}}</p>
+                </div>-->
+                <div class="form-group">
+                    <label>ĐV nhận</label>
+                    <p>{{dieuChuyen.tenDonVi}}</p>
                 </div>
                 <div class="form-group">
                     <label>Số lượng</label>
                     <p>{{dieuChuyen.soLuong}}</p>
                 </div>
+                <!--<div class="form-group">
+                    <label>Mã NV nhận</label>
+                    <p>{{dieuChuyen.maNhanVienNhan}}</p>
+                </div>-->
                 <div class="form-group">
-                    <label>Mã tài sản</label>
-                    <p>{{dieuChuyen.maTaiSan}}</p>
+                    <label>Tên NV nhận</label>
+                    <p>{{dieuChuyen.tenNhanVienNhan}}</p>
                 </div>
                 <div class="form-group">
                     <label>Ngày điều chuyển</label>
-                    <p>{{dieuChuyen.ngayDieuChuyen}}</p>
+                    <p>{{dieuChuyen.ngayDieuChuyen | date}}</p>
                 </div>
                 <div class="form-group">
-                    <label>Tên đv được điều chuyển</label>
-                    <p>{{dieuChuyen.tenDVDuocDieuChuyen}}</p>
+                    <label>Ghi chú</label>
+                    <p>{{dieuChuyen.ghiChu}}</p>
                 </div>
             </div>
             <div class="modal-footer">

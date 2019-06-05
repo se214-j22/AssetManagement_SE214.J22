@@ -1,5 +1,5 @@
 import { ViewTaiSanModalComponent } from './view-taisan-modal.component';
-import { AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -9,8 +9,10 @@ import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
 import { TaiSanServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOrEditTaiSanModalComponent } from './create-or-edit-taisan-modal.component';
+import { ModalDirective } from 'ngx-bootstrap';
 
 @Component({
+    selector: 'taiSanModel',
     templateUrl: './taisan.component.html',
     animations: [appModuleAnimation()]
 })

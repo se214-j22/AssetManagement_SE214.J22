@@ -9,15 +9,23 @@ using GWebsite.AbpZeroTemplate.Core.Authorization;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System;
 namespace GWebsite.AbpZeroTemplate.Web.Core.ThuHois
 {
     [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient)]
     public class ThuHoiAppService : GWebsiteAppServiceBase, IThuHoiAppService
     {
         private readonly IRepository<ThuHoi> thuHoiRepository;
-        public ThuHoiAppService(IRepository<ThuHoi> thuHoiRepository)
+        private readonly IRepository<DonVi> donvirepository;
+        private readonly IRepository<CTDonVi> ctdonvirepository;
+        private readonly IRepository<CTTaiSan> cttsrepository;
+        public ThuHoiAppService(IRepository<ThuHoi> thuHoiRepository,IRepository<DonVi> donvirepository, IRepository<CTDonVi> ctdonvirepository
+           , IRepository<CTTaiSan> cttsrepository)
         {
             this.thuHoiRepository = thuHoiRepository;
+            this.donvirepository = donvirepository;
+            this.ctdonvirepository = ctdonvirepository;
+            this.cttsrepository = cttsrepository;
         }
         public void CreateOrEditThuHoi(ThuHoiInput thuHoiInput)
         {
@@ -93,10 +101,27 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.ThuHois
         [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient_Create)]
         private void Create(ThuHoiInput thuHoiInput)
         {
-            var thuHoiEnity = ObjectMapper.Map<ThuHoi>(thuHoiInput);
-            SetAuditInsert(thuHoiEnity);
-            thuHoiRepository.Insert(thuHoiEnity);
-            CurrentUnitOfWork.SaveChanges();
+            var MaDonVi = donvirepository.GetAll().Where(x => !x.IsDelete).FirstOrDefault(x => x.TenDonVi == thuHoiInput.TenDonVi).Id;
+            var checksoluongTS = ctdonvirepository.GetAll().Where(x => !x.IsDelete).FirstOrDefault(x => x.MaTS == thuHoiInput.MaTS && x.MaDV == MaDonVi).SoLuong;
+            if(thuHoiInput.SoLuongTh<=checksoluongTS)
+            {
+                thuHoiInput.MaDV = MaDonVi;
+                thuHoiInput.NgayThuHoi = DateTime.Now;
+                var thuHoiEnity = ObjectMapper.Map<ThuHoi>(thuHoiInput);
+                SetAuditInsert(thuHoiEnity);
+                thuHoiRepository.Insert(thuHoiEnity);
+                CurrentUnitOfWork.SaveChanges();
+                for (int i = 0; i < thuHoiInput.SoLuongTh; i++)
+                {
+                    var updateMaThuHoi = cttsrepository.GetAll().Where(x => !x.IsDelete).FirstOrDefault(x => x.MaTS == thuHoiInput.MaTS && x.MATH == 0);
+                    updateMaThuHoi.MATH = thuHoiEnity.Id;
+                    CurrentUnitOfWork.SaveChanges();
+                }
+                var updateSoLuong = ctdonvirepository.GetAll().Where(x => !x.IsDelete).FirstOrDefault(x => x.MaTS == thuHoiInput.MaTS && x.MaDV == MaDonVi);
+                updateSoLuong.SoLuong -= thuHoiInput.SoLuongTh;
+                CurrentUnitOfWork.SaveChanges();
+            }
+
         }
 
         [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient_Edit)]

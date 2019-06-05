@@ -1561,7 +1561,11 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<DateTime?>("CreatedDate");
 
+                    b.Property<string>("DiaChi");
+
                     b.Property<bool>("IsDelete");
+
+                    b.Property<int>("MaDonVi");
 
                     b.Property<string>("TenChiNhanh");
 
@@ -1572,6 +1576,37 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ChiNhanhs");
+                });
+
+            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.CTDonVi", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime?>("CreatedDate");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<int>("MaDV");
+
+                    b.Property<int>("MaTS");
+
+                    b.Property<int>("SoLuong");
+
+                    b.Property<string>("TenDonVi");
+
+                    b.Property<string>("TenTaiSan");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.Property<DateTime?>("UpdatedDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CTDonVis");
                 });
 
             modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.CTTaiSan", b =>
@@ -1731,6 +1766,8 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     b.Property<int>("MaNhanVienNhan");
 
                     b.Property<int>("MaTaiSan");
+
+                    b.Property<DateTime>("NgayDC");
 
                     b.Property<int>("SoLuong");
 
@@ -2136,8 +2173,6 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<int>("MaDV");
 
-                    b.Property<int>("MaNhanVien");
-
                     b.Property<int>("MaTS");
 
                     b.Property<DateTime>("NgayThuHoi");
@@ -2147,8 +2182,6 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     b.Property<int>("SoLuongTh");
 
                     b.Property<string>("TenDonVi");
-
-                    b.Property<string>("TenNhanVien");
 
                     b.Property<string>("TenTaiSan");
 

@@ -1,4 +1,6 @@
 using AutoMapper;
+using GWebsite.AbpZeroTemplate.Application.Share.ChiNhanhs.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.CTDonVis.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.CTTaiSans.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Customers.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.DemoModels.Dto;
@@ -110,7 +112,17 @@ namespace GWebsite.AbpZeroTemplate.Applications
             configuration.CreateMap<SuaChua, SuaChuaInput>();
             configuration.CreateMap<SuaChua, SuaChuaForViewDto>();
 
+            // ChiNhanh
+            configuration.CreateMap<ChiNhanh, ChiNhanhDto>();
+            configuration.CreateMap<ChiNhanhInput, ChiNhanh>();
+            configuration.CreateMap<ChiNhanh, ChiNhanhInput>();
+            configuration.CreateMap<ChiNhanh, ChiNhanhForViewDto>();
 
+            // CTDonVi
+            configuration.CreateMap<CTDonVi, CTDonViDto>();
+            configuration.CreateMap<CTDonViInput, CTDonVi>();
+            configuration.CreateMap<CTDonVi, CTDonViInput>();
+            configuration.CreateMap<CTDonVi, CTDonViForViewDto>();
         }
     }
 }

@@ -1,20 +1,22 @@
-import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild, OnInit } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
-import { ThuHoiServiceProxy, ThuHoiInput } from '@shared/service-proxies/service-proxies';
+import { ThuHoiServiceProxy, ThuHoiInput, CTDonViDto, CTDonViServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CTDonViComponent } from '../donvi/donvi-chitiet.component';
 
 
 @Component({
     selector: 'createOrEditThuHoiModal',
     templateUrl: './create-or-edit-thuhoi-modal.component.html'
 })
-export class CreateOrEditThuHoiModalComponent extends AppComponentBase {
+export class CreateOrEditThuHoiModalComponent extends AppComponentBase implements OnInit {
 
 
     @ViewChild('createOrEditModal') modal: ModalDirective;
     @ViewChild('thuHoiCombobox') thuHoiCombobox: ElementRef;
     @ViewChild('iconCombobox') iconCombobox: ElementRef;
     @ViewChild('dateInput') dateInput: ElementRef;
+    @ViewChild('viewCTDonVi') viewCTDonVi: CTDonViComponent;
 
 
     /**
@@ -25,12 +27,30 @@ export class CreateOrEditThuHoiModalComponent extends AppComponentBase {
     saving = false;
 
     thuHoi: ThuHoiInput = new ThuHoiInput();
+    ctDonVi: CTDonViDto = new CTDonViDto();
+    ngayThuHoi: number;
 
     constructor(
         injector: Injector,
-        private _thuHoiService: ThuHoiServiceProxy
+        private _thuHoiService: ThuHoiServiceProxy,
+        private _ctDonViService: CTDonViServiceProxy
     ) {
         super(injector);
+    }
+
+    ngOnInit(): void {
+        this.ngayThuHoi = Date.now();
+    }
+
+    getCTDonVi(ctDonVi: CTDonViDto) {
+        if (ctDonVi.id != undefined) {
+
+            this.ctDonVi = ctDonVi
+            this.thuHoi.maTS = this.ctDonVi.maTS;
+            this.thuHoi.tenTaiSan = this.ctDonVi.tenTaiSan;
+            this.thuHoi.maDV = this.ctDonVi.maDV;
+            this.thuHoi.tenDonVi = this.ctDonVi.tenDonVi;
+        }
     }
 
     show(thuHoiId?: number | null | undefined): void {
@@ -39,6 +59,11 @@ export class CreateOrEditThuHoiModalComponent extends AppComponentBase {
 
         this._thuHoiService.getThuHoiForEdit(thuHoiId).subscribe(result => {
             this.thuHoi = result;
+
+            this._ctDonViService.getCTDonViForEdit(result.id).subscribe(kq => {
+                this.ctDonVi = kq;
+            });
+
             this.modal.show();
 
         })

@@ -51,6 +51,16 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         {
             return dieuChuyenAppservice.GetDieuChuyenForView(id);
         }
+        [HttpGet]
+        public string[] GetArrTenDV()
+        {
+            return dieuChuyenAppservice.GetArrTenDV();
+        }
+        [HttpGet]
+        public string[] GetArrTenNVNhan(string tenDV)
+        {
+            return dieuChuyenAppservice.GetArrTenNVNhan(tenDV);
+        }
     }
 }
 

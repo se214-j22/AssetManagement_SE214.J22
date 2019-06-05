@@ -39,6 +39,7 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
         public virtual DbSet<SuaChua> SuaChuas { get; set; }
         public virtual DbSet<ThongTinTaiSan> ThongTinTaiSans { get; set; }
         public virtual DbSet<CTTS> CTTS { get; set; }
+        public virtual DbSet<CTDonVi> CTDonVis { get; set; }
         /// <summary>
         /// GPermissions dùng cho bên Gwebsite
         /// </summary>

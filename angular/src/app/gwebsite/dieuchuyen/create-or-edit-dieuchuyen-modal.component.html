@@ -2,10 +2,10 @@
     aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+            <!--<form #editForm="ngForm" novalidate (ngSubmit)="save()">-->
                 <div class="modal-header">
                     <h4 class="modal-title">
-                        <span *ngIf="dieuChuyen.id">Cập nhật điều chuyển: {{dieuChuyen.tenDVDuocDieuChuyen}}</span>
+                        <span *ngIf="dieuChuyen.id">Cập nhật điều chuyển: {{dieuChuyen.tenDonVi}}</span>
                         <span *ngIf="!dieuChuyen.id">Tạo mới điều chuyển</span>
                     </h4>
                     <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
@@ -14,10 +14,59 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Tên đv điều chuyển *</label>
-                        <input #tenDVDieuChuyenInput="ngModel" class="form-control" type="text" name="tenDVDieuChuyen"
-                               [(ngModel)]="dieuChuyen.tenDVDieuChuyen" required maxlength="64">
-                        <validation-messages [formCtrl]="tenDVDieuChuyenInput"></validation-messages>
+                        <label>Mã tài sản *</label>
+                        <div class="d-flex ">
+                            <input #maTaiSanInput="ngModel" class="form-control" type="text" name="maTaiSan" disabled
+                                   [(ngModel)]="dieuChuyen.maTaiSan" required maxlength="64">
+                            <validation-messages [formCtrl]="maTaiSanInput"></validation-messages>
+                            <button class="form-control btn btn-outline-primary"
+                                    (click)="viewCTDonVi.show()"
+                                    style="margin-right: 20px; width: 50px">
+                                ...
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Tên tài sản *</label>
+                        <input #tenTaiSanInput="ngModel" class="form-control" type="text" name="tenTaiSan" disabled
+                               [(ngModel)]="dieuChuyen.tenTaiSan" required maxlength="64">
+                        <validation-messages [formCtrl]="tenTaiSanInput"></validation-messages>
+                    </div>
+                    <!--<div class="form-group">
+        <label>Mã NV điều chuyển *</label>
+        <input #maNhanVienDCInput="ngModel" class="form-control" type="text" name="maNhanVienDC"
+               [(ngModel)]="dieuChuyen.maNhanVienDC" required maxlength="64">
+        <validation-messages [formCtrl]="maNhanVienDCInput"></validation-messages>
+    </div>-->
+                    <div class="form-group">
+                        <label>ĐV điều chuyển *</label>
+                        <input #tenNhanVienDCInput="ngModel" class="form-control" type="text" name="tenNhanVienDC" diasble
+                               [(ngModel)]="dieuChuyen.tenNhanVienDC" required maxlength="64">
+                        <validation-messages [formCtrl]="tenNhanVienDCInput"></validation-messages>
+                    </div>
+                    <!--<div class="form-group">
+        <label>Mã ĐV nhận *</label>
+        <input #maDonViInput="ngModel" class="form-control" type="text" name="maDonVi"
+               [(ngModel)]="dieuChuyen.maDonVi" required maxlength="64">
+        <validation-messages [formCtrl]="maDonViInput"></validation-messages>
+    </div>-->
+                    <!--<div class="form-group">
+        <label>Tên ĐV nhận *</label>
+        <input #tenDonViInput="ngModel" class="form-control" type="text" name="tenDonVi" disabled
+               [(ngModel)]="dieuChuyen.tenDonVi" required maxlength="64">
+        <validation-messages [formCtrl]="tenDonViInput"></validation-messages>
+    </div>-->
+                    <div class="form-group">
+                        <label>ĐV nhận *</label>
+                        <select #tenDonViInput="ngModel" class="form-control" name="tenDonVi"
+                                [(ngModel)]="dieuChuyen.tenDonVi" required maxlength="64"
+                                (change)="getTenNVNhan()">
+                            <option>...</option>
+                            <option *ngFor="let listTen of listTenDV">
+                                {{listTen}}
+                            </option>
+                        </select>
+                        <validation-messages [formCtrl]="tenDonViInput"></validation-messages>
                     </div>
                     <div class="form-group">
                         <label>Số lượng *</label>
@@ -25,33 +74,55 @@
                                [(ngModel)]="dieuChuyen.soLuong" required maxlength="64">
                         <validation-messages [formCtrl]="soLuongInput"></validation-messages>
                     </div>
+                    <!--<div class="form-group">
+        <label>Mã NV nhận *</label>
+        <input #maNhanVienNhanInput="ngModel" class="form-control" type="text" name="maNhanVienNhan"
+               [(ngModel)]="dieuChuyen.maNhanVienNhan" required maxlength="64">
+        <validation-messages [formCtrl]="maNhanVienNhanInput"></validation-messages>
+    </div>-->
+                    <!--<div class="form-group">
+        <label>Tên NV nhận *</label>
+        <input #tenNhanVienNhanInput="ngModel" class="form-control" type="text" name="tenNhanVienNhan"
+               [(ngModel)]="dieuChuyen.tenNhanVienNhan" required maxlength="64">
+        <validation-messages [formCtrl]="tenNhanVienNhanInput"></validation-messages>
+    </div>-->
                     <div class="form-group">
-                        <label>Mã tài sản *</label>
-                        <input #maTaiSanInput="ngModel" class="form-control" type="text" name="maTaiSan"
-                               [(ngModel)]="dieuChuyen.maTaiSan" required maxlength="64">
-                        <validation-messages [formCtrl]="maTaiSanInput"></validation-messages>
+                        <label>Tên NV nhận *</label>
+                        <select #tenNhanVienNhanInput="ngModel" class="form-control" name="tenNhanVienNhan"
+                                [(ngModel)]="dieuChuyen.tenNhanVienNhan" required maxlength="64">
+                            <option *ngFor="let listTen of listTenNVNhan">
+                                {{listTen}}
+                            </option>
+                        </select>
+                        <validation-messages [formCtrl]="tenNhanVienNhanInput"></validation-messages>
                     </div>
+                    <!--<div class="form-group">
+        <label>Ngày điều chuyển *</label>
+        <input #ngayDieuChuyenInput="ngModel" class="form-control" type="text" name="ngayDieuChuyen"
+               [(ngModel)]="dieuChuyen.ngayDieuChuyen" required maxlength="64">
+        <validation-messages [formCtrl]="ngayDieuChuyenInput"></validation-messages>
+    </div>-->
                     <div class="form-group">
                         <label>Ngày điều chuyển *</label>
-                        <input #ngayDieuChuyenInput="ngModel" class="form-control" type="text" name="ngayDieuChuyen"
-                               [(ngModel)]="dieuChuyen.ngayDieuChuyen" required maxlength="64">
-                        <validation-messages [formCtrl]="ngayDieuChuyenInput"></validation-messages>
+                        <input class="form-control" type="text" name="ngayDieuChuyen" disabled
+                               value="{{ngayDieuChuyen | date}}" required maxlength="64">
                     </div>
-
                     <div class="form-group">
-                        <label>Tên đv được điều chuyển *</label>
-                        <input #tenDVDuocDieuChuyenInput="ngModel" class="form-control" type="text" name="tenDVDuocDieuChuyen"
-                               [(ngModel)]="dieuChuyen.tenDVDuocDieuChuyen" required maxlength="64">
-                        <validation-messages [formCtrl]="tenDVDuocDieuChuyenInput"></validation-messages>
-                    </div>                </div>
+                        <label>Ghi chú *</label>
+                        <input #ghiChuInput="ngModel" class="form-control" type="text" name="ghiChu"
+                               [(ngModel)]="dieuChuyen.ghiChu" required maxlength="64">
+                        <validation-messages [formCtrl]="ghiChuInput"></validation-messages>
+                    </div>
+                </div>
                 <div class="modal-footer">
                     <button [disabled]="saving" type="button" class="btn btn-default"
                         (click)="close()">{{l("Cancel")}}</button>
                     <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
-                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        [busyText]="l('SavingWithThreeDot')" (click)="save()"><i class="fa fa-save"></i>
                         <span>{{l("Save")}}</span></button>
                 </div>
-            </form>
+            <!--</form>-->
         </div>
     </div>
 </div>
+<donViFindModel #viewCTDonVi (modalDonViSave)="getCTDonVi($event)"></donViFindModel>

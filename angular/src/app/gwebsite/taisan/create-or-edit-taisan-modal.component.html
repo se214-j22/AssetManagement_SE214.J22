@@ -2,7 +2,7 @@
     aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+            <!--<form #editForm="ngForm" novalidate (ngSubmit)="save()">-->
                 <div class="modal-header">
                     <h4 class="modal-title">
                         <span *ngIf="taiSan.id">Cập nhật tài sản: {{taiSan.tenTaiSan}}</span>
@@ -105,10 +105,10 @@
                     <button [disabled]="saving" type="button" class="btn btn-default"
                         (click)="close()">{{l("Cancel")}}</button>
                     <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
-                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        [busyText]="l('SavingWithThreeDot')" (click)="save()"><i class="fa fa-save"></i>
                         <span>{{l("Save")}}</span></button>
                 </div>
-            </form>
+            <!--</form>-->
         </div>
     </div>
 </div>
