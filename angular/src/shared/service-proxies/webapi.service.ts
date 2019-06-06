@@ -227,6 +227,32 @@ export class WebApiServiceProxy {
         }));
     }
 
+    public deleteGroup3(url: string): Observable<void> {
+        let url_ = `${this.baseUrl}/${url}`;
+
+        let options_: any = {
+            observe: 'response',
+            responseType: 'blob',
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        return this.http.request('delete', url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processDataForDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDataForDelete(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else {
+                return <Observable<void>><any>_observableThrow(response_);
+            }
+        }));
+    }
+
     /**
      * Xử lý data khi get data list
      */
