@@ -5,6 +5,5 @@
   </PropertyGroup>
   <PropertyGroup>
     <ActiveDebugProfile>GSoft.AbpZeroTemplate.Web.Host</ActiveDebugProfile>
-    <NameOfLastUsedPublishProfile>FolderProfile1</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>
