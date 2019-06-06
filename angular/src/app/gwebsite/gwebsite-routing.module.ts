@@ -6,6 +6,7 @@ import { CustomerComponent } from './customer/customer.component';
 import { AssetComponent } from './asset/asset.component';
 import { AssetLineComponent } from './asset-line/asset-line.component';
 import { AssetTypeComponent } from './asset-type/asset-type.component';
+import { ManufacturerComponent } from './manufacturer/manufacturer.component';
 
 @NgModule({
     imports: [
@@ -34,6 +35,15 @@ import { AssetTypeComponent } from './asset-type/asset-type.component';
                     {
                         path: 'customer', component: CustomerComponent,
                         data: { permission: 'Pages.Administration.Customer' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'manufacturer', component: ManufacturerComponent,
+                        data: { permission: 'Pages.Administration.Manufacturer' }
                     },
                 ]
             },

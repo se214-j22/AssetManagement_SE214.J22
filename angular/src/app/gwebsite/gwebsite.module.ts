@@ -29,6 +29,9 @@ import { CreateOrEditAssetLineModalComponent } from './asset-line/create-or-edit
 import { CreateOrEditAssetTypeModalComponent } from './asset-type/create-or-edit-asset-type-modal.component';
 import { ViewAssetTypeModalComponent } from './asset-type/view-asset-type-modal.component';
 import { AssetTypeComponent } from './asset-type/asset-type.component';
+import { CreateOrEditManufacturerModalComponent } from './manufacturer/create-or-edit-manufacturer-modal.component';
+import { ViewManufacturerModalComponent } from './manufacturer/view-manufacturer-modal.component';
+import { ManufacturerComponent } from './manufacturer/manufacturer.component';
 
 @NgModule({
     imports: [
@@ -60,7 +63,7 @@ import { AssetTypeComponent } from './asset-type/asset-type.component';
         AssetComponent, ViewAssetModalComponent,  CreateOrEditAssetModalComponent,
         AssetLineComponent, ViewAssetLineModalComponent,  CreateOrEditAssetLineModalComponent,
         AssetTypeComponent, ViewAssetTypeModalComponent,  CreateOrEditAssetTypeModalComponent,
-
+        ManufacturerComponent, ViewManufacturerModalComponent,  CreateOrEditManufacturerModalComponent,
     ],
     providers: [
         DemoModelServiceProxy,
