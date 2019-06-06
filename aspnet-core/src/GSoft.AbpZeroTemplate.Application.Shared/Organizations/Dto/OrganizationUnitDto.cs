@@ -11,5 +11,7 @@ namespace GSoft.AbpZeroTemplate.Organizations.Dto
         public string DisplayName { get; set; }
 
         public int MemberCount { get; set; }
+
+        public int AssetCount { get; set; }
     }
 }

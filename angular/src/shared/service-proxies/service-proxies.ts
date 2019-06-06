@@ -6714,6 +6714,126 @@ export class OrganizationUnitServiceProxy {
     }
 
     /**
+     * @id (optional) 
+     * @sorting (optional) 
+     * @maxResultCount (optional) 
+     * @skipCount (optional) 
+     * @return Success
+     */
+    getAssets(id: number | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfOrganizationUnitAssetListDto> {
+        let url_ = this.baseUrl + "/api/services/app/OrganizationUnit/GetAssets?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAssets(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAssets(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfOrganizationUnitAssetListDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfOrganizationUnitAssetListDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAssets(response: HttpResponseBase): Observable<PagedResultDtoOfOrganizationUnitAssetListDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultDtoOfOrganizationUnitAssetListDto.fromJS(resultData200) : new PagedResultDtoOfOrganizationUnitAssetListDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfOrganizationUnitAssetListDto>(<any>null);
+    }
+
+    /**
+     * @input (optional) 
+     * @return Success
+     */
+    findAssets(input: FindOrganizationUnitAssetsInput | null | undefined): Observable<PagedResultDtoOfNameValueDto> {
+        let url_ = this.baseUrl + "/api/services/app/OrganizationUnit/FindAssets";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processFindAssets(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processFindAssets(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfNameValueDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfNameValueDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processFindAssets(response: HttpResponseBase): Observable<PagedResultDtoOfNameValueDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultDtoOfNameValueDto.fromJS(resultData200) : new PagedResultDtoOfNameValueDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfNameValueDto>(<any>null);
+    }
+
+    /**
      * @input (optional) 
      * @return Success
      */
@@ -6763,62 +6883,6 @@ export class OrganizationUnitServiceProxy {
             }));
         }
         return _observableOf<void>(<any>null);
-    }
-
-    /**
-     * @return Success
-     */
-    getAssetsInWarehouse(): Observable<Asset[]> {
-        let url_ = this.baseUrl + "/api/services/app/OrganizationUnit/GetAssetsInWarehouse";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAssetsInWarehouse(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetAssetsInWarehouse(<any>response_);
-                } catch (e) {
-                    return <Observable<Asset[]>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<Asset[]>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetAssetsInWarehouse(response: HttpResponseBase): Observable<Asset[]> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (resultData200 && resultData200.constructor === Array) {
-                result200 = [];
-                for (let item of resultData200)
-                    result200.push(Asset.fromJS(item));
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<Asset[]>(<any>null);
     }
 
     /**
@@ -17405,6 +17469,7 @@ export class OrganizationUnitDto implements IOrganizationUnitDto {
     code!: string | undefined;
     displayName!: string | undefined;
     memberCount!: number | undefined;
+    assetCount!: number | undefined;
     lastModificationTime!: moment.Moment | undefined;
     lastModifierUserId!: number | undefined;
     creationTime!: moment.Moment | undefined;
@@ -17426,6 +17491,7 @@ export class OrganizationUnitDto implements IOrganizationUnitDto {
             this.code = data["code"];
             this.displayName = data["displayName"];
             this.memberCount = data["memberCount"];
+            this.assetCount = data["assetCount"];
             this.lastModificationTime = data["lastModificationTime"] ? moment(data["lastModificationTime"].toString()) : <any>undefined;
             this.lastModifierUserId = data["lastModifierUserId"];
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
@@ -17447,6 +17513,7 @@ export class OrganizationUnitDto implements IOrganizationUnitDto {
         data["code"] = this.code;
         data["displayName"] = this.displayName;
         data["memberCount"] = this.memberCount;
+        data["assetCount"] = this.assetCount;
         data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toISOString() : <any>undefined;
         data["lastModifierUserId"] = this.lastModifierUserId;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
@@ -17461,6 +17528,7 @@ export interface IOrganizationUnitDto {
     code: string | undefined;
     displayName: string | undefined;
     memberCount: number | undefined;
+    assetCount: number | undefined;
     lastModificationTime: moment.Moment | undefined;
     lastModifierUserId: number | undefined;
     creationTime: moment.Moment | undefined;
@@ -17792,6 +17860,146 @@ export interface IFindOrganizationUnitUsersInput {
     filter: string | undefined;
 }
 
+export class PagedResultDtoOfOrganizationUnitAssetListDto implements IPagedResultDtoOfOrganizationUnitAssetListDto {
+    totalCount!: number | undefined;
+    items!: OrganizationUnitAssetListDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfOrganizationUnitAssetListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(OrganizationUnitAssetListDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfOrganizationUnitAssetListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfOrganizationUnitAssetListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfOrganizationUnitAssetListDto {
+    totalCount: number | undefined;
+    items: OrganizationUnitAssetListDto[] | undefined;
+}
+
+export class OrganizationUnitAssetListDto implements IOrganizationUnitAssetListDto {
+    code!: string | undefined;
+    name!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IOrganizationUnitAssetListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.code = data["code"];
+            this.name = data["name"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): OrganizationUnitAssetListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OrganizationUnitAssetListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["name"] = this.name;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IOrganizationUnitAssetListDto {
+    code: string | undefined;
+    name: string | undefined;
+    id: number | undefined;
+}
+
+export class FindOrganizationUnitAssetsInput implements IFindOrganizationUnitAssetsInput {
+    organizationUnitId!: number | undefined;
+    maxResultCount!: number | undefined;
+    skipCount!: number | undefined;
+    filter!: string | undefined;
+
+    constructor(data?: IFindOrganizationUnitAssetsInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.organizationUnitId = data["organizationUnitId"];
+            this.maxResultCount = data["maxResultCount"];
+            this.skipCount = data["skipCount"];
+            this.filter = data["filter"];
+        }
+    }
+
+    static fromJS(data: any): FindOrganizationUnitAssetsInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new FindOrganizationUnitAssetsInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["maxResultCount"] = this.maxResultCount;
+        data["skipCount"] = this.skipCount;
+        data["filter"] = this.filter;
+        return data; 
+    }
+}
+
+export interface IFindOrganizationUnitAssetsInput {
+    organizationUnitId: number | undefined;
+    maxResultCount: number | undefined;
+    skipCount: number | undefined;
+    filter: string | undefined;
+}
+
 export class AssetsToOrganizationUnitInput implements IAssetsToOrganizationUnitInput {
     assetIds!: number[] | undefined;
     organizationUnitId!: number | undefined;
@@ -17838,78 +18046,6 @@ export class AssetsToOrganizationUnitInput implements IAssetsToOrganizationUnitI
 export interface IAssetsToOrganizationUnitInput {
     assetIds: number[] | undefined;
     organizationUnitId: number | undefined;
-}
-
-export class Asset implements IAsset {
-    code!: string | undefined;
-    assetLineId!: number | undefined;
-    assetLine!: AssetLine | undefined;
-    isDamaged!: boolean | undefined;
-    createdDate!: moment.Moment | undefined;
-    createdBy!: string | undefined;
-    updatedDate!: moment.Moment | undefined;
-    updatedBy!: string | undefined;
-    isDelete!: boolean | undefined;
-    id!: number | undefined;
-
-    constructor(data?: IAsset) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.code = data["code"];
-            this.assetLineId = data["assetLineId"];
-            this.assetLine = data["assetLine"] ? AssetLine.fromJS(data["assetLine"]) : <any>undefined;
-            this.isDamaged = data["isDamaged"];
-            this.createdDate = data["createdDate"] ? moment(data["createdDate"].toString()) : <any>undefined;
-            this.createdBy = data["createdBy"];
-            this.updatedDate = data["updatedDate"] ? moment(data["updatedDate"].toString()) : <any>undefined;
-            this.updatedBy = data["updatedBy"];
-            this.isDelete = data["isDelete"];
-            this.id = data["id"];
-        }
-    }
-
-    static fromJS(data: any): Asset {
-        data = typeof data === 'object' ? data : {};
-        let result = new Asset();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["code"] = this.code;
-        data["assetLineId"] = this.assetLineId;
-        data["assetLine"] = this.assetLine ? this.assetLine.toJSON() : <any>undefined;
-        data["isDamaged"] = this.isDamaged;
-        data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
-        data["createdBy"] = this.createdBy;
-        data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
-        data["updatedBy"] = this.updatedBy;
-        data["isDelete"] = this.isDelete;
-        data["id"] = this.id;
-        return data; 
-    }
-}
-
-export interface IAsset {
-    code: string | undefined;
-    assetLineId: number | undefined;
-    assetLine: AssetLine | undefined;
-    isDamaged: boolean | undefined;
-    createdDate: moment.Moment | undefined;
-    createdBy: string | undefined;
-    updatedDate: moment.Moment | undefined;
-    updatedBy: string | undefined;
-    isDelete: boolean | undefined;
-    id: number | undefined;
 }
 
 export class WarehouseStatus implements IWarehouseStatus {

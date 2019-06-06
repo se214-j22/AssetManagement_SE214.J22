@@ -11,8 +11,10 @@ using GSoft.AbpZeroTemplate.Organizations.Dto;
 using System.Linq.Dynamic.Core;
 using Abp.Extensions;
 using Microsoft.EntityFrameworkCore;
-using GWebsite.AbpZeroTemplate.Core.Models;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using Abp.Collections.Extensions;
+using GWebsite.AbpZeroTemplate.Core.Models;
 
 namespace GSoft.AbpZeroTemplate.Organizations
 {
@@ -62,7 +64,7 @@ namespace GSoft.AbpZeroTemplate.Organizations
                         where uou.OrganizationUnitId == input.Id
                         select new { uou, user };
             var totalCount = await query.CountAsync();
-            
+
             var items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
 
             return new PagedResultDto<OrganizationUnitUserListDto>(
@@ -173,6 +175,100 @@ namespace GSoft.AbpZeroTemplate.Organizations
             return dto;
         }
 
+        public async Task<PagedResultDto<OrganizationUnitAssetListDto>> GetAssets(GetOrganizationUnitAssetsInput input)
+        {
+            #region assetsInWarehouseQuery
+            var user = GetCurrentUser();
+            var organizationUnitId = _userOrganizationUnitRepository.FirstOrDefault(uo => uo.UserId == user.Id)?.OrganizationUnitId;
+            if (organizationUnitId == null)
+                return null;
+
+            IList<long> ouIds;
+            //if (containsChildOrganizationUnit)
+            //{
+            ouIds = await (from o in _organizationUnitRepository.GetAll()
+                           where (o.ParentId == organizationUnitId || o.Id == organizationUnitId)
+                           select o.Id).ToListAsync();
+            //}
+            //else
+            //{
+            //    ouIds = await (from o in _organizationUnitRepository.GetAll()
+            //                   where (o.Id == organizationUnitId)
+            //                   select o.Id).ToListAsync();
+            //}
+
+            var assetsInWarehouseQuery = (from po in _assetOrganizationUnitRepository.GetAll()
+                                          where ouIds.Contains(po.OrganizationUnitId)
+                                          select po.Asset).AsNoTracking();
+            #endregion
+
+            var items = await assetsInWarehouseQuery.OrderBy(input.Sorting).PageBy(input).ToListAsync();
+
+            return new PagedResultDto<OrganizationUnitAssetListDto>(
+                await assetsInWarehouseQuery.CountAsync(),
+                items.Select(item =>
+                {
+                    var dto = ObjectMapper.Map<OrganizationUnitAssetListDto>(item);
+                    return dto;
+                }).ToList());
+        }
+
+        [AbpAuthorize(AppPermissions.Pages_Administration_OrganizationUnits_ManageWarehouse)]
+        public async Task<PagedResultDto<NameValueDto>> FindAssets(FindOrganizationUnitAssetsInput input)
+        {
+            var assetIdsInOrganizationUnit = _assetOrganizationUnitRepository.GetAll()
+                .Where(aou => aou.OrganizationUnitId == input.OrganizationUnitId)
+                .Select(aou => aou.AssetId);
+
+            #region assetsInWarehouseQuery
+            var user = GetCurrentUser();
+            var organizationUnitId = _userOrganizationUnitRepository.FirstOrDefault(uo => uo.UserId == user.Id)?.OrganizationUnitId;
+            if (organizationUnitId == null)
+                return null;
+
+            IList<long> ouIds;
+            //if (containsChildOrganizationUnit)
+            //{
+                ouIds = await (from o in _organizationUnitRepository.GetAll()
+                               where (o.ParentId == organizationUnitId || o.Id == organizationUnitId)
+                               select o.Id).ToListAsync();
+            //}
+            //else
+            //{
+            //    ouIds = await (from o in _organizationUnitRepository.GetAll()
+            //                   where (o.Id == organizationUnitId)
+            //                   select o.Id).ToListAsync();
+            //}
+
+            var assetsInWarehouseQuery = (from po in _assetOrganizationUnitRepository.GetAll()
+                    where ouIds.Contains(po.OrganizationUnitId)
+                    select po.Asset).AsNoTracking();
+            #endregion
+            var query = assetsInWarehouseQuery
+                .Where(a => !assetIdsInOrganizationUnit.Contains(a.Id))
+                .WhereIf(
+                    !input.Filter.IsNullOrWhiteSpace(),
+                    u =>
+                        u.Code.Contains(input.Filter)
+                );
+
+            var assetCount = await query.CountAsync();
+            var assets = await query
+                .OrderBy(u => u.Id)
+                .PageBy(input)
+                .ToListAsync();
+
+            return new PagedResultDto<NameValueDto>(
+                assetCount,
+                assets.Select(u =>
+                    new NameValueDto(
+                        u.Code,
+                        u.Id.ToString()
+                    )
+                ).ToList()
+            );
+        }
+
         [AbpAuthorize(AppPermissions.Pages_Administration_OrganizationUnits_ManageWarehouse)]
         public async Task PlaceAssetsToOrganizationUnit(AssetsToOrganizationUnitInput input)
         {
@@ -191,19 +287,7 @@ namespace GSoft.AbpZeroTemplate.Organizations
             }
             await CurrentUnitOfWork.SaveChangesAsync();
         }
-        [AbpAuthorize(AppPermissions.Pages_Administration_OrganizationUnits_ManageWarehouse)]
-        public async Task<List<Asset>> GetAssetsInWarehouse()
-        {
-            var user = GetCurrentUser();
-            var organizationUnitId = _userOrganizationUnitRepository.FirstOrDefault(uo => uo.UserId == user.Id)?.OrganizationUnitId;
-            if (organizationUnitId == null)
-                return new List<Asset>();
-            var assets = await (from po in _assetOrganizationUnitRepository.GetAll()
-                                where organizationUnitId == po.OrganizationUnitId
-                                select po.Asset).AsNoTracking().ToListAsync();
-            return assets;
 
-        }
         [AbpAuthorize(AppPermissions.Pages_Administration_OrganizationUnits_ManageWarehouse)]
         public async Task<WarehouseStatus> GetWarehouseStatus()
         {

@@ -120,7 +120,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
             var assetTypeEntity = manufacturerRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == id);
             if (assetTypeEntity != null)
             {
-                return await assetLineRepository.GetAll().AnyAsync(x => x.AssetTypeID == id);
+                return await assetLineRepository.GetAll().AnyAsync(x => x.ManufacturerID == id);
             }
             return false;
         }

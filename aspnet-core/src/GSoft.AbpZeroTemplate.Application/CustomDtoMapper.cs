@@ -134,7 +134,9 @@ namespace GSoft.AbpZeroTemplate
             //OrganizationUnit
             configuration.CreateMap<OrganizationUnit, OrganizationUnitDto>();
 
-            /* ADD YOUR OWN CUSTOM AUTOMAPPER MAPPINGS HERE */
+            //Asset
+            configuration.CreateMap<GWebsite.AbpZeroTemplate.Core.Models.Asset, OrganizationUnitAssetListDto>();
+
         }
     }
 }
