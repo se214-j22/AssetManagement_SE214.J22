@@ -53,6 +53,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
                 query = query.PageBy(filter);
             }
             var items = await query.AsNoTracking().Include(b => b.AssetType).Include(b => b.Manufacturer).ToListAsync();
+
             return new PagedResultDto<AssetLineDto>(
                 totalCount,
                 items.Select(item => ObjectMapper.Map<AssetLineDto>(item)).ToList());
@@ -78,14 +79,14 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
             }
             return ObjectMapper.Map<AssetLineDto>(assetLineEntity);
         }
-        public async Task<AssetLine> GetAsyncForEdit(string code)
+        public async Task<AssetLineInput> GetAsyncForEdit(int id)
         {
-            var assetLineEntity = await assetLineRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefaultAsync(x => x.Code == code);
+            var assetLineEntity = await assetLineRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefaultAsync(x => x.Id == id);
             if (assetLineEntity == null)
             {
                 return null;
             }
-            return assetLineEntity;
+            return ObjectMapper.Map<AssetLineInput>(assetLineEntity);
         }
 
         [AbpAuthorize(GWebsitePermissions.Pages_Administration_AssetLine_Create_Edit)]

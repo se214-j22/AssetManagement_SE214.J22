@@ -16,7 +16,5 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public int ManufacturerID { get; set; }
         public AssetType AssetType { get; set; }
         public Manufacturer Manufacturer { get; set; }
-        //public ICollection<Asset> Assets { get; set; }
-    
     }
 }

@@ -72,14 +72,14 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
             }
             return ObjectMapper.Map<ManufacturerDto>(manufacturerEntity);
         }
-        public async Task<Manufacturer> GetAsyncForEdit(string code)
+        public async Task<ManufacturerInput> GetAsyncForEdit(int id)
         {
-            var manufacturerEntity = await manufacturerRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefaultAsync(x => x.Code == code);
+            var manufacturerEntity = await manufacturerRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefaultAsync(x => x.Id == id);
             if (manufacturerEntity == null)
             {
                 return null;
             }
-            return manufacturerEntity;
+            return ObjectMapper.Map<ManufacturerInput>(manufacturerEntity);
         }
 
         [AbpAuthorize(GWebsitePermissions.Pages_Administration_Manufacturer_Create_Edit)]

@@ -10,6 +10,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Assets
         Task<PagedResultDto<AssetLineDto>> GetsForView(AssetLineFilter filter);
         Task<AssetLineDto> GetAsyncForView(int id);
         Task<AssetLineDto> GetAsyncForView(string code);
+        Task<AssetLineInput> GetAsyncForEdit(int id);
         Task CreateOrEdit(AssetLineInput assetLineInput);
         Task<bool> HasAnyRecordsPointTo(int id);
         Task DeleteAsync(int id);

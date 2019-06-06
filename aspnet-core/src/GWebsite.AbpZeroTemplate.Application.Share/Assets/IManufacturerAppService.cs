@@ -9,6 +9,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Assets
         Task<PagedResultDto<ManufacturerDto>> GetsForView(ManufacturerFilter filter);
         Task<ManufacturerDto> GetAsyncForView(int id);
         Task<ManufacturerDto> GetAsyncForView(string code);
+        Task<ManufacturerInput> GetAsyncForEdit(int id);
         Task CreateOrEdit(ManufacturerInput manufacturerInput);
         Task<bool> HasAnyRecordsPointTo(int id);
         Task DeleteAsync(int id);

@@ -71,6 +71,16 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.AssetTypes
             }
             return ObjectMapper.Map<AssetTypeDto>(assetTypeEntity);
         }
+        public async Task<AssetTypeInput> GetAsyncForEdit(int id)
+        {
+            var assetTypeEntity = await assetTypeRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefaultAsync(x => x.Id == id);
+            if (assetTypeEntity == null)
+            {
+                return null;
+            }
+            return ObjectMapper.Map<AssetTypeInput>(assetTypeEntity);
+        }
+
         public async Task<AssetType> GetAsyncForEdit(string code)
         {
             var assetTypeEntity = await assetTypeRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefaultAsync(x => x.Code == code);

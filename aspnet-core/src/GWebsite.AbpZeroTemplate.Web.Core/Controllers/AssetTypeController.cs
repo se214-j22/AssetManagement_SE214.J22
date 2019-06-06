@@ -5,6 +5,7 @@ using GWebsite.AbpZeroTemplate.Application.Share.Assets;
 using GWebsite.AbpZeroTemplate.Application.Share.Assets.Dto;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Abp.UI;
 
 namespace GWebsite.AbpZeroTemplate.Application.Controllers
 {
@@ -35,6 +36,14 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         {
             return await assetTypeAppService.GetAsyncForView(code);
         }
+
+        [HttpGet]
+        public async Task<AssetTypeInput> GetForEdit(int id)
+        {
+            return await assetTypeAppService.GetAsyncForEdit(id);
+        }
+
+
         [HttpPost]
         public async Task CreateOrEdit([FromBody] AssetTypeInput input)
         {
@@ -42,12 +51,11 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task Delete(int id)
         {
             if (await assetTypeAppService.HasAnyRecordsPointTo(id))
-                return BadRequest("This record has anything point to!");
+                throw new UserFriendlyException("Ooppps! Your request was bad!", "This record has any records point to! Please destruct them!");
             await assetTypeAppService.DeleteAsync(id);
-            return Ok();
         }
     }
 }
