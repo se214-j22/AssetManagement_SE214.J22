@@ -9,8 +9,8 @@
             </div>
         </div>
         <div class="m-portlet__head-tools" *ngIf="organizationUnit">
-            <button *ngIf="isGranted('Pages.Administration.OrganizationUnits.ManageAssets')" (click)="openAddModal()" class="btn btn-primary">
-                <i class="fa fa-plus"></i> {{l("AddAsset")}}
+            <button *ngIf="isGranted('Pages.Administration.OrganizationUnits.ManageWarehouse')" (click)="openPlaceAssetModal()" class="btn btn-primary">
+                <i class="fa fa-plus"></i> {{l("PlaceAsset")}}
             </button>
         </div>
     </div>
@@ -28,7 +28,7 @@
                     <ng-template pTemplate="header">
                         <tr>
                             <!-- <th style="width:15%"
-                                [hidden]="!permission.isGranted('Pages.Administration.OrganizationUnits.ManageAssets')">{{l('Delete')}}</th> -->
+                                [hidden]="!permission.isGranted('Pages.Administration.OrganizationUnits.ManageWarehouse')">{{l('Delete')}}</th> -->
                             <th pSortableColumn="code">
                                 {{l('CODE')}}
                                 <p-sortIcon field="code"></p-sortIcon>
@@ -84,4 +84,4 @@
 </div>
 
 
-<!-- <placeAssetModal #placeAssetModal (assetsPlaced)="placeAssets($event)"></placeAssetModal> -->
+<placeAssetModal #placeAssetModal (assetsPlaced)="placeAssets($event)"></placeAssetModal>

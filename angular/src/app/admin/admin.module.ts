@@ -53,7 +53,7 @@ import { EditUserPermissionsModalComponent } from './users/edit-user-permissions
 import { ImpersonationService } from './users/impersonation.service';
 import { UsersComponent } from './users/users.component';
 import { OrganizationUnitAssetsComponent } from './organization-units/organization-unit-asset/organization-unit-assets.component';
-import { PlaceAssetComponent } from './organization-units/organization-unit-asset/place-asset-modal.component';
+import { PlaceAssetModalComponent } from './organization-units/organization-unit-asset/place-asset-modal.component';
 
 @NgModule({
     imports: [
@@ -107,7 +107,7 @@ import { PlaceAssetComponent } from './organization-units/organization-unit-asse
         OrganizationUnitMembersComponent,
         CreateOrEditUnitModalComponent,
         OrganizationUnitAssetsComponent,
-        PlaceAssetComponent,
+        PlaceAssetModalComponent,
         TenantSettingsComponent,
         HostDashboardComponent,
         EditionComboComponent,

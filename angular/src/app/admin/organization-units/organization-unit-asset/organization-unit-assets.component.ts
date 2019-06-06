@@ -8,6 +8,7 @@ import { Table } from 'primeng/components/table/table';
 import { IAssetWithOrganizationUnit } from './asset-with-organization-unit';
 import { IAssetsWithOrganizationUnit } from './assets-with-organization-unit';
 import { IBasicOrganizationUnitInfo } from '../basic-organization-unit-info';
+import { PlaceAssetModalComponent } from './place-asset-modal.component';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class OrganizationUnitAssetsComponent extends AppComponentBase implements
     @Output() assetRemoved = new EventEmitter<IAssetWithOrganizationUnit>();
     @Output() assetsAdded = new EventEmitter<IAssetsWithOrganizationUnit>();
 
-    // @ViewChild('placeAssetModal') placeAssetModal: PlaceAssetModalComponent;
+    @ViewChild('placeAssetModal') placeAssetModal: PlaceAssetModalComponent;
     @ViewChild('dataTable') dataTable: Table;
     @ViewChild('paginator') paginator: Paginator;
 
@@ -43,7 +44,7 @@ export class OrganizationUnitAssetsComponent extends AppComponentBase implements
         }
 
         this._organizationUnit = ou;
-        // this.addAssetModal.organizationUnitId = ou.id;
+        this.placeAssetModal.organizationUnitId = ou.id;
         if (ou) {
             this.refreshAssets();
         }
@@ -85,8 +86,8 @@ export class OrganizationUnitAssetsComponent extends AppComponentBase implements
         this.reloadPage();
     }
 
-    openAddModal(): void {
-        // this.addAssetModal.show();
+    openPlaceAssetModal(): void {
+        this.placeAssetModal.show();
     }
 
     // removeAsset(asset: OrganizationUnitAssetListDto): void {

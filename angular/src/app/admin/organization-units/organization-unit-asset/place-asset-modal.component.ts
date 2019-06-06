@@ -12,7 +12,7 @@ import { IAssetsWithOrganizationUnit } from './assets-with-organization-unit';
     selector: 'placeAssetModal',
     templateUrl: './place-asset-modal.component.html'
 })
-export class PlaceAssetComponent extends AppComponentBase {
+export class PlaceAssetModalComponent extends AppComponentBase {
 
     organizationUnitId: number;
 
