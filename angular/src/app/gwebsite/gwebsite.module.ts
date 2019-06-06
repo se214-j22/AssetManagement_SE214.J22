@@ -26,6 +26,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { AssetLineComponent } from './asset-line/asset-line.component';
 import { ViewAssetLineModalComponent } from './asset-line/view-asset-line-modal.component';
 import { CreateOrEditAssetLineModalComponent } from './asset-line/create-or-edit-asset-line-modal.component';
+import { CreateOrEditAssetTypeModalComponent } from './asset-type/create-or-edit-asset-type-modal.component';
+import { ViewAssetTypeModalComponent } from './asset-type/view-asset-type-modal.component';
+import { AssetTypeComponent } from './asset-type/asset-type.component';
 
 @NgModule({
     imports: [
@@ -56,6 +59,7 @@ import { CreateOrEditAssetLineModalComponent } from './asset-line/create-or-edit
         CustomerComponent, CreateOrEditCustomerModalComponent, ViewCustomerModalComponent,
         AssetComponent, ViewAssetModalComponent,  CreateOrEditAssetModalComponent,
         AssetLineComponent, ViewAssetLineModalComponent,  CreateOrEditAssetLineModalComponent,
+        AssetTypeComponent, ViewAssetTypeModalComponent,  CreateOrEditAssetTypeModalComponent,
 
     ],
     providers: [
