@@ -20,6 +20,7 @@ export class AppNavigationService {
                 new AppMenuItem('MenuClient', 'Pages.Administration.MenuClient', 'flaticon-menu-1', '/app/gwebsite/menu-client'),
                 new AppMenuItem('DemoModel', 'Pages.Administration.DemoModel', 'flaticon-menu-1', '/app/gwebsite/demo-model'),
                 new AppMenuItem('Customer', 'Pages.Administration.Customer', 'flaticon-menu-1', '/app/gwebsite/customer'),
+                new AppMenuItem('AssetLine', 'Pages.Administration.AssetLine', 'flaticon-menu-1', '/app/gwebsite/asset-line'),
                 new AppMenuItem('Asset', 'Pages.Administration.Asset', 'flaticon-menu-1', '/app/gwebsite/asset'),
             ]),
             new AppMenuItem('Systems', '', 'flaticon-layers', '', [

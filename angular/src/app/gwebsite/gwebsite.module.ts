@@ -1,4 +1,4 @@
-import { CustomerServiceProxy, AssetServiceProxy, AssetLineServiceProxy } from './../../shared/service-proxies/service-proxies';
+import { CustomerServiceProxy, AssetServiceProxy, AssetLineServiceProxy, ManufacturerServiceProxy, AssetTypeServiceProxy } from './../../shared/service-proxies/service-proxies';
 import { ViewDemoModelModalComponent } from './demo-model/view-demo-model-modal.component';
 import { NgModule } from '@angular/core';
 import { QRCodeModule } from 'angular2-qrcode';
@@ -23,6 +23,9 @@ import { AssetComponent } from './asset/asset.component';
 import { ViewAssetModalComponent } from './asset/view-asset-modal.component';
 import { CreateOrEditAssetModalComponent } from './asset/create-or-edit-asset-modal.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { AssetLineComponent } from './asset-line/asset-line.component';
+import { ViewAssetLineModalComponent } from './asset-line/view-asset-line-modal.component';
+import { CreateOrEditAssetLineModalComponent } from './asset-line/create-or-edit-asset-line-modal.component';
 
 @NgModule({
     imports: [
@@ -51,15 +54,17 @@ import { NgSelectModule } from '@ng-select/ng-select';
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
         DemoModelComponent, CreateOrEditDemoModelModalComponent, ViewDemoModelModalComponent,
         CustomerComponent, CreateOrEditCustomerModalComponent, ViewCustomerModalComponent,
-        AssetComponent,
-        ViewAssetModalComponent,
-        CreateOrEditAssetModalComponent
+        AssetComponent, ViewAssetModalComponent,  CreateOrEditAssetModalComponent,
+        AssetLineComponent, ViewAssetLineModalComponent,  CreateOrEditAssetLineModalComponent,
+
     ],
     providers: [
         DemoModelServiceProxy,
         CustomerServiceProxy,
         AssetServiceProxy,
-        AssetLineServiceProxy
+        AssetLineServiceProxy,
+        AssetTypeServiceProxy,
+        ManufacturerServiceProxy
     ]
 })
 export class GWebsiteModule { }
