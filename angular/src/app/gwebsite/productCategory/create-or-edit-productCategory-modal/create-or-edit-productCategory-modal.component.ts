@@ -4,7 +4,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
 import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
-import { ProductCategoryDto } from '../dto/productCategory.dto';
+import { NewPCDto, StatusEnum } from '../dto/productCategory.dto';
 
 @Component({
     selector: 'createOrEditProductCategoryModal',
@@ -24,9 +24,15 @@ export class CreateOrEditProductCategoryModalComponent extends AppComponentBase 
 
     active = false;
     saving = false;
+    public isCreated = false;
 
-    productCategory: ProductCategoryDto = new ProductCategoryDto();
-    productCategorys: ComboboxItemDto[] = [];
+    public newProductCategory: NewPCDto;
+    public pcCode = '';
+    public pcName = '';
+    public pcNote = '';
+    public status = StatusEnum.Open;
+    public statusEnum = StatusEnum;
+    public isCheckStatus = false;
 
     constructor(
         injector: Injector,
@@ -35,49 +41,53 @@ export class CreateOrEditProductCategoryModalComponent extends AppComponentBase 
         super(injector);
     }
 
-    show(productCategoryId?: number | null | undefined): void {
+    show(): void {
         this.active = true;
+        this.saving = false;
 
-        this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', productCategoryId).subscribe(result => {
-            // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-            this.productCategory = result.menuClient;
-            this.productCategorys = result.menuClients;
-            this.modal.show();
-            setTimeout(() => {
-                    $(this.productCategoryCombobox.nativeElement).selectpicker('refresh');
-            }, 0);
-        });
+        this.isCheckStatus = false;
+        this.pcCode = '';
+        this.pcName = '';
+        this.pcNote = '';
+
+        // this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', productCategoryId).subscribe(result => {
+        //     this.productCategory = result.menuClient;
+        //     this.productCategorys = result.menuClients;
+        //     this.modal.show();
+        //     setTimeout(() => {
+        //             $(this.productCategoryCombobox.nativeElement).selectpicker('refresh');
+        //     }, 0);
+        // });
+
+        this.modal.show();
+
     }
 
     save(): void {
-        let input = this.productCategory;
-        this.saving = true;
-        if (input.id) {
-            this.updateProductCategory();
-        } else {
+        this.primengTableHelper.showLoadingIndicator();
+        if (this.pcCode && this.pcCode !== '' && this.pcName && this.pcName !== '') {
+            this.saving = true;
+            let status = this.isCheckStatus ? StatusEnum.Open : StatusEnum.Close;
+
+            this.newProductCategory = new NewPCDto(this.pcCode, this.pcName, status, this.pcNote);
+
             this.insertProductCategory();
+
+            //trước khi add nhớ check duplicat code.
         }
+        this.primengTableHelper.hideLoadingIndicator();
     }
 
     insertProductCategory() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.post('api/MenuClient/CreateMenuClient', this.productCategory)
+        this._apiService.post('api/ProductType/CreateProductCatalogAsync', this.newProductCategory)
             .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
-            });
-    }
-
-    updateProductCategory() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.put('api/MenuClient/UpdateMenuClient', this.productCategory)
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
+            .subscribe(result => {
+                if (result) {
+                    this.notify.info(this.l('CreatedSuccessfully'));
+                    this.isCreated = true;
+                    this.close();
+                    this.modalSave.emit(null);
+                }
             });
     }
 

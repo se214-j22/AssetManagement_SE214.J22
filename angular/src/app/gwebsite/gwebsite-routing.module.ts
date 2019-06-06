@@ -31,7 +31,6 @@ import { SubPlanComponent } from './plan/sub-plan/sub-plan.component';
                 children: [
                     {
                         path: 'supplier-category', component: SupplierCategoryComponent,
-                        //tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
                 ]
@@ -58,12 +57,11 @@ import { SubPlanComponent } from './plan/sub-plan/sub-plan.component';
                 path: '',
                 children: [
                     {
-                        // path: 'plan', component: SubPlanComponent,
                         path: 'plan', component: PlanComponent,
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
                     {
-                        path: 'plan-detail', component: SubPlanComponent,
+                        path: 'plan/detail/:id', component: SubPlanComponent,
                         data: { permission: 'Pages.Administration.MenuClient' }
                     }
                 ]

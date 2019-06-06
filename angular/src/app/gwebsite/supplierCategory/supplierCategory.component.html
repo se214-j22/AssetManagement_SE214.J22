@@ -1,137 +1,206 @@
 <div [@routerTransition]>
 
-  <div class="m-subheader ">
-      <div class="d-flex align-items-center">
-          <div class="mr-auto col-xs-6">
-              <h3 class="m-subheader__title m-subheader__title--separator">
-                  <span>{{l("SupplierCategory")}}</span>
-              </h3>
-              <span class="m-section__sub">
-                  {{l("SupplierCategoryInfo")}}
-              </span>
-          </div>
-          <div class="col-xs-6 text-right">
-              <!-- Tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn -->
-              <button (click)="createSupplierCategory()" *ngIf="isGranted('Pages.Administration.MenuClient.Create')" class="btn btn-primary"><i
-                      class="fa fa-plus"></i> {{l("CreateNewSupplierCategory")}}</button>
-          </div>
-      </div>
-  </div>
+    <div class="m-subheader ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-xs-6">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("SupplierCategory")}}</span>
+                </h3>
+                <span class="m-section__sub">
+                    {{l("SupplierCategoryInfo")}}
+                </span>
+            </div>
+            <div *ngIf="isRoleActionPC" class="col-xs-6 text-right">
+                <button (click)="createSupplierCategory()" *ngIf="isGranted('Pages.Administration.MenuClient.Create')"
+                    class="btn btn-primary"><i class="fa fa-plus"></i> {{l("CreateNewSupplierCategory")}}</button>
+            </div>
+        </div>
+    </div>
 
-  <div class="m-content">
-      <div class="m-portlet m-portlet--mobile">
-          <div class="m-portlet__body">
-              <form autocomplete="off">
-                  <div class="m-form m-form--label-align-right" id="TextsFilterForm">
-                      <div class="row align-items-center m--margin-bottom-10">
-                          <div class="col-sm-12">
-                              <div class="input-group">
-                                  <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control"
-                                      placeholder="{{l('SearchWithThreeDot')}}" type="text">
-                                  <span class="input-group-btn">
-                                      <button (click)="applyFilters()" class="btn btn-primary" type="submit"><i class="icon-refresh"></i>
-                                          {{l("Refresh")}}</button>
-                                  </span>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </form>
-              <div class="row align-items-center">
-                  <!--<Primeng-TurboTable-Start>-->
-                  <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
-                      <p-table #dataTable (onLazyLoad)="getSupplierCategorys($event)" [value]="primengTableHelper.records"
-                          rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
-                          [responsive]="primengTableHelper.isResponsive">
-                          <ng-template pTemplate="header">
-                              <tr>
-                                  <th pSortableColumn="name">
-                                      {{l('Name')}}
-                                      <p-sortIcon field="name"></p-sortIcon>
-                                  </th>
-                                  <th pSortableColumn="supplier">
-                                      {{l('Supplier')}}
-                                      <p-sortIcon field="supplier"></p-sortIcon>
-                                  </th>
-                                  <th pSortableColumn="contact">
-                                    {{l('Contact')}}
-                                    <p-sortIcon field="contact"></p-sortIcon>
-                                  </th>
-                                  <th pSortableColumn="price">
-                                    {{l('Price')}}
-                                    <p-sortIcon field="price"></p-sortIcon>
-                                  </th>
-                                 <th pSortableColumn="description">
-                                    {{l('Description')}}
-                                    <p-sortIcon field="description"></p-sortIcon>
-                                 </th>
-                                  <th pSortableColumn="addedDate">
-                                      {{l('AddedDate')}}
-                                      <p-sortIcon field="addedDate"></p-sortIcon>
-                                  </th>
-                                  <th pSortableColumn="image">
-                                    {{l('Image')}}
-                                    <p-sortIcon field="image"></p-sortIcon>
-                                  </th>
-                                  <th>{{l('Edit')}}</th>
-                              </tr>
-                          </ng-template>
-                          <ng-template pTemplate="body" let-record="$implicit">
-                              <tr>
-                                  <td>
-                                      <span class="ui-column-title">{{l('Name')}}</span>
-                                      <span title="{{record.name}}">{{truncateString(record.name)}}</span>
-                                  </td>
-                                  <td>
-                                      <span class="ui-column-title">{{l('Supplier')}}</span>
-                                      <span title="{{record.supplier}}">{{truncateString(record.supplierDto.name)}}</span>
-                                  </td>
-                                  <td>
-                                    <span class="ui-column-title">{{l('Contact')}}</span>
-                                    <span title="{{record.contact}}">{{truncateString(record.supplierDto.contact)}}</span>
-                                 </td>
-                                  <td>
-                                    <span class="ui-column-title">{{l('Price')}}</span>
-                                    <span title="{{record.price}}">{{truncateString(record.price)}}</span>
-                                  </td>
-                                  <td>
-                                    <span class="ui-column-title">{{l('Description')}}</span>
-                                    <span title="{{record.description}}">{{truncateString(record.description)}}</span>
-                                  </td>
-                                  <td>
-                                      <span class="ui-column-title">{{l('AddedDate')}}</span>
-                                      <span title="{{record.addedDate}}">{{ record.addedDate }}</span>
-                                  </td>
-                                  <td>
-                                    <span class="ui-column-title">{{l('Image')}}</span>
-                                    <span title="{{record.image}}">{{ record.imageDto.url }}</span>
-                                  </td>
-                                  <td>
-                                      <button class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
-                                          (click)="createOrEditModal.show(record.id)" title="{{l('Edit')}}">
-                                          <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
-                                      </button>
-                                  </td>
-                              </tr>
-                          </ng-template>
-                      </p-table>
-                      <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
-                          {{l('NoData')}}
-                      </div>
-                      <div class="primeng-paging-container">
-                          <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
-                              (onPageChange)="getSupplierCategorys($event)" [totalRecords]="primengTableHelper.totalRecordsCount"
-                              [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
-                          </p-paginator>
-                          <span class="total-records-count">
-                              {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
-                          </span>
-                      </div>
-                  </div>
-                  <!--<Primeng-TurboTable-End>-->
-              </div>
-          </div>
-      </div>
-  </div>
-  <createOrEditSupplierCategoryModal #createOrEditModal (modalSave)="refreshValueFromModal()"></createOrEditSupplierCategoryModal>
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form autocomplete="off" (ngSubmit)="getSupplierCategorys($event, $event, true)">
+                    <div class="m-form m-form--label-align-right" id="TextsFilterForm">
+                        <!-- filter -->
+                        <div class="row m--margin-bottom-10">
+                            <div class="col-sm-6">
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Supplier Code:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <input type="text" name="supplierCatalogCode" [(ngModel)]="supplierCatalogCode"
+                                            [placeholder]="'Supplier Catalog Code'" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Supplier Name:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <input type="text" name="supplierCatalogName" [(ngModel)]="supplierCatalogName"
+                                            [placeholder]="'Supplier Catalog Name'" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Status:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <select #statusSelect name="status" class="form-control" [(ngModel)]="status"
+                                            [attr.data-live-search]="false" jq-plugin="selectpicker" required>
+                                            <option *ngFor="let item of StatusList" [value]="item.id">
+                                                {{item.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- search -->
+                        <div class="row align-items-center m--margin-bottom-10">
+                            <div class="col-sm-12 text-center">
+                                <button class="btn btn-primary" type="submit"><i class="icon-refresh"></i>
+                                    {{l("Search")}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                        <!-- perfect-scrollbar, https://www.npmjs.com/package/ngx-perfect-scrollbar -->
+                        <perfect-scrollbar [config]="{suppressScrollX: false}" (psScrollX)="onScrollX($event)">
+                            <p-table #dataTable (onLazyLoad)="getSupplierCategorys($event)"
+                                [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [responsive]="primengTableHelper.isResponsive">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th pSortableColumn="ordinalNumber" style="width: 90px; text-align: center">
+                                            {{l('Number')}}
+                                        </th>
+                                        <!-- <th pSortableColumn="id">
+                                        {{l('Id')}}
+                                        <p-sortIcon field="id"></p-sortIcon>
+                                    </th> -->
+                                        <th pSortableColumn="code" style="width: 150px; text-align: center">
+                                            {{l('Code')}}
+                                            <p-sortIcon field="code"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="name" style="width: 150px; text-align: center">
+                                            {{l('Name')}}
+                                            <p-sortIcon field="name"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="note" style="width: 150px; text-align: center">
+                                            {{l('Description')}}
+                                            <p-sortIcon field="note"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="status" style="width: 150px; text-align: center">
+                                            {{l('Status')}}
+                                            <p-sortIcon field="status"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="isCloseDelete" style="width: 150px; text-align: center">
+                                            {{l('Has Supplier')}}
+                                        </th>
+                                        <th *ngIf="isRoleActionPC" style="width: 230px; text-align: center">
+                                            {{l('Action')}}</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit" let-index="rowIndex">
+                                    <tr class="text-center" (click)="gotoPlanDetail(record.planId, $event)">
+                                        <td style="width: 90px">
+                                            <span class="ui-column-title">{{l('Number')}}</span>
+                                            <span>{{truncateString(index + 1)}}</span>
+                                        </td>
+                                        <!-- <td>
+                                        <span class="ui-column-title">{{l('Id')}}</span>
+                                        <span title="{{record.id}}">{{truncateString(record.id)}}</span>
+                                    </td> -->
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Code')}}</span>
+                                            <span title="{{record.code}}">{{ record.code }}</span>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Name')}}</span>
+                                            <span *ngIf="!record.isEdit"
+                                                title="{{record.name}}">{{ record.name }}</span>
+                                            <input *ngIf="record.isEdit" type="text" name="recordName"
+                                                [(ngModel)]="record.name" class="form-control">
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Note')}}</span>
+                                            <span *ngIf="!record.isEdit"
+                                                title="{{record.note}}">{{ record.note }}</span>
+                                            <input *ngIf="record.isEdit" type="text" name="recordNote"
+                                                [(ngModel)]="record.note" class="form-control">
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Status')}}</span>
+                                            <span
+                                                title="{{record.status}}">{{ record.status === statusEnum.Close ? 'Close' : 'Open' }}</span>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Has Supplier')}}</span>
+                                            <span>{{ record.isInCludeSupplier ? 'Yes' : 'No' }}</span>
+                                        </td>
+                                        <!-- <td *ngIf="isRoleActionPC" class="row m-l-60"> -->
+                                        <td *ngIf="isRoleActionPC" style="width: 230px">
+                                            <button *ngIf="record.status === statusEnum.Close && !record.isEdit"
+                                                class="btn btn-success" (click)="actionPCItem(record.id, record)"
+                                                title="Open this supplier catalog">Open
+                                            </button>
+
+                                            <button *ngIf="record.status === statusEnum.Open && !record.isEdit"
+                                                [disabled]="record.isInCludeSupplier" class="btn btn-warning"
+                                                (click)="actionPCItem(record.id, record)"
+                                                title="{{record.isInCludeSupplier ? 'Cannot close supplier catalog exist reference': 'Close this'}}">
+                                                Close
+                                            </button>
+                                            <button *ngIf="!record.isEdit" class="btn btn-danger"
+                                                [disabled]="record.status === statusEnum.Open && record.isInCludeSupplier"
+                                                type="button" (click)="removePcItem(record.id, record, index)"
+                                                title="{{record.isInCludeSupplier ? 'Cannot remove supplier catalog exist reference': 'Delete this'}}">
+                                                Remove</button>
+
+                                            <button *ngIf="!record.isEdit" class="btn btn-primary"
+                                                (click)="setEditrow(record)">Edit
+                                            </button>
+                                            <button *ngIf="record.isEdit" class="btn btn-success"
+                                                [disabled]="!record.name || record.name === ''"
+                                                (click)="editItem(record.id, record)">Save
+                                            </button>
+                                            <button *ngIf="record.isEdit" class="btn btn-danger"
+                                                (click)="setCancelRow(record)">Cancel
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </perfect-scrollbar>
+                        <!-- ngx-perfect-scrollbar END-->
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
+                                (onPageChange)="getSupplierCategorys($event, $event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <createOrEditSupplierCategoryModal #createOrEditModal (modalSave)="refreshValueFromModal()">
+    </createOrEditSupplierCategoryModal>
 </div>

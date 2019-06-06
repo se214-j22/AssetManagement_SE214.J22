@@ -5,33 +5,50 @@
             <form *ngIf="active" #editForm="ngForm" novalidate (ngSubmit)="save()">
                 <div class="modal-header">
                     <h4 class="modal-title">
-                        <span *ngIf="project.id">{{l("EditProject")}}: {{project.name}}</span>
-                        <span *ngIf="!project.id">{{l("CreateNewProject")}}</span>
+                        <span>{{l("CreateNewProject")}}</span>
                     </h4>
                     <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <select #projectCombobox name="projectName" class="form-control" [(ngModel)]="project.parentId"
-                            [attr.data-live-search]="true" jq-plugin="selectpicker" required>
-                            <option value="">{{emptyText}}</option>
-                            <option *ngFor="let item of projects" [value]="item.value">{{item.displayText}}</option>
-                        </select>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="form-group">
+                                <label>{{l("Project Code")}} *</label>
+                                <input class="form-control" type="text" name="pjCode"
+                                    [placeholder]="'Enter Project Abbreviations'" [(ngModel)]="pjCode" required
+                                    maxlength="60">
+                            </div>
+                        </div>
+                        <div class="col-4 form-group d-flex align-items-center">
+                            <label class="mr-2">{{l("Status")}} * </label>
+                            <p-inputSwitch [(ngModel)]="isCheckActive" [ngModelOptions]="{standalone: true}"
+                                (onChange)="activeNewPrj($event)"></p-inputSwitch>
+                        </div>
                     </div>
+
                     <div class="form-group">
-                        <label>{{l("ProjectName")}} *</label>
-                        <input #nameInput="ngModel" class="form-control" type="text" name="DisplayName"
-                            [(ngModel)]="project.name" required maxlength="64">
-                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                        <label>{{l("Project Name")}} *</label>
+                        <input class="form-control" type="text" name="pjName" [(ngModel)]="pjName"
+                            [placeholder]="'Enter Project Name'" required maxlength="200">
                     </div>
+
                     <div class="form-group">
-                        <label>{{l("ProjectAlias")}} *</label>
-                        <input #aliasInput="ngModel" class="form-control" type="text" name="Alias"
-                            [(ngModel)]="project.alias" required maxlength="64">
-                        <validation-messages [formCtrl]="aliasInput"></validation-messages>
+                        <label>{{l("Create Date")}} </label>
+                        <input class="form-control" type="text" name="pjCreateDate" [value]="pjCreateDate"
+                            [attr.disabled]="true">
                     </div>
+                    <div *ngIf="isCheckActive" class="form-group">
+                        <label>{{l("Active Date")}} </label>
+                        <input class="form-control" type="text" name="pjActiveDate" [value]="pjActiveDate"
+                            [attr.disabled]="true">
+                    </div>
+                    <!-- <div class="form-group">
+                        <label>{{l("Active Project Now")}} </label>
+                        <input class="form-control largerCheckbox" type="checkbox" name="status"
+                            [(ngModel)]="isCheckActive" title="Active now" (change)="activeNewPrj($event)">
+                    </div> -->
                 </div>
                 <div class="modal-footer">
                     <button [disabled]="saving" type="button" class="btn btn-default"

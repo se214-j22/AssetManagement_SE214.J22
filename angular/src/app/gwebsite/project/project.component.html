@@ -11,7 +11,6 @@
                 </span>
             </div>
             <div class="col-xs-6 text-right">
-                <!-- Tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn -->
                 <button (click)="createProject()" *ngIf="isGranted('Pages.Administration.MenuClient.Create')"
                     class="btn btn-primary"><i class="fa fa-plus"></i> {{l("CreateNewProject")}}</button>
             </div>
@@ -21,105 +20,154 @@
     <div class="m-content">
         <div class="m-portlet m-portlet--mobile">
             <div class="m-portlet__body">
-                <form autocomplete="off">
+                <form autocomplete="off" (ngSubmit)="getProjects(paginator)">
                     <div class="m-form m-form--label-align-right" id="TextsFilterForm">
-                        <div class="row align-items-center m--margin-bottom-10">
-                            <div class="col-sm-12">
-                                <div class="input-group">
-                                    <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control"
-                                        placeholder="{{l('SearchWithThreeDot')}}" type="text">
-                                    <span class="input-group-btn">
-                                        <button (click)="applyFilters()" class="btn btn-primary" type="submit"><i
-                                                class="icon-refresh"></i>
-                                            {{l("Refresh")}}</button>
-                                    </span>
+                        <!-- filter -->
+                        <div class="row m--margin-bottom-10">
+                            <div class="col-sm-6">
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Project Code:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <input type="text" name="projectCode" [(ngModel)]="projectCodeFilter"
+                                            [placeholder]="'Project Code'" class="form-control">
+                                    </div>
                                 </div>
+
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Create Date:</span>
+                                    </div>
+                                    <!-- https://github.com/kekeh/mydatepicker/blob/master/README.md -->
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <my-date-picker class="flex" name="createDate" [placeholder]="'  Select A Date'"
+                                            [options]="createDatePickerOptions" (dateChanged)="onDateChangedBy($event)">
+                                        </my-date-picker>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Project Name:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <input type="text" name="projectName" [(ngModel)]="projectNameFilter"
+                                            [placeholder]="'Project Name'" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- search -->
+                        <div class="row align-items-center m--margin-bottom-10">
+                            <div class="col-sm-12 text-center">
+                                <button class="btn btn-primary" type="submit"><i class="icon-refresh"></i>
+                                    {{l("Search")}}</button>
                             </div>
                         </div>
                     </div>
                 </form>
+
                 <div class="row align-items-center">
                     <!--<Primeng-TurboTable-Start>-->
                     <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
-                        <p-table #dataTable (onLazyLoad)="getProjects($event)" [value]="primengTableHelper.records"
-                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
-                            [responsive]="primengTableHelper.isResponsive">
-                            <ng-template pTemplate="header">
-                                <tr>
-                                    <th pSortableColumn="name">
-                                        {{l('Name')}}
-                                        <p-sortIcon field="name"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="supplier">
-                                        {{l('Supplier')}}
-                                        <p-sortIcon field="supplier"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="contact">
-                                        {{l('Contact')}}
-                                        <p-sortIcon field="contact"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="price">
-                                        {{l('Price')}}
-                                        <p-sortIcon field="price"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="description">
-                                        {{l('Description')}}
-                                        <p-sortIcon field="description"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="addedDate">
-                                        {{l('AddedDate')}}
-                                        <p-sortIcon field="addedDate"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="image">
-                                        {{l('Image')}}
-                                        <p-sortIcon field="image"></p-sortIcon>
-                                    </th>
-                                    <th>{{l('Edit')}}</th>
-                                </tr>
-                            </ng-template>
-                            <ng-template pTemplate="body" let-record="$implicit">
-                                <tr>
-                                    <td>
-                                        <span class="ui-column-title">{{l('Name')}}</span>
-                                        <span title="{{record.name}}">{{truncateString(record.name)}}</span>
-                                    </td>
-                                    <td>
-                                        <span class="ui-column-title">{{l('Supplier')}}</span>
-                                        <span
-                                            title="{{record.supplier}}">{{truncateString(record.supplierDto.name)}}</span>
-                                    </td>
-                                    <td>
-                                        <span class="ui-column-title">{{l('Contact')}}</span>
-                                        <span
-                                            title="{{record.contact}}">{{truncateString(record.supplierDto.contact)}}</span>
-                                    </td>
-                                    <td>
-                                        <span class="ui-column-title">{{l('Price')}}</span>
-                                        <span title="{{record.price}}">{{truncateString(record.price)}}</span>
-                                    </td>
-                                    <td>
-                                        <span class="ui-column-title">{{l('Description')}}</span>
-                                        <span
-                                            title="{{record.description}}">{{truncateString(record.description)}}</span>
-                                    </td>
-                                    <td>
-                                        <span class="ui-column-title">{{l('AddedDate')}}</span>
-                                        <span title="{{record.addedDate}}">{{ record.addedDate }}</span>
-                                    </td>
-                                    <td>
-                                        <span class="ui-column-title">{{l('Image')}}</span>
-                                        <span title="{{record.image}}">{{ record.imageDto.url }}</span>
-                                    </td>
-                                    <td>
-                                        <button
-                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
-                                            (click)="createOrEditModal.show(record.id)" title="{{l('Edit')}}">
-                                            <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </ng-template>
-                        </p-table>
+                        <!-- perfect-scrollbar, https://www.npmjs.com/package/ngx-perfect-scrollbar -->
+                        <perfect-scrollbar [config]="{suppressScrollX: false}" (psScrollX)="onScrollX($event)">
+                            <p-table #dataTable (onLazyLoad)="getProjects($event)" [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [responsive]="primengTableHelper.isResponsive">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th pSortableColumn="ordinalNumber" style="width: 90px; text-align: center">
+                                            {{l('Number')}}
+                                            <p-sortIcon field="ordinalNumber"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="projectCode" style="width: 150px; text-align: center">
+                                            {{l('Project Code')}}
+                                            <p-sortIcon field="projectCode"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="projectName" style="width: 150px; text-align: center">
+                                            {{l('Project Name')}}
+                                            <p-sortIcon field="projectName"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="createDate" style="width: 150px; text-align: center">
+                                            {{l('Create Date')}}
+                                            <p-sortIcon field="createDate"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="activeDate" style="width: 150px; text-align: center">
+                                            {{l('Active Date')}}
+                                            <p-sortIcon field="activeDate"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="status" style="width: 150px; text-align: center">
+                                            {{l('Status')}}
+                                            <p-sortIcon field="status"></p-sortIcon>
+                                        </th>
+                                        <th *ngIf="isPermissionEditCloseActive"
+                                            style="width: 230px; text-align: center">
+                                            {{l('Action')}}</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit" let-index="rowIndex">
+                                    <tr class="table-row text-center">
+                                        <!-- <tr class="table-row" routerLink="app/gwebsite/plan/detail/{{record.planId}}"> -->
+                                        <td style="width: 90px">
+                                            <span class="ui-column-title">{{l('Number')}}</span>
+                                            <span title="{{record.ordinalNumber}}">{{truncateString(index + 1)}}</span>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Project Code')}}</span>
+                                            <span title="{{record.code}}">{{truncateString(record.code)}}</span>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Project Name')}}</span>
+                                            <span *ngIf="!record.isEdit"
+                                                title="{{record.name}}">{{ record.name }}</span>
+                                            <input *ngIf="record.isEdit" type="text" name="recordName"
+                                                [(ngModel)]="record.name" class="form-control">
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Create Date')}}</span>
+                                            <span title="{{record.createDate}}">{{ record.createDate }}</span>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Active Date')}}</span>
+                                            <span
+                                                title="{{record.activeDate}}">{{ record.activeDate ? record.activeDate : 'N/A' }}</span>
+                                        </td>
+
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Status')}}</span>
+                                            <span [ngClass]="{'red-text': record.status === approvalStatusEnum.Inactive,
+                                                            'green-text': record.status === approvalStatusEnum.Active}"
+                                                title="{{record.status}}">{{ record.status === approvalStatusEnum.Active ? 'Active' : 
+                                                (record.status === approvalStatusEnum.Inactive ? 'Inactive' : 'Close') }}</span>
+                                        </td>
+                                        <td *ngIf="isPermissionEditCloseActive" style="width: 230px">
+                                            <button *ngIf="!record.isEdit" class="btn btn-primary"
+                                                (click)="actionEdit(record, $event)">Edit
+                                            </button>
+                                            <button *ngIf="record.isEdit" class="btn btn-success"
+                                                (click)="saveEditItem(record.id, record, $event)">Save
+                                            </button>
+                                            <button *ngIf="record.isEdit" class="btn btn-danger"
+                                                (click)="cancelEdit(record, $event)">Cancel
+                                            </button>
+                                            <button *ngIf="!record.isEdit"
+                                                [disabled]="record.status !== approvalStatusEnum.Inactive"
+                                                class="btn btn-warning" (click)="closeItem(record.id, record, $event)">
+                                                Close
+                                            </button>
+                                            <button *ngIf="!record.isEdit"
+                                                [disabled]="record.status !== approvalStatusEnum.Inactive"
+                                                class="btn btn-success" (click)="activeItem(record.id, record, $event)">
+                                                Active
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </perfect-scrollbar>
                         <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
                             {{l('NoData')}}
                         </div>

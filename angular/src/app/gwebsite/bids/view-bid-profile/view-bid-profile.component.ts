@@ -3,7 +3,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
-import { ComboboxItemDto, SupplierServiceProxy, ProductsServiceProxy, BiddingSaved } from '@shared/service-proxies/service-proxies';
+import { ComboboxItemDto, SupplierServiceProxy, ProductsServiceProxy } from '@shared/service-proxies/service-proxies';
 import { BidProfileDto } from '../dto/bidProfile.dto';
 import { SelectItem } from 'primeng/primeng';
 import * as moment from 'moment';
@@ -42,7 +42,6 @@ export class ViewBidProfileComponent extends AppComponentBase {
   edit = false;
   bidProfile: BidProfileDto = new BidProfileDto();
   bidProfiles: ComboboxItemDto[] = [];
-  bidding: BiddingSaved = new BiddingSaved({ productId: 0, endDate: null, status: 0, supplierId: 0, startDate: null, price: 0, biddingType: 0 });
   selectItems: SelectItem[] = [];
   suppliers: SelectItem[] = [];
   rangeDates: Date[];
@@ -54,22 +53,18 @@ export class ViewBidProfileComponent extends AppComponentBase {
 
 
 
-  show(bidProfile?: BiddingSaved | null | undefined): void {
+  show(bidProfile?: any | null | undefined): void {
     this.active = true;
     this.edit = bidProfile !== undefined;
     this.modal.show();
-    this.bidding = this.edit ? bidProfile : this.bidding;
+
   }
 
   save(): void {
     let input = this.bidProfile;
     this.saving = true;
-    this.bidding.startDate = this.rangeDates ? moment(this.rangeDates[0]) : moment(new Date());
-    this.bidding.endDate = this.rangeDates && this.rangeDates.length > 1 ? moment(this.rangeDates[1]) : moment(new Date());
-    this._supplierServiceProxy.changeOwnerBiddingProduct(this.bidding).subscribe(item => {
-      this.close();
-      this.modalSave.emit(null);
-    });
+
+
   }
 
 

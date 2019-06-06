@@ -73,13 +73,13 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
          * Sử dụng _apiService để call các api của backend
          */
 
-        this._supplierServiceProxy.getAllBiddingPass(this.filterText, this.primengTableHelper.getSorting(this.dataTable),
-            this.primengTableHelper.getMaxResultCount(this.paginator, event),
-            this.primengTableHelper.getSkipCount(this.paginator, event)).subscribe(result => {
-                this.primengTableHelper.totalRecordsCount = 20;
-                this.primengTableHelper.records = result.items;
-                this.primengTableHelper.hideLoadingIndicator();
-            });
+        // this._supplierServiceProxy.getAllBiddingPass(this.filterText, this.primengTableHelper.getSorting(this.dataTable),
+        //     this.primengTableHelper.getMaxResultCount(this.paginator, event),
+        //     this.primengTableHelper.getSkipCount(this.paginator, event)).subscribe(result => {
+        //         this.primengTableHelper.totalRecordsCount = 20;
+        //         this.primengTableHelper.records = result.items;
+        //         this.primengTableHelper.hideLoadingIndicator();
+        //     });
     }
 
 
