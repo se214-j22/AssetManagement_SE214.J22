@@ -36,11 +36,23 @@
                                 </div>
                                 <div class="row align-items-center m-b-5">
                                     <div class="col-4 col-sm-4">
-                                        <span class="float-right">BidProfile Name:</span>
+                                        <span class="float-right">BidProfile Catalog:</span>
                                     </div>
                                     <div class="col-8 col-sm-8 col-lg-8">
-                                        <input type="text" name="bidProfileName" [(ngModel)]="bidProfileNameFilter"
-                                            [placeholder]="'BidProfile Name'" class="form-control">
+                                        <input type="text" name="bidProfileCatalog" [(ngModel)]="bidProfileCatalogFilter"
+                                            [placeholder]="'BidProfile Catalog'" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Bid Type:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <select #statusSelect name="bidType" class="form-control" [(ngModel)]="bidType"
+                                            [attr.data-live-search]="false" jq-plugin="selectpicker" required>
+                                            <option *ngFor="let item of bidTypes" [value]="item.id">
+                                                {{item.name}}</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -50,11 +62,31 @@
                                         <span class="float-right">Status:</span>
                                     </div>
                                     <div class="col-8 col-sm-8 col-lg-8">
-                                        <select #statusSelect name="status" class="form-control" [(ngModel)]="status"
+                                        <select #statusSelect name="status" class="form-control" [(ngModel)]="approvalStatus"
                                             [attr.data-live-search]="false" jq-plugin="selectpicker" required>
-                                            <option *ngFor="let item of StatusList" [value]="item.id">
+                                            <option *ngFor="let item of ApprovalStatusList" [value]="item.id">
                                                 {{item.name}}</option>
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">StartReceivedDate:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <my-date-picker class="flex" name="startDate" [placeholder]="'  Select A Start Date'"
+                                            [options]="createStartDatePickerOptions" (dateChanged)="onDateChangedByStart($event)">
+                                        </my-date-picker>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">EndReceivedDate:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <my-date-picker class="flex" name="endDate" [placeholder]="'  Select A End Date'"
+                                            [options]="createEndDatePickerOptions" (dateChanged)="onDateChangedByEnd($event)">
+                                        </my-date-picker>
                                     </div>
                                 </div>
                             </div>

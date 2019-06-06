@@ -20,15 +20,14 @@ export class GetBidProfileOutput {
 }
 
 export enum ApprovalStatusEnum {
-    Active = 1,
-    Inactive = 2,
-    Close = 3
+    Approved = 1,
+    Awaiting = 2,
+    All = 3
 }
 
-export enum StatusEnum {
-    Open = 1,
-    Close = 2,
-    All = 3
+export enum BidTypeEnum {
+    Bidding = 1,
+    AppointContractors = 2,
 }
 
 export class NewPJDto {

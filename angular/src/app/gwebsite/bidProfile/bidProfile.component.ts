@@ -10,7 +10,7 @@ import { CreateOrEditBidProfileModalComponent } from './create-or-edit-bidProfil
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import * as moment from 'moment';
-import { ApprovalStatusEnum, StatusEnum } from './dto/bidProfile.dto';
+import { ApprovalStatusEnum, BidTypeEnum } from './dto/bidProfile.dto';
 
 
 @Component({
@@ -39,24 +39,37 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
     // thêm: ai thêm cũng đc, ko phân quyền
     public isPermissionEditCloseActive = false;
 
-    public status = StatusEnum.All;
-    public statusEnum = StatusEnum;
-    public StatusList = [
+    public approvalStatusEnum = ApprovalStatusEnum;
+    public approvalStatus = 3; // all status
+    public ApprovalStatusList = [
         {
-            id: StatusEnum.All,
-            name: ''
+            id: ApprovalStatusEnum.All,
+            name: 'All'
         },
         {
-            id: StatusEnum.Open,
-            name: 'Open'
+            id: ApprovalStatusEnum.Approved,
+            name: 'Approved'
         },
         {
-            id: StatusEnum.Close,
-            name: 'Close'
+            id: ApprovalStatusEnum.Awaiting,
+            name: 'Awaiting'
         }
     ];
 
-    public createDatePickerOptions: IMyDpOptions = {
+    public bidTypeEnum = BidTypeEnum;
+    public bidType = 1;
+    public bidTypes = [
+        {
+            id: BidTypeEnum.Bidding,
+            name: 'Bidding'
+        },
+        {
+            id: BidTypeEnum.AppointContractors,
+            name: 'Appoint Contractors'
+        }
+    ];
+
+    public createStartDatePickerOptions: IMyDpOptions = {
         selectorWidth: '240px',
         dateFormat: 'dd/mm/yyyy',
         showTodayBtn: true,
@@ -70,21 +83,41 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         height: '37px',
         firstDayOfWeek: 'su',
         sunHighlight: true,
-        disableSince: {
+        disableUntil: {
             year: new Date().getFullYear(),
             month: new Date().getMonth() + 1,
-            day: new Date().getDate() + 1
+            day: new Date().getDate() - 1
         }
     };
+
+    public createEndDatePickerOptions: IMyDpOptions = {
+        selectorWidth: '240px',
+        dateFormat: 'dd/mm/yyyy',
+        showTodayBtn: true,
+        todayBtnTxt: 'Now',
+        showClearDateBtn: true,
+        alignSelectorRight: true,
+        openSelectorOnInputClick: true,
+        inline: false,
+        editableDateField: false,
+        selectionTxtFontSize: '13px',
+        height: '37px',
+        firstDayOfWeek: 'su',
+        sunHighlight: true,
+        disableUntil: {
+            year: new Date().getFullYear(),
+            month: new Date().getMonth() + 1,
+            day: new Date().getDate() - 1
+        }
+    };
+
     // public model: any = { date: { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate() } };
     // public model = new Date();
-    public creatDateString = '';
+    public startDateString = '';
+    public endDateString = '';
     public bidProfileCodeFilter = '';
-    public bidProfileNameFilter = '';
+    public bidProfileCatalogFilter = '';
 
-    // -những dự án của năm cũ, sẽ tự động close (mỗi lần đến 1/1/newyear, sẽ trigger cho nó close hết bidProfiles năm cũ),
-    //      dù có đc approved hay chưa.
-    // -những dự án của năm hiện tại: chỉ dc phép close khi nó chưa đc approved.
     public bidProfileFakes = [
         {
             id: 1,
@@ -379,12 +412,16 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
     public searchBidProfile(): void {
         //3 params filter FE truyền vào api
         // filter, values default = ''
-        console.log(this.status + '--' + this.bidProfileCodeFilter + '--' + this.bidProfileNameFilter);
+        console.log(this.status + '--' + this.bidProfileCodeFilter + '--' + this.bidProfileCatalogFilter);
     }
 
-    public onDateChangedBy(event: IMyDateModel): void {
+    public onDateChangedByStart(event: IMyDateModel): void {
         const date = Object.assign({}, event);
-        this.creatDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
+        this.startDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
+    }
+    public onDateChangedByEnd(event: IMyDateModel): void {
+        const date = Object.assign({}, event);
+        this.endDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
     }
 
     public actionEdit(row: any, $event: Event): void {
