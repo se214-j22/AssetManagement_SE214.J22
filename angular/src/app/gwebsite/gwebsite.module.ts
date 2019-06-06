@@ -23,8 +23,6 @@ import { SupplierCategoryComponent } from './supplierCategory/supplierCategory.c
 import { CreateOrEditSupplierCategoryModalComponent } from './supplierCategory/create-or-edit-supplierCategory-modal/create-or-edit-supplierCategory-modal.component';
 import { ProjectComponent } from './project/project.component';
 import { CreateOrEditProjectModalComponent } from './project/create-or-edit-project-modal/create-or-edit-project-modal.component';
-import { BidProfileComponent } from './bids/bidProfile.component';
-import { CreateOrEditBidProfileModalComponent } from './bids/create-or-edit-bidProfile-modal/create-or-edit-bidProfile-modal.component';
 import { PurchaseContractComponent } from './purchaseContract/purchaseContract.component';
 import { CreateOrEditPurchaseContractModalComponent } from './purchaseContract/create-or-edit-purchaseContract-modal/create-or-edit-purchaseContract-modal.component';
 import { PurchaseOrderComponent } from './purchaseOrder/purchaseOrder.component';
@@ -36,7 +34,6 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { ViewBidProfileComponent } from './bids/view-bid-profile/view-bid-profile.component';
 import { CreateOrEditSubPlanModalComponent } from './plan/sub-plan/create-or-edit-subplan-modal/create-or-edit-subplan-modal.component';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
@@ -45,6 +42,9 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { MyDatePickerModule } from 'mydatepicker';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { CreateOrEditSupplierModalComponent } from './supplier/create-or-edit-supplier-modal/create-or-edit-supplier-modal.component';
+import { BidProfileComponent } from './bidProfile/bidProfile.component';
+import { CreateOrEditBidProfileModalComponent } from './bidProfile/create-or-edit-bidProfile-modal/create-or-edit-bidProfile-modal.component';
+
 
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -91,8 +91,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
         PlanComponent, CreateOrEditPlanModalComponent, CreateOrEditSubPlanModalComponent,
         ProductComponent, CreateOrEditProductModalComponent,
-        SupplierComponent, CreateOrEditSupplierModalComponent,
-        ViewBidProfileComponent
+        SupplierComponent, CreateOrEditSupplierModalComponent
     ],
 
     providers: [
