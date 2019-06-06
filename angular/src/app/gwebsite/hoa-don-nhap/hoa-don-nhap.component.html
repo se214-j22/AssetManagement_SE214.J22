@@ -47,35 +47,55 @@
                           [responsive]="primengTableHelper.isResponsive">
                           <ng-template pTemplate="header">
                               <tr>
-                                  <th pSortableColumn="hoaDonNhap.id">
-                                      Mã hóa đơn
-                                      <p-sortIcon field="hoaDonNhap.id"></p-sortIcon>
-                                  </th>
-                                  <th pSortableColumn="hoaDonNhap.donViCungCapTaiSanId"> <!-- (?) Tại sao có Id lại ko dc -->
-                                      Đơn vị cung cấp tài sản
-                                      <p-sortIcon field="hoaDonNhap.donViCungCapTaiSanId"></p-sortIcon>
-                                  </th>
-                                  <th pSortableColumn="hoaDonNhap.ngayNhan">
-                                      Ngày nhận
-                                      <p-sortIcon field="hoaDonNhap.ngayNhan"></p-sortIcon>
-                                  </th>
-                                  <th pSortableColumn="hoaDonNhap.soHoaDon">
-                                      Số hóa đơn
-                                      <p-sortIcon field="hoaDonNhap.soHoaDon"></p-sortIcon>
-                                  </th>
-                                  <th pSortableColumn="hoaDonNhap.giaMuaThucTe">
-                                      Giá mua thực tế
-                                      <p-sortIcon field="hoaDonNhap.giaMuaThucTe"></p-sortIcon>
-                                  </th>
-                                  <th pSortableColumn="hoaDonNhap.nguyenGiaTaiSan">
-                                      Nguyên giá tài sản
-                                      <p-sortIcon field="hoaDonNhap.nguyenGiaTaiSan"></p-sortIcon>
-                                  </th>
-                                  <th>{{l('Thao tác')}}</th>
+                                <th>{{l('Thao tác')}}</th>
+                                <th pSortableColumn="hoaDonNhap.id">
+                                    Mã hóa đơn
+                                    <p-sortIcon field="hoaDonNhap.id"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="hoaDonNhap.donViCungCapTaiSanId"> <!-- (?) Tại sao có Id lại ko dc -->
+                                    Đơn vị cung cấp tài sản
+                                    <p-sortIcon field="hoaDonNhap.donViCungCapTaiSanId"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="hoaDonNhap.ngayNhan">
+                                    Ngày nhận
+                                    <p-sortIcon field="hoaDonNhap.ngayNhan"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="hoaDonNhap.soHoaDon">
+                                    Số hóa đơn
+                                    <p-sortIcon field="hoaDonNhap.soHoaDon"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="hoaDonNhap.giaMuaThucTe">
+                                    Giá mua thực tế
+                                    <p-sortIcon field="hoaDonNhap.giaMuaThucTe"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="hoaDonNhap.nguyenGiaTaiSan">
+                                    Nguyên giá tài sản
+                                    <p-sortIcon field="hoaDonNhap.nguyenGiaTaiSan"></p-sortIcon>
+                                </th>
                               </tr>
                           </ng-template>
                           <ng-template pTemplate="body" let-record="$implicit">
-                              <tr>
+                              <tr><td>
+                                    <button
+                                        class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                        (click)="createOrEditModal.show(record.hoaDonNhap.id)" title="{{l('Edit')}}">
+                                        <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
+                                    </button>
+
+                                    <button
+                                        class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                        (click)="deleteHoaDonNhap(record.hoaDonNhap.id)" title="{{l('Delete')}}">
+                                        <i class="fa fa-times" [attr.aria-label]="l('Delete')"></i>
+                                    </button>
+
+                                    <button
+                                        class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                        (click)="viewHoaDonNhapModal.show(record.hoaDonNhap.id)" title="{{l('View')}}">
+                                        <i class="fa fa-eye" [attr.aria-label]="l('View')"></i>
+                                    </button>
+                                </td>
+
+                                
                                   <td>
                                       <span class="ui-column-title">Mã hóa đơn</span>
                                       <span title="{{record.hoaDonNhap.id}}">{{truncateString(record.hoaDonNhap.id)}}</span>
@@ -99,27 +119,6 @@
                                   <td>
                                       <span class="ui-column-title">Nguyên giá tài sản</span>
                                       <span title="{{record.hoaDonNhap.nguyenGiaTaiSan}}">{{record.hoaDonNhap.nguyenGiaTaiSan.toLocaleString()}} VNĐ</span>
-                                  </td>
-
-
-                                  <td>
-                                      <button
-                                          class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
-                                          (click)="createOrEditModal.show(record.hoaDonNhap.id)" title="{{l('Edit')}}">
-                                          <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
-                                      </button>
-
-                                      <button
-                                          class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
-                                          (click)="deleteHoaDonNhap(record.hoaDonNhap.id)" title="{{l('Delete')}}">
-                                          <i class="fa fa-times" [attr.aria-label]="l('Delete')"></i>
-                                      </button>
-
-                                      <button
-                                          class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
-                                          (click)="viewHoaDonNhapModal.show(record.hoaDonNhap.id)" title="{{l('View')}}">
-                                          <i class="fa fa-eye" [attr.aria-label]="l('View')"></i>
-                                      </button>
                                   </td>
                               </tr>
                           </ng-template>

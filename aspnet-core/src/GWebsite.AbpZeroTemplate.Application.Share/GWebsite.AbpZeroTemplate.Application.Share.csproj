@@ -10,8 +10,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\GSoft.AbpZeroTemplate.Application.Shared\GSoft.AbpZeroTemplate.Application.Shared.csproj" />
     <ProjectReference Include="..\GWebsite.AbpZeroTemplate.Core\GWebsite.AbpZeroTemplate.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Data.Entity" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
 </Project>

@@ -16,10 +16,7 @@ export class AppNavigationService {
             new AppMenuItem('Dashboard', 'Pages.Tenant.Dashboard', 'flaticon-line-graph', '/app/main/dashboard'),
             new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),
             new AppMenuItem('Editions', 'Pages.Editions', 'flaticon-app', '/app/admin/editions'),
-            new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [
-                new AppMenuItem('MenuClient', 'Pages.Administration.MenuClient', 'flaticon-menu-1', '/app/gwebsite/menu-client'),
-                new AppMenuItem('DemoModel', 'Pages.Administration.DemoModel', 'flaticon-menu-1', '/app/gwebsite/demo-model'),
-                new AppMenuItem('Customer', 'Pages.Administration.Customer', 'flaticon-menu-1', '/app/gwebsite/customer'),
+            new AppMenuItem('Quản lý tài sản cố định', '', 'flaticon-interface-8', '', [
                 new AppMenuItem('Đơn Vị Cung Cấp Tài Sản', 'Pages.Administration.DonViCungCapTaiSan', 'flaticon-menu-1', '/app/gwebsite/don-vi-cung-cap-tai-san'),
                 new AppMenuItem('Hóa Đơn Nhập', 'Pages.Administration.PhongBan', 'flaticon-menu-1', '/app/gwebsite/hoa-don-nhap'),
                 new AppMenuItem('Phòng Ban', 'Pages.Administration.PhongBan', 'flaticon-menu-1', '/app/gwebsite/phong-ban'),
