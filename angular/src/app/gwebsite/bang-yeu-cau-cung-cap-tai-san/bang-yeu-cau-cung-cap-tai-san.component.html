@@ -45,7 +45,6 @@
                             [responsive]="primengTableHelper.isResponsive">
                             <ng-template pTemplate="header">
                                 <tr>
-                                    <th>{{l('Thao tác')}}</th>
                                     <th pSortableColumn="bangYeuCauCungCapTaiSan.phongBanId">
                                         Phòng Ban
                                         <p-sortIcon field="bangYeuCauCungCapTaiSan.phongBanId"></p-sortIcon>
@@ -58,10 +57,24 @@
                                         Ngày Yêu cầu
                                         <p-sortIcon field="bangYeuCauCungCapTaiSan.ngayYeuCau"></p-sortIcon>
                                     </th>
+                                    <th>{{l('Thao tác')}}</th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-record="$implicit">
                                 <tr>
+                                    <td>
+                                        <span class="ui-column-title">Tên Phòng ban</span>
+                                        <span
+                                            title="{{record.tenPhong}}">{{truncateString(record.tenPhong)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Số lượng</span>
+                                        <span title="{{record.bangYeuCauCungCapTaiSan.soLuong}}">{{truncateString(record.bangYeuCauCungCapTaiSan.soLuong)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Ngày yêu cầu</span>
+                                        <span title="{{record.bangYeuCauCungCapTaiSan.ngayYeuCau.format('DD/MM/YYYY')}}">{{truncateString(record.bangYeuCauCungCapTaiSan.ngayYeuCau.format('DD/MM/YYYY'))}}</span>
+                                    </td>
                                     <td>
                                         <button
                                             class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
@@ -80,19 +93,6 @@
                                             (click)="viewBangYeuCauCungCapTaiSanModal.show(record.tenPhong, record.bangYeuCauCungCapTaiSan.id)" title="{{l('View')}}">
                                             <i class="fa fa-eye" [attr.aria-label]="l('View')"></i>
                                         </button>
-                                    </td>
-                                    <td>
-                                        <span class="ui-column-title">Tên Phòng ban</span>
-                                        <span
-                                            title="{{record.tenPhong}}">{{truncateString(record.tenPhong)}}</span>
-                                    </td>
-                                    <td>
-                                        <span class="ui-column-title">Số lượng</span>
-                                        <span title="{{record.bangYeuCauCungCapTaiSan.soLuong}}">{{truncateString(record.bangYeuCauCungCapTaiSan.soLuong)}}</span>
-                                    </td>
-                                    <td>
-                                        <span class="ui-column-title">Ngày yêu cầu</span>
-                                        <span title="{{record.bangYeuCauCungCapTaiSan.ngayYeuCau.format('DD/MM/YYYY')}}">{{truncateString(record.bangYeuCauCungCapTaiSan.ngayYeuCau.format('DD/MM/YYYY'))}}</span>
                                     </td>
                                 </tr>
                             </ng-template>

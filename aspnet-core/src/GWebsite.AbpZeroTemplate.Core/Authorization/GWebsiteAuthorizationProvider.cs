@@ -77,11 +77,6 @@ namespace GWebsite.AbpZeroTemplate.Core.Authorization
             loaiTaiSan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_LoaiTaiSan_Edit, L("EditingLoaiTaiSan"));
             loaiTaiSan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_LoaiTaiSan_Delete, L("DeletingLoaiTaiSan"));
 
-            var taiSanCoDinh = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_TaiSanCoDinh, L("TaiSanCoDinh"));
-            taiSanCoDinh = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_TaiSanCoDinh_Create, L("CreatingNewTaiSanCoDinh"));
-            taiSanCoDinh = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_TaiSanCoDinh_Edit, L("EditingTaiSanCoDinh"));
-            taiSanCoDinh = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_TaiSanCoDinh_Delete, L("DeletingTaiSanCoDinh"));
-
         }
 
         private static ILocalizableString L(string name)

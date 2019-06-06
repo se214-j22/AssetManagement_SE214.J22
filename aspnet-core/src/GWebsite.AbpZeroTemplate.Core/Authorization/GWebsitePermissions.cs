@@ -54,10 +54,5 @@
         public const string Pages_Administration_LoaiTaiSan_Edit = "Pages.Administration.LoaiTaiSan.Edit";
         public const string Pages_Administration_LoaiTaiSan_Delete = "Pages.Administration.LoaiTaiSan.Delete";
 
-        public const string Pages_Administration_TaiSanCoDinh = "Pages.Administration.TaiSanCoDinh";
-        public const string Pages_Administration_TaiSanCoDinh_Create = "Pages.Administration.TaiSanCoDinh.Create";
-        public const string Pages_Administration_TaiSanCoDinh_Edit = "Pages.Administration.TaiSanCoDinh.Edit";
-        public const string Pages_Administration_TaiSanCoDinh_Delete = "Pages.Administration.TaiSanCoDinh.Delete";
-
     }
 }
