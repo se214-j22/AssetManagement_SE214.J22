@@ -47,6 +47,7 @@ import { PhongBanServiceProxy } from '@shared/service-proxies/service-proxies';
         ApiServiceProxies.PhongBanServiceProxy,
         ApiServiceProxies.LoaiTaiSanServiceProxy,
         ApiServiceProxies.BangYeuCauCungCapTaiSanServiceProxy,
+        ApiServiceProxies.TaiSanCoDinhServiceProxy,
         WebApiServiceProxy,
         { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true },
         CustomerServiceProxy,

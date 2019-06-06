@@ -8,6 +8,7 @@ import { PhongBanComponent } from './phong-ban/phong-ban.component';
 import { HoaDonNhapComponent } from './hoa-don-nhap/hoa-don-nhap.component';
 import { LoaiTaiSanComponent } from './loai-tai-san/loai-tai-san.component';
 import { BangYeuCauCungCapTaiSanComponent } from './bang-yeu-cau-cung-cap-tai-san/bang-yeu-cau-cung-cap-tai-san.component';
+import { TaiSanCoDinhComponent } from './tai-san-co-dinh/tai-san-co-dinh.component';
 
 @NgModule({
     imports: [
@@ -81,6 +82,15 @@ import { BangYeuCauCungCapTaiSanComponent } from './bang-yeu-cau-cung-cap-tai-sa
                     {
                         path: 'bang-yeu-cau-cung-cap-tai-san', component: BangYeuCauCungCapTaiSanComponent,
                         data: { permission: 'Pages.Administration.BangYeuCauCungCapTaiSan' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'tai-san-co-dinh', component: TaiSanCoDinhComponent,
+                        data: { permission: 'Pages.Administration.TaiSanCoDinh' }
                     },
                 ]
             },
