@@ -1551,36 +1551,6 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     b.ToTable("AppUserRoles");
                 });
 
-            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.BangYeuCauCungCapTaiSan", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime?>("CreatedDate");
-
-                    b.Property<bool>("IsDelete");
-
-                    b.Property<DateTime>("NgayYeuCau")
-                        .HasColumnType("date");
-
-                    b.Property<int?>("PhongBanId");
-
-                    b.Property<int>("SoLuong");
-
-                    b.Property<string>("UpdatedBy");
-
-                    b.Property<DateTime?>("UpdatedDate");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PhongBanId");
-
-                    b.ToTable("BangYeuCauCungCapTaiSans");
-                });
-
             modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.Customer", b =>
                 {
                     b.Property<int>("Id")
@@ -1635,31 +1605,6 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     b.ToTable("DemoModels");
                 });
 
-            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.DonViCungCapTaiSan", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime?>("CreatedDate");
-
-                    b.Property<string>("DiaChiDonViCungCap");
-
-                    b.Property<bool>("IsDelete");
-
-                    b.Property<string>("TenDonViCungCap");
-
-                    b.Property<string>("UpdatedBy");
-
-                    b.Property<DateTime?>("UpdatedDate");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DonViCungCapTaiSans");
-                });
-
             modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.Function", b =>
                 {
                     b.Property<string>("Id")
@@ -1691,81 +1636,6 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     b.HasIndex("ParentId");
 
                     b.ToTable("Functions");
-                });
-
-            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.HoaDonNhap", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("ChiPhiLapDatChayThu");
-
-                    b.Property<decimal>("ChiPhiNangCap");
-
-                    b.Property<decimal>("ChiPhiSuaChua");
-
-                    b.Property<decimal>("ChiPhiVanChuyen");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime?>("CreatedDate");
-
-                    b.Property<decimal>("GiaMuaThucTe");
-
-                    b.Property<bool>("IsDelete");
-
-                    b.Property<decimal>("LePhi");
-
-                    b.Property<DateTime>("NgayNhan")
-                        .HasColumnType("date");
-
-                    b.Property<decimal>("NguyenGiaTaiSan")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasComputedColumnSql("[GiaMuaThucTe] + [ChiPhiVanChuyen] + [ChiPhiSuaChua] + [ChiPhiNangCap] + [ChiPhiLapDatChayThu] + [Thue] + [LePhi]");
-
-                    b.Property<string>("SoHoaDon");
-
-                    b.Property<decimal>("Thue");
-
-                    b.Property<string>("UpdatedBy");
-
-                    b.Property<DateTime?>("UpdatedDate");
-
-                    b.Property<int?>("donViCungCapTaiSanId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("donViCungCapTaiSanId");
-
-                    b.ToTable("HoaDonNhaps");
-                });
-
-            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.LoaiTaiSan", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime?>("CreatedDate");
-
-                    b.Property<bool>("IsDelete");
-
-                    b.Property<string>("TenNhomTaiSan");
-
-                    b.Property<float>("ThoiHanSuDung");
-
-                    b.Property<float>("TiLeHaoMon");
-
-                    b.Property<string>("UpdatedBy");
-
-                    b.Property<DateTime?>("UpdatedDate");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LoaiTaiSans");
                 });
 
             modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.MenuClient", b =>
@@ -1823,6 +1693,31 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     b.ToTable("MenuClients");
                 });
 
+            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.ModelDemo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime?>("CreatedDate");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.Property<DateTime?>("UpdatedDate");
+
+                    b.Property<int>("Value");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ModelDemos");
+                });
+
             modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.Permission", b =>
                 {
                     b.Property<int>("Id")
@@ -1852,93 +1747,6 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("GPermissions");
-                });
-
-            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.PhongBan", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime?>("CreatedDate");
-
-                    b.Property<bool>("IsDelete");
-
-                    b.Property<string>("TenPhong");
-
-                    b.Property<string>("UpdatedBy");
-
-                    b.Property<DateTime?>("UpdatedDate");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PhongBans");
-                });
-
-            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.Speedster", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address");
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime?>("CreatedDate");
-
-                    b.Property<string>("Info");
-
-                    b.Property<bool>("IsDelete");
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("SpeedsterId");
-
-                    b.Property<string>("UpdatedBy");
-
-                    b.Property<DateTime?>("UpdatedDate");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Speedsters");
-                });
-
-            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.TaiSanCoDinh", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatedBy");
-
-                    b.Property<DateTime?>("CreatedDate");
-
-                    b.Property<decimal>("GiaTriTaiSan");
-
-                    b.Property<decimal>("HaoMonTaiSan");
-
-                    b.Property<int>("HoaDonNhapId");
-
-                    b.Property<bool>("IsDelete");
-
-                    b.Property<int>("LoaiTaiSanId");
-
-                    b.Property<string>("MoTa");
-
-                    b.Property<string>("TenTaiSan");
-
-                    b.Property<bool>("TinhTrang");
-
-                    b.Property<string>("UpdatedBy");
-
-                    b.Property<DateTime?>("UpdatedDate");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TaiSanCoDinhs");
                 });
 
             modelBuilder.Entity("GSoft.AbpZeroTemplate.Editions.SubscribableEdition", b =>
@@ -2190,26 +1998,12 @@ namespace GSoft.AbpZeroTemplate.Migrations
                         .HasConstraintName("FK_dbo.AppUserRoles_dbo.AppRoles_IdentityRole_Id");
                 });
 
-            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.BangYeuCauCungCapTaiSan", b =>
-                {
-                    b.HasOne("GWebsite.AbpZeroTemplate.Core.Models.PhongBan", "PhongBan")
-                        .WithMany()
-                        .HasForeignKey("PhongBanId");
-                });
-
             modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.Function", b =>
                 {
                     b.HasOne("GWebsite.AbpZeroTemplate.Core.Models.Function", "Parent")
                         .WithMany("InverseParent")
                         .HasForeignKey("ParentId")
                         .HasConstraintName("FK_dbo.Functions_dbo.Functions_ParentId");
-                });
-
-            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.HoaDonNhap", b =>
-                {
-                    b.HasOne("GWebsite.AbpZeroTemplate.Core.Models.DonViCungCapTaiSan", "donViCungCapTaiSan")
-                        .WithMany()
-                        .HasForeignKey("donViCungCapTaiSanId");
                 });
 
             modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.Permission", b =>
