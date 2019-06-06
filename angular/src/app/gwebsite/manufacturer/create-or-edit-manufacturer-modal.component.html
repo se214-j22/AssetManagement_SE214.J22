@@ -16,7 +16,7 @@
                     <div class="form-group">
                         <label>CODE*</label>
                         <input #codeInput="ngModel" class="form-control" type="text" name="Code"
-                            [(ngModel)]="manufacturer.code" required maxlength="3" [disabled]='!beingCreated'>
+                            [(ngModel)]="manufacturer.code" required minlength = '3' maxlength="3" [disabled]='!beingCreated'>
                         <validation-messages [formCtrl]="codeInput"></validation-messages>
                     </div>
                     <div class="form-group">

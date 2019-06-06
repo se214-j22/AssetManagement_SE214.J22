@@ -15,12 +15,16 @@
     <div class="m-content">
         <div class="row">
             <div class="col-lg-6">
-                <organization-tree #ouTree (ouSelected)="ouMembers.organizationUnit = $event"></organization-tree>
+                <organization-tree #ouTree (ouSelected)="ouMembers.organizationUnit = ouAssets.organizationUnit = $event"></organization-tree>
             </div>
             <div class="col-lg-6">
                 <organization-unit-members #ouMembers (membersAdded)="ouTree.membersAdded($event)"
                     (memberRemoved)="ouTree.memberRemoved($event)"></organization-unit-members>
             </div>
+            <div class="col-lg-6">
+                    <organization-unit-assets #ouAssets (assetsAdded)="ouTree.assetsAdded($event)"
+                        ></organization-unit-assets>
+                </div>
             <div class="col-lg-6">
                 <label>Asset</label>
                 List AssetId: <input type="text" name="AssetIds" placeholder="1,2,3" [(ngModel)]="assetIds"><br>

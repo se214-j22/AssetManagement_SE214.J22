@@ -52,6 +52,8 @@ import { CreateOrEditUserModalComponent } from './users/create-or-edit-user-moda
 import { EditUserPermissionsModalComponent } from './users/edit-user-permissions-modal.component';
 import { ImpersonationService } from './users/impersonation.service';
 import { UsersComponent } from './users/users.component';
+import { OrganizationUnitAssetsComponent } from './organization-units/organization-unit-asset/organization-unit-assets.component';
+import { PlaceAssetComponent } from './organization-units/organization-unit-asset/place-asset-modal.component';
 
 @NgModule({
     imports: [
@@ -104,6 +106,8 @@ import { UsersComponent } from './users/users.component';
         OrganizationTreeComponent,
         OrganizationUnitMembersComponent,
         CreateOrEditUnitModalComponent,
+        OrganizationUnitAssetsComponent,
+        PlaceAssetComponent,
         TenantSettingsComponent,
         HostDashboardComponent,
         EditionComboComponent,
@@ -116,7 +120,7 @@ import { UsersComponent } from './users/users.component';
         DemoUiFileUploadComponent,
         DemoUiInputMaskComponent,
         DemoUiEditorComponent,
-        UiCustomizationComponent
+        UiCustomizationComponent,
     ],
     exports: [
         AddMemberModalComponent
