@@ -30,7 +30,8 @@
                                         <span class="float-right">Plan Id:</span>
                                     </div>
                                     <div class="col-8 col-sm-8 col-lg-8">
-                                        <input type="text" name="planId" [placeholder]="'Plan Id'" class="form-control">
+                                        <input type="number" name="planId" min="0" [(ngModel)]="planIdFilter"
+                                            [placeholder]="'Plan Id'" class="form-control">
                                     </div>
                                 </div>
                                 <div class="row align-items-center m-b-5">
@@ -103,89 +104,104 @@
                 <div class="row align-items-center">
                     <!--<Primeng-TurboTable-Start>-->
                     <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
-                        <p-table #dataTable (onLazyLoad)="getPlans($event)" [value]="primengTableHelper.records"
-                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
-                            [responsive]="primengTableHelper.isResponsive">
-                            <ng-template pTemplate="header">
-                                <tr>
-                                    <th pSortableColumn="ordinalNumber">
-                                        {{l('Number')}}
-                                        <p-sortIcon field="ordinalNumber"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="planId">
-                                        {{l('Plan Id')}}
-                                        <p-sortIcon field="planId"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="effectiveDate">
-                                        {{l('Effective Date')}}
-                                        <p-sortIcon field="effectiveDate"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="totalPrice">
-                                        {{l('Total Price')}}
-                                        <p-sortIcon field="totalPrice"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="unitCode">
-                                        {{l('Unit Code')}}
-                                        <p-sortIcon field="unitCode"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="status">
-                                        {{l('Status')}}
-                                        <p-sortIcon field="status"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="countChanged">
-                                        {{l('Count Changed')}}
-                                        <p-sortIcon field="countChanged"></p-sortIcon>
-                                    </th>
-                                    <th>{{l('Action')}}</th>
-                                </tr>
-                            </ng-template>
-                            <ng-template pTemplate="body" let-record="$implicit" let-index="rowIndex">
-                                <tr class="table-row" (click)="gotoPlanDetail(record.planId, $event)">
-                                    <td>
-                                        <span class="ui-column-title">{{l('Number')}}</span>
-                                        <span title="{{record.ordinalNumber}}">{{truncateString(index + 1)}}</span>
-                                    </td>
-                                    <td>
-                                        <span class="ui-column-title">{{l('Plan Id')}}</span>
-                                        <span title="{{record.planId}}">{{truncateString(record.planId)}}</span>
-                                    </td>
-                                    <td>
-                                        <span class="ui-column-title">{{l('Effective Date')}}</span>
-                                        <span title="{{record.effectiveDate}}">{{ record.effectiveDate }}</span>
-                                    </td>
-                                    <td>
-                                        <span class="ui-column-title">{{l('Total Price')}}</span>
-                                        <span title="{{record.totalPrice}}">{{ record.totalPrice }}</span>
-                                    </td>
-                                    <td>
-                                        <span class="ui-column-title">{{l('Unit Code')}}</span>
-                                        <span title="{{record.unitCode}}">{{ record.unitCode }}</span>
-                                    </td>
-                                    <td>
-                                        <span class="ui-column-title">{{l('Status')}}</span>
-                                        <span
-                                            title="{{record.status}}">{{ record.status === approvalStatusEnum.Approved ? 'Approved' : 'Awaiting Approval' }}</span>
-                                    </td>
-                                    <td>
-                                        <span class="ui-column-title">{{l('Count Changed')}}</span>
-                                        <span title="{{record.countChanged}}">{{ record.countChanged }}</span>
-                                    </td>
-                                    <td>
-                                        <!-- <button
+                        <!-- perfect-scrollbar, https://www.npmjs.com/package/ngx-perfect-scrollbar -->
+                        <perfect-scrollbar [config]="{suppressScrollX: false}" (psScrollX)="onScrollX($event)">
+                            <p-table #dataTable (onLazyLoad)="getPlans($event)" [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [responsive]="primengTableHelper.isResponsive">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th pSortableColumn="ordinalNumber" style="width: 90px; text-align: center">
+                                            {{l('Number')}}
+                                            <p-sortIcon field="ordinalNumber"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="planId" style="width: 150px; text-align: center">
+                                            {{l('Plan Id')}}
+                                            <p-sortIcon field="planId"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="effectiveDate" style="width: 150px; text-align: center">
+                                            {{l('Effective Date')}}
+                                            <p-sortIcon field="effectiveDate"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="totalPrice" style="width: 150px; text-align: center">
+                                            {{l('Total Price')}}
+                                            <p-sortIcon field="totalPrice"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="unitCode" style="width: 150px; text-align: center">
+                                            {{l('Unit Code')}}
+                                            <p-sortIcon field="unitCode"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="departmentCode" style="width: 160px; text-align: center">
+                                            {{l('Department Code')}}
+                                            <p-sortIcon field="departmentCode"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="status" style="width: 150px; text-align: center">
+                                            {{l('Status')}}
+                                            <p-sortIcon field="status"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="countChanged" style="width: 150px; text-align: center">
+                                            {{l('Count Changed')}}
+                                            <p-sortIcon field="countChanged"></p-sortIcon>
+                                        </th>
+                                        <th *ngIf="isRoleApprovedMan" style="width: 115px; text-align: center">
+                                            {{l('Action')}}</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit" let-index="rowIndex">
+                                    <tr class="table-row text-center" (click)="gotoPlanDetail(record.planId, $event)">
+                                        <!-- <tr class="table-row" routerLink="app/gwebsite/plan/detail/{{record.planId}}"> -->
+                                        <td style="width: 90px">
+                                            <span class="ui-column-title">{{l('Number')}}</span>
+                                            <span title="{{record.ordinalNumber}}">{{truncateString(index + 1)}}</span>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Plan Id')}}</span>
+                                            <span title="{{record.planId}}">{{truncateString(record.planId)}}</span>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Effective Date')}}</span>
+                                            <span title="{{record.effectiveDate}}">{{ record.effectiveDate }}</span>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Total Price')}}</span>
+                                            <span
+                                                title="{{record.totalPrice}}">{{ record.totalPrice | currency:'VND':'symbol':'4.2-2' }}</span>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Unit Code')}}</span>
+                                            <span title="{{record.unitCode}}">{{ record.unitCode }}</span>
+                                        </td>
+                                        <td style="width: 160px">
+                                            <span class="ui-column-title">{{l('Department Code')}}</span>
+                                            <span title="{{record.departmentCode}}">{{ record.departmentCode }}</span>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Status')}}</span>
+                                            <span
+                                                title="{{record.status}}">{{ record.status === approvalStatusEnum.Approved ? 'Approved' : 'Awaiting Approval' }}</span>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Count Changed')}}</span>
+                                            <span title="{{record.countChanged}}">{{ record.countChanged }}</span>
+                                        </td>
+                                        <td *ngIf="isRoleApprovedMan" style="width: 115px">
+                                            <!-- <button
                                             class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
                                             (click)="createOrEditModal.show(record.id)" title="{{l('Approved')}}">
                                             <i class="fa fa-edit" [attr.aria-label]="l('Approved')"></i>
                                         </button> -->
-                                        <button class="btn"
-                                            [ngClass]="{'btn-success': record.status === approvalStatusEnum.Approved, 'btn-danger': record.status === approvalStatusEnum.AwaitingApproval}"
-                                            [disabled]="record.status === approvalStatusEnum.Approved"
-                                            (click)="approvalPlan(record.id, $event, index)"
-                                            title="{{l(record.status === approvalStatusEnum.Approved ? 'Approved' : 'Awaiting Approval')}}">Approved
-                                        </button>
-                                    </td>
-                                </tr>
-                            </ng-template>
-                        </p-table>
+                                            <button class="btn"
+                                                [ngClass]="{'btn-success': record.status === approvalStatusEnum.Approved, 'btn-danger': record.status === approvalStatusEnum.AwaitingApproval}"
+                                                [disabled]="record.status === approvalStatusEnum.Approved"
+                                                (click)="approvalPlan(record.id, $event, index)"
+                                                title="{{l(record.status === approvalStatusEnum.Approved ? 'Approved' : 'Awaiting Approval')}}">Approved
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </perfect-scrollbar>
+                        <!-- ngx-perfect-scrollbar END-->
                         <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
                             {{l('NoData')}}
                         </div>

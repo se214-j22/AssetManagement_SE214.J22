@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router, ParamMap } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import * as _ from 'lodash';
@@ -8,6 +8,23 @@ import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import { ApprovalStatusEnum } from '../dto/plan.dto';
+import { CreateOrEditSubPlanModalComponent } from './create-or-edit-subplan-modal/create-or-edit-subplan-modal.component';
+import { switchMap } from 'rxjs/operators';
+
+// import { ScrollableView } from 'primeng/table';
+// import ResizeObserver from 'resize-observer-polyfill';
+// https://www.npmjs.com/package/resize-observer-polyfill
+// https://stackblitz.com/edit/primeng-dynamic-scrollable
+// ScrollableView.prototype.ngAfterViewChecked = function () {
+//   if (!this.initialized && this.el.nativeElement.offsetParent) {
+//     this.alignScrollBar();
+//     this.initialized = true;
+//     new ResizeObserver(entries => {
+//       //for (let entry of entries)
+//       this.alignScrollBar();
+//     }).observe(this.scrollBodyViewChild.nativeElement);
+//   }
+// };
 
 @Component({
   selector: 'app-sub-plan',
@@ -21,6 +38,7 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
    * @ViewChild là dùng get control và call thuộc tính, functions của control đó
    */
   @ViewChild('textsTable') textsTable: ElementRef;
+  @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditSubPlanModalComponent;
   @ViewChild('dataTable') dataTable: Table;
   @ViewChild('paginator') paginator: Paginator;
 
@@ -29,7 +47,6 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
    */
   public filterText: string;
   public productCode: string;
-  public planId = 100;
   public yearImplement = 2019; //get by plan id
   public YearImplementList = [this.yearImplement];
   public approvalStatusEnum = ApprovalStatusEnum;
@@ -52,10 +69,10 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
       calculationUnit: 'Int',
       quantity: 10,
       totalPrice: 1000000,
-      scheduleMonth: 1,
+      scheduleMonth: 'Jan',
       implementQuantity: 7,
       implementPrice: 700000,
-      implementMonth: 2,
+      implementMonth: 'Feb',
       pesidualQuantity: 3,
       pesidualPrice: 300000
     },
@@ -65,10 +82,10 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
       calculationUnit: 'Int',
       quantity: 11,
       totalPrice: 1000000,
-      scheduleMonth: 1,
+      scheduleMonth: 'Jan',
       implementQuantity: 7,
       implementPrice: 700000,
-      implementMonth: 2,
+      implementMonth: 'Feb',
       pesidualQuantity: 3,
       pesidualPrice: 300000
     },
@@ -78,10 +95,10 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
       calculationUnit: 'Int',
       quantity: 12,
       totalPrice: 1000000,
-      scheduleMonth: 1,
+      scheduleMonth: 'Mar',
       implementQuantity: 7,
       implementPrice: 700000,
-      implementMonth: 2,
+      implementMonth: 'Apr',
       pesidualQuantity: 3,
       pesidualPrice: 300000
     },
@@ -91,10 +108,10 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
       calculationUnit: 'Int',
       quantity: 13,
       totalPrice: 1000000,
-      scheduleMonth: 1,
+      scheduleMonth: 'Mar',
       implementQuantity: 7,
       implementPrice: 700000,
-      implementMonth: 2,
+      implementMonth: 'May',
       pesidualQuantity: 3,
       pesidualPrice: 300000
     },
@@ -104,10 +121,10 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
       calculationUnit: 'Int',
       quantity: 14,
       totalPrice: 1000000,
-      scheduleMonth: 1,
+      scheduleMonth: 'Apr',
       implementQuantity: 7,
       implementPrice: 700000,
-      implementMonth: 2,
+      implementMonth: 'Jun',
       pesidualQuantity: 3,
       pesidualPrice: 300000
     },
@@ -117,10 +134,10 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
       calculationUnit: 'Int',
       quantity: 15,
       totalPrice: 1000000,
-      scheduleMonth: 1,
+      scheduleMonth: 'Apr',
       implementQuantity: 7,
       implementPrice: 700000,
-      implementMonth: 2,
+      implementMonth: 'Jul',
       pesidualQuantity: 3,
       pesidualPrice: 300000
     },
@@ -130,10 +147,10 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
       calculationUnit: 'Int',
       quantity: 16,
       totalPrice: 1000000,
-      scheduleMonth: 1,
+      scheduleMonth: 'May',
       implementQuantity: 7,
       implementPrice: 700000,
-      implementMonth: 2,
+      implementMonth: 'Aug',
       pesidualQuantity: 3,
       pesidualPrice: 300000
     },
@@ -143,10 +160,10 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
       calculationUnit: 'Int',
       quantity: 17,
       totalPrice: 1000000,
-      scheduleMonth: 1,
+      scheduleMonth: 'May',
       implementQuantity: 7,
       implementPrice: 700000,
-      implementMonth: 2,
+      implementMonth: 'Jun',
       pesidualQuantity: 3,
       pesidualPrice: 300000
     },
@@ -156,10 +173,10 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
       calculationUnit: 'Int',
       quantity: 18,
       totalPrice: 1000000,
-      scheduleMonth: 1,
+      scheduleMonth: 'May',
       implementQuantity: 7,
       implementPrice: 700000,
-      implementMonth: 2,
+      implementMonth: 'Jul',
       pesidualQuantity: 3,
       pesidualPrice: 300000
     },
@@ -169,14 +186,27 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
       calculationUnit: 'Int',
       quantity: 19,
       totalPrice: 1000000,
-      scheduleMonth: 1,
+      scheduleMonth: 'Jun',
       implementQuantity: 7,
       implementPrice: 700000,
-      implementMonth: 2,
+      implementMonth: 'Oct',
       pesidualQuantity: 3,
       pesidualPrice: 300000
     }
   ];
+
+  public isRoleApprovedMan = false;
+  public planId: number;
+
+  public myConfigStyleHeader: any = {
+    'font-size': '11px'
+  };
+
+  public myConfigStyle: any = {
+    'font-size': '11px'
+  };
+
+  public header;
 
   constructor(
     injector: Injector,
@@ -191,6 +221,26 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
    * Hàm xử lý trước khi View được init
    */
   ngOnInit(): void {
+    //dựa vào user id, get role approve cho user đó
+    // nếu người đó có quyền duyệt thì cũng có quyền editQty(phòng ban tạo plan cũng edit đc)
+    // nhưng nếu như đã duyệt, thì chỉ có role approved thì mới có quyền edit, còn role department ko đc quyền edit khi đã duyệt
+
+    //nếu là roles approved thì
+    this.isRoleApprovedMan = true;
+
+    //https://angular.io/guide/router
+
+    // let planObject = this._activatedRoute.paramMap.pipe(
+    //   switchMap((params: ParamMap) =>
+    //     // this.service.getHero(params.get('id')))
+    //     this.id = params.get('id'))
+    // );
+
+    // id lấy từ url là sting, phải dùng + để parse sang number
+    this.planId = +this._activatedRoute.snapshot.paramMap.get('id');
+    console.log(this.planId);
+
+    // như v, tại đây đã có đc planId
   }
 
   /**
@@ -200,6 +250,17 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
     setTimeout(() => {
       this.init();
     });
+  }
+
+  /**
+   * onScrollX
+   * @param event
+   */
+  public onScrollX(event): void {
+    this.myConfigStyleHeader = {
+      ...this.myConfigStyle,
+      left: this.header ? `${this.header.getBoundingClientRect().left}px` : 'auto'
+    };
   }
 
   /**
@@ -291,9 +352,29 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
     row.quantity = row.quantityEdit;
     //done save
     row.isEdit = false;
+
+    // Chú ý: mỗi lần save change một subplan thành công, thì dưới BE tự tăng CountChanged++ cho Plan lớn (bao gồm các subplan)
+    // theo planId.
   }
 
   public cancelEditRow(row: any): void {
     row.isEdit = false;
+  }
+
+  //Refresh grid khi thực hiện create or edit thành công
+  refreshValueFromModal(): void {
+    if (this.createOrEditModal.newProduct.planId) {
+      for (let i = 0; i < this.primengTableHelper.records.length; i++) {
+        if (this.primengTableHelper.records[i].id === this.createOrEditModal.newProduct.planId) {
+          this.primengTableHelper.records[i] = this.createOrEditModal.newProduct;
+          return;
+        }
+      }
+    } else { this.reloadPage(); }
+  }
+
+  //hàm show view create Plan
+  createSubPlan() {
+    this.createOrEditModal.show(this.planId);
   }
 }

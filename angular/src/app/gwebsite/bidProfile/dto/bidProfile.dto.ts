@@ -1,6 +1,6 @@
 import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
 
-export class ProductDto {
+export class BidProfileDto {
     id: number;
     name: string;
     alias: string;
@@ -14,38 +14,37 @@ export class ProductDto {
     metaDescription: string;
 }
 
-export class GetProductOutput {
-    product: ProductDto;
-    products: ComboboxItemDto[];
+export class GetBidProfileOutput {
+    bidProfile: BidProfileDto;
+    bidProfiles: ComboboxItemDto[];
 }
 
 export enum ApprovalStatusEnum {
-    Active = 1,
-    Inactive = 2,
-    Close = 3
+    Approved = 1,
+    Awaiting = 2,
+    All = 3
 }
 
-export enum StatusEnum {
-    Open = 1,
-    Close = 2,
-    All = 3
+export enum BidTypeEnum {
+    Bidding = 1,
+    AppointContractors = 2,
 }
 
 export class NewPJDto {
     code: string;
     name: string;
-    productTypeId: number;
+    bidProfileTypeId: number;
     supplierId: number;
     unitPrice: string;
     calUnit: string;
     description: string;
     status: number;
 
-    constructor(code: string, name: string, productTypeId: number, supplierId: number,
+    constructor(code: string, name: string, bidProfileTypeId: number, supplierId: number,
         unitPrice: string, calUnit: string, description: string, status: number) {
         this.code = code;
         this.name = name;
-        this.productTypeId = productTypeId;
+        this.bidProfileTypeId = bidProfileTypeId;
         this.supplierId = supplierId;
         this.unitPrice = unitPrice;
         this.calUnit = calUnit;
@@ -54,7 +53,7 @@ export class NewPJDto {
     }
 }
 
-export class ProductTypeInfo {
+export class BidProfileTypeInfo {
     id: number;
     info: string;
     constructor(id: number, info: string) {

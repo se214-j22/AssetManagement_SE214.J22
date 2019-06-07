@@ -13,7 +13,7 @@ import { GWebsiteRoutingModule } from './gwebsite-routing.module';
 import { MenuClientComponent, CreateOrEditMenuClientModalComponent } from './index';
 import { ProductCategoryComponent } from './productCategory/productCategory.component';
 import { CreateOrEditProductCategoryModalComponent } from './productCategory/create-or-edit-productCategory-modal/create-or-edit-productCategory-modal.component';
-import { SupplierServiceProxy, ProductsServiceProxy, PurchaseServiceProxy } from '@shared/service-proxies/service-proxies';
+import { SupplierServiceProxy, ProductsServiceProxy, ProjectServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ProductComponent } from './product/product.component';
 import { CreateOrEditProductModalComponent } from './product/create-or-edit-product-modal/create-or-edit-product-modal.component';
 import { PlanComponent } from './plan/plan.component';
@@ -23,8 +23,6 @@ import { SupplierCategoryComponent } from './supplierCategory/supplierCategory.c
 import { CreateOrEditSupplierCategoryModalComponent } from './supplierCategory/create-or-edit-supplierCategory-modal/create-or-edit-supplierCategory-modal.component';
 import { ProjectComponent } from './project/project.component';
 import { CreateOrEditProjectModalComponent } from './project/create-or-edit-project-modal/create-or-edit-project-modal.component';
-import { BidProfileComponent } from './bids/bidProfile.component';
-import { CreateOrEditBidProfileModalComponent } from './bids/create-or-edit-bidProfile-modal/create-or-edit-bidProfile-modal.component';
 import { PurchaseContractComponent } from './purchaseContract/purchaseContract.component';
 import { CreateOrEditPurchaseContractModalComponent } from './purchaseContract/create-or-edit-purchaseContract-modal/create-or-edit-purchaseContract-modal.component';
 import { PurchaseOrderComponent } from './purchaseOrder/purchaseOrder.component';
@@ -32,15 +30,26 @@ import { CreateOrEditPurchaseOrderModalComponent } from './purchaseOrder/create-
 import { SubmissionComponent } from './submission/submission.component';
 import { CreateOrEditSubmissionModalComponent } from './submission/create-or-edit-submission-modal/create-or-edit-submission-modal.component';
 import { SubPlanComponent } from './plan/sub-plan/sub-plan.component';
-
-
-import { CreateOrEditSupplierComponent } from './supplier/create-or-edit-supplier/create-or-edit-supplier.component';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { CalendarModule } from 'primeng/calendar';
-import { BiddingComponent } from './product/bidding/bidding.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { ViewBidProfileComponent } from './bids/view-bid-profile/view-bid-profile.component';
+import { CreateOrEditSubPlanModalComponent } from './plan/sub-plan/create-or-edit-subplan-modal/create-or-edit-subplan-modal.component';
+
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { MyDatePickerModule } from 'mydatepicker';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { CreateOrEditSupplierModalComponent } from './supplier/create-or-edit-supplier-modal/create-or-edit-supplier-modal.component';
+import { BidProfileComponent } from './bidProfile/bidProfile.component';
+import { CreateOrEditBidProfileModalComponent } from './bidProfile/create-or-edit-bidProfile-modal/create-or-edit-bidProfile-modal.component';
+
+
+
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+    suppressScrollX: true
+};
 
 @NgModule({
     imports: [
@@ -64,14 +73,15 @@ import { ViewBidProfileComponent } from './bids/view-bid-profile/view-bid-profil
         MultiSelectModule,
         CalendarModule,
         DropdownModule,
-        RadioButtonModule
+        RadioButtonModule,
+        PerfectScrollbarModule,
+        MyDatePickerModule,
+        InputSwitchModule
     ],
     declarations: [
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
-        SupplierComponent, CreateOrEditSupplierComponent,
         SupplierCategoryComponent, CreateOrEditSupplierCategoryModalComponent,
         ProductCategoryComponent, CreateOrEditProductCategoryModalComponent,
-        ProductComponent, CreateOrEditProductModalComponent,
         PlanComponent, CreateOrEditPlanModalComponent, SubPlanComponent,
         ProjectComponent, CreateOrEditProjectModalComponent,
         BidProfileComponent, CreateOrEditBidProfileModalComponent,
@@ -79,19 +89,20 @@ import { ViewBidProfileComponent } from './bids/view-bid-profile/view-bid-profil
         PurchaseOrderComponent, CreateOrEditPurchaseOrderModalComponent,
         SubmissionComponent, CreateOrEditSubmissionModalComponent,
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
+        PlanComponent, CreateOrEditPlanModalComponent, CreateOrEditSubPlanModalComponent,
         ProductComponent, CreateOrEditProductModalComponent,
-        PlanComponent, CreateOrEditPlanModalComponent,
-        SupplierComponent,
-        CreateOrEditSupplierComponent,
-        BiddingComponent,
-        ViewBidProfileComponent
+        SupplierComponent, CreateOrEditSupplierModalComponent
     ],
 
     providers: [
 
         SupplierServiceProxy,
         ProductsServiceProxy,
-        PurchaseServiceProxy
+        ProjectServiceProxy,
+        {
+            provide: PERFECT_SCROLLBAR_CONFIG,
+            useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+        }
     ]
 })
 export class GWebsiteModule { }

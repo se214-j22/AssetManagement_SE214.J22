@@ -6,26 +6,26 @@ import * as _ from 'lodash';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
-import { CreateOrEditProductModalComponent } from './create-or-edit-product-modal/create-or-edit-product-modal.component';
+import { CreateOrEditBidProfileModalComponent } from './create-or-edit-bidProfile-modal/create-or-edit-bidProfile-modal.component';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import * as moment from 'moment';
-import { ApprovalStatusEnum, StatusEnum } from './dto/product.dto';
+import { ApprovalStatusEnum, BidTypeEnum, BidProfileTypeInfo } from './dto/bidProfile.dto';
 
 
 @Component({
-    selector: 'app-product',
-    templateUrl: './product.component.html',
-    styleUrls: ['./product.component.css'],
+    selector: 'app-bidProfile',
+    templateUrl: './bidProfile.component.html',
+    styleUrls: ['./bidProfile.component.css'],
     animations: [appModuleAnimation()]
 })
-export class ProductComponent extends AppComponentBase implements AfterViewInit, OnInit {
+export class BidProfileComponent extends AppComponentBase implements AfterViewInit, OnInit {
 
     /**
      * @ViewChild là dùng get control và call thuộc tính, functions của control đó
      */
     @ViewChild('textsTable') textsTable: ElementRef;
-    @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditProductModalComponent;
+    @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditBidProfileModalComponent;
     @ViewChild('dataTable') dataTable: Table;
     @ViewChild('paginator') paginator: Paginator;
 
@@ -33,30 +33,43 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
      * tạo các biến dể filters
      */
     filterText: string;
-    //permission cho duyệt, thêm, xóa, sửa: Admin và Department tạo product đó.
+    //permission cho duyệt, thêm, xóa, sửa: Admin và Department tạo bidProfile đó.
     // duyệt: chỉ mỗi Admin đc duyệt
-    // sửa, đóng: department tạo ra product đó và Admin.
+    // sửa, đóng: department tạo ra bidProfile đó và Admin.
     // thêm: ai thêm cũng đc, ko phân quyền
     public isPermissionEditCloseActive = false;
 
-    public status = StatusEnum.All;
-    public statusEnum = StatusEnum;
-    public StatusList = [
+    public approvalStatusEnum = ApprovalStatusEnum;
+    public approvalStatus = 3; // all status
+    public ApprovalStatusList = [
         {
-            id: StatusEnum.All,
-            name: ''
+            id: ApprovalStatusEnum.All,
+            name: 'All'
         },
         {
-            id: StatusEnum.Open,
-            name: 'Open'
+            id: ApprovalStatusEnum.Approved,
+            name: 'Approved'
         },
         {
-            id: StatusEnum.Close,
-            name: 'Close'
+            id: ApprovalStatusEnum.Awaiting,
+            name: 'Awaiting'
         }
     ];
 
-    public createDatePickerOptions: IMyDpOptions = {
+    public bidTypeEnum = BidTypeEnum;
+    public bidType = 1;
+    public bidTypes = [
+        {
+            id: BidTypeEnum.Bidding,
+            name: 'Bidding'
+        },
+        {
+            id: BidTypeEnum.AppointContractors,
+            name: 'Appoint Contractors'
+        }
+    ];
+
+    public createStartDatePickerOptions: IMyDpOptions = {
         selectorWidth: '240px',
         dateFormat: 'dd/mm/yyyy',
         showTodayBtn: true,
@@ -70,181 +83,151 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
         height: '37px',
         firstDayOfWeek: 'su',
         sunHighlight: true,
-        disableSince: {
+        disableUntil: {
             year: new Date().getFullYear(),
             month: new Date().getMonth() + 1,
-            day: new Date().getDate() + 1
+            day: new Date().getDate() - 1
         }
     };
+
+    public createEndDatePickerOptions: IMyDpOptions = {
+        selectorWidth: '240px',
+        dateFormat: 'dd/mm/yyyy',
+        showTodayBtn: true,
+        todayBtnTxt: 'Now',
+        showClearDateBtn: true,
+        alignSelectorRight: true,
+        openSelectorOnInputClick: true,
+        inline: false,
+        editableDateField: false,
+        selectionTxtFontSize: '13px',
+        height: '37px',
+        firstDayOfWeek: 'su',
+        sunHighlight: true,
+        disableUntil: {
+            year: new Date().getFullYear(),
+            month: new Date().getMonth() + 1,
+            day: new Date().getDate() - 1
+        }
+    };
+
     // public model: any = { date: { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate() } };
     // public model = new Date();
-    public creatDateString = '';
-    public productCodeFilter = '';
-    public productNameFilter = '';
+    public startDateString = '';
+    public endDateString = '';
+    public bidProfileCodeFilter = '';
+    public bidCatalogFilterId;
+    public bidCatalogEditId;
 
-    // -những dự án của năm cũ, sẽ tự động close (mỗi lần đến 1/1/newyear, sẽ trigger cho nó close hết products năm cũ),
-    //      dù có đc approved hay chưa.
-    // -những dự án của năm hiện tại: chỉ dc phép close khi nó chưa đc approved.
-    public productFakes = [
+    public bidProfileFakes = [
         {
             id: 1,
             code: 'S001',
             name: 'Purchase early in the year',
-            productTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: true
+            bidCatalog: 'ProductCode1',
+            startReceivedDate: '05/11/2018',
+            endReceivedDate: '06/11/2018',
+            projectCode: 'ProjectCode1',
+            bidType: 1
         },
         {
             id: 2,
             code: 'S002',
             name: 'Purchase early in the year',
-            productTypeId: 3,
-            supplierId: 1,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: false
+            bidCatalog: 'ProductCode1',
+            startReceivedDate: '05/11/2018',
+            endReceivedDate: '06/11/2018',
+            projectCode: 'ProjectCode1',
+            bidType: 2
         },
         {
             id: 3,
             code: 'S003',
             name: 'Purchase early in the year',
-            productTypeId: 4,
-            supplierId: 6,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: false
+            bidCatalog: 'ProductCode1',
+            startReceivedDate: '05/11/2018',
+            endReceivedDate: '06/11/2018',
+            projectCode: 'ProjectCode1',
+            bidType: 1
+        },
+        {
+            id: 3,
+            code: 'S003',
+            name: 'Purchase early in the year',
+            bidCatalog: 'ProductCode1',
+            startReceivedDate: '05/11/2018',
+            endReceivedDate: '06/11/2018',
+            projectCode: 'ProjectCode1',
+            bidType: 1
         },
         {
             id: 4,
             code: 'S004',
             name: 'Purchase early in the year',
-            productTypeId: 9,
-            supplierId: 7,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: true
+            bidCatalog: 'ProductCode1',
+            startReceivedDate: '05/11/2018',
+            endReceivedDate: '06/11/2018',
+            projectCode: 'ProjectCode1',
+            bidType: 2
         },
         {
             id: 5,
             code: 'S005',
             name: 'Purchase early in the year',
-            productTypeId: 1,
-            supplierId: 5,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: false
+            bidCatalog: 'ProductCode1',
+            startReceivedDate: '05/11/2018',
+            endReceivedDate: '06/11/2018',
+            projectCode: 'ProjectCode1',
+            bidType: 1
         },
         {
             id: 6,
             code: 'S006',
             name: 'Purchase early in the year',
-            productTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: false
+            bidCatalog: 'ProductCode1',
+            startReceivedDate: '05/11/2018',
+            endReceivedDate: '06/11/2018',
+            projectCode: 'ProjectCode1',
+            bidType: 2
+        }
+    ];
+
+    //api 8.7, get all products có status=1(active hay open)
+    public productInfos = [];
+    public productFakes = [
+        {
+            id: 1,
+            code: 'Pd01',
+            name: 'Product1'
         },
         {
-            id: 7,
-            code: 'S007',
-            name: 'Purchase early in the year',
-            productTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: true
+            id: 2,
+            code: 'Pd02',
+            name: 'Product1'
         },
         {
-            id: 8,
-            code: 'S008',
-            name: 'Purchase early in the year',
-            productTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: false
+            id: 3,
+            code: 'Pd03',
+            name: 'Product1'
         },
         {
-            id: 9,
-            code: 'S009',
-            name: 'Purchase early in the year',
-            productTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: true
+            id: 4,
+            code: 'Pd04',
+            name: 'Product1'
         },
         {
-            id: 10,
-            code: 'S010',
-            name: 'Purchase early in the year',
-            productTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: true
+            id: 5,
+            code: 'Pd05',
+            name: 'Product1'
         },
         {
-            id: 11,
-            code: 'S011',
-            name: 'Purchase early in the year',
-            productTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: true
+            id: 6,
+            code: 'Pd06',
+            name: 'Product1'
         }
     ];
 
     public oldObject = {};
-
-    public approvalStatusEnum = ApprovalStatusEnum;
 
     public myConfigStyleHeader: any = {
         'font-size': '11px'
@@ -268,6 +251,8 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
      */
     ngOnInit(): void {
         this.isPermissionEditCloseActive = true;
+        // call hàm này khi subcribe api 8.7 get all product success
+        this.handelSelects();
     }
 
     /**
@@ -279,11 +264,19 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
         });
     }
 
+    public handelSelects(): void {
+        // filter products
+        this.productInfos = [];
+        this.productFakes.forEach((item, i) => {
+            this.productInfos.push(
+                new BidProfileTypeInfo(item.id, `${item.code} - ${item.name}`));
+        });
+    }
     /**
-     * Hàm get danh sách Product
+     * Hàm get danh sách BidProfile
      * @param event
      */
-    getProducts(event?: LazyLoadEvent) {
+    getBidProfiles(event?: LazyLoadEvent) {
         if (!this.paginator || !this.dataTable) {
             return;
         }
@@ -307,7 +300,7 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
         // });
 
         this.primengTableHelper.totalRecordsCount = 16;
-        this.primengTableHelper.records = this.productFakes;
+        this.primengTableHelper.records = this.bidProfileFakes;
 
         this.primengTableHelper.records.forEach((item) => {
             item.isEdit = false;
@@ -341,7 +334,7 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
 
     applyFilters(): void {
         //truyền params lên url thông qua router
-        this._router.navigate(['app/gwebsite/product', {
+        this._router.navigate(['app/gwebsite/bidProfile', {
             filterText: this.filterText
         }]);
 
@@ -361,38 +354,48 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
 
     //Refresh grid khi thực hiện create or edit thành công
     refreshValueFromModal(): void {
-        if (this.createOrEditModal.product.id) {
+        if (this.createOrEditModal.bidProfile.id) {
             for (let i = 0; i < this.primengTableHelper.records.length; i++) {
-                if (this.primengTableHelper.records[i].id === this.createOrEditModal.product.id) {
-                    this.primengTableHelper.records[i] = this.createOrEditModal.product;
+                if (this.primengTableHelper.records[i].id === this.createOrEditModal.bidProfile.id) {
+                    this.primengTableHelper.records[i] = this.createOrEditModal.bidProfile;
                     return;
                 }
             }
         } else { this.reloadPage(); }
     }
 
-    //hàm show view create Product
-    createProduct() {
+    //hàm show view create BidProfile
+    createBidProfile() {
         this.createOrEditModal.show();
     }
 
-    public searchProduct(): void {
+    public searchBidProfile(): void {
         //3 params filter FE truyền vào api
         // filter, values default = ''
-        console.log(this.status + '--' + this.productCodeFilter + '--' + this.productNameFilter);
+        console.log(this.approvalStatus + '--' + this.bidProfileCodeFilter + '--' + this.bidCatalogFilterId +
+        '--' + this.bidType + '--' + this.startDateString + '--' + this.endDateString);
     }
 
-    public onDateChangedBy(event: IMyDateModel): void {
+    public onDateChangedByStart(event: IMyDateModel): void {
         const date = Object.assign({}, event);
-        this.creatDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
+        this.startDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
+    }
+    public onDateChangedByEnd(event: IMyDateModel): void {
+        const date = Object.assign({}, event);
+        this.endDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
     }
 
     public actionEdit(row: any, $event: Event): void {
         // $event.stopPropagation();
         this.oldObject['name'] = row.name;
-        this.oldObject['unitPrice'] = row.unitPrice;
-        this.oldObject['calUnit'] = row.calUnit;
-        this.oldObject['description'] = row.description;
+        this.oldObject['bidType'] = row.bidType; // 1, 2
+        this.oldObject['bidCatalog'] = row.bidCatalog; // 1, 2, 3, ...
+        this.oldObject['projectCode'] = row.projectCode;
+        this.oldObject['startReceivedDate'] = row.startReceivedDate;
+        this.oldObject['endReceivedDate'] = row.endReceivedDate;
+
+        this.bidCatalogEditId = this.bidCatalogFilterId;
+
         row.isEdit = true;
     }
 
@@ -422,10 +425,10 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
 
     public actionPCItem(id: number, row: any): void {
         if (this.isPermissionEditCloseActive) {
-            // dựa vào id, set status cho product là close nếu nó đang open và ngược lại.
+            // dựa vào id, set status cho bidProfile là close nếu nó đang open và ngược lại.
 
             //sau khi set success
-            row.status = row.status === StatusEnum.Close ? StatusEnum.Open : StatusEnum.Close;
+            row.status = row.status === ApprovalStatusEnum.Awaiting ? ApprovalStatusEnum.Approved : ApprovalStatusEnum.Awaiting;
         }
     }
 

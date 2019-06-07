@@ -7,11 +7,11 @@ import { PlanComponent } from './plan/plan.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { SupplierCategoryComponent } from './supplierCategory/supplierCategory.component';
 import { ProjectComponent } from './project/project.component';
-import { BidProfileComponent } from './bids/bidProfile.component';
 import { PurchaseContractComponent } from './purchaseContract/purchaseContract.component';
 import { PurchaseOrderComponent } from './purchaseOrder/purchaseOrder.component';
 import { SubmissionComponent } from './submission/submission.component';
 import { SubPlanComponent } from './plan/sub-plan/sub-plan.component';
+import { BidProfileComponent } from './bidProfile/bidProfile.component';
 
 
 @NgModule({
@@ -31,7 +31,6 @@ import { SubPlanComponent } from './plan/sub-plan/sub-plan.component';
                 children: [
                     {
                         path: 'supplier-category', component: SupplierCategoryComponent,
-                        //tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
                 ]
@@ -58,12 +57,11 @@ import { SubPlanComponent } from './plan/sub-plan/sub-plan.component';
                 path: '',
                 children: [
                     {
-                        // path: 'plan', component: SubPlanComponent,
                         path: 'plan', component: PlanComponent,
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
                     {
-                        path: 'plan-detail', component: SubPlanComponent,
+                        path: 'plan/detail/:id', component: SubPlanComponent,
                         data: { permission: 'Pages.Administration.MenuClient' }
                     }
                 ]

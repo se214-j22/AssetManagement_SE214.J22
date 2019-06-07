@@ -4,18 +4,18 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
 import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
-import { ProductDto, ApprovalStatusEnum, NewPJDto, ProductTypeInfo } from '../dto/product.dto';
+import { BidProfileDto, ApprovalStatusEnum, NewPJDto, BidProfileTypeInfo } from '../dto/bidProfile.dto';
 import * as moment from 'moment';
 
 @Component({
-    selector: 'createOrEditProductModal',
-    templateUrl: './create-or-edit-product-modal.component.html',
-    styleUrls: ['./create-or-edit-product-modal.component.css']
+    selector: 'createOrEditBidProfileModal',
+    templateUrl: './create-or-edit-bidProfile-modal.component.html',
+    styleUrls: ['./create-or-edit-bidProfile-modal.component.css']
 })
-export class CreateOrEditProductModalComponent extends AppComponentBase {
+export class CreateOrEditBidProfileModalComponent extends AppComponentBase {
 
     @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('productCombobox') productCombobox: ElementRef;
+    @ViewChild('bidProfileCombobox') bidProfileCombobox: ElementRef;
     @ViewChild('iconCombobox') iconCombobox: ElementRef;
 
     /**
@@ -26,8 +26,8 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
     active = false;
     saving = false;
 
-    product: ProductDto = new ProductDto();
-    products: ComboboxItemDto[] = [];
+    bidProfile: BidProfileDto = new BidProfileDto();
+    bidProfiles: ComboboxItemDto[] = [];
 
     public pjCode = '';
     public pjName = '';
@@ -37,9 +37,9 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
     public pjCalUnit = '';
     public pjDescription = '';
 
-    public productTypeId: number;
+    public bidProfileTypeId: number;
 
-    public productTypes = [
+    public bidProfileTypes = [
         {
             id: 1,
             code: 'F001',
@@ -76,12 +76,12 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
         }
     ];
 
-    public productTypeInfoList = [];
+    public bidProfileTypeInfoList = [];
     public supplierInfoList = [];
 
     public isCheckActive = false;
     public statusEnum = ApprovalStatusEnum;
-    public newProduct: NewPJDto;
+    public newBidProfile: NewPJDto;
 
     constructor(
         injector: Injector,
@@ -90,7 +90,7 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
         super(injector);
     }
 
-    show(productId?: number | null | undefined): void {
+    show(bidProfileId?: number | null | undefined): void {
         this.active = true;
         this.saving = false;
 
@@ -104,12 +104,12 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
         let now = new Date();
         this.pjCreateDate = moment(now).format('DD/MM/YYYY');
 
-        this.productTypeId = this.productTypes[0].id;
-        this.productTypeInfoList = [];
+        this.bidProfileTypeId = this.bidProfileTypes[0].id;
+        this.bidProfileTypeInfoList = [];
 
-        this.productTypes.forEach((item, i) => {
-            this.productTypeInfoList.push(
-                new ProductTypeInfo(item.id, `${item.code} - ${item.name}`));
+        this.bidProfileTypes.forEach((item, i) => {
+            this.bidProfileTypeInfoList.push(
+                new BidProfileTypeInfo(item.id, `${item.code} - ${item.name}`));
         });
 
         this.supplierId = this.suppliers[0].id;
@@ -117,15 +117,15 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
 
         this.suppliers.forEach((item, i) => {
             this.supplierInfoList.push(
-                new ProductTypeInfo(item.id, `${item.code} - ${item.name}`));
+                new BidProfileTypeInfo(item.id, `${item.code} - ${item.name}`));
         });
 
-        this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', productId).subscribe(result => {
-            this.product = result.menuClient;
-            this.products = result.menuClients;
+        this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', bidProfileId).subscribe(result => {
+            this.bidProfile = result.menuClient;
+            this.bidProfiles = result.menuClients;
             this.modal.show();
             setTimeout(() => {
-                $(this.productCombobox.nativeElement).selectpicker('refresh');
+                $(this.bidProfileCombobox.nativeElement).selectpicker('refresh');
             }, 0);
         });
     }
@@ -134,19 +134,19 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
         if (this.pjCode && this.pjCode !== '' && this.pjName && this.pjName !== '') {
             this.saving = true;
 
-            let status = this.isCheckActive ? this.statusEnum.Active : this.statusEnum.Inactive;
+            // let status = this.isCheckActive ? this.statusEnum.Active : this.statusEnum.Inactive;
 
             //createDate: BE lấy giờ hệ thống
-            this.newProduct = new NewPJDto(this.pjCode, this.pjName, this.productTypeId, this.supplierId, this.pjUnitPrice,
-                this.pjCalUnit, this.pjDescription, status);
+            // this.newBidProfile = new NewPJDto(this.pjCode, this.pjName, this.bidProfileTypeId, this.supplierId, this.pjUnitPrice,
+            //     this.pjCalUnit, this.pjDescription, status);
 
 
-            console.log(this.pjCode + '--' + this.pjName + '--' + this.productTypeId + '--' + this.supplierId + '--' + this.pjUnitPrice
+            console.log(this.pjCode + '--' + this.pjName + '--' + this.bidProfileTypeId + '--' + this.supplierId + '--' + this.pjUnitPrice
                 + '--' + this.pjCalUnit + '--' + this.pjDescription + '--' + status);
 
-            // this.insertProduct();
+            // this.insertBidProfile();
 
-            // call api create product category theo code,nam,status
+            // call api create bidProfile category theo code,nam,status
             // add xuống, id tự tạo
 
             //trước khi add nhớ check duplicat code.
@@ -156,9 +156,9 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
         }
     }
 
-    insertProduct() {
+    insertBidProfile() {
         // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.post('api/MenuClient/CreateMenuClient', this.product)
+        this._apiService.post('api/MenuClient/CreateMenuClient', this.bidProfile)
             .pipe(finalize(() => this.saving = false))
             .subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));
@@ -167,9 +167,9 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
             });
     }
 
-    updateProduct() {
+    updateBidProfile() {
         // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.put('api/MenuClient/UpdateMenuClient', this.product)
+        this._apiService.put('api/MenuClient/UpdateMenuClient', this.bidProfile)
             .pipe(finalize(() => this.saving = false))
             .subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));

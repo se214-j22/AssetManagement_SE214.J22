@@ -4,15 +4,15 @@
         <div class="d-flex align-items-center">
             <div class="mr-auto col-xs-6">
                 <h3 class="m-subheader__title m-subheader__title--separator">
-                    <span>{{l("Product")}}</span>
+                    <span>{{l("BidProfile")}}</span>
                 </h3>
                 <span class="m-section__sub">
-                    {{l("ProductInfo")}}
+                    {{l("BidProfileInfo")}}
                 </span>
             </div>
             <div class="col-xs-6 text-right">
-                <button (click)="createProduct()" *ngIf="isGranted('Pages.Administration.MenuClient.Create')"
-                    class="btn btn-primary"><i class="fa fa-plus"></i> {{l("CreateNewProduct")}}</button>
+                <button (click)="createBidProfile()" *ngIf="isGranted('Pages.Administration.MenuClient.Create')"
+                    class="btn btn-primary"><i class="fa fa-plus"></i> {{l("CreateNewBidProfile")}}</button>
             </div>
         </div>
     </div>
@@ -20,27 +20,45 @@
     <div class="m-content">
         <div class="m-portlet m-portlet--mobile">
             <div class="m-portlet__body">
-                <form autocomplete="off" (ngSubmit)="searchProduct()">
+                <form autocomplete="off" (ngSubmit)="searchBidProfile()">
                     <div class="m-form m-form--label-align-right" id="TextsFilterForm">
                         <!-- filter -->
                         <div class="row m--margin-bottom-10">
                             <div class="col-sm-6">
                                 <div class="row align-items-center m-b-5">
                                     <div class="col-4 col-sm-4">
-                                        <span class="float-right">Product Code:</span>
+                                        <span class="float-right">BidProfile Code:</span>
                                     </div>
                                     <div class="col-8 col-sm-8 col-lg-8">
-                                        <input type="text" name="product code" [(ngModel)]="productCodeFilter"
-                                            [placeholder]="'Product Code'" class="form-control">
+                                        <input type="text" name="bidProfile code" [(ngModel)]="bidProfileCodeFilter"
+                                            [placeholder]="'BidProfile Code'" class="form-control">
                                     </div>
                                 </div>
                                 <div class="row align-items-center m-b-5">
                                     <div class="col-4 col-sm-4">
-                                        <span class="float-right">Product Name:</span>
+                                        <span class="float-right">BidProfile Catalog:</span>
                                     </div>
                                     <div class="col-8 col-sm-8 col-lg-8">
-                                        <input type="text" name="productName" [(ngModel)]="productNameFilter"
-                                            [placeholder]="'Product Name'" class="form-control">
+                                        <!-- <input type="text" name="bidProfileCatalog" [(ngModel)]="bidCatalogFilterId"
+                                            [placeholder]="'BidProfile Catalog'" class="form-control"> -->
+                                        <select #productSelect name="bidProfileCatalog" class="form-control" [(ngModel)]="bidCatalogFilterId"
+                                            [attr.data-live-search]="true" jq-plugin="selectpicker" required>
+                                            <option value=""></option>
+                                            <option *ngFor="let item of productInfos" [value]="item.id">
+                                                {{item.info}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Bid Type:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <select #statusSelect name="bidType" class="form-control" [(ngModel)]="bidType"
+                                            [attr.data-live-search]="true" jq-plugin="selectpicker" required>
+                                            <option *ngFor="let item of bidTypes" [value]="item.id">
+                                                {{item.name}}</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -50,11 +68,31 @@
                                         <span class="float-right">Status:</span>
                                     </div>
                                     <div class="col-8 col-sm-8 col-lg-8">
-                                        <select #statusSelect name="status" class="form-control" [(ngModel)]="status"
-                                            [attr.data-live-search]="false" jq-plugin="selectpicker" required>
-                                            <option *ngFor="let item of StatusList" [value]="item.id">
+                                        <select #statusSelect name="status" class="form-control" [(ngModel)]="approvalStatus"
+                                            [attr.data-live-search]="true" jq-plugin="selectpicker" required>
+                                            <option *ngFor="let item of ApprovalStatusList" [value]="item.id">
                                                 {{item.name}}</option>
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">StartReceivedDate:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <my-date-picker class="flex" name="startDate" [placeholder]="'  Select A Start Date'"
+                                            [options]="createStartDatePickerOptions" (dateChanged)="onDateChangedByStart($event)">
+                                        </my-date-picker>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">EndReceivedDate:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <my-date-picker class="flex" name="endDate" [placeholder]="'  Select A End Date'"
+                                            [options]="createEndDatePickerOptions" (dateChanged)="onDateChangedByEnd($event)">
+                                        </my-date-picker>
                                     </div>
                                 </div>
                             </div>
@@ -72,9 +110,8 @@
                 <div class="row align-items-center">
                     <!--<Primeng-TurboTable-Start>-->
                     <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
-                        <!-- perfect-scrollbar, https://www.npmjs.com/package/ngx-perfect-scrollbar -->
                         <perfect-scrollbar [config]="{suppressScrollX: false}" (psScrollX)="onScrollX($event)">
-                            <p-table #dataTable (onLazyLoad)="getProducts($event)" [value]="primengTableHelper.records"
+                            <p-table #dataTable (onLazyLoad)="getBidProfiles($event)" [value]="primengTableHelper.records"
                                 rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
                                 [lazy]="true" [responsive]="primengTableHelper.isResponsive">
                                 <ng-template pTemplate="header">
@@ -90,38 +127,28 @@
                                             {{l('Name')}}
                                             <p-sortIcon field="name"></p-sortIcon>
                                         </th>
-                                        <th pSortableColumn="productTypeId" style="width: 150px; text-align: center">
-                                            {{l('Product Type')}}
-                                            <p-sortIcon field="productTypeId"></p-sortIcon>
+                                        <th pSortableColumn="bidCatalog" style="width: 150px; text-align: center">
+                                            {{l('Bid Catalog')}}
+                                            <p-sortIcon field="bidCatalog"></p-sortIcon>
                                         </th>
-                                        <th pSortableColumn="supplierId" style="width: 150px; text-align: center">
-                                            {{l('Supplier Id')}}
-                                            <p-sortIcon field="supplierId"></p-sortIcon>
+                                        <th pSortableColumn="startReceivedDate" style="width: 200px; text-align: center">
+                                            {{l('Start Received Date')}}
+                                            <p-sortIcon field="startReceivedDate"></p-sortIcon>
                                         </th>
-                                        <th pSortableColumn="unitPrice" style="width: 150px; text-align: center">
-                                            {{l('Unit Price')}}
-                                            <p-sortIcon field="unitPrice"></p-sortIcon>
+                                        <th pSortableColumn="endReceivedDate" style="width: 200px; text-align: center">
+                                            {{l('End Received Date')}}
+                                            <p-sortIcon field="endReceivedDate"></p-sortIcon>
                                         </th>
-                                        <th pSortableColumn="calUnit" style="width: 150px; text-align: center">
-                                            {{l('Cal Unit')}}
-                                            <p-sortIcon field="calUnit"></p-sortIcon>
+                                        <th pSortableColumn="bidType" style="width: 150px; text-align: center">
+                                            {{l('Bid Type')}}
+                                            <p-sortIcon field="bidType"></p-sortIcon>
                                         </th>
-                                        <th pSortableColumn="description" style="width: 150px; text-align: center">
-                                            {{l('Description')}}
-                                        </th>
-                                        <th pSortableColumn="supplierAddress" style="width: 150px; text-align: center">
-                                            {{l('Address')}}
-                                        </th>
-                                        <th pSortableColumn="createDate" style="width: 150px; text-align: center">
-                                            {{l('Create Date')}}
-                                            <p-sortIcon field="createDate"></p-sortIcon>
-                                        </th>
-                                        <th pSortableColumn="status" style="width: 150px; text-align: center">
-                                            {{l('Status')}}
-                                            <p-sortIcon field="status"></p-sortIcon>
+                                        <th pSortableColumn="projectCode" style="width: 150px; text-align: center">
+                                            {{l('Project Code')}}
+                                            <p-sortIcon field="projectCode"></p-sortIcon>
                                         </th>
                                         <th *ngIf="isPermissionEditCloseActive"
-                                            style="width: 230px; text-align: center">
+                                            style="width: 180px; text-align: center">
                                             {{l('Action')}}</th>
                                     </tr>
                                 </ng-template>
@@ -143,52 +170,36 @@
                                                 [(ngModel)]="record.name" class="form-control">
                                         </td>
                                         <td style="width: 150px">
-                                            <span class="ui-column-title">{{l('Product Type')}}</span>
+                                            <span class="ui-column-title">{{l('Bid Catalog')}}</span>
+                                            <span *ngIf="!record.isEdit"
+                                                title="{{record.bidCatalog}}">{{truncateString(record.bidCatalog)}}</span>
+                                            <select *ngIf="record.isEdit" class="form-control" [(ngModel)]="bidCatalogEditId"
+                                                [attr.data-live-search]="true" jq-plugin="selectpicker" required>
+                                                <option *ngFor="let item of productInfos" [value]="item.id">
+                                                    {{item.info}}</option>
+                                            </select>
+                                        </td>
+                                        <td style="width: 200px">
+                                            <span class="ui-column-title">{{l('Start Received Date')}}</span>
                                             <span
-                                                title="{{record.productTypeId}}">{{truncateString(record.productTypeId)}}</span>
+                                                title="{{record.startReceivedDate}}">{{truncateString(record.startReceivedDate)}}</span>
                                         </td>
-                                        <td style="width: 150px">
-                                            <span class="ui-column-title">{{l('Supplier Id')}}</span>
+                                        <td style="width: 200px">
+                                            <span class="ui-column-title">{{l('End Received Date')}}</span>
                                             <span
-                                                title="{{record.supplierId}}">{{truncateString(record.supplierId)}}</span>
+                                                title="{{record.endReceivedDate}}">{{truncateString(record.endReceivedDate)}}</span>
                                         </td>
                                         <td style="width: 150px">
-                                            <span class="ui-column-title">{{l('Unit Price')}}</span>
-                                            <span *ngIf="!record.isEdit"
-                                                title="{{record.unitPrice}}">{{ record.unitPrice }}</span>
-                                            <input *ngIf="record.isEdit" type="text" name="recordUnitPrice"
-                                                [(ngModel)]="record.unitPrice" class="form-control">
-                                        </td>
-                                        <td style="width: 150px">
-                                            <span class="ui-column-title">{{l('Cal Unit')}}</span>
-                                            <span *ngIf="!record.isEdit"
-                                                title="{{record.calUnit}}">{{ record.calUnit }}</span>
-                                            <input *ngIf="record.isEdit" type="text" name="recordUnitPrice"
-                                                [(ngModel)]="record.calUnit" class="form-control">
-                                        </td>
-
-                                        <td style="width: 150px">
-                                            <span class="ui-column-title">{{l('Description')}}</span>
-                                            <span *ngIf="!record.isEdit"
-                                                title="{{record.description}}">{{ record.description }}</span>
-                                            <input *ngIf="record.isEdit" type="text" name="recordDescription"
-                                                [(ngModel)]="record.description" class="form-control">
-                                        </td>
-                                        <td style="width: 150px">
-                                            <span class="ui-column-title">{{l('Address')}}</span>
-                                            <span *ngIf="!record.isEdit"
-                                                title="{{record.supplierAddress}}">{{ record.supplierAddress }}</span>
-                                        </td>
-                                        <span style="width: 150px">
-                                            <span class="ui-column-title">{{l('Create Date')}}</span>
-                                            <span title="{{record.createDate}}">{{ record.createDate }}</span>
-                                        </span>
-                                        <td style="width: 150px">
-                                            <span class="ui-column-title">{{l('Status')}}</span>
+                                            <span class="ui-column-title">{{l('Bid Type')}}</span>
                                             <span
-                                                title="{{record.activeDate}}">{{ record.status === statusEnum.Open ? 'Open' : 'Close' }}</span>
+                                                title="{{record.bidType}}">{{ record.bidType === bidTypeEnum.Bidding ? 'Bidding' : 'Appoint Contractors' }}</span>
                                         </td>
-                                        <td *ngIf="isPermissionEditCloseActive" style="width: 230px">
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Project Code')}}</span>
+                                            <span
+                                                title="{{record.projectCode}}">{{ record.projectCode }}</span>
+                                        </td>
+                                        <td *ngIf="isPermissionEditCloseActive" style="width: 180px">
                                             <button *ngIf="!record.isEdit" class="btn btn-primary"
                                                 (click)="actionEdit(record, $event)">Edit
                                             </button>
@@ -199,19 +210,19 @@
                                             <button *ngIf="record.isEdit" class="btn btn-danger"
                                                 (click)="cancelEdit(record, $event)">Cancel
                                             </button>
-                                            <button *ngIf="record.status === statusEnum.Close && !record.isEdit"
+                                            <!-- <button *ngIf="record.status === statusEnum.Close && !record.isEdit"
                                                 class="btn btn-success" (click)="actionPCItem(record.id, record)"
-                                                title="Open this product">Open
+                                                title="Open this bidProfile">Open
                                             </button>
                                             <button *ngIf="record.status === statusEnum.Open && !record.isEdit"
                                                 class="btn btn-warning" (click)="actionPCItem(record.id, record)"
-                                                title="Close this product">
+                                                title="Close this bidProfile">
                                                 Close
-                                            </button>
+                                            </button> -->
                                             <button *ngIf="!record.isEdit" class="btn btn-danger"
-                                                [disabled]="record.isIncludeProduct" type="button"
+                                                [disabled]="record.isIncludeBidProfile" type="button"
                                                 (click)="removePcItem(record.id, record, index)"
-                                                title="{{record.isIncludeProduct ? 'Cannot remove product exist reference': 'Delete this'}}">
+                                                title="{{record.isIncludeBidProfile ? 'Cannot remove bidProfile exist reference': 'Delete this'}}">
                                                 Remove</button>
                                         </td>
                                     </tr>
@@ -223,7 +234,7 @@
                         </div>
                         <div class="primeng-paging-container">
                             <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
-                                (onPageChange)="getProducts($event)"
+                                (onPageChange)="getBidProfiles($event)"
                                 [totalRecords]="primengTableHelper.totalRecordsCount"
                                 [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
                             </p-paginator>
@@ -237,5 +248,5 @@
             </div>
         </div>
     </div>
-    <createOrEditProductModal #createOrEditModal (modalSave)="refreshValueFromModal()"></createOrEditProductModal>
+    <createOrEditBidProfileModal #createOrEditModal (modalSave)="refreshValueFromModal()"></createOrEditBidProfileModal>
 </div>

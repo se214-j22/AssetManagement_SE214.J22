@@ -4,18 +4,18 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
 import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
-import { ProductDto, ApprovalStatusEnum, NewPJDto, ProductTypeInfo } from '../dto/product.dto';
+import { SupplierDto, ApprovalStatusEnum, NewPJDto, SupplierTypeInfo } from '../dto/supplier.dto';
 import * as moment from 'moment';
 
 @Component({
-    selector: 'createOrEditProductModal',
-    templateUrl: './create-or-edit-product-modal.component.html',
-    styleUrls: ['./create-or-edit-product-modal.component.css']
+    selector: 'createOrEditSupplierModal',
+    templateUrl: './create-or-edit-supplier-modal.component.html',
+    styleUrls: ['./create-or-edit-supplier-modal.component.css']
 })
-export class CreateOrEditProductModalComponent extends AppComponentBase {
+export class CreateOrEditSupplierModalComponent extends AppComponentBase {
 
     @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('productCombobox') productCombobox: ElementRef;
+    @ViewChild('supplierCombobox') supplierCombobox: ElementRef;
     @ViewChild('iconCombobox') iconCombobox: ElementRef;
 
     /**
@@ -26,20 +26,22 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
     active = false;
     saving = false;
 
-    product: ProductDto = new ProductDto();
-    products: ComboboxItemDto[] = [];
+    supplier: SupplierDto = new SupplierDto();
+    suppliers: ComboboxItemDto[] = [];
 
     public pjCode = '';
     public pjName = '';
+    public supplierTypeId: number;
     public pjCreateDate = '';
     public pjActiveDate = '';
-    public pjUnitPrice = '';
-    public pjCalUnit = '';
+    public pjAddress = '';
+    public pjEmail = '';
+    public pjFax = '';
+    public pjPhone = '';
+    public pjContact = '';
     public pjDescription = '';
 
-    public productTypeId: number;
-
-    public productTypes = [
+    public supplierTypes = [
         {
             id: 1,
             code: 'F001',
@@ -57,31 +59,11 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
         }
     ];
 
-    public supplierId: number;
-    public suppliers = [
-        {
-            id: 1,
-            code: 'S001',
-            name: 'DMX'
-        },
-        {
-            id: 2,
-            code: 'S002',
-            name: 'FPT'
-        },
-        {
-            id: 3,
-            code: 'S001',
-            name: 'Fridge'
-        }
-    ];
-
-    public productTypeInfoList = [];
-    public supplierInfoList = [];
+    public supplierTypeInfoList = [];
 
     public isCheckActive = false;
     public statusEnum = ApprovalStatusEnum;
-    public newProduct: NewPJDto;
+    public newSupplier: NewPJDto;
 
     constructor(
         injector: Injector,
@@ -90,42 +72,36 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
         super(injector);
     }
 
-    show(productId?: number | null | undefined): void {
+    show(supplierId?: number | null | undefined): void {
         this.active = true;
         this.saving = false;
 
         this.pjCode = '';
         this.pjName = '';
         this.isCheckActive = false;
-        this.pjUnitPrice = '';
-        this.pjCalUnit = '';
+        this.pjAddress = '';
+        this.pjFax = '';
+        this.pjPhone = '';
+        this.pjContact = '';
         this.pjDescription = '';
 
         let now = new Date();
         this.pjCreateDate = moment(now).format('DD/MM/YYYY');
 
-        this.productTypeId = this.productTypes[0].id;
-        this.productTypeInfoList = [];
+        this.supplierTypeId = this.supplierTypes[0].id;
+        this.supplierTypeInfoList = [];
 
-        this.productTypes.forEach((item, i) => {
-            this.productTypeInfoList.push(
-                new ProductTypeInfo(item.id, `${item.code} - ${item.name}`));
+        this.supplierTypes.forEach((item, i) => {
+            this.supplierTypeInfoList.push(
+                new SupplierTypeInfo(item.id, `${item.code} - ${item.name}`));
         });
 
-        this.supplierId = this.suppliers[0].id;
-        this.supplierInfoList = [];
-
-        this.suppliers.forEach((item, i) => {
-            this.supplierInfoList.push(
-                new ProductTypeInfo(item.id, `${item.code} - ${item.name}`));
-        });
-
-        this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', productId).subscribe(result => {
-            this.product = result.menuClient;
-            this.products = result.menuClients;
+        this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', supplierId).subscribe(result => {
+            this.supplier = result.menuClient;
+            this.suppliers = result.menuClients;
             this.modal.show();
             setTimeout(() => {
-                $(this.productCombobox.nativeElement).selectpicker('refresh');
+                $(this.supplierCombobox.nativeElement).selectpicker('refresh');
             }, 0);
         });
     }
@@ -137,14 +113,15 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
             let status = this.isCheckActive ? this.statusEnum.Active : this.statusEnum.Inactive;
 
             //createDate: BE lấy giờ hệ thống
-            this.newProduct = new NewPJDto(this.pjCode, this.pjName, this.productTypeId, this.supplierId, this.pjUnitPrice,
-                this.pjCalUnit, this.pjDescription, status);
+            this.newSupplier = new NewPJDto(this.pjCode, this.pjName, this.supplierTypeId, this.pjAddress,
+                this.pjEmail, this.pjFax, this.pjPhone, this.pjContact, this.pjDescription, status);
 
 
-            console.log(this.pjCode + '--' + this.pjName + '--' + this.productTypeId + '--' + this.supplierId + '--' + this.pjUnitPrice
-                + '--' + this.pjCalUnit + '--' + this.pjDescription + '--' + status);
+            console.log(this.pjCode + '--' + this.pjName + '--' + this.supplierTypeId + '--' + this.pjAddress
+                + '--' + this.pjEmail + '--' + this.pjFax + '--' + this.pjPhone + '--' + this.pjContact + '--' +
+                this.pjDescription + '--' + status);
 
-            // this.insertProduct();
+            // this.insertSupplier();
 
             // call api create product category theo code,nam,status
             // add xuống, id tự tạo
@@ -156,9 +133,9 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
         }
     }
 
-    insertProduct() {
+    insertSupplier() {
         // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.post('api/MenuClient/CreateMenuClient', this.product)
+        this._apiService.post('api/MenuClient/CreateMenuClient', this.supplier)
             .pipe(finalize(() => this.saving = false))
             .subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));
@@ -167,9 +144,9 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
             });
     }
 
-    updateProduct() {
+    updateSupplier() {
         // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.put('api/MenuClient/UpdateMenuClient', this.product)
+        this._apiService.put('api/MenuClient/UpdateMenuClient', this.supplier)
             .pipe(finalize(() => this.saving = false))
             .subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));

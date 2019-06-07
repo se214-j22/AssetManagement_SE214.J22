@@ -1,4 +1,29 @@
-::ng-deep .selected{
-    /* background-color: green !important; */
-    color:red !important; 
+
+div.btn-approved {
+  right: 0;
+  min-width: 80%;
+} 
+
+.m-b-5 {
+    margin-bottom: 5px;
+}
+
+#searchPlan{
+  text-align: center!important;
+}
+
+/* .table-row:hover {
+  cursor: pointer;
+} */
+
+/* td:hover {
+  cursor: pointer;
+} */
+
+.red-text {
+  color: red;
+}
+
+.green-text {
+  color: green;
 }
