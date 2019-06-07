@@ -11,6 +11,7 @@ using GWebsite.AbpZeroTemplate.Application.Share.BangYeuCauCungCapTaiSans.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.LoaiTaiSans.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.TaiSanCoDinhs.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.PhieuBaoDuongs.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.BienBanThanhLys.Dto;
 
 namespace GWebsite.AbpZeroTemplate.Applications
 {
@@ -83,6 +84,12 @@ namespace GWebsite.AbpZeroTemplate.Applications
 			configuration.CreateMap<PhieuBaoDuongInput, PhieuBaoDuong>();
 			configuration.CreateMap<PhieuBaoDuong, PhieuBaoDuongInput>();
 			//configuration.CreateMap<PhieuBaoDuong, PhieuBaoDuongForViewDto>();
+
+			// BienBanThanhLy
+			configuration.CreateMap<BienBanThanhLy, BienBanThanhLyDto>();
+			configuration.CreateMap<BienBanThanhLyInput, BienBanThanhLy>();
+			configuration.CreateMap<BienBanThanhLy, BienBanThanhLyInput>();
+			//configuration.CreateMap<BienBanThanhLy, BienBanThanhLyForViewDto>();
 
 		}
 	}

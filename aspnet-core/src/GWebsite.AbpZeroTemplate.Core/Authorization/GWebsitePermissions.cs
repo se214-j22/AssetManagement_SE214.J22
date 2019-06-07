@@ -64,5 +64,10 @@
 		public const string Pages_Administration_PhieuBaoDuong_Edit = "Pages.Administration.PhieuBaoDuong.Edit";
 		public const string Pages_Administration_PhieuBaoDuong_Delete = "Pages.Administration.PhieuBaoDuong.Delete";
 
+		public const string Pages_Administration_BienBanThanhLy = "Pages.Administration.BienBanThanhLy";
+		public const string Pages_Administration_BienBanThanhLy_Create = "Pages.Administration.BienBanThanhLy.Create";
+		public const string Pages_Administration_BienBanThanhLy_Edit = "Pages.Administration.BienBanThanhLy.Edit";
+		public const string Pages_Administration_BienBanThanhLy_Delete = "Pages.Administration.BienBanThanhLy.Delete";
+
 	}
 }

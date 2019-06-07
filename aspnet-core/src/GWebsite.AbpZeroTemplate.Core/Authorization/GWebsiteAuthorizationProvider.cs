@@ -87,6 +87,11 @@ namespace GWebsite.AbpZeroTemplate.Core.Authorization
 			phieuBaoDuong = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_PhieuBaoDuong_Edit, L("EditingPhieuBaoDuong"));
 			phieuBaoDuong = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_PhieuBaoDuong_Delete, L("DeletingPhieuBaoDuong"));
 
+			var bienBanThanhLy = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_BienBanThanhLy, L("BienBanThanhLy"));
+			bienBanThanhLy = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_BienBanThanhLy_Create, L("CreatingNewBienBanThanhLy"));
+			bienBanThanhLy = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_BienBanThanhLy_Edit, L("EditingBienBanThanhLy"));
+			bienBanThanhLy = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_BienBanThanhLy_Delete, L("DeletingBienBanThanhLy"));
+
 		}
 
         private static ILocalizableString L(string name)
