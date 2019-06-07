@@ -1310,6 +1310,292 @@ export class BangYeuCauCungCapTaiSanServiceProxy {
 }
 
 @Injectable()
+export class BienBanBanGiaoTaiSanServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @sorting (optional) 
+     * @maxResultCount (optional) 
+     * @skipCount (optional) 
+     * @return Success
+     */
+    getBienBanBanGiaoTaiSansByFilter(sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfBienBanBanGiaoTaiSanForViewDto> {
+        let url_ = this.baseUrl + "/api/BienBanBanGiaoTaiSan/GetBienBanBanGiaoTaiSansByFilter?";
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBienBanBanGiaoTaiSansByFilter(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBienBanBanGiaoTaiSansByFilter(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfBienBanBanGiaoTaiSanForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfBienBanBanGiaoTaiSanForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetBienBanBanGiaoTaiSansByFilter(response: HttpResponseBase): Observable<PagedResultDtoOfBienBanBanGiaoTaiSanForViewDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultDtoOfBienBanBanGiaoTaiSanForViewDto.fromJS(resultData200) : new PagedResultDtoOfBienBanBanGiaoTaiSanForViewDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfBienBanBanGiaoTaiSanForViewDto>(<any>null);
+    }
+
+    /**
+     * @id (optional) 
+     * @return Success
+     */
+    getBienBanBanGiaoTaiSanForEdit(id: number | null | undefined): Observable<BienBanBanGiaoTaiSanInput> {
+        let url_ = this.baseUrl + "/api/BienBanBanGiaoTaiSan/GetBienBanBanGiaoTaiSanForEdit?";
+        if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBienBanBanGiaoTaiSanForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBienBanBanGiaoTaiSanForEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<BienBanBanGiaoTaiSanInput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<BienBanBanGiaoTaiSanInput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetBienBanBanGiaoTaiSanForEdit(response: HttpResponseBase): Observable<BienBanBanGiaoTaiSanInput> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? BienBanBanGiaoTaiSanInput.fromJS(resultData200) : new BienBanBanGiaoTaiSanInput();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<BienBanBanGiaoTaiSanInput>(<any>null);
+    }
+
+    /**
+     * @input (optional) 
+     * @return Success
+     */
+    createOrEditBienBanBanGiaoTaiSan(input: BienBanBanGiaoTaiSanInput | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/BienBanBanGiaoTaiSan/CreateOrEditBienBanBanGiaoTaiSan";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEditBienBanBanGiaoTaiSan(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEditBienBanBanGiaoTaiSan(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEditBienBanBanGiaoTaiSan(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    deleteBienBanBanGiaoTaiSan(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/BienBanBanGiaoTaiSan/DeleteBienBanBanGiaoTaiSan/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteBienBanBanGiaoTaiSan(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteBienBanBanGiaoTaiSan(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteBienBanBanGiaoTaiSan(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @id (optional) 
+     * @return Success
+     */
+    getBienBanBanGiaoTaiSanForView(id: number | null | undefined): Observable<BienBanBanGiaoTaiSanDto> {
+        let url_ = this.baseUrl + "/api/BienBanBanGiaoTaiSan/GetBienBanBanGiaoTaiSanForView?";
+        if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBienBanBanGiaoTaiSanForView(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBienBanBanGiaoTaiSanForView(<any>response_);
+                } catch (e) {
+                    return <Observable<BienBanBanGiaoTaiSanDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<BienBanBanGiaoTaiSanDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetBienBanBanGiaoTaiSanForView(response: HttpResponseBase): Observable<BienBanBanGiaoTaiSanDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? BienBanBanGiaoTaiSanDto.fromJS(resultData200) : new BienBanBanGiaoTaiSanDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<BienBanBanGiaoTaiSanDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class BienBanThanhLyServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -13393,6 +13679,194 @@ export interface IBangYeuCauCungCapTaiSanForViewDto {
     phongBanId: number | undefined;
     soLuong: number | undefined;
     ngayYeuCau: moment.Moment | undefined;
+    id: number | undefined;
+}
+
+export class PagedResultDtoOfBienBanBanGiaoTaiSanForViewDto implements IPagedResultDtoOfBienBanBanGiaoTaiSanForViewDto {
+    totalCount!: number | undefined;
+    items!: BienBanBanGiaoTaiSanForViewDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfBienBanBanGiaoTaiSanForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(BienBanBanGiaoTaiSanForViewDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfBienBanBanGiaoTaiSanForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfBienBanBanGiaoTaiSanForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfBienBanBanGiaoTaiSanForViewDto {
+    totalCount: number | undefined;
+    items: BienBanBanGiaoTaiSanForViewDto[] | undefined;
+}
+
+export class BienBanBanGiaoTaiSanForViewDto implements IBienBanBanGiaoTaiSanForViewDto {
+    bienBanBanGiaoTaiSan!: BienBanBanGiaoTaiSanDto | undefined;
+    tenTaiSanCoDinh!: string | undefined;
+    tenPhongBan!: string | undefined;
+
+    constructor(data?: IBienBanBanGiaoTaiSanForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.bienBanBanGiaoTaiSan = data["bienBanBanGiaoTaiSan"] ? BienBanBanGiaoTaiSanDto.fromJS(data["bienBanBanGiaoTaiSan"]) : <any>undefined;
+            this.tenTaiSanCoDinh = data["tenTaiSanCoDinh"];
+            this.tenPhongBan = data["tenPhongBan"];
+        }
+    }
+
+    static fromJS(data: any): BienBanBanGiaoTaiSanForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BienBanBanGiaoTaiSanForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["bienBanBanGiaoTaiSan"] = this.bienBanBanGiaoTaiSan ? this.bienBanBanGiaoTaiSan.toJSON() : <any>undefined;
+        data["tenTaiSanCoDinh"] = this.tenTaiSanCoDinh;
+        data["tenPhongBan"] = this.tenPhongBan;
+        return data; 
+    }
+}
+
+export interface IBienBanBanGiaoTaiSanForViewDto {
+    bienBanBanGiaoTaiSan: BienBanBanGiaoTaiSanDto | undefined;
+    tenTaiSanCoDinh: string | undefined;
+    tenPhongBan: string | undefined;
+}
+
+export class BienBanBanGiaoTaiSanDto implements IBienBanBanGiaoTaiSanDto {
+    taiSanCoDinhId!: number | undefined;
+    phongBanId!: number | undefined;
+    ngayNhan!: moment.Moment | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IBienBanBanGiaoTaiSanDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.taiSanCoDinhId = data["taiSanCoDinhId"];
+            this.phongBanId = data["phongBanId"];
+            this.ngayNhan = data["ngayNhan"] ? moment(data["ngayNhan"].toString()) : <any>undefined;
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): BienBanBanGiaoTaiSanDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BienBanBanGiaoTaiSanDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["taiSanCoDinhId"] = this.taiSanCoDinhId;
+        data["phongBanId"] = this.phongBanId;
+        data["ngayNhan"] = this.ngayNhan ? this.ngayNhan.toISOString() : <any>undefined;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IBienBanBanGiaoTaiSanDto {
+    taiSanCoDinhId: number | undefined;
+    phongBanId: number | undefined;
+    ngayNhan: moment.Moment | undefined;
+    id: number | undefined;
+}
+
+export class BienBanBanGiaoTaiSanInput implements IBienBanBanGiaoTaiSanInput {
+    taiSanCoDinhId!: number | undefined;
+    phongBanId!: number | undefined;
+    ngayNhan!: moment.Moment | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IBienBanBanGiaoTaiSanInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.taiSanCoDinhId = data["taiSanCoDinhId"];
+            this.phongBanId = data["phongBanId"];
+            this.ngayNhan = data["ngayNhan"] ? moment(data["ngayNhan"].toString()) : <any>undefined;
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): BienBanBanGiaoTaiSanInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new BienBanBanGiaoTaiSanInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["taiSanCoDinhId"] = this.taiSanCoDinhId;
+        data["phongBanId"] = this.phongBanId;
+        data["ngayNhan"] = this.ngayNhan ? this.ngayNhan.toISOString() : <any>undefined;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IBienBanBanGiaoTaiSanInput {
+    taiSanCoDinhId: number | undefined;
+    phongBanId: number | undefined;
+    ngayNhan: moment.Moment | undefined;
     id: number | undefined;
 }
 

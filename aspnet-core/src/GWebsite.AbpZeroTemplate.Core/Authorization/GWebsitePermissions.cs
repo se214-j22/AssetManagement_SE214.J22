@@ -69,5 +69,10 @@
 		public const string Pages_Administration_BienBanThanhLy_Edit = "Pages.Administration.BienBanThanhLy.Edit";
 		public const string Pages_Administration_BienBanThanhLy_Delete = "Pages.Administration.BienBanThanhLy.Delete";
 
+		public const string Pages_Administration_BienBanBanGiaoTaiSan = "Pages.Administration.BienBanBanGiaoTaiSan";
+		public const string Pages_Administration_BienBanBanGiaoTaiSan_Create = "Pages.Administration.BienBanBanGiaoTaiSan.Create";
+		public const string Pages_Administration_BienBanBanGiaoTaiSan_Edit = "Pages.Administration.BienBanBanGiaoTaiSan.Edit";
+		public const string Pages_Administration_BienBanBanGiaoTaiSan_Delete = "Pages.Administration.BienBanBanGiaoTaiSan.Delete";
+
 	}
 }
