@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { MenuClientComponent } from '@app/gwebsite/menu-client/menu-client.component';
 import { DemoModelComponent } from './demo-model/demo-model.component';
 import { CustomerComponent } from './customer/customer.component';
+import { ScanReportComponent } from './scan-report/scan-report.component';
 
 @NgModule({
     imports: [
@@ -13,6 +14,15 @@ import { CustomerComponent } from './customer/customer.component';
                     {
                         path: 'menu-client', component: MenuClientComponent,
                         data: { permission: 'Pages.Administration.MenuClient' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'scan-report', component: ScanReportComponent,
+                        data: { permission: 'Pages.Administration.ScanReport' }
                     },
                 ]
             },
