@@ -388,25 +388,34 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
     public actionEdit(row: any, $event: Event): void {
         // $event.stopPropagation();
         this.oldObject['name'] = row.name;
-        this.oldObject['bidType'] = row.bidType; // 1, 2
         this.oldObject['bidCatalog'] = row.bidCatalog; // 1, 2, 3, ...
+        this.oldObject['bidType'] = row.bidType; // 1, 2
         this.oldObject['projectCode'] = row.projectCode;
         this.oldObject['startReceivedDate'] = row.startReceivedDate;
         this.oldObject['endReceivedDate'] = row.endReceivedDate;
 
-        this.bidCatalogEditId = this.bidCatalogFilterId;
+        this.bidCatalogEditId = 0;
 
         row.isEdit = true;
     }
 
     public saveEditItem(id: number, row: any, $event: Event): void {
         if (this.isPermissionEditCloseActive && row.name && row.name !== '') {
-            //call api edit name thông qua id truyền vào
-
-            //Các fields cần đưa vào model để update.
 
             // vì bên html đã tự bind [(ngModel)] vào row.name và row.note rồi, nên ở đây ta chỉ cần lấy ra giá trị để update
             console.log(id + '---' + row.name + '---' + row.unitPrice + '---' + row.calUnit + '---' + row.description);
+
+           
+            if (this.bidCatalogEditId !== 0) {
+                row.bidCatalog = this.productFakes.find(x => +x.id === +this.bidCatalogEditId).code;
+
+
+                //update TẠI ĐÂY với các params cần update là: row.name, row.bidCatalog
+                // sau khi đã đc xử lý ở FE, e chỉ cần nhập mấy cái này là params đưa vào api là đc.
+                //Hiện tại row.name, row.bidCatalog... đã mang giá trị mới, e chỉ cần gọi nó vào api update.
+
+                
+            }
 
             //save thành công
             row.isEdit = false;
@@ -416,6 +425,8 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
 
     public cancelEdit(row: any, $event: Event): void {
         row.name = this.oldObject['name'];
+        row.bidCatalog = this.oldObject['bidCatalog'];
+
         row.unitPrice = this.oldObject['unitPrice'];
         row.calUnit = this.oldObject['calUnit'];
         row.description = this.oldObject['description'];
