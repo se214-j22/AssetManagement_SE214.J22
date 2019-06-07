@@ -7,9 +7,12 @@ using GWebsite.AbpZeroTemplate.Application.Share.ScanReports;
 using GWebsite.AbpZeroTemplate.Application.Share.ScanReports.Dto;
 using GWebsite.AbpZeroTemplate.Core.Authorization;
 using GWebsite.AbpZeroTemplate.Core.Models;
+using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-
+using GWebsite.AbpZeroTemplate.Core.Helper;
 namespace GWebsite.AbpZeroTemplate.Web.Core.ScanReports
 {
     [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient)]
@@ -21,7 +24,75 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.ScanReports
         {
             this.scanReportRepository = scanReportRepository;
         }
+        public Dictionary<string, object> ScanHardware()
+        {
+            Dictionary<string, object> result = new Dictionary<string, object>();
 
+            result.Add("cpuManufacture", HardwareInfo.GetCPUManufacturer());
+
+            result.Add("biosMaker", HardwareInfo.GetBIOSmaker());
+
+            result.Add("boardMaker", HardwareInfo.GetBoardMaker());
+
+            result.Add("ramSlots", HardwareInfo.GetNoRamSlots());
+
+            result.Add("memory", HardwareInfo.GetPhysicalMemory());
+
+            result.Add("cdROM", HardwareInfo.GetCdRomDrive());
+
+            result.Add("computerName", HardwareInfo.GetComputerName());
+
+            result.Add("osInformation", HardwareInfo.GetOSInformation());
+
+            result.Add("macAddress", HardwareInfo.GetMACAddress());
+
+            result.Add("accountName", HardwareInfo.GetAccountName());
+
+            result.Add("drives", System.IO.DriveInfo.GetDrives()); 
+
+            return result;
+        }
+
+        public List<Dictionary<string, object>> ScanSoftware()
+        {
+            List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+
+            string uninstallKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
+            using (RegistryKey rk = Registry.LocalMachine.OpenSubKey(uninstallKey))
+            {
+                foreach (string skName in rk.GetSubKeyNames())
+                {
+                    using (RegistryKey sk = rk.OpenSubKey(skName))
+                    {
+                        try
+                        {
+                            var displayName = sk.GetValue("DisplayName");
+                            var size = sk.GetValue("EstimatedSize");
+                            var version = sk.GetValue("Version");
+                            var installDate = sk.GetValue("InstallDate");
+                            var publisher = sk.GetValue("Publisher");
+                            var installLocation = sk.GetValue("InstallLocation");
+
+                            Dictionary<string, object> hash = new Dictionary<string, object>();
+
+                            hash.Add("displayName", displayName);
+                            hash.Add("size", size);
+                            hash.Add("version", version);
+                            hash.Add("installDate", installDate);
+                            hash.Add("publisher", publisher);
+                            hash.Add("installLocation", installLocation);
+
+                            result.Add(hash);
+                        }
+                        catch (Exception ex)
+                        { }
+                    }
+                }
+               
+            }
+
+            return result;
+        }
         [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient_Create)]
         public ScanReportDto CreateOrEditScanReport(ScanReportInput scanReportInput)
         {

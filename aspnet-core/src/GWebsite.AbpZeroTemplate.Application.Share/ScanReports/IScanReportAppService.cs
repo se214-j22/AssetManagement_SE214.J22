@@ -15,6 +15,8 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.ScanReports
         void DeleteScanReport(int id);
         PagedResultDto<ScanReportDto> GetScanReports(ScanReportFilter input);
         ScanReportForViewDto GetScanReportForView(int id);
+        List<Dictionary<string, object>> ScanSoftware();
 
+        Dictionary<string, object> ScanHardware();
     }
 }

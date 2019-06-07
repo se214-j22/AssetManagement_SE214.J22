@@ -27,6 +27,19 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpGet]
+        public List<Dictionary<string, object>> ScanSoftware()
+        {
+            return scanReportAppService.ScanSoftware();
+        }
+
+
+        [HttpGet]
+        public Dictionary<string, object> ScanHardware()
+        {
+            return scanReportAppService.ScanHardware();
+        }
+
+        [HttpGet]
         public ScanReportInput GetScanReportForEdit(int id)
         {
             return scanReportAppService.GetScanReportForEdit(id);
