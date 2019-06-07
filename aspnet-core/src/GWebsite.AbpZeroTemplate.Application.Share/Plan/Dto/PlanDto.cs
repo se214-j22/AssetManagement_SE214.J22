@@ -18,7 +18,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Plans.Dto
         public string DepartmentCode { get; set; }
         public int Status { get; set; }
         public int CountChange { get; set; }
-        public ICollection<SubPlan> SubPlans { get; set; }
+        //public ICollection<SubPlan> SubPlans { get; set; }
     }
 
 }

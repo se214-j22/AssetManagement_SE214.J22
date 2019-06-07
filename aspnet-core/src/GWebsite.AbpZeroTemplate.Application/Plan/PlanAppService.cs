@@ -31,13 +31,33 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Plans
         }
         public async Task<PagedResultDto<PlanDto>> GetPlanWithFilterAsync(PlanListInputDto input)
         {
-            IQueryable<Plan> query = planRepository.GetAll().Where(p => p.Id.Equals(input.Id) && p.ImplementDate.Year.Equals(input.Year) && p.Status.Equals(input.Status) && p.UnitCode.Equals(input.UnitCode) && p.DepartmentCode.Equals(input.DepartmentCode));
-            int totalCount = await query.CountAsync();
-            if (totalCount == 0)
+            IQueryable<Plan> query = planRepository.GetAll();
+            if (input.Id != default(int))
             {
-                query = planRepository.GetAll();
-                totalCount = await query.CountAsync();
+                query = query.Where(p => p.Id.Equals(input.Id));
             }
+            if (input.Year != default(int))
+            {
+                query = query.Where(p => p.ImplementDate.Year.Equals(input.Year));
+            }
+            if (input.Status != 3)
+            {
+                query = query.Where(p => p.Status.Equals(input.Status));
+            }
+            if (input.UnitCode != null)
+            {
+                query = query.Where(p => p.UnitCode.Equals(input.UnitCode));
+            }
+            if (input.DepartmentCode != null)
+            {
+                query = query.Where(p => p.DepartmentCode.Equals(input.DepartmentCode));
+            }
+            int totalCount = await query.CountAsync();
+            //if (totalCount == 0)
+            //{
+            //    query = planRepository.GetAll();
+            //    totalCount = await query.CountAsync();
+            //}
             List<Plan> items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
             return new PagedResultDto<PlanDto>(
             totalCount,

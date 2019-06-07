@@ -24,14 +24,22 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Projects
 
         public async Task<PagedResultDto<ProjectDto>> GetSupplierWithFilterAsync(GetProjectInput input)
         {
-            IQueryable<Project> query = projectRepository.GetAll().Where(p => p.Name.Contains(input.Name) && p.Code.Contains(input.Code) && p.CreateDate.Equals(input.CreateDate));
-          
-            int totalCount = await query.CountAsync();
-            if (totalCount == 0)
+            IQueryable<Project> query = projectRepository.GetAll();
+            if (input.Name != null)
             {
-                query = projectRepository.GetAll();
-                totalCount = await query.CountAsync();
+                query = query.Where(p => p.Name.Contains(input.Name));
             }
+            if (input.Code != null)
+            {
+                query = query.Where(p => p.Code.Contains(input.Code));
+            }
+            if (input.CreateDate.Year >2000)
+            {
+                query = query.Where(p => p.CreateDate.Day.Equals(input.CreateDate.Day) && p.CreateDate.Month.Equals(input.CreateDate.Month) && p.CreateDate.Year.Equals(input.CreateDate.Year));
+            }
+
+            int totalCount = await query.CountAsync();
+           
             List<Project> items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
             return new PagedResultDto<ProjectDto>(
             totalCount,

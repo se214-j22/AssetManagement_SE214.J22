@@ -34,7 +34,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
             return await this._PlanAppService.GetAllDepartmentAsync();
         }
 
-        [HttpPut("status/{id}")]
+        [HttpPut]
         public async Task<PlanDto> ApprovedPlanAsync(int id)
         {
             return await this._PlanAppService.ApprovedPlanAsync(id);
