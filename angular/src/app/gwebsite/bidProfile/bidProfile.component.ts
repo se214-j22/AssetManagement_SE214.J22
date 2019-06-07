@@ -10,7 +10,7 @@ import { CreateOrEditBidProfileModalComponent } from './create-or-edit-bidProfil
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import * as moment from 'moment';
-import { ApprovalStatusEnum, BidTypeEnum } from './dto/bidProfile.dto';
+import { ApprovalStatusEnum, BidTypeEnum, BidProfileTypeInfo } from './dto/bidProfile.dto';
 
 
 @Component({
@@ -116,168 +116,118 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
     public startDateString = '';
     public endDateString = '';
     public bidProfileCodeFilter = '';
-    public bidProfileCatalogFilter = '';
+    public bidCatalogFilterId;
+    public bidCatalogEditId;
 
     public bidProfileFakes = [
         {
             id: 1,
             code: 'S001',
             name: 'Purchase early in the year',
-            bidProfileTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is bidProfile item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: true
+            bidCatalog: 'ProductCode1',
+            startReceivedDate: '05/11/2018',
+            endReceivedDate: '06/11/2018',
+            projectCode: 'ProjectCode1',
+            bidType: 1
         },
         {
             id: 2,
             code: 'S002',
             name: 'Purchase early in the year',
-            bidProfileTypeId: 3,
-            supplierId: 1,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is bidProfile item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: false
+            bidCatalog: 'ProductCode1',
+            startReceivedDate: '05/11/2018',
+            endReceivedDate: '06/11/2018',
+            projectCode: 'ProjectCode1',
+            bidType: 2
         },
         {
             id: 3,
             code: 'S003',
             name: 'Purchase early in the year',
-            bidProfileTypeId: 4,
-            supplierId: 6,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is bidProfile item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: false
+            bidCatalog: 'ProductCode1',
+            startReceivedDate: '05/11/2018',
+            endReceivedDate: '06/11/2018',
+            projectCode: 'ProjectCode1',
+            bidType: 1
+        },
+        {
+            id: 3,
+            code: 'S003',
+            name: 'Purchase early in the year',
+            bidCatalog: 'ProductCode1',
+            startReceivedDate: '05/11/2018',
+            endReceivedDate: '06/11/2018',
+            projectCode: 'ProjectCode1',
+            bidType: 1
         },
         {
             id: 4,
             code: 'S004',
             name: 'Purchase early in the year',
-            bidProfileTypeId: 9,
-            supplierId: 7,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is bidProfile item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: true
+            bidCatalog: 'ProductCode1',
+            startReceivedDate: '05/11/2018',
+            endReceivedDate: '06/11/2018',
+            projectCode: 'ProjectCode1',
+            bidType: 2
         },
         {
             id: 5,
             code: 'S005',
             name: 'Purchase early in the year',
-            bidProfileTypeId: 1,
-            supplierId: 5,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is bidProfile item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: false
+            bidCatalog: 'ProductCode1',
+            startReceivedDate: '05/11/2018',
+            endReceivedDate: '06/11/2018',
+            projectCode: 'ProjectCode1',
+            bidType: 1
         },
         {
             id: 6,
             code: 'S006',
             name: 'Purchase early in the year',
-            bidProfileTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is bidProfile item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: false
+            bidCatalog: 'ProductCode1',
+            startReceivedDate: '05/11/2018',
+            endReceivedDate: '06/11/2018',
+            projectCode: 'ProjectCode1',
+            bidType: 2
+        }
+    ];
+
+    //api 8.7, get all products có status=1(active hay open)
+    public productInfos = [];
+    public productFakes = [
+        {
+            id: 1,
+            code: 'Pd01',
+            name: 'Product1'
         },
         {
-            id: 7,
-            code: 'S007',
-            name: 'Purchase early in the year',
-            bidProfileTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is bidProfile item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: true
+            id: 2,
+            code: 'Pd02',
+            name: 'Product1'
         },
         {
-            id: 8,
-            code: 'S008',
-            name: 'Purchase early in the year',
-            bidProfileTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is bidProfile item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: false
+            id: 3,
+            code: 'Pd03',
+            name: 'Product1'
         },
         {
-            id: 9,
-            code: 'S009',
-            name: 'Purchase early in the year',
-            bidProfileTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is bidProfile item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: true
+            id: 4,
+            code: 'Pd04',
+            name: 'Product1'
         },
         {
-            id: 10,
-            code: 'S010',
-            name: 'Purchase early in the year',
-            bidProfileTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is bidProfile item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: true
+            id: 5,
+            code: 'Pd05',
+            name: 'Product1'
         },
         {
-            id: 11,
-            code: 'S011',
-            name: 'Purchase early in the year',
-            bidProfileTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is bidProfile item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: true
+            id: 6,
+            code: 'Pd06',
+            name: 'Product1'
         }
     ];
 
     public oldObject = {};
-
-    public approvalStatusEnum = ApprovalStatusEnum;
 
     public myConfigStyleHeader: any = {
         'font-size': '11px'
@@ -301,6 +251,8 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
      */
     ngOnInit(): void {
         this.isPermissionEditCloseActive = true;
+        // call hàm này khi subcribe api 8.7 get all product success
+        this.handelSelects();
     }
 
     /**
@@ -312,6 +264,14 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         });
     }
 
+    public handelSelects(): void {
+        // filter products
+        this.productInfos = [];
+        this.productFakes.forEach((item, i) => {
+            this.productInfos.push(
+                new BidProfileTypeInfo(item.id, `${item.code} - ${item.name}`));
+        });
+    }
     /**
      * Hàm get danh sách BidProfile
      * @param event
@@ -412,7 +372,8 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
     public searchBidProfile(): void {
         //3 params filter FE truyền vào api
         // filter, values default = ''
-        console.log(this.status + '--' + this.bidProfileCodeFilter + '--' + this.bidProfileCatalogFilter);
+        console.log(this.approvalStatus + '--' + this.bidProfileCodeFilter + '--' + this.bidCatalogFilterId +
+        '--' + this.bidType + '--' + this.startDateString + '--' + this.endDateString);
     }
 
     public onDateChangedByStart(event: IMyDateModel): void {
@@ -427,9 +388,14 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
     public actionEdit(row: any, $event: Event): void {
         // $event.stopPropagation();
         this.oldObject['name'] = row.name;
-        this.oldObject['unitPrice'] = row.unitPrice;
-        this.oldObject['calUnit'] = row.calUnit;
-        this.oldObject['description'] = row.description;
+        this.oldObject['bidType'] = row.bidType; // 1, 2
+        this.oldObject['bidCatalog'] = row.bidCatalog; // 1, 2, 3, ...
+        this.oldObject['projectCode'] = row.projectCode;
+        this.oldObject['startReceivedDate'] = row.startReceivedDate;
+        this.oldObject['endReceivedDate'] = row.endReceivedDate;
+
+        this.bidCatalogEditId = this.bidCatalogFilterId;
+
         row.isEdit = true;
     }
 
@@ -462,7 +428,7 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
             // dựa vào id, set status cho bidProfile là close nếu nó đang open và ngược lại.
 
             //sau khi set success
-            row.status = row.status === StatusEnum.Close ? StatusEnum.Open : StatusEnum.Close;
+            row.status = row.status === ApprovalStatusEnum.Awaiting ? ApprovalStatusEnum.Approved : ApprovalStatusEnum.Awaiting;
         }
     }
 

@@ -134,11 +134,11 @@ export class CreateOrEditBidProfileModalComponent extends AppComponentBase {
         if (this.pjCode && this.pjCode !== '' && this.pjName && this.pjName !== '') {
             this.saving = true;
 
-            let status = this.isCheckActive ? this.statusEnum.Active : this.statusEnum.Inactive;
+            // let status = this.isCheckActive ? this.statusEnum.Active : this.statusEnum.Inactive;
 
             //createDate: BE lấy giờ hệ thống
-            this.newBidProfile = new NewPJDto(this.pjCode, this.pjName, this.bidProfileTypeId, this.supplierId, this.pjUnitPrice,
-                this.pjCalUnit, this.pjDescription, status);
+            // this.newBidProfile = new NewPJDto(this.pjCode, this.pjName, this.bidProfileTypeId, this.supplierId, this.pjUnitPrice,
+            //     this.pjCalUnit, this.pjDescription, status);
 
 
             console.log(this.pjCode + '--' + this.pjName + '--' + this.bidProfileTypeId + '--' + this.supplierId + '--' + this.pjUnitPrice
