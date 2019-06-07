@@ -5,7 +5,6 @@ import * as ApiServiceProxies from './service-proxies';
 import { WebApiServiceProxy } from './webapi.service';
 import { CustomerServiceProxy } from '@shared/service-proxies/service-proxies';
 import { DemoModelServiceProxy } from '@shared/service-proxies/service-proxies';
-import { PhongBanServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @NgModule({
     providers: [
@@ -50,6 +49,8 @@ import { PhongBanServiceProxy } from '@shared/service-proxies/service-proxies';
         ApiServiceProxies.TaiSanCoDinhServiceProxy,
         ApiServiceProxies.PhieuBaoDuongServiceProxy,
         ApiServiceProxies.BienBanThanhLyServiceProxy,
+        ApiServiceProxies.BienBanBanGiaoTaiSanServiceProxy,
+
         WebApiServiceProxy,
         { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true },
         CustomerServiceProxy,

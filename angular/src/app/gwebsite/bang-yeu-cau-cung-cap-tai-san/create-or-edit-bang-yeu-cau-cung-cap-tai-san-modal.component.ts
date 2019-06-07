@@ -43,8 +43,10 @@ export class CreateOrEditBangYeuCauCungCapTaiSanModalComponent extends AppCompon
         let input = this.bangYeuCauCungCapTaiSan;
         this.saving = true;
 
-        input.ngayYeuCau = moment(input.ngayYeuCau + ' ' + '0:01'); // moment phải có thời gian thì mới gọi .toISOString() được
-        input.ngayYeuCau.utcOffset(0, true); // Khi gọi .toISOString() thì nó offset timezone nên phải set timezone là 0 trước
+        if (moment.isMoment(input.ngayYeuCau) === false) {
+            input.ngayYeuCau = moment(input.ngayYeuCau + ' ' + '0:01'); // moment phải có thời gian thì mới gọi .toISOString() được
+            input.ngayYeuCau.utcOffset(0, true); // Khi gọi .toISOString() thì nó offset timezone nên phải set timezone là 0 trước
+        }
 
         this._bangYeuCauCungCapTaiSanService.createOrEditBangYeuCauCungCapTaiSan(input).subscribe(result => {
             this.notify.info(this.l('SavedSuccessfully'));

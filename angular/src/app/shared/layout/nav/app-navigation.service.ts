@@ -20,6 +20,7 @@ export class AppNavigationService {
                 new AppMenuItem('Đơn vị cung cấp tài sản', 'Pages.Administration.DonViCungCapTaiSan', 'flaticon-menu-1', '/app/gwebsite/don-vi-cung-cap-tai-san'),
                 new AppMenuItem('Hóa đơn nhập', 'Pages.Administration.HoaDonNhap', 'flaticon-menu-1', '/app/gwebsite/hoa-don-nhap'),
                 new AppMenuItem('Phòng ban', 'Pages.Administration.PhongBan', 'flaticon-menu-1', '/app/gwebsite/phong-ban'),
+                new AppMenuItem('Biên bản bàn giao tài sản', 'Pages.Administration.BienBanBanGiaoTaiSan', 'flaticon-menu-1', '/app/gwebsite/bien-ban-ban-giao-tai-san'),
                 new AppMenuItem('Loại tài sản', 'Pages.Administration.LoaiTaiSan', 'flaticon-menu-1', '/app/gwebsite/loai-tai-san'),
                 new AppMenuItem('Bảng yêu cầu cung cấp tài sản', 'Pages.Administration.BangYeuCauCungCapTaiSan', 'flaticon-menu-1', '/app/gwebsite/bang-yeu-cau-cung-cap-tai-san'),
                 new AppMenuItem('Tài sản cố định', 'Pages.Administration.TaiSanCoDinh', 'flaticon-menu-1', '/app/gwebsite/tai-san-co-dinh'),

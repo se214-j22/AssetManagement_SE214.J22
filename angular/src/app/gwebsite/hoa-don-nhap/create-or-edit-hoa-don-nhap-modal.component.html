@@ -23,7 +23,7 @@
 
                     <div class="form-group">
                         <label>Ngày nhận {{hoaDonNhap.ngayNhan}} *</label>
-                        <input type="date" class="form-control" [(ngModel)]="hoaDonNhap.ngayNhan" name="NgayNhan" required>
+                        <input type="date" class="form-control" [ngModel]="hoaDonNhap.ngayNhan | date:'yyyy-MM-dd'" (ngModelChange)="bienBanBanGiaoTaiSanInput.ngayNhan = $event" name="NgayNhan" required>
                     </div>
 
                     <div class="form-group">

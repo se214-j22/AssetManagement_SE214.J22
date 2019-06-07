@@ -11,6 +11,7 @@ import { BangYeuCauCungCapTaiSanComponent } from './bang-yeu-cau-cung-cap-tai-sa
 import { TaiSanCoDinhComponent } from './tai-san-co-dinh/tai-san-co-dinh.component';
 import { PhieuBaoDuongComponent } from './phieu-bao-duong/phieu-bao-duong.component';
 import { BienBanThanhLyComponent } from './bien-ban-thanh-ly/bien-ban-thanh-ly.component';
+import { BienBanBanGiaoTaiSanComponent } from './bien-ban-ban-giao-tai-san/bien-ban-ban-giao-tai-san.component';
 
 @NgModule({
     imports: [
@@ -111,6 +112,15 @@ import { BienBanThanhLyComponent } from './bien-ban-thanh-ly/bien-ban-thanh-ly.c
                     {
                         path: 'bien-ban-thanh-ly', component: BienBanThanhLyComponent,
                         data: { permission: 'Pages.Administration.BienBanThanhLy' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'bien-ban-ban-giao-tai-san', component: BienBanBanGiaoTaiSanComponent,
+                        data: { permission: 'Pages.Administration.BienBanBanGiaoTaiSan' }
                     },
                 ]
             },

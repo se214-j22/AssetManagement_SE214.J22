@@ -49,8 +49,10 @@ export class CreateOrEditBienBanThanhLyModalComponent extends AppComponentBase {
         let input = this.bienBanThanhLyInput;
         this.saving = true;
 
-        input.ngayThanhLy = moment(input.ngayThanhLy + ' ' + '0:01'); // moment phải có thời gian thì mới gọi .toISOString() được
-        input.ngayThanhLy.utcOffset(0, true); // Khi gọi .toISOString() thì nó offset timezone nên phải set timezone là 0 trước
+        if (moment.isMoment(input.ngayThanhLy) === false) {
+            input.ngayThanhLy = moment(input.ngayThanhLy + ' ' + '0:01'); // moment phải có thời gian thì mới gọi .toISOString() được
+            input.ngayThanhLy.utcOffset(0, true); // Khi gọi .toISOString() thì nó offset timezone nên phải set timezone là 0 trước
+        }
 
         this._bienBanThanhLyService.createOrEditBienBanThanhLy(input).subscribe(result => {
             this.notify.info(this.l('SavedSuccessfully'));
