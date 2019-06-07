@@ -1,0 +1,41 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span *ngIf="phieuBaoDuong.id">{{l("Thông tin Phiếu bảo dưỡng")}}: {{phieuBaoDuong.soHoaDon}}</span>
+                    <span *ngIf="!phieuBaoDuong.id">{{l("Tạo mới Phiếu bảo dưỡng")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label style="font-weight: 500">Mã phiếu</label>
+                    <p>{{phieuBaoDuong.id}}</p>
+                </div>
+                <div class="form-group">
+                    <label style="font-weight: 500">Mã tài sản</label>
+                    <p>{{phieuBaoDuong.taiSanCoDinhId}}</p>
+                </div>
+                <div class="form-group">
+                    <label style="font-weight: 500">Số hóa đơn</label>
+                    <p>{{phieuBaoDuong.soHoaDon}}</p>
+                </div>
+
+                <hr>
+
+                <div class="form-group">
+                    <label style="font-weight: 500">Chi phí</label>
+                    <p *ngIf="phieuBaoDuong.chiPhi">{{phieuBaoDuong.chiPhi.toLocaleString()}} VNĐ</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                    (click)="close()">{{l("Close")}}</button>
+            </div>
+        </div>
+    </div>
+</div>

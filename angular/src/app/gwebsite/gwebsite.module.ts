@@ -35,6 +35,9 @@ import { ViewBangYeuCauCungCapTaiSanModalComponent } from './bang-yeu-cau-cung-c
 import { TaiSanCoDinhComponent } from './tai-san-co-dinh/tai-san-co-dinh.component';
 import { CreateOrEditTaiSanCoDinhModalComponent } from './tai-san-co-dinh/create-or-edit-tai-san-co-dinh-modal.component';
 import { ViewTaiSanCoDinhModalComponent } from './tai-san-co-dinh/view-tai-san-co-dinh-modal.component';
+import { PhieuBaoDuongComponent } from './phieu-bao-duong/phieu-bao-duong.component';
+import { CreateOrEditPhieuBaoDuongModalComponent } from './phieu-bao-duong/create-or-edit-phieu-bao-duong-modal.component';
+import { ViewPhieuBaoDuongModalComponent } from './phieu-bao-duong/view-phieu-bao-duong-modal.component';
 
 @NgModule({
     imports: [
@@ -66,7 +69,8 @@ import { ViewTaiSanCoDinhModalComponent } from './tai-san-co-dinh/view-tai-san-c
         HoaDonNhapComponent, CreateOrEditHoaDonNhapModalComponent, ViewHoaDonNhapModalComponent,
         LoaiTaiSanComponent, CreateOrEditLoaiTaiSanModalComponent, ViewLoaiTaiSanModalComponent,
         BangYeuCauCungCapTaiSanComponent, CreateOrEditBangYeuCauCungCapTaiSanModalComponent, ViewBangYeuCauCungCapTaiSanModalComponent,
-        TaiSanCoDinhComponent, CreateOrEditTaiSanCoDinhModalComponent, ViewTaiSanCoDinhModalComponent
+        TaiSanCoDinhComponent, CreateOrEditTaiSanCoDinhModalComponent, ViewTaiSanCoDinhModalComponent,
+        PhieuBaoDuongComponent, CreateOrEditPhieuBaoDuongModalComponent, ViewPhieuBaoDuongModalComponent,
     ],
     providers: [
         

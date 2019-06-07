@@ -18,11 +18,12 @@ export class AppNavigationService {
             new AppMenuItem('Editions', 'Pages.Editions', 'flaticon-app', '/app/admin/editions'),
             new AppMenuItem('Quản Lý Tài Sản', '', 'flaticon-interface-8', '', [
                 new AppMenuItem('Đơn vị cung cấp tài sản', 'Pages.Administration.DonViCungCapTaiSan', 'flaticon-menu-1', '/app/gwebsite/don-vi-cung-cap-tai-san'),
-                new AppMenuItem('Hóa đơn nhập', 'Pages.Administration.PhongBan', 'flaticon-menu-1', '/app/gwebsite/hoa-don-nhap'),
+                new AppMenuItem('Hóa đơn nhập', 'Pages.Administration.HoaDonNhap', 'flaticon-menu-1', '/app/gwebsite/hoa-don-nhap'),
                 new AppMenuItem('Phòng ban', 'Pages.Administration.PhongBan', 'flaticon-menu-1', '/app/gwebsite/phong-ban'),
                 new AppMenuItem('Loại tài sản', 'Pages.Administration.LoaiTaiSan', 'flaticon-menu-1', '/app/gwebsite/loai-tai-san'),
                 new AppMenuItem('Bảng yêu cầu cung cấp tài sản', 'Pages.Administration.BangYeuCauCungCapTaiSan', 'flaticon-menu-1', '/app/gwebsite/bang-yeu-cau-cung-cap-tai-san'),
-                new AppMenuItem('Tài sản cố định', 'Pages.Administration.BangYeuCauCungCapTaiSan', 'flaticon-menu-1', '/app/gwebsite/tai-san-co-dinh'),
+                new AppMenuItem('Tài sản cố định', 'Pages.Administration.TaiSanCoDinh', 'flaticon-menu-1', '/app/gwebsite/tai-san-co-dinh'),
+                new AppMenuItem('Phiếu bảo dưỡng', 'Pages.Administration.PhieuBaoDuong', 'flaticon-menu-1', '/app/gwebsite/phieu-bao-duong'),
             ]),
             new AppMenuItem('Systems', '', 'flaticon-layers', '', [
                 new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),
