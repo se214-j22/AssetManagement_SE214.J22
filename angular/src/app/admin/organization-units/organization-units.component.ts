@@ -16,26 +16,9 @@ export class OrganizationUnitsComponent extends AppComponentBase {
     @ViewChild('ouMembers') ouMembers: OrganizationUnitMembersComponent;
     @ViewChild('ouAssets') ouAssets: OrganizationUnitAssetsComponent;
     @ViewChild('ouTree') ouTree: OrganizationTreeComponent;
-    assetIds: string = '11,12';
-    organizationUnitId: number = 9;
     constructor(injector: Injector,
-        private organizationUnitService: OrganizationUnitServiceProxy,
     ) {
         super(injector);
     }
 
-    placeAssetsToOrganizationUnit() {
-        let assetIds_listString = this.assetIds.split(',');
-        let assetIds_listNumber = assetIds_listString.map(assetId => {
-            return Number(assetId);
-        });
-        let input = new AssetsToOrganizationUnitInput(
-            {
-                assetIds: assetIds_listNumber,
-                organizationUnitId: this.organizationUnitId
-            });
-        this.organizationUnitService.placeAssetsToOrganizationUnit(input).subscribe(result => { 
-            this.notify.info(this.l('PlaceSuccessfully'));
-        });
-    }
 }

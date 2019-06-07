@@ -37,23 +37,63 @@ namespace GSoft.AbpZeroTemplate.Organizations
             _userOrganizationUnitRepository = userOrganizationUnitRepository;
             _assetOrganizationUnitRepository = assetOrganizationUnitRepository;
         }
+        public async Task<OrganizationUnitDto> GetOrganizationUnit()
+        {
+            var user = GetCurrentUser();
+            var organizationUnitId = _userOrganizationUnitRepository.FirstOrDefault(uo => uo.UserId == user.Id)?.OrganizationUnitId;
+            if (organizationUnitId == null)
+                return null;
+            var ou = await _organizationUnitRepository.GetAll().FirstOrDefaultAsync(o=>o.Id == organizationUnitId);
+            if (ou == null)
+                return null;
+
+            return ObjectMapper.Map<OrganizationUnitDto>(ou);
+        }
 
         public async Task<ListResultDto<OrganizationUnitDto>> GetOrganizationUnits()
         {
-            var query =
-                from ou in _organizationUnitRepository.GetAll()
-                join uou in _userOrganizationUnitRepository.GetAll() on ou.Id equals uou.OrganizationUnitId into g
-                select new { ou, memberCount = g.Count() };
+            var user = GetCurrentUser();
+            if (true) //not admin
+            {
+                var organizationUnitId = _userOrganizationUnitRepository.FirstOrDefault(uo => uo.UserId == user.Id)?.OrganizationUnitId;
+                if (organizationUnitId == null)
+                    return null;
 
-            var items = await query.ToListAsync();
+                var ouIds = await (from o in _organizationUnitRepository.GetAll()
+                                           where (o.Id == organizationUnitId || o.ParentId == organizationUnitId)
+                                           select o.Id).ToListAsync();
 
-            return new ListResultDto<OrganizationUnitDto>(
-                items.Select(item =>
-                {
-                    var dto = ObjectMapper.Map<OrganizationUnitDto>(item.ou);
-                    dto.MemberCount = item.memberCount;
-                    return dto;
-                }).ToList());
+                ouIds.Add((long)organizationUnitId);
+                var query =
+                    from ou in _organizationUnitRepository.GetAll() where ouIds.Contains(ou.Id)
+                    join uou in _userOrganizationUnitRepository.GetAll() on ou.Id equals uou.OrganizationUnitId into g
+
+                    select new { ou, memberCount = g.Count() };
+                var items = await query.ToListAsync();
+                return new ListResultDto<OrganizationUnitDto>(
+             items.Select(item =>
+             {
+                 var dto = ObjectMapper.Map<OrganizationUnitDto>(item.ou);
+                 dto.MemberCount = item.memberCount;
+                 return dto;
+             }).ToList());
+            }
+            else //admin
+            {
+                var query =
+           from ou in _organizationUnitRepository.GetAll()
+           join uou in _userOrganizationUnitRepository.GetAll() on ou.Id equals uou.OrganizationUnitId into g
+
+           select new { ou, memberCount = g.Count() };
+                var items = await query.ToListAsync();
+                return new ListResultDto<OrganizationUnitDto>(
+             items.Select(item =>
+             {
+                 var dto = ObjectMapper.Map<OrganizationUnitDto>(item.ou);
+                 dto.MemberCount = item.memberCount;
+                 return dto;
+             }).ToList());
+            }
         }
 
         public async Task<PagedResultDto<OrganizationUnitUserListDto>> GetOrganizationUnitUsers(GetOrganizationUnitUsersInput input)

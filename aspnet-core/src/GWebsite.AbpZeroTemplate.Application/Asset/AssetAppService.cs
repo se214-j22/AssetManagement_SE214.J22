@@ -3,6 +3,7 @@ using Abp.Authorization;
 using Abp.Authorization.Users;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
+using Abp.Organizations;
 using GWebsite.AbpZeroTemplate.Application;
 using GWebsite.AbpZeroTemplate.Application.Share.Assets;
 using GWebsite.AbpZeroTemplate.Application.Share.Assets.Dto;
@@ -10,6 +11,7 @@ using GWebsite.AbpZeroTemplate.Core.Authorization;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
@@ -22,30 +24,47 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
         private readonly IRepository<Asset> assetRepository;
         private readonly IRepository<AssetLine> assetLineRepository;
         private readonly IRepository<AssetOrganizationUnit> assetOrganizationUnitRepository;
+        private readonly IRepository<OrganizationUnit, long> organizationUnitRepository;
         private readonly IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository;
 
         public AssetAppService(IRepository<Asset> assetRepository, IRepository<AssetLine> assetLineRepository,
             IRepository<AssetOrganizationUnit> assetOrganizationUnitRepository,
-            IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository)
+            IRepository<OrganizationUnit, long> organizationUnitRepository,
+        IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository)
         {
             this.assetRepository = assetRepository;
             this.assetLineRepository = assetLineRepository;
             this.assetOrganizationUnitRepository = assetOrganizationUnitRepository;
+            this.organizationUnitRepository = organizationUnitRepository;
             this.userOrganizationUnitRepository = userOrganizationUnitRepository;
         }
-        public IQueryable<Asset> GetAssetsOfCurrentUser()
+        public async Task<IQueryable<Asset>> GetAssetsOfCurrentUser()
         {
+            //var user = GetCurrentUser();
+            //var organizationUnitId = userOrganizationUnitRepository.FirstOrDefault(uo => uo.UserId == user.Id)?.OrganizationUnitId;
+            //if (organizationUnitId == null)
+            //    return null;
+            //return from po in assetOrganizationUnitRepository.GetAll()
+            //       where organizationUnitId == po.OrganizationUnitId
+            //       select po.Asset;
+
             var user = GetCurrentUser();
             var organizationUnitId = userOrganizationUnitRepository.FirstOrDefault(uo => uo.UserId == user.Id)?.OrganizationUnitId;
             if (organizationUnitId == null)
                 return null;
-            return from po in assetOrganizationUnitRepository.GetAll()
-                   where organizationUnitId == po.OrganizationUnitId
-                   select po.Asset;
+
+            IList<long> ouIds;
+            ouIds = await(from o in organizationUnitRepository.GetAll()
+                          where (o.ParentId == organizationUnitId || o.Id == organizationUnitId)
+                          select o.Id).ToListAsync();
+       
+            return (from po in assetOrganizationUnitRepository.GetAll()
+                                          where ouIds.Contains(po.OrganizationUnitId)
+                                          select po.Asset);
         }
         public async Task<PagedResultDto<AssetDto>> GetsForView(AssetFilter filter)
         {
-            var query = GetAssetsOfCurrentUser().Where(x => !x.IsDelete);
+            var query = (await GetAssetsOfCurrentUser()).Where(x => !x.IsDelete);
             if (filter.AssetLineId > 0)
             {
                 query = query.Where(x => x.AssetLineId == filter.AssetLineId);
@@ -66,14 +85,18 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
             {
                 query = query.PageBy(filter);
             }
-
-
+           
             var items = await query.AsNoTracking().Include(i => i.AssetLine).ThenInclude(al => al.AssetType)
                 .Include(i => i.AssetLine).ThenInclude(al => al.Manufacturer).ToListAsync();
-
+            var items_convert = items.Select(item => ObjectMapper.Map<AssetDto>(item)).ToList();
+            foreach(var item in items_convert)
+            {
+                item.OrganizationUnitId= (await assetOrganizationUnitRepository.GetAll().FirstOrDefaultAsync(ao => ao.AssetId == item.Id)).OrganizationUnitId;
+            }
             return new PagedResultDto<AssetDto>(
                 totalCount,
-                items.Select(item => ObjectMapper.Map<AssetDto>(item)).ToList());
+                items_convert);
+
         }
 
 

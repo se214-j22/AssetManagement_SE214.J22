@@ -6219,6 +6219,58 @@ export class OrganizationUnitServiceProxy {
     /**
      * @return Success
      */
+    getOrganizationUnit(): Observable<OrganizationUnitDto> {
+        let url_ = this.baseUrl + "/api/services/app/OrganizationUnit/GetOrganizationUnit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetOrganizationUnit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetOrganizationUnit(<any>response_);
+                } catch (e) {
+                    return <Observable<OrganizationUnitDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<OrganizationUnitDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetOrganizationUnit(response: HttpResponseBase): Observable<OrganizationUnitDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? OrganizationUnitDto.fromJS(resultData200) : new OrganizationUnitDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<OrganizationUnitDto>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
     getOrganizationUnits(): Observable<ListResultDtoOfOrganizationUnitDto> {
         let url_ = this.baseUrl + "/api/services/app/OrganizationUnit/GetOrganizationUnits";
         url_ = url_.replace(/[?&]$/, "");
@@ -11821,6 +11873,7 @@ export interface IPagedResultDtoOfAssetDto {
 export class AssetDto implements IAssetDto {
     code!: string | undefined;
     isDamaged!: boolean | undefined;
+    organizationUnitId!: number | undefined;
     assetLine!: AssetLine | undefined;
     id!: number | undefined;
 
@@ -11837,6 +11890,7 @@ export class AssetDto implements IAssetDto {
         if (data) {
             this.code = data["code"];
             this.isDamaged = data["isDamaged"];
+            this.organizationUnitId = data["organizationUnitId"];
             this.assetLine = data["assetLine"] ? AssetLine.fromJS(data["assetLine"]) : <any>undefined;
             this.id = data["id"];
         }
@@ -11853,6 +11907,7 @@ export class AssetDto implements IAssetDto {
         data = typeof data === 'object' ? data : {};
         data["code"] = this.code;
         data["isDamaged"] = this.isDamaged;
+        data["organizationUnitId"] = this.organizationUnitId;
         data["assetLine"] = this.assetLine ? this.assetLine.toJSON() : <any>undefined;
         data["id"] = this.id;
         return data; 
@@ -11862,6 +11917,7 @@ export class AssetDto implements IAssetDto {
 export interface IAssetDto {
     code: string | undefined;
     isDamaged: boolean | undefined;
+    organizationUnitId: number | undefined;
     assetLine: AssetLine | undefined;
     id: number | undefined;
 }
@@ -17420,50 +17476,6 @@ export interface INotificationSubscriptionDto {
     isSubscribed: boolean | undefined;
 }
 
-export class ListResultDtoOfOrganizationUnitDto implements IListResultDtoOfOrganizationUnitDto {
-    items!: OrganizationUnitDto[] | undefined;
-
-    constructor(data?: IListResultDtoOfOrganizationUnitDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            if (data["items"] && data["items"].constructor === Array) {
-                this.items = [];
-                for (let item of data["items"])
-                    this.items.push(OrganizationUnitDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): ListResultDtoOfOrganizationUnitDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ListResultDtoOfOrganizationUnitDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (this.items && this.items.constructor === Array) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface IListResultDtoOfOrganizationUnitDto {
-    items: OrganizationUnitDto[] | undefined;
-}
-
 export class OrganizationUnitDto implements IOrganizationUnitDto {
     parentId!: number | undefined;
     code!: string | undefined;
@@ -17534,6 +17546,50 @@ export interface IOrganizationUnitDto {
     creationTime: moment.Moment | undefined;
     creatorUserId: number | undefined;
     id: number | undefined;
+}
+
+export class ListResultDtoOfOrganizationUnitDto implements IListResultDtoOfOrganizationUnitDto {
+    items!: OrganizationUnitDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfOrganizationUnitDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(OrganizationUnitDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfOrganizationUnitDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfOrganizationUnitDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IListResultDtoOfOrganizationUnitDto {
+    items: OrganizationUnitDto[] | undefined;
 }
 
 export class PagedResultDtoOfOrganizationUnitUserListDto implements IPagedResultDtoOfOrganizationUnitUserListDto {

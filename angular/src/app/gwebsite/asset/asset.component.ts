@@ -8,7 +8,7 @@ import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
-import { DemoModelServiceProxy, AssetServiceProxy, AssetDto } from '@shared/service-proxies/service-proxies';
+import { DemoModelServiceProxy, AssetServiceProxy, AssetDto, OrganizationUnitServiceProxy, OrganizationUnitDto } from '@shared/service-proxies/service-proxies';
 import jsQR from "jsqr";
 import { ViewAssetModalComponent } from './view-asset-modal.component';
 import { CreateOrEditAssetModalComponent } from './create-or-edit-asset-modal.component';
@@ -17,7 +17,7 @@ import { CreateOrEditAssetModalComponent } from './create-or-edit-asset-modal.co
   templateUrl: './asset.component.html',
   animations: [appModuleAnimation()]
 })
-export class AssetComponent extends AppComponentBase implements AfterViewInit {
+export class AssetComponent extends AppComponentBase implements OnInit, AfterViewInit {
   // @ViewChild('textsTable') textsTable: ElementRef;
   @ViewChild('dataTable') dataTable: Table;
   @ViewChild('paginator') paginator: Paginator;
@@ -28,17 +28,21 @@ export class AssetComponent extends AppComponentBase implements AfterViewInit {
   assetId: number;
   assetCode: string;
   chooseBy: 'id' | 'detecting';
+  mainOU: OrganizationUnitDto;
 
   constructor(
     injector: Injector,
     private _assetService: AssetServiceProxy,
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
-    private _apiService: WebApiServiceProxy
+    private _organizationUnitService: OrganizationUnitServiceProxy
   ) {
     super(injector);
   }
-
+  ngOnInit(): void {
+    this._organizationUnitService.getOrganizationUnit().subscribe(ou =>
+      this.mainOU = ou);
+  }
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.init();
@@ -68,9 +72,9 @@ export class AssetComponent extends AppComponentBase implements AfterViewInit {
 
   createAsset() {
     this.createOrEditModal.show();
-}
+  }
   reloadList(filterTerm, event?: LazyLoadEvent) {
-    this._assetService.getByFilter(filterTerm,0 ,  this.primengTableHelper.getSorting(this.dataTable),
+    this._assetService.getByFilter(filterTerm, 0, this.primengTableHelper.getSorting(this.dataTable),
       this.primengTableHelper.getMaxResultCount(this.paginator, event),
       this.primengTableHelper.getSkipCount(this.paginator, event),
     ).subscribe(result => {
@@ -80,9 +84,9 @@ export class AssetComponent extends AppComponentBase implements AfterViewInit {
     });
   }
 
-  deleteCustomer(id): void {
+  deleteAsset(id): void {
     this._assetService.delete(id).subscribe(() => {
-        this.reloadPage();
+      this.reloadPage();
     })
   }
 
@@ -111,7 +115,7 @@ export class AssetComponent extends AppComponentBase implements AfterViewInit {
     return abp.utils.truncateStringWithPostfix(text, 32, '...');
   }
 
-  
+
   choose() {
     this.assetCode = null;
     this.assetId = null;

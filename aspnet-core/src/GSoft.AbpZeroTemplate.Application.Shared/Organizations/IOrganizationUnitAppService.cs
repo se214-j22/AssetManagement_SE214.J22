@@ -10,6 +10,8 @@ namespace GSoft.AbpZeroTemplate.Organizations
     public interface IOrganizationUnitAppService : IApplicationService
     {
         #region Organization Unit
+        Task<OrganizationUnitDto> GetOrganizationUnit();
+
         Task<ListResultDto<OrganizationUnitDto>> GetOrganizationUnits();
 
         Task<OrganizationUnitDto> CreateOrganizationUnit(CreateOrganizationUnitInput input);

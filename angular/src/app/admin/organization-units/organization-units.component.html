@@ -25,14 +25,6 @@
                     <organization-unit-assets #ouAssets (assetsAdded)="ouTree.assetsAdded($event)"
                         ></organization-unit-assets>
                 </div>
-            <div class="col-lg-6">
-                <label>Asset</label>
-                List AssetId: <input type="text" name="AssetIds" placeholder="1,2,3" [(ngModel)]="assetIds"><br>
-                OrganizationUnitId: <input type="number" name="OrganizationUnitId" placeholder="1"
-                    [(ngModel)]="organizationUnitId"><br>
-                <button type="button" (click)="placeAssetsToOrganizationUnit()"> Place assets to organization unit
-                </button>
-            </div>
         </div>
     </div>
 </div>
