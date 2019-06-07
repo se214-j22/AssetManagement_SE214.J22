@@ -9,5 +9,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.ScanReports.Dto
     public class ScanReportForViewDto
     {
         public string ScannedData { get; set; }
+        public int Id { get; set; }
     }
 }

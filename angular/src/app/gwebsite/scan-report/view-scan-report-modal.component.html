@@ -3,8 +3,8 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">
-                    <span *ngIf="scanReport.id">{{l("EditScanReport")}}: {{scanReport.name}}</span>
+                <h4 class="modal-title" *ngIf="scanReport !== undefined">
+                    <span *ngIf="scanReport.id">{{l("EditScanReport")}}: #{{scanReport.id}}</span>
                     <span *ngIf="!scanReport.id">{{l("CreateNewScanReport")}}</span>
                 </h4>
                 <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
@@ -12,8 +12,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label>{{l("ScanReportValue")}} *</label>
+                <div class="form-group" *ngIf="scanReport !== undefined">
+                    <label>{{l("ScanReportData")}} *</label>
                     <p>{{scanReport.scannedData}}</p>
                 </div>
             </div>

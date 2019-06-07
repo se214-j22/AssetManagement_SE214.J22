@@ -1850,7 +1850,7 @@ export class ScanReportServiceProxy {
      * @skipCount (optional) 
      * @return Success
      */
-    getScanReportsByFilter(scannedData: number | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfScanReportDto> {
+    getScanReportsByFilter(scannedData: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfScanReportDto> {
         let url_ = this.baseUrl + "/api/ScanReport/GetScanReportsByFilter?";
         if (scannedData !== undefined)
             url_ += "ScannedData=" + encodeURIComponent("" + scannedData) + "&";
@@ -11976,7 +11976,7 @@ export interface IScanReportInput {
 
 export class ScanReportForViewDto implements IScanReportForViewDto {
     scannedData!: string | undefined;
-    id?: number | undefined;
+    id: number | undefined;
 
     constructor(data?: IScanReportForViewDto) {
         if (data) {
@@ -11990,6 +11990,7 @@ export class ScanReportForViewDto implements IScanReportForViewDto {
     init(data?: any) {
         if (data) {
             this.scannedData = data["scannedData"];
+            this.id = data["id"];
         }
     }
 
@@ -12003,13 +12004,14 @@ export class ScanReportForViewDto implements IScanReportForViewDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["scannedData"] = this.scannedData;
+        data["id"] = this.id;
         return data;
     }
 }
 
 export interface IScanReportForViewDto {
     scannedData: string | undefined;
-    id?: number | undefined;
+    id: number | undefined;
 }
 
 /* end scan report block */

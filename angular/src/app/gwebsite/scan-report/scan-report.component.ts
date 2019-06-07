@@ -72,7 +72,7 @@ export class ScanReportComponent extends AppComponentBase implements AfterViewIn
          * Sử dụng _apiService để call các api của backend
          */
 
-        this._scanReportService.getScanReportsByFilter(undefined, this.primengTableHelper.getSorting(this.dataTable),
+        this._scanReportService.getScanReportsByFilter(this.filterText, this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getMaxResultCount(this.paginator, event),
             this.primengTableHelper.getSkipCount(this.paginator, event),
         ).subscribe(result => {
@@ -99,12 +99,13 @@ export class ScanReportComponent extends AppComponentBase implements AfterViewIn
     }
 
     reloadPage(): void {
+        this.getScanReports();
         this.paginator.changePage(this.paginator.getPage());
     }
 
     applyFilters(): void {
         //truyền params lên url thông qua router
-        this._router.navigate(['app/gwebsite/menu-client', {
+        this._router.navigate(['app/gwebsite/scan-report', {
             filterText: this.filterText
         }]);
 
