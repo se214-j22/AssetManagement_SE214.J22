@@ -19,6 +19,12 @@
         public const string Pages_Administration_DemoModel_Edit = "Pages.Administration.DemoModel.Edit";
         public const string Pages_Administration_DemoModel_Delete = "Pages.Administration.DemoModel.Delete";
 
+        public const string Pages_Administration_ScanReport = "Pages.Administration.ScanReport";
+        public const string Pages_Administration_ScanReport_Create = "Pages.Administration.ScanReport.Create";
+        public const string Pages_Administration_ScanReport_Edit = "Pages.Administration.ScanReport.Edit";
+        public const string Pages_Administration_ScanReport_Delete = "Pages.Administration.ScanReport.Delete";
+
+
         public const string Pages_Administration_Customer = "Pages.Administration.Customer";
         public const string Pages_Administration_Customer_Create = "Pages.Administration.Customer.Create";
         public const string Pages_Administration_Customer_Edit = "Pages.Administration.Customer.Edit";

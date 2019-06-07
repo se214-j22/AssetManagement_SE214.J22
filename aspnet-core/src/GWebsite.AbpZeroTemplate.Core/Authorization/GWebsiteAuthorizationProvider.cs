@@ -41,6 +41,12 @@ namespace GWebsite.AbpZeroTemplate.Core.Authorization
             demoModel.CreateChildPermission(GWebsitePermissions.Pages_Administration_DemoModel_Edit, L("EditingDemoModel"));
             demoModel.CreateChildPermission(GWebsitePermissions.Pages_Administration_DemoModel_Delete, L("DeletingDemoModel"));
 
+
+            var scanReport = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_ScanReport, L("ScanReport"));
+            scanReport.CreateChildPermission(GWebsitePermissions.Pages_Administration_ScanReport_Create, L("CreatingNewScanReport"));
+            scanReport.CreateChildPermission(GWebsitePermissions.Pages_Administration_ScanReport_Edit, L("EditingScanReport"));
+            scanReport.CreateChildPermission(GWebsitePermissions.Pages_Administration_ScanReport_Delete, L("DeletingScanReport"));
+
             var customer = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer, L("Customer"));
             customer.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_Create, L("CreatingNewCustomer"));
             customer.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_Edit, L("EditingCustomer"));
