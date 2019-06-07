@@ -6,8 +6,7 @@ import * as _ from 'lodash';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
-import { PhongBanServiceProxy, BangYeuCauCungCapTaiSanServiceProxy, PhongBanDto } from '@shared/service-proxies/service-proxies';
-
+import { PhongBanServiceProxy, BangYeuCauCungCapTaiSanServiceProxy, PhongBanDto} from '@shared/service-proxies/service-proxies';
 import { CreateOrEditBangYeuCauCungCapTaiSanModalComponent } from './create-or-edit-bang-yeu-cau-cung-cap-tai-san-modal.component';
 import { ViewBangYeuCauCungCapTaiSanModalComponent } from './view-bang-yeu-cau-cung-cap-tai-san-modal.component';
 

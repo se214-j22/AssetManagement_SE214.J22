@@ -10,6 +10,7 @@ using GWebsite.AbpZeroTemplate.Application.Share.HoaDonNhaps.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.BangYeuCauCungCapTaiSans.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.LoaiTaiSans.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.SanPhams.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.CapPhats.Dto;
 
 namespace GWebsite.AbpZeroTemplate.Applications
 {
@@ -65,8 +66,14 @@ namespace GWebsite.AbpZeroTemplate.Applications
 			configuration.CreateMap<BangYeuCauCungCapTaiSan, BangYeuCauCungCapTaiSanInput>();
 			configuration.CreateMap<BangYeuCauCungCapTaiSan, BangYeuCauCungCapTaiSanForViewDto>();
 
-			// LoaiTaiSan
-			configuration.CreateMap<LoaiTaiSan, LoaiTaiSanDto>();
+            // CapPhat
+            configuration.CreateMap<CapPhat, CapPhatDto>();
+            configuration.CreateMap<CapPhatInput, CapPhat>();
+            configuration.CreateMap<CapPhat, CapPhatInput>();
+            configuration.CreateMap<CapPhat, CapPhatForViewDto>();
+
+            // LoaiTaiSan
+            configuration.CreateMap<LoaiTaiSan, LoaiTaiSanDto>();
 			configuration.CreateMap<LoaiTaiSanInput, LoaiTaiSan>();
 			configuration.CreateMap<LoaiTaiSan, LoaiTaiSanInput>();
 			configuration.CreateMap<LoaiTaiSan, LoaiTaiSanForViewDto>();

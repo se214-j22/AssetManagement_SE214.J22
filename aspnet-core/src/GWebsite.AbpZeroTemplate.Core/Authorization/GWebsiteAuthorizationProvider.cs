@@ -82,6 +82,11 @@ namespace GWebsite.AbpZeroTemplate.Core.Authorization
             sanPham = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_SanPham_Edit, L("EditingSanPham"));
             sanPham = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_SanPham_Delete, L("DeletingSanPham"));
 
+            var capPhat = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_CapPhat, L("CapPhat"));
+            capPhat = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_CapPhat_Create, L("CreatingNewCapPhat"));
+            capPhat = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_CapPhat_Edit, L("EditingCapPhat"));
+            capPhat = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_CapPhat_Delete, L("DeletingCapPhat"));
+
         }
 
         private static ILocalizableString L(string name)

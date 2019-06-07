@@ -12,7 +12,6 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Mã sản phẩm *</label>
@@ -34,14 +33,6 @@
                                 [(ngModel)]="sanPham.tenSP" required maxlength="64">
                         </div>
                         <validation-messages [formCtrl]="tenSPInput"></validation-messages>
-                    </div>
-                    <div class="form-group">
-                        <label>Ngày tạo *</label>
-                        <input type="date" class="form-control"  [(ngModel)]="sanPham.ngayTao" name="NgayTao" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Ngày cập nhật *</label>
-                        <input type="date" class="form-control"  [(ngModel)]="sanPham.ngayCapNhat" name="NgayCapNhat" required>
                     </div>
                     <div class="form-group">
                         <label>Trạng thái *</label>

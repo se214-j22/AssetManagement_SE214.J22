@@ -69,6 +69,7 @@
                                         <p-sortIcon field="trangThai"></p-sortIcon>
                                     </th>
                                     <th>{{l('Edit')}}</th>
+                                    <th><button (click)="exportAsXLSX()"><i class="fa fa-file-excel-o" style="color:blue"></i></button></th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-record="$implicit">

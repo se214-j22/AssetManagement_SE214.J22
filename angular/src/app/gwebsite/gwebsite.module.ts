@@ -1,4 +1,3 @@
-import { CustomerServiceProxy, SanPhamServiceProxy } from './../../shared/service-proxies/service-proxies';
 import { ViewDemoModelModalComponent } from './demo-model/view-demo-model-modal.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -16,9 +15,6 @@ import { NgxKjuaModule } from 'ngx-kjua';
 import { MenuClientComponent, CreateOrEditMenuClientModalComponent } from './index';
 import { DemoModelComponent } from './demo-model/demo-model.component';
 import { CreateOrEditDemoModelModalComponent } from './demo-model/create-or-edit-demo-model-modal.component';
-import { CustomerComponent } from './customer/customer.component';
-import { ViewCustomerModalComponent } from './customer/view-customer-modal.component';
-import { CreateOrEditCustomerModalComponent } from './customer/create-or-edit-customer-modal.component';
 import { DonViCungCapTaiSanComponent } from './don-vi-cung-cap-tai-san/don-vi-cung-cap-tai-san.component';
 import { ViewDonViCungCapTaiSanModalComponent } from './don-vi-cung-cap-tai-san/view-don-vi-cung-cap-tai-san-modal.component';
 import { CreateOrEditDonViCungCapTaiSanModalComponent } from './don-vi-cung-cap-tai-san/create-or-edit-don-vi-cung-cap-tai-san-modal.component';
@@ -40,6 +36,9 @@ import { ViewSanPhamModalComponent } from './san-pham/view-san-pham-modal.compon
 import { ScannerComponent } from './scanner/scanner.component';
 import { ScanModalComponent } from './scanner/scan-modal.component';
 import { GenerateQrComponent } from './san-pham/generate-qr.component';
+import { CapPhatComponent } from './cap-phat/cap-phat.component';
+import { CreateOrEditCapPhatModalComponent } from './cap-phat/create-or-edit-cap-phat-modal.component';
+import { ViewCapPhatModalComponent } from './cap-phat/view-cap-phat-modal.component';
 
 @NgModule({
     imports: [
@@ -63,21 +62,20 @@ import { GenerateQrComponent } from './san-pham/generate-qr.component';
         InputMaskModule,
         ZXingScannerModule,
         NgxKjuaModule,
+        
     ],
     declarations: [
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
         DemoModelComponent, CreateOrEditDemoModelModalComponent, ViewDemoModelModalComponent,
-        CustomerComponent, CreateOrEditCustomerModalComponent, ViewCustomerModalComponent,
         DonViCungCapTaiSanComponent, CreateOrEditDonViCungCapTaiSanModalComponent, ViewDonViCungCapTaiSanModalComponent,
         PhongBanComponent, CreateOrEditPhongBanModalComponent, ViewPhongBanModalComponent,
         HoaDonNhapComponent, CreateOrEditHoaDonNhapModalComponent, ViewHoaDonNhapModalComponent,
         LoaiTaiSanComponent, CreateOrEditLoaiTaiSanModalComponent, ViewLoaiTaiSanModalComponent,
         BangYeuCauCungCapTaiSanComponent, CreateOrEditBangYeuCauCungCapTaiSanModalComponent, ViewBangYeuCauCungCapTaiSanModalComponent,
-        SanPhamComponent, CreateOrEditSanPhamModalComponent, ViewSanPhamModalComponent, ScannerComponent, ScanModalComponent, GenerateQrComponent
+        SanPhamComponent, CreateOrEditSanPhamModalComponent, ViewSanPhamModalComponent, ScannerComponent, ScanModalComponent, GenerateQrComponent, CapPhatComponent,
+        CapPhatComponent, CreateOrEditCapPhatModalComponent, ViewCapPhatModalComponent,
     ],
     providers: [
-        SanPhamServiceProxy
-        
     ]
 })
 export class GWebsiteModule { }

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MenuClientComponent } from '@app/gwebsite/menu-client/menu-client.component';
 import { DemoModelComponent } from './demo-model/demo-model.component';
-import { CustomerComponent } from './customer/customer.component';
 import { DonViCungCapTaiSanComponent } from './don-vi-cung-cap-tai-san/don-vi-cung-cap-tai-san.component';
 import { PhongBanComponent } from './phong-ban/phong-ban.component';
 import { HoaDonNhapComponent } from './hoa-don-nhap/hoa-don-nhap.component';
@@ -10,6 +9,7 @@ import { LoaiTaiSanComponent } from './loai-tai-san/loai-tai-san.component';
 import { BangYeuCauCungCapTaiSanComponent } from './bang-yeu-cau-cung-cap-tai-san/bang-yeu-cau-cung-cap-tai-san.component';
 import { SanPhamComponent } from './san-pham/san-pham.component';
 import { ScannerComponent } from './scanner/scanner.component';
+import { CapPhatComponent } from './cap-phat/cap-phat.component';
 
 @NgModule({
     imports: [
@@ -38,15 +38,6 @@ import { ScannerComponent } from './scanner/scanner.component';
                     {
                         path: 'scanner', component: ScannerComponent,
                         data: { permission: 'Pages.Administration.SanPham' }
-                    },
-                ]
-            },
-            {
-                path: '',
-                children: [
-                    {
-                        path: 'customer', component: CustomerComponent,
-                        data: { permission: 'Pages.Administration.Customer' }
                     },
                 ]
             },
@@ -101,6 +92,15 @@ import { ScannerComponent } from './scanner/scanner.component';
                     {
                         path: 'san-pham', component: SanPhamComponent,
                         data: { permission: 'Pages.Administration.SanPham' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'cap-phat', component: CapPhatComponent,
+                        data: { permission: 'Pages.Administration.CapPhat' }
                     },
                 ]
             },

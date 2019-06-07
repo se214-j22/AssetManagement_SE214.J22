@@ -1,4 +1,4 @@
-import { BangYeuCauCungCapTaiSanServiceProxy, BangYeuCauCungCapTaiSanInput, PhongBanDto } from '@shared/service-proxies/service-proxies'
+import { BangYeuCauCungCapTaiSanServiceProxy, BangYeuCauCungCapTaiSanInput, PhongBanDto,SanPhamDto } from '@shared/service-proxies/service-proxies'
 import { Component, ViewChild, ElementRef, Output, Injector, EventEmitter, Input } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';

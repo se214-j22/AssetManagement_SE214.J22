@@ -13,33 +13,29 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Mã sản phẩm</label>
+                    <h6>Mã sản phẩm</h6>
                     <p>{{sanPham.maSP}}</p>
                 </div>
                 <div class="form-group">
-                    <label>Tên sản phẩm</label>
+                    <h6>Tên sản phẩm</h6>
                     <p>{{sanPham.tenSP}}</p>
                 </div>
                 <div class="form-group">
-                    <label>Ngày tạo</label>
+                    <h6>Ngày tạo</h6>
                     <p *ngIf="sanPham.ngayTao">{{sanPham.ngayTao.format('DD/MM/YYYY')}}</p>
                 </div>
                 <div class="form-group">
-                    <label>Ngày cập nhật</label>
+                    <h6>Ngày cập nhật</h6>
                     <p *ngIf="sanPham.ngayCapNhat">{{sanPham.ngayCapNhat.format('DD/MM/YYYY')}}</p>
                 </div>
                 <div class="form-group">
-                    <label>Trạng thái</label>
+                    <h6>Trạng thái</h6>
                     <p>{{sanPham.trangThai}}</p>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default"
                     (click)="close()">{{l("Cancel")}}</button>
-                <button type="submit" class="btn btn-primary">
-                  <i class="fa fa-save"></i>
-                  <span>{{l("Save")}}</span>
-                </button>
             </div>
         </div>
     </div>

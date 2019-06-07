@@ -59,5 +59,10 @@
         public const string Pages_Administration_SanPham_Edit = "Pages.Administration.SanPham.Edit";
         public const string Pages_Administration_SanPham_Delete = "Pages.Administration.SanPham.Delete";
 
+        public const string Pages_Administration_CapPhat = "Pages.Administration.CapPhat";
+        public const string Pages_Administration_CapPhat_Create = "Pages.Administration.CapPhat.Create";
+        public const string Pages_Administration_CapPhat_Edit = "Pages.Administration.CapPhat.Edit";
+        public const string Pages_Administration_CapPhat_Delete = "Pages.Administration.CapPhat.Delete";
+
     }
 }

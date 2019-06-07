@@ -11,6 +11,7 @@ import { CreateOrEditSanPhamModalComponent } from './create-or-edit-san-pham-mod
 import { ViewSanPhamModalComponent } from './view-san-pham-modal.component';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import * as moment from 'moment/moment.js';
+import {ExcelService} from './services/excel.service';
 
 @Component({
     templateUrl: './san-pham.component.html',
@@ -41,11 +42,17 @@ export class SanPhamComponent extends AppComponentBase implements AfterViewInit,
         private _sanPhamService: SanPhamServiceProxy,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
-        private _apiService: WebApiServiceProxy
+        private _apiService: WebApiServiceProxy,
+        private excelService:ExcelService
     ) {
         super(injector);
     }
 
+    exportAsXLSX():void {
+        this.excelService.exportAsExcelFile(this.data, 'report');
+     }
+
+     data: any = [];
     /**
      * Hàm xử lý trước khi View được init
      */
@@ -88,7 +95,9 @@ export class SanPhamComponent extends AppComponentBase implements AfterViewInit,
         ).subscribe(result => {
             this.primengTableHelper.totalRecordsCount = result.totalCount;
             this.primengTableHelper.records = result.items;
+            
             this.primengTableHelper.hideLoadingIndicator();
+            this.data=result.items;
         });
     }
     deleteSanPham(id): void {
@@ -130,7 +139,6 @@ export class SanPhamComponent extends AppComponentBase implements AfterViewInit,
         }
     
     }
-
     //hàm show view create MenuClient
     createSanPham() {
         this.createOrEditModal.show();

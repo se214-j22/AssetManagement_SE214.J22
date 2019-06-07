@@ -54,14 +54,18 @@ export class CreateOrEditSanPhamModalComponent extends AppComponentBase {
         let input = this.sanPham;
         this.saving = true;
 
-        input.ngayTao = moment(input.ngayTao + ' ' + '0:01'); // moment phải có thời gian thì mới gọi .toISOString() được
-        input.ngayTao.utcOffset(0, true); // Khi gọi .toISOString() thì nó offset timezone nên phải set timezone là 0 trước
+         // lấy giờ hệ thống
+         let now = new Date();
+            
+        
+         input.ngayTao= moment(now);
+         input.ngayTao.utcOffset(0, true);
 
-        input.ngayCapNhat= moment(input.ngayCapNhat + ' ' + '0:01'); // moment phải có thời gian thì mới gọi .toISOString() được
+        input.ngayCapNhat= moment(now); // moment phải có thời gian thì mới gọi .toISOString() được
         input.ngayCapNhat.utcOffset(0, true); // Khi gọi .toISOString() thì nó offset timezone nên phải set timezone là 0 trước
 
         this._sanPhamService.createOrEditSanPham(input).subscribe(result => {
-            this.notify.info(this.l('SavedSuccessfully'));
+            this.notify.info(this.l('Saved Successfully'));
             this.close();
         })
 
