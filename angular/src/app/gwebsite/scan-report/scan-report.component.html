@@ -45,6 +45,14 @@
                             [responsive]="primengTableHelper.isResponsive">
                             <ng-template pTemplate="header">
                                 <tr>
+                                    <th pSortableColumn="id">
+                                        {{l('#')}}
+                                        <p-sortIcon field="id"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="createdDate">
+                                        {{l('createdDate')}}
+                                        <p-sortIcon field="createdDate"></p-sortIcon>
+                                    </th>
                                     <th pSortableColumn="scannedData">
                                         {{l('ScannedData')}}
                                         <p-sortIcon field="scannedData"></p-sortIcon>
@@ -55,25 +63,32 @@
                             <ng-template pTemplate="body" let-record="$implicit">
                                 <tr>
                                     <td>
+                                        <span class="ui-column-title">{{l('Id')}}</span>
+                                        <span title="{{record.id}}">{{truncateString(record.id)}}</span>
+                                    </td>
+
+                                    <td>
+                                        <span class="ui-column-title">{{l('createdDate')}}</span>
+                                        <span title="{{record.createdDateText}}">{{record.createdDateText}}</span>
+                                    </td>
+
+                                    <td>
                                         <span class="ui-column-title">{{l('ScannedData')}}</span>
                                         <span title="{{record.scannedData}}">{{truncateString(record.scannedData)}}</span>
                                     </td>
                                     <td>
-                                        <button
-                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
-                                            (click)="createOrEditModal.show(record.id)" title="{{l('Edit')}}">
+                                        <button class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                                (click)="createOrEditModal.show(record.id)" title="{{l('Edit')}}">
                                             <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
                                         </button>
 
-                                        <button
-                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
-                                            (click)="deleteScanReport(record.id)" title="{{l('Delete')}}">
+                                        <button class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                                (click)="deleteScanReport(record.id)" title="{{l('Delete')}}">
                                             <i class="fa fa-trash" [attr.aria-label]="l('Delete')"></i>
                                         </button>
 
-                                        <button
-                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
-                                            (click)="viewScanReportModal.show(record.id)" title="{{l('View')}}">
+                                        <button class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                                (click)="viewScanReportModal.show(record.id)" title="{{l('View')}}">
                                             <i class="fa fa-eye" [attr.aria-label]="l('View')"></i>
                                         </button>
                                     </td>

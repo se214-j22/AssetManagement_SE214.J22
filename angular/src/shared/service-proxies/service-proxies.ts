@@ -11897,6 +11897,7 @@ export interface IPagedResultDtoOfScanReportDto {
 export class ScanReportDto implements IScanReportDto {
     scannedData!: string | undefined;
     id!: number | undefined;
+    createdDate!: string | undefined;
 
     constructor(data?: IScanReportDto) {
         if (data) {
@@ -11911,6 +11912,7 @@ export class ScanReportDto implements IScanReportDto {
         if (data) {
             this.scannedData = data["scannedData"];
             this.id = data["id"];
+            this.createdDate = data["createdDate"];
         }
     }
 
@@ -11925,6 +11927,7 @@ export class ScanReportDto implements IScanReportDto {
         data = typeof data === 'object' ? data : {};
         data["scannedData"] = this.scannedData;
         data["id"] = this.id;
+        this.createdDate = data["createdDate"];
         return data;
     }
 }
@@ -11932,6 +11935,7 @@ export class ScanReportDto implements IScanReportDto {
 export interface IScanReportDto {
     scannedData: string | undefined;
     id: number | undefined;
+    createdDate: string | undefined;
 }
 
 export class ScanReportInput implements IScanReportInput {
@@ -11977,6 +11981,7 @@ export interface IScanReportInput {
 export class ScanReportForViewDto implements IScanReportForViewDto {
     scannedData!: string | undefined;
     id: number | undefined;
+    createdDate: string | undefined;
 
     constructor(data?: IScanReportForViewDto) {
         if (data) {
@@ -11991,6 +11996,7 @@ export class ScanReportForViewDto implements IScanReportForViewDto {
         if (data) {
             this.scannedData = data["scannedData"];
             this.id = data["id"];
+            this.createdDate = data["createdDate"];
         }
     }
 
@@ -12005,6 +12011,7 @@ export class ScanReportForViewDto implements IScanReportForViewDto {
         data = typeof data === 'object' ? data : {};
         data["scannedData"] = this.scannedData;
         data["id"] = this.id;
+        this.createdDate = data["createdDate"];
         return data;
     }
 }
@@ -12012,6 +12019,7 @@ export class ScanReportForViewDto implements IScanReportForViewDto {
 export interface IScanReportForViewDto {
     scannedData: string | undefined;
     id: number | undefined;
+    createdDate: string | undefined;
 }
 
 /* end scan report block */

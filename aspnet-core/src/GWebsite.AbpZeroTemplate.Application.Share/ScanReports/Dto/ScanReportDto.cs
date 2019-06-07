@@ -10,5 +10,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.ScanReports.Dto
     public class ScanReportDto : Entity<int>
     {
         public string ScannedData { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

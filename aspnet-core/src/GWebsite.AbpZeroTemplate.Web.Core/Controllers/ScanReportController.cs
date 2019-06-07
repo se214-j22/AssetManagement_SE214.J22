@@ -40,6 +40,12 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpGet]
+        public ScanReportDto Scan()
+        {
+            return scanReportAppService.Scan();
+        }
+
+        [HttpGet]
         public ScanReportInput GetScanReportForEdit(int id)
         {
             return scanReportAppService.GetScanReportForEdit(id);

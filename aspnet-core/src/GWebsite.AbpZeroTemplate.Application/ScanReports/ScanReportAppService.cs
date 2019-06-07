@@ -13,6 +13,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using GWebsite.AbpZeroTemplate.Core.Helper;
+using Newtonsoft.Json;
+using System.IO;
+
 namespace GWebsite.AbpZeroTemplate.Web.Core.ScanReports
 {
     [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient)]
@@ -24,31 +27,70 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.ScanReports
         {
             this.scanReportRepository = scanReportRepository;
         }
+
+        public ScanReportAppService()
+        {
+        }
+
+        public ScanReportDto Scan()
+        {
+            Dictionary<string, object> result = new Dictionary<string, object>();
+
+            result.Add("hardwareScan", this.ScanHardware());
+            result.Add("softwareScan", this.ScanSoftware());
+
+            ScanReportInput input = new ScanReportInput();
+            input.ScannedData = JsonConvert.SerializeObject(result);
+            input.Id = 0;
+
+            return this.CreateOrEditScanReport(input);
+        }
         public Dictionary<string, object> ScanHardware()
         {
             Dictionary<string, object> result = new Dictionary<string, object>();
 
-            result.Add("cpuManufacture", HardwareInfo.GetCPUManufacturer());
+            result.Add("cpuManufacture", HardwareInfo.GetCPUManufacturer().ToString());
 
-            result.Add("biosMaker", HardwareInfo.GetBIOSmaker());
+            result.Add("cpuCores", HardwareInfo.GetCpuSpeedInGHz().ToString());
 
-            result.Add("boardMaker", HardwareInfo.GetBoardMaker());
+            result.Add("biosMaker", HardwareInfo.GetBIOSmaker().ToString());
 
-            result.Add("ramSlots", HardwareInfo.GetNoRamSlots());
+            result.Add("boardMaker", HardwareInfo.GetBoardMaker().ToString());
 
-            result.Add("memory", HardwareInfo.GetPhysicalMemory());
+            result.Add("ramSlots", HardwareInfo.GetNoRamSlots().ToString());
 
-            result.Add("cdROM", HardwareInfo.GetCdRomDrive());
+            result.Add("memory", HardwareInfo.GetPhysicalMemory().ToString());
 
-            result.Add("computerName", HardwareInfo.GetComputerName());
+            result.Add("cdROM", HardwareInfo.GetCdRomDrive().ToString());
 
-            result.Add("osInformation", HardwareInfo.GetOSInformation());
+            result.Add("computerName", HardwareInfo.GetComputerName().ToString());
 
-            result.Add("macAddress", HardwareInfo.GetMACAddress());
+            result.Add("osInformation", HardwareInfo.GetOSInformation().ToString());
 
-            result.Add("accountName", HardwareInfo.GetAccountName());
+            result.Add("macAddress", HardwareInfo.GetMACAddress().ToString());
 
-            result.Add("drives", System.IO.DriveInfo.GetDrives()); 
+            result.Add("accountName", HardwareInfo.GetAccountName().ToString());
+
+            DriveInfo[] allDrives = DriveInfo.GetDrives();
+            List<Dictionary<string, object>> driveList = new List<Dictionary<string, object>>();
+
+            foreach (DriveInfo d in allDrives)
+            {
+                Dictionary<string, object> driveInfo = new Dictionary<string, object>();
+
+                driveInfo.Add("driveName", d.Name);
+                driveInfo.Add("driveType", d.DriveType);
+                driveInfo.Add("volumeLabel", d.VolumeLabel);
+                driveInfo.Add("driveFormat", d.DriveFormat);
+                driveInfo.Add("availableFreeSpace", d.AvailableFreeSpace);
+                driveInfo.Add("totalFreeSpace", d.TotalFreeSpace);
+                driveInfo.Add("totalSize", d.TotalSize);
+
+                driveList.Add(driveInfo);
+         
+            }
+
+            result.Add("drives", driveList); 
 
             return result;
         }
@@ -164,11 +206,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.ScanReports
 
             var totalCount = query.Count();
 
-            // sorting
-            if (!string.IsNullOrWhiteSpace(input.Sorting))
-            {
-                query = query.OrderBy(input.Sorting);
-            }
+            query = query.OrderByDescending(item => item.CreatedDate);
 
             // paging
             var items = query.PageBy(input).ToList();

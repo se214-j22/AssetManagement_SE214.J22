@@ -18,5 +18,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.ScanReports
         List<Dictionary<string, object>> ScanSoftware();
 
         Dictionary<string, object> ScanHardware();
+        ScanReportDto Scan();
     }
 }

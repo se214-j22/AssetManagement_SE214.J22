@@ -14,6 +14,9 @@ using Microsoft.Extensions.Configuration;
 using GSoft.AbpZeroTemplate.Configuration;
 using GSoft.AbpZeroTemplate.EntityFrameworkCore;
 using GSoft.AbpZeroTemplate.MultiTenancy;
+using GWebsite.AbpZeroTemplate.Web.Core;
+using Hangfire;
+using System;
 
 namespace GSoft.AbpZeroTemplate.Web.Startup
 {
@@ -45,6 +48,10 @@ namespace GSoft.AbpZeroTemplate.Web.Startup
 
         public override void PostInitialize()
         {
+            var workManager = IocManager.Resolve<IBackgroundWorkerManager>();
+            // enable scaning
+            workManager.Add(IocManager.Resolve<Scan>());
+
             using (var scope = IocManager.CreateScope())
             {
                 if (!scope.Resolve<DatabaseCheckHelper>().Exist(_appConfiguration["ConnectionStrings:Default"]))
@@ -53,14 +60,15 @@ namespace GSoft.AbpZeroTemplate.Web.Startup
                 }
             }
 
+
             if (IocManager.Resolve<IMultiTenancyConfig>().IsEnabled)
             {
-                var workManager = IocManager.Resolve<IBackgroundWorkerManager>();
                 workManager.Add(IocManager.Resolve<SubscriptionExpirationCheckWorker>());
                 workManager.Add(IocManager.Resolve<SubscriptionExpireEmailNotifierWorker>());
             }
             
             ConfigureExternalAuthProviders();
+        
         }
 
         private void ConfigureExternalAuthProviders()

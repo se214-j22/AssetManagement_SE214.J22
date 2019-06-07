@@ -78,6 +78,7 @@ export class ScanReportComponent extends AppComponentBase implements AfterViewIn
         ).subscribe(result => {
             this.primengTableHelper.totalRecordsCount = result.totalCount;
             this.primengTableHelper.records = result.items;
+            this.primengTableHelper.records.map(item => item.createdDateText = `${new Date(item.createdDate).toLocaleTimeString('vi')} - ${new Date(item.createdDate).toLocaleDateString('vi')}`);
             this.primengTableHelper.hideLoadingIndicator();
         });
 
