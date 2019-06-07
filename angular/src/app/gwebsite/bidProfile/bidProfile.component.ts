@@ -89,7 +89,46 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
             day: new Date().getDate() - 1
         }
     };
-
+    public editStartDatePickerOptions: IMyDpOptions = {
+        selectorWidth: '270px',
+        dateFormat: 'dd/mm/yyyy',
+        showTodayBtn: true,
+        todayBtnTxt: 'Now',
+        showClearDateBtn: true,
+        alignSelectorRight: true,
+        openSelectorOnInputClick: true,
+        inline: false,
+        editableDateField: false,
+        selectionTxtFontSize: '13px',
+        height: '37px',
+        firstDayOfWeek: 'su',
+        sunHighlight: true,
+        disableUntil: {
+            year: new Date().getFullYear(),
+            month: new Date().getMonth() + 1,
+            day: new Date().getDate() - 1
+        }
+    };
+    public editEndDatePickerOptions: IMyDpOptions = {
+        selectorWidth: '270px',
+        dateFormat: 'dd/mm/yyyy',
+        showTodayBtn: true,
+        todayBtnTxt: 'Now',
+        showClearDateBtn: true,
+        alignSelectorRight: true,
+        openSelectorOnInputClick: true,
+        inline: false,
+        editableDateField: false,
+        selectionTxtFontSize: '13px',
+        height: '37px',
+        firstDayOfWeek: 'su',
+        sunHighlight: true,
+        disableUntil: {
+            year: new Date().getFullYear(),
+            month: new Date().getMonth() + 1,
+            day: new Date().getDate() - 1
+        }
+    };
     public createEndDatePickerOptions: IMyDpOptions = {
         selectorWidth: '240px',
         dateFormat: 'dd/mm/yyyy',
@@ -385,6 +424,15 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         this.endDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
     }
 
+    public onDateChangedByEditStart(event: IMyDateModel): void {
+        // const date = Object.assign({}, event);
+        // this.startDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
+    }
+    public onDateChangedByEditEnd(event: IMyDateModel): void {
+        // const date = Object.assign({}, event);
+        // this.endDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
+    }
+
     public actionEdit(row: any, $event: Event): void {
         // $event.stopPropagation();
         this.oldObject['name'] = row.name;
@@ -446,6 +494,8 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
     //chỉ những người có permission mới đc phép thực thi action với PC
     public removePcItem(id: number, row: any, index: number): void {
         if (this.isPermissionEditCloseActive) {
+            // dựa vào id truyền vào, remove
+
             this.primengTableHelper.records.splice(index, 1);
         }
         this.primengTableHelper.hideLoadingIndicator();

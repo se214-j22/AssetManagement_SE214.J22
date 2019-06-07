@@ -131,11 +131,11 @@
                                             {{l('Bid Catalog')}}
                                             <p-sortIcon field="bidCatalog"></p-sortIcon>
                                         </th>
-                                        <th pSortableColumn="startReceivedDate" style="width: 200px; text-align: center">
+                                        <th pSortableColumn="startReceivedDate" style="width: 150px; text-align: center">
                                             {{l('Start Received Date')}}
                                             <p-sortIcon field="startReceivedDate"></p-sortIcon>
                                         </th>
-                                        <th pSortableColumn="endReceivedDate" style="width: 200px; text-align: center">
+                                        <th pSortableColumn="endReceivedDate" style="width: 150px; text-align: center">
                                             {{l('End Received Date')}}
                                             <p-sortIcon field="endReceivedDate"></p-sortIcon>
                                         </th>
@@ -182,15 +182,24 @@
                                                 </select>
                                             </div>
                                         </td>
-                                        <td style="width: 200px">
+                                        <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Start Received Date')}}</span>
-                                            <span
-                                                title="{{record.startReceivedDate}}">{{truncateString(record.startReceivedDate)}}</span>
+                                            <span title="{{record.startReceivedDate}}">{{truncateString(record.startReceivedDate)}}</span>
+                                            <!-- <div *ngIf="record.isEdit">
+                                                <my-date-picker class="flex" name="startDate" [placeholder]="'  Select A Start Date'"
+                                                    [options]="editStartDatePickerOptions" (dateChanged)="onDateChangedByEditStart($event)">
+                                                </my-date-picker>
+                                            </div> -->
                                         </td>
-                                        <td style="width: 200px">
+                                        <td style="width: 150px">
                                             <span class="ui-column-title">{{l('End Received Date')}}</span>
-                                            <span
+                                            <span 
                                                 title="{{record.endReceivedDate}}">{{truncateString(record.endReceivedDate)}}</span>
+                                            <!-- <div *ngIf="record.isEdit">
+                                                <my-date-picker class="flex" name="startDate" [placeholder]="'  Select A Start Date'"
+                                                    [options]="editStartDatePickerOptions" (dateChanged)="onDateChangedByEditEnd($event)">
+                                                </my-date-picker>
+                                            </div> -->
                                         </td>
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Bid Type')}}</span>
