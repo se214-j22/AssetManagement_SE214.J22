@@ -13,7 +13,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.SubPlans.Dto
     {
 
         public string Name { get; set; }
-        public int productId { get; set; }
+        public int ProductId { get; set; }
         public void Normalize()
         {
             if (string.IsNullOrEmpty(Sorting))

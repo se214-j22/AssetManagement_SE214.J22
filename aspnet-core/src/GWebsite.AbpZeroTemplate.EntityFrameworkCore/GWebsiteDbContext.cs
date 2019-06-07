@@ -354,6 +354,11 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
                      .HasForeignKey(i => i.SupplierId)
                      .OnDelete(DeleteBehavior.Restrict);
 
+                entity.HasMany(p => p.SubPlans)
+                    .WithOne(i => i.Product)
+                    .HasForeignKey(i => i.ProductId)
+                     .OnDelete(DeleteBehavior.Restrict);
+
             });
             //modelBuilder.Entity<Bidding>(entity =>
             //{

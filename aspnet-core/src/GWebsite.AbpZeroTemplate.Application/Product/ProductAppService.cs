@@ -31,17 +31,25 @@ namespace GWebsite.AbpZeroTemplate.Web.Core
 
         public async Task<PagedResultDto<ProductDto>> GetProductsAsync(GetProductInput input)
         {
-            IQueryable<Product> query = this.productRepository.GetAllIncluding().Include(p => p.ProductType).Include(p => p.Supplier).Where(p=>p.Name.Contains(input.Name)&& p.Code.Contains(input.Code));
+            IQueryable<Product> query = this.productRepository.GetAllIncluding().Include(p => p.ProductType).Include(p => p.Supplier);
             if (input.Status == 1 || input.Status == 2)
             {
                 query = query.Where(p => p.Status == input.Status);
             }
-            var totalCount = await query.CountAsync();
-            if (totalCount == 0)
+            if (input.Name!=null)
             {
-                query = this.productRepository.GetAllIncluding().Include(p => p.ProductType).Include(p => p.Supplier);
-                totalCount = await query.CountAsync();
+                query = query.Where(p => p.Name.Contains(input.Name));
             }
+            if (input.Code!=null)
+            {
+                query = query.Where(p => p.Code.Contains(input.Code));
+            }
+            var totalCount = await query.CountAsync();
+            //if (totalCount == 0)
+            //{
+            //    query = this.productRepository.GetAllIncluding().Include(p => p.ProductType).Include(p => p.Supplier);
+            //    totalCount = await query.CountAsync();
+            //}
             List<Product> items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
             return new PagedResultDto<ProductDto>(
              totalCount,

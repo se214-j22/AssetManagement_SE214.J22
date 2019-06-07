@@ -23,11 +23,13 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public int? SupplierId { get; set; }
         public ProductType ProductType { get; set; }
         public int? ProductTypeId { get; set; }
+        public ICollection<SubPlan> SubPlans { get; set; }
         //public ICollection<PurchaseProduct> PurchaseProducts { get; set; }
         //public ICollection<Bidding> Biddings { get; set; }
         public Product()
         {
             CreateDate = DateTime.Now;
+            SubPlans = new Collection<SubPlan>();
             //PurchaseProducts = new Collection<PurchaseProduct>();
             //Biddings = new Collection<Bidding>();
         }

@@ -1,15 +1,12 @@
 ﻿using Abp.Application.Services.Dto;
-using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
-using GSoft.AbpZeroTemplate.Authorization.Users;
 using GWebsite.AbpZeroTemplate.Application;
 using GWebsite.AbpZeroTemplate.Application.Share.SubPlans;
 using GWebsite.AbpZeroTemplate.Application.Share.SubPlans.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
@@ -28,14 +25,22 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.SubPlans
 
         public async Task<PagedResultDto<SubPlanDto>> GetSubPlanWithFilterAsync(SubPlanListInputDto input)
         {
-            IQueryable<SubPlan> query = subPlanRepository.GetAllIncluding(p => p.Product).Where(p => p.ProductId.Equals(input.productId) || p.Product.Name.Contains(input.Name));
-            int totalCount = await query.CountAsync();
-            if (totalCount == 0)
+            IQueryable<SubPlan> query = subPlanRepository.GetAllIncluding(p => p.Product);
+            if (input.ProductId != default(int))
             {
-                query = subPlanRepository.GetAll();
-                totalCount = await query.CountAsync();
+                query = query.Where(p => p.ProductId.Equals(input.ProductId));
             }
-            List<SubPlan> items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
+            if (input.Name != null)
+            {
+                query = query.Where(p => p.Product.Name.Contains(input.Name));
+            }
+            int totalCount = await query.CountAsync();
+            //if (totalCount == 0)
+            //{
+            //    query = subPlanRepository.GetAll();
+            //    totalCount = await query.CountAsync();
+            //}
+            var items = await query.PageBy(input).ToListAsync();
             return new PagedResultDto<SubPlanDto>(
             totalCount,
              items.Select(item => this.ObjectMapper.Map<SubPlanDto>(item)).ToList());
