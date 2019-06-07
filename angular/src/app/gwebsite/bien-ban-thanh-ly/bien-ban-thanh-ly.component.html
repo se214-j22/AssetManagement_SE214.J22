@@ -4,15 +4,15 @@
         <div class="d-flex align-items-center">
             <div class="mr-auto col-xs-6">
                 <h3 class="m-subheader__title m-subheader__title--separator">
-                    <span>{{l("Phiếu bảo dưỡng, sửa chữa")}}</span>
+                    <span>{{l("Biên bản thanh lý")}}</span>
                 </h3>
                 <span class="m-section__sub">
                     {{l("Thông tin")}}
                 </span>
             </div>
             <div class="col-xs-6 text-right">
-                <button (click)="createPhieuBaoDuong()" *ngIf="isGranted('Pages.Administration.PhieuBaoDuong.Create')"
-                    class="btn btn-primary"><i class="fa fa-plus"></i> {{l("Tạo mới Phiếu bảo dưỡng")}}</button>
+                <button (click)="createBienBanThanhLy()" *ngIf="isGranted('Pages.Administration.BienBanThanhLy.Create')"
+                    class="btn btn-primary"><i class="fa fa-plus"></i> {{l("Tạo mới Biên bản thanh lý")}}</button>
             </div>
         </div>
     </div>
@@ -25,8 +25,8 @@
                         <div class="row align-items-center m--margin-bottom-10">
                             <div class="col-sm-12">
                                 <div class="input-group">
-                                    <input [(ngModel)]="soHoaDonFilter" name="soHoaDonFilter" autoFocus class="form-control"
-                                        placeholder="Tìm kiếm theo số hóa đơn" type="text">
+                                    <input [(ngModel)]="tenDonViThanhLyFilter" name="tenDonViThanhLyFilter" autoFocus class="form-control"
+                                        placeholder="Tìm kiếm theo tên đơn vị thanh lý" type="text">
                                     <span class="input-group-btn">
                                         <button (click)="applyFilters()" class="btn btn-primary" type="submit"><i
                                                 class="icon-refresh"></i>
@@ -40,27 +40,35 @@
                 <div class="row align-items-center">
                     <!--<Primeng-TurboTable-Start>-->
                     <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
-                        <p-table #dataTable (onLazyLoad)="getPhieuBaoDuongs($event)" [value]="primengTableHelper.records"
+                        <p-table #dataTable (onLazyLoad)="getBienBanThanhLys($event)" [value]="primengTableHelper.records"
                             rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
                             [responsive]="primengTableHelper.isResponsive">
                             <ng-template pTemplate="header">
                                 <tr>
-                                    <th pSortableColumn="phieuBaoDuong.id">
-                                        Mã phiếu
-                                        <p-sortIcon field="phieuBaoDuong.id"></p-sortIcon>
+                                    <th pSortableColumn="bienBanThanhLy.id">
+                                        Mã biên bản
+                                        <p-sortIcon field="bienBanThanhLy.id"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="phieuBaoDuong.taiSanCoDinhId">
+                                    <th pSortableColumn="bienBanThanhLy.taiSanCoDinhId">
                                         <!-- (?) Tại sao có Id lại ko dc -->
                                         Tên tài sản
-                                        <p-sortIcon field="phieuBaoDuong.taiSanCoDinhId"></p-sortIcon>
+                                        <p-sortIcon field="bienBanThanhLy.taiSanCoDinhId"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="phieuBaoDuong.soHoaDon">
-                                        Số hóa đơn
-                                        <p-sortIcon field="phieuBaoDuong.soHoaDon"></p-sortIcon>
+                                    <th pSortableColumn="bienBanThanhLy.ngayThanhLy">
+                                        Ngày thanh lý
+                                        <p-sortIcon field="bienBanThanhLy.ngayThanhLy"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="phieuBaoDuong.chiPhi">
-                                        Chi phí
-                                        <p-sortIcon field="phieuBaoDuong.chiPhi"></p-sortIcon>
+                                    <th pSortableColumn="bienBanThanhLy.tenDonViThanhLy">
+                                        Tên đơn vị thanh lý
+                                        <p-sortIcon field="bienBanThanhLy.tenDonViThanhLy"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="bienBanThanhLy.chiPhiThanhLy">
+                                        Chi phí thanh lý
+                                        <p-sortIcon field="bienBanThanhLy.chiPhiThanhLy"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="bienBanThanhLy.loiNhuan">
+                                        Lợi nhuận thu lại
+                                        <p-sortIcon field="bienBanThanhLy.loiNhuan"></p-sortIcon>
                                     </th>
                                     <th>{{l('Thao tác')}}</th>
                                 </tr>
@@ -70,42 +78,52 @@
                                     <td>
                                         <span class="ui-column-title">Mã phiếu</span>
                                         <span
-                                            title="{{record.phieuBaoDuong.id}}">{{truncateString(record.phieuBaoDuong.id)}}</span>
+                                            title="{{record.bienBanThanhLy.id}}">{{truncateString(record.bienBanThanhLy.id)}}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">Tên tài sản</span>
                                         <span
-                                            title="{{record.tenTaiSan}}">{{truncateString(record.tenTaiSan)}}</span>
+                                            title="{{record.tenTaiSanCoDinh}}">{{truncateString(record.tenTaiSanCoDinh)}}</span>
                                     </td>
                                     <td>
-                                        <span class="ui-column-title">Số hóa đơn</span>
-                                        <span
-                                            title="{{record.phieuBaoDuong.soHoaDon}}">{{truncateString(record.phieuBaoDuong.soHoaDon)}}</span>
+                                        <span class="ui-column-title">Ngày thanh lý</span>
+                                        <span *ngIf="record.bienBanThanhLy.ngayThanhLy"
+                                            title="{{record.bienBanThanhLy.ngayThanhLy.format('DD/MM/YYYY')}}">{{truncateString(record.bienBanThanhLy.ngayThanhLy.format('DD/MM/YYYY'))}}</span>
                                     </td>
                                     <td>
-                                        <span class="ui-column-title">Chi phí</span>
+                                        <span class="ui-column-title">Tên đơn vị thanh lý</span>
                                         <span
-                                            title="{{record.phieuBaoDuong.chiPhi}}">{{truncateString(record.phieuBaoDuong.chiPhi.toLocaleString())}} VNĐ</span>
+                                            title="{{record.bienBanThanhLy.tenDonViThanhLy}}">{{truncateString(record.bienBanThanhLy.tenDonViThanhLy)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Chi phí thanh lý</span>
+                                        <span
+                                            title="{{record.bienBanThanhLy.chiPhiThanhLy}}">{{truncateString(record.bienBanThanhLy.chiPhiThanhLy.toLocaleString())}} VNĐ</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Lợi nhuận thu lại</span>
+                                        <span
+                                            title="{{record.bienBanThanhLy.loiNhuan}}">{{truncateString(record.bienBanThanhLy.loiNhuan.toLocaleString())}} VNĐ</span>
                                     </td>
 
 
                                     <td>
                                         <button
                                             class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
-                                            (click)="createOrEditModal.show(record.phieuBaoDuong.id)"
+                                            (click)="createOrEditModal.show(record.bienBanThanhLy.id)"
                                             title="{{l('Edit')}}">
                                             <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
                                         </button>
 
                                         <button
                                             class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
-                                            (click)="deletePhieuBaoDuong(record.phieuBaoDuong.id)" title="{{l('Delete')}}">
+                                            (click)="deleteBienBanThanhLy(record.bienBanThanhLy.id)" title="{{l('Delete')}}">
                                             <i class="fa fa-times" [attr.aria-label]="l('Delete')"></i>
                                         </button>
 
                                         <button
                                             class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
-                                            (click)="viewPhieuBaoDuongModal.show(record.phieuBaoDuong.id)"
+                                            (click)="viewBienBanThanhLyModal.show(record.bienBanThanhLy.id)"
                                             title="{{l('View')}}">
                                             <i class="fa fa-eye" [attr.aria-label]="l('View')"></i>
                                         </button>
@@ -118,7 +136,7 @@
                         </div>
                         <div class="primeng-paging-container">
                             <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
-                                (onPageChange)="getPhieuBaoDuongs($event)"
+                                (onPageChange)="getBienBanThanhLys($event)"
                                 [totalRecords]="primengTableHelper.totalRecordsCount"
                                 [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
                             </p-paginator>
@@ -133,6 +151,6 @@
         </div>
     </div>
 
-    <viewPhieuBaoDuongModal #viewPhieuBaoDuongModal></viewPhieuBaoDuongModal>
-    <createOrEditPhieuBaoDuongModal #createOrEditModal (modalSave)="reloadPage()" [taiSanCoDinhs]="taiSanCoDinhs"></createOrEditPhieuBaoDuongModal>
+    <viewBienBanThanhLyModal #viewBienBanThanhLyModal></viewBienBanThanhLyModal>
+    <createOrEditBienBanThanhLyModal #createOrEditModal (modalSave)="reloadPage()" [taiSanCoDinhs]="taiSanCoDinhs"></createOrEditBienBanThanhLyModal>
 </div>

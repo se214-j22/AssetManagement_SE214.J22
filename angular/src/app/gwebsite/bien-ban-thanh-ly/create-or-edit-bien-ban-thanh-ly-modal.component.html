@@ -1,0 +1,69 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="bienBanThanhLyInput.id">Cập nhật Biên bản thanh lý: {{bienBanThanhLyInput.id}}</span>
+                        <span *ngIf="!bienBanThanhLyInput.id">Tạo mới Biên bản thanh lý</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Tài sản cố định {{bienBanThanhLyInput.taiSanCoDinhId}} *</label>
+                        <select class="custom-select" [(ngModel)]="bienBanThanhLyInput.taiSanCoDinhId" name="loaiTaiSanId">
+                            <option value="{{item.taiSanCoDinh.id}}" *ngFor="let item of taiSanCoDinhs">{{item.taiSanCoDinh.tenTaiSan}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ngày thanh lý *</label>
+                        <input type="date" class="form-control" [ngModel]="bienBanThanhLyInput.ngayThanhLy | date:'yyyy-MM-dd'" (ngModelChange)="bienBanThanhLyInput.ngayThanhLy = $event" name="ngayThanhLy" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tên đơn vị thanh lý *</label>
+                        <input #tenDonViThanhLyInput="ngModel" class="form-control" type="text" name="tenDonViThanhLy"
+                            [(ngModel)]="bienBanThanhLyInput.tenDonViThanhLy" required maxlength="64">
+                        <validation-messages [formCtrl]="tenDonViThanhLyInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Chi phí thanh lý *</label>
+                        <div class="input-group">
+                            <input #chiPhiThanhLyInput="ngModel" [(ngModel)]="bienBanThanhLyInput.chiPhiThanhLy" name="chiPhiThanhLy" type="number" class="form-control" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text">VNĐ</span>
+                            </div>
+                        </div>
+                        <validation-messages [formCtrl]="chiPhiThanhLyInput"></validation-messages>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Lợi nhuận thu lại *</label>
+                        <div class="input-group">
+                            <input #loiNhuanInput="ngModel" [(ngModel)]="bienBanThanhLyInput.loiNhuan" name="loiNhuan" type="number" class="form-control" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text">VNĐ</span>
+                            </div>
+                        </div>
+                        <validation-messages [formCtrl]="loiNhuanInput"></validation-messages>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

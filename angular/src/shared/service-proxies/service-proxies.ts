@@ -1310,6 +1310,295 @@ export class BangYeuCauCungCapTaiSanServiceProxy {
 }
 
 @Injectable()
+export class BienBanThanhLyServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @tenDonViThanhLy (optional) 
+     * @sorting (optional) 
+     * @maxResultCount (optional) 
+     * @skipCount (optional) 
+     * @return Success
+     */
+    getBienBanThanhLysByFilter(tenDonViThanhLy: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfBienBanThanhLyForViewDto> {
+        let url_ = this.baseUrl + "/api/BienBanThanhLy/GetBienBanThanhLysByFilter?";
+        if (tenDonViThanhLy !== undefined)
+            url_ += "TenDonViThanhLy=" + encodeURIComponent("" + tenDonViThanhLy) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBienBanThanhLysByFilter(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBienBanThanhLysByFilter(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfBienBanThanhLyForViewDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfBienBanThanhLyForViewDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetBienBanThanhLysByFilter(response: HttpResponseBase): Observable<PagedResultDtoOfBienBanThanhLyForViewDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultDtoOfBienBanThanhLyForViewDto.fromJS(resultData200) : new PagedResultDtoOfBienBanThanhLyForViewDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfBienBanThanhLyForViewDto>(<any>null);
+    }
+
+    /**
+     * @id (optional) 
+     * @return Success
+     */
+    getBienBanThanhLyForEdit(id: number | null | undefined): Observable<BienBanThanhLyInput> {
+        let url_ = this.baseUrl + "/api/BienBanThanhLy/GetBienBanThanhLyForEdit?";
+        if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBienBanThanhLyForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBienBanThanhLyForEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<BienBanThanhLyInput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<BienBanThanhLyInput>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetBienBanThanhLyForEdit(response: HttpResponseBase): Observable<BienBanThanhLyInput> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? BienBanThanhLyInput.fromJS(resultData200) : new BienBanThanhLyInput();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<BienBanThanhLyInput>(<any>null);
+    }
+
+    /**
+     * @input (optional) 
+     * @return Success
+     */
+    createOrEditBienBanThanhLy(input: BienBanThanhLyInput | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/BienBanThanhLy/CreateOrEditBienBanThanhLy";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEditBienBanThanhLy(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEditBienBanThanhLy(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateOrEditBienBanThanhLy(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @return Success
+     */
+    deleteBienBanThanhLy(id: number): Observable<void> {
+        let url_ = this.baseUrl + "/api/BienBanThanhLy/DeleteBienBanThanhLy/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteBienBanThanhLy(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteBienBanThanhLy(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteBienBanThanhLy(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @id (optional) 
+     * @return Success
+     */
+    getBienBanThanhLyForView(id: number | null | undefined): Observable<BienBanThanhLyDto> {
+        let url_ = this.baseUrl + "/api/BienBanThanhLy/GetBienBanThanhLyForView?";
+        if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBienBanThanhLyForView(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBienBanThanhLyForView(<any>response_);
+                } catch (e) {
+                    return <Observable<BienBanThanhLyDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<BienBanThanhLyDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetBienBanThanhLyForView(response: HttpResponseBase): Observable<BienBanThanhLyDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? BienBanThanhLyDto.fromJS(resultData200) : new BienBanThanhLyDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<BienBanThanhLyDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class CachingServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -13104,6 +13393,206 @@ export interface IBangYeuCauCungCapTaiSanForViewDto {
     phongBanId: number | undefined;
     soLuong: number | undefined;
     ngayYeuCau: moment.Moment | undefined;
+    id: number | undefined;
+}
+
+export class PagedResultDtoOfBienBanThanhLyForViewDto implements IPagedResultDtoOfBienBanThanhLyForViewDto {
+    totalCount!: number | undefined;
+    items!: BienBanThanhLyForViewDto[] | undefined;
+
+    constructor(data?: IPagedResultDtoOfBienBanThanhLyForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(BienBanThanhLyForViewDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfBienBanThanhLyForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedResultDtoOfBienBanThanhLyForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IPagedResultDtoOfBienBanThanhLyForViewDto {
+    totalCount: number | undefined;
+    items: BienBanThanhLyForViewDto[] | undefined;
+}
+
+export class BienBanThanhLyForViewDto implements IBienBanThanhLyForViewDto {
+    bienBanThanhLy!: BienBanThanhLyDto | undefined;
+    tenTaiSanCoDinh!: string | undefined;
+
+    constructor(data?: IBienBanThanhLyForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.bienBanThanhLy = data["bienBanThanhLy"] ? BienBanThanhLyDto.fromJS(data["bienBanThanhLy"]) : <any>undefined;
+            this.tenTaiSanCoDinh = data["tenTaiSanCoDinh"];
+        }
+    }
+
+    static fromJS(data: any): BienBanThanhLyForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BienBanThanhLyForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["bienBanThanhLy"] = this.bienBanThanhLy ? this.bienBanThanhLy.toJSON() : <any>undefined;
+        data["tenTaiSanCoDinh"] = this.tenTaiSanCoDinh;
+        return data; 
+    }
+}
+
+export interface IBienBanThanhLyForViewDto {
+    bienBanThanhLy: BienBanThanhLyDto | undefined;
+    tenTaiSanCoDinh: string | undefined;
+}
+
+export class BienBanThanhLyDto implements IBienBanThanhLyDto {
+    taiSanCoDinhId!: number | undefined;
+    ngayThanhLy!: moment.Moment | undefined;
+    tenDonViThanhLy!: string | undefined;
+    chiPhiThanhLy!: number | undefined;
+    loiNhuan!: number | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IBienBanThanhLyDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.taiSanCoDinhId = data["taiSanCoDinhId"];
+            this.ngayThanhLy = data["ngayThanhLy"] ? moment(data["ngayThanhLy"].toString()) : <any>undefined;
+            this.tenDonViThanhLy = data["tenDonViThanhLy"];
+            this.chiPhiThanhLy = data["chiPhiThanhLy"];
+            this.loiNhuan = data["loiNhuan"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): BienBanThanhLyDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BienBanThanhLyDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["taiSanCoDinhId"] = this.taiSanCoDinhId;
+        data["ngayThanhLy"] = this.ngayThanhLy ? this.ngayThanhLy.toISOString() : <any>undefined;
+        data["tenDonViThanhLy"] = this.tenDonViThanhLy;
+        data["chiPhiThanhLy"] = this.chiPhiThanhLy;
+        data["loiNhuan"] = this.loiNhuan;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IBienBanThanhLyDto {
+    taiSanCoDinhId: number | undefined;
+    ngayThanhLy: moment.Moment | undefined;
+    tenDonViThanhLy: string | undefined;
+    chiPhiThanhLy: number | undefined;
+    loiNhuan: number | undefined;
+    id: number | undefined;
+}
+
+export class BienBanThanhLyInput implements IBienBanThanhLyInput {
+    taiSanCoDinhId!: number | undefined;
+    ngayThanhLy!: moment.Moment | undefined;
+    tenDonViThanhLy!: string | undefined;
+    chiPhiThanhLy!: number | undefined;
+    loiNhuan!: number | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IBienBanThanhLyInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.taiSanCoDinhId = data["taiSanCoDinhId"];
+            this.ngayThanhLy = data["ngayThanhLy"] ? moment(data["ngayThanhLy"].toString()) : <any>undefined;
+            this.tenDonViThanhLy = data["tenDonViThanhLy"];
+            this.chiPhiThanhLy = data["chiPhiThanhLy"];
+            this.loiNhuan = data["loiNhuan"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): BienBanThanhLyInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new BienBanThanhLyInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["taiSanCoDinhId"] = this.taiSanCoDinhId;
+        data["ngayThanhLy"] = this.ngayThanhLy ? this.ngayThanhLy.toISOString() : <any>undefined;
+        data["tenDonViThanhLy"] = this.tenDonViThanhLy;
+        data["chiPhiThanhLy"] = this.chiPhiThanhLy;
+        data["loiNhuan"] = this.loiNhuan;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IBienBanThanhLyInput {
+    taiSanCoDinhId: number | undefined;
+    ngayThanhLy: moment.Moment | undefined;
+    tenDonViThanhLy: string | undefined;
+    chiPhiThanhLy: number | undefined;
+    loiNhuan: number | undefined;
     id: number | undefined;
 }
 

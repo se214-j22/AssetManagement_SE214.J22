@@ -24,6 +24,7 @@ export class AppNavigationService {
                 new AppMenuItem('Bảng yêu cầu cung cấp tài sản', 'Pages.Administration.BangYeuCauCungCapTaiSan', 'flaticon-menu-1', '/app/gwebsite/bang-yeu-cau-cung-cap-tai-san'),
                 new AppMenuItem('Tài sản cố định', 'Pages.Administration.TaiSanCoDinh', 'flaticon-menu-1', '/app/gwebsite/tai-san-co-dinh'),
                 new AppMenuItem('Phiếu bảo dưỡng', 'Pages.Administration.PhieuBaoDuong', 'flaticon-menu-1', '/app/gwebsite/phieu-bao-duong'),
+                new AppMenuItem('Biên bản thanh lý', 'Pages.Administration.BienBanThanhLy', 'flaticon-menu-1', '/app/gwebsite/bien-ban-thanh-ly'),
             ]),
             new AppMenuItem('Systems', '', 'flaticon-layers', '', [
                 new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),

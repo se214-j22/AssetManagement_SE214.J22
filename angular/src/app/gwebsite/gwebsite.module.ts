@@ -38,6 +38,9 @@ import { ViewTaiSanCoDinhModalComponent } from './tai-san-co-dinh/view-tai-san-c
 import { PhieuBaoDuongComponent } from './phieu-bao-duong/phieu-bao-duong.component';
 import { CreateOrEditPhieuBaoDuongModalComponent } from './phieu-bao-duong/create-or-edit-phieu-bao-duong-modal.component';
 import { ViewPhieuBaoDuongModalComponent } from './phieu-bao-duong/view-phieu-bao-duong-modal.component';
+import { BienBanThanhLyComponent } from './bien-ban-thanh-ly/bien-ban-thanh-ly.component';
+import { CreateOrEditBienBanThanhLyModalComponent } from './bien-ban-thanh-ly/create-or-edit-bien-ban-thanh-ly-modal.component';
+import { ViewBienBanThanhLyModalComponent } from './bien-ban-thanh-ly/view-bien-ban-thanh-ly-modal.component';
 
 @NgModule({
     imports: [
@@ -71,6 +74,7 @@ import { ViewPhieuBaoDuongModalComponent } from './phieu-bao-duong/view-phieu-ba
         BangYeuCauCungCapTaiSanComponent, CreateOrEditBangYeuCauCungCapTaiSanModalComponent, ViewBangYeuCauCungCapTaiSanModalComponent,
         TaiSanCoDinhComponent, CreateOrEditTaiSanCoDinhModalComponent, ViewTaiSanCoDinhModalComponent,
         PhieuBaoDuongComponent, CreateOrEditPhieuBaoDuongModalComponent, ViewPhieuBaoDuongModalComponent,
+        BienBanThanhLyComponent, CreateOrEditBienBanThanhLyModalComponent, ViewBienBanThanhLyModalComponent,
     ],
     providers: [
         
