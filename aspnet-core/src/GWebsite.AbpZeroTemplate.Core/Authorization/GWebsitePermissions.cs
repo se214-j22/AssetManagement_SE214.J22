@@ -59,5 +59,10 @@
         public const string Pages_Administration_TaiSanCoDinh_Edit = "Pages.Administration.TaiSanCoDinh.Edit";
         public const string Pages_Administration_TaiSanCoDinh_Delete = "Pages.Administration.TaiSanCoDinh.Delete";
 
-    }
+		public const string Pages_Administration_PhieuBaoDuong = "Pages.Administration.PhieuBaoDuong";
+		public const string Pages_Administration_PhieuBaoDuong_Create = "Pages.Administration.PhieuBaoDuong.Create";
+		public const string Pages_Administration_PhieuBaoDuong_Edit = "Pages.Administration.PhieuBaoDuong.Edit";
+		public const string Pages_Administration_PhieuBaoDuong_Delete = "Pages.Administration.PhieuBaoDuong.Delete";
+
+	}
 }
