@@ -15,8 +15,8 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>{{l("ScanReportValue")}} *</label>
-                        <input #valueInput="ngModel" class="form-control" type="number" min="0" name="ScannedData"
-                            [(ngModel)]="scanReport.scannedData" required maxlength="64">
+                        <input #valueInput="ngModel" class="form-control" type="text" min="0" name="ScannedData"
+                            [(ngModel)]="scanReport.scannedData" require>
                         <validation-messages [formCtrl]="valueInput"></validation-messages>
                     </div>
                 </div>

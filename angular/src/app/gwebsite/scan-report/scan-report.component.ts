@@ -72,7 +72,7 @@ export class ScanReportComponent extends AppComponentBase implements AfterViewIn
          * Sử dụng _apiService để call các api của backend
          */
 
-        this._scanReportService.getScanReportsByFilter(null, null, this.primengTableHelper.getSorting(this.dataTable),
+        this._scanReportService.getScanReportsByFilter(undefined, this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getMaxResultCount(this.paginator, event),
             this.primengTableHelper.getSkipCount(this.paginator, event),
         ).subscribe(result => {

@@ -1830,11 +1830,16 @@ export class CustomerServiceProxy {
 export class ScanReportServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
+    private token: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ? baseUrl : "";
+        const token = abp.auth.getToken();
+        if (token) {
+            this.token = 'Bearer ' + token;
+        }
     }
 
     /**
@@ -1845,10 +1850,10 @@ export class ScanReportServiceProxy {
      * @skipCount (optional) 
      * @return Success
      */
-    getScanReportsByFilter(value: number | null | undefined, date: moment.Moment | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfScanReportDto> {
+    getScanReportsByFilter(scannedData: number | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfScanReportDto> {
         let url_ = this.baseUrl + "/api/ScanReport/GetScanReportsByFilter?";
-        if (value !== undefined)
-            url_ += "ScannedData=" + encodeURIComponent("" + value) + "&";
+        if (scannedData !== undefined)
+            url_ += "ScannedData=" + encodeURIComponent("" + scannedData) + "&";
       
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1857,7 +1862,8 @@ export class ScanReportServiceProxy {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "Authorization": this.token
             })
         };
 
@@ -1886,7 +1892,7 @@ export class ScanReportServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 ? PagedResultDtoOfScanReportDto.fromJS(resultData200) : new PagedResultDtoOfScanReportDto();
+                result200 = resultData200 ? PagedResultDtoOfScanReportDto.fromJS(resultData200.result) : new PagedResultDtoOfScanReportDto();
                 return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1912,7 +1918,8 @@ export class ScanReportServiceProxy {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "Authorization": this.token
             })
         };
 
@@ -1941,7 +1948,7 @@ export class ScanReportServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 ? ScanReportInput.fromJS(resultData200) : new ScanReportInput();
+                result200 = resultData200 ? ScanReportInput.fromJS(resultData200.result) : new ScanReportInput();
                 return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1968,7 +1975,8 @@ export class ScanReportServiceProxy {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "Authorization": this.token
             })
         };
 
@@ -1997,7 +2005,7 @@ export class ScanReportServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 ? ScanReportDto.fromJS(resultData200) : new ScanReportDto();
+                result200 = resultData200 ? ScanReportDto.fromJS(resultData200.result) : new ScanReportDto();
                 return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2023,6 +2031,7 @@ export class ScanReportServiceProxy {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
+                "Authorization": this.token
             })
         };
 
@@ -2074,7 +2083,8 @@ export class ScanReportServiceProxy {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "Authorization": this.token
             })
         };
 
@@ -2103,7 +2113,7 @@ export class ScanReportServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 ? ScanReportForViewDto.fromJS(resultData200) : new ScanReportForViewDto();
+                result200 = resultData200 ? ScanReportForViewDto.fromJS(resultData200.result) : new ScanReportForViewDto();
                 return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -11966,6 +11976,7 @@ export interface IScanReportInput {
 
 export class ScanReportForViewDto implements IScanReportForViewDto {
     scannedData!: string | undefined;
+    id?: number | undefined;
 
     constructor(data?: IScanReportForViewDto) {
         if (data) {
@@ -11998,6 +12009,7 @@ export class ScanReportForViewDto implements IScanReportForViewDto {
 
 export interface IScanReportForViewDto {
     scannedData: string | undefined;
+    id?: number | undefined;
 }
 
 /* end scan report block */
@@ -12022,7 +12034,7 @@ export class DateToStringOutput implements IDateToStringOutput {
     static fromJS(data: any): DateToStringOutput {
         data = typeof data === 'object' ? data : {};
         let result = new DateToStringOutput();
-        result.init(data);
+        result.init(data.result);
         return result;
     }
 

@@ -21,6 +21,9 @@ export class ViewScanReportModalComponent extends AppComponentBase {
     ) {
         super(injector);
     }
+    close() {
+        this.modal.hide();
+    }
 
     show(scanReportId?: number | null | undefined): void {
 

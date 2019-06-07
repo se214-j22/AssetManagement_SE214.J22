@@ -56,8 +56,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.ScanReports
             var scanReportEntity = scanReportRepository.Get(id);
             if (scanReportEntity != null)
             {
-                scanReportEntity.IsDelete = true;
-                scanReportRepository.Update(scanReportEntity);
+                scanReportRepository.Delete(id);
                 CurrentUnitOfWork.SaveChanges();
             }
         }
