@@ -10,6 +10,7 @@ import { ModalModule, PopoverModule, TabsModule, TooltipModule, BsDatepickerModu
 import { AutoCompleteModule, EditorModule, FileUploadModule as PrimeNgFileUploadModule, InputMaskModule, PaginatorModule } from 'primeng/primeng';
 import { TableModule } from 'primeng/table';
 import { GWebsiteRoutingModule } from './gwebsite-routing.module';
+import { QRCodeModule } from 'angularx-qrcode';
 
 import { MenuClientComponent, CreateOrEditMenuClientModalComponent } from './index';
 import { DemoModelComponent } from './demo-model/demo-model.component';
@@ -64,7 +65,8 @@ import { ViewBienBanBanGiaoTaiSanModalComponent } from './bien-ban-ban-giao-tai-
         PrimeNgFileUploadModule,
         AutoCompleteModule,
         EditorModule,
-        InputMaskModule
+        InputMaskModule,
+        QRCodeModule,
     ],
     declarations: [
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
