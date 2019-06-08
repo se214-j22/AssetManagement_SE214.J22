@@ -1,18 +1,3 @@
-<!-- <div class="printMe" style="padding: 20px 20px">
-  <div *ngIf='asset'>
-    <qr-code [value]="asset.code" [size]="300"></qr-code>
-    <p>Id: {{asset.id}}</p>
-    <p>CODE: {{asset.code}}</p>
-    <p>Type: {{asset.assetLine.assetType.name}}</p>
-    <p>Manufacturer: {{asset.assetLine.manufacturer.name}}</p>
-    <p>Line: {{asset.assetLine.name}}</p>
-    <p>Name: {{asset.assetLine.assetType.name}} {{asset.assetLine.manufacturer.name}} {{asset.assetLine.name}}</p>
-  </div>
-</div>
-
-<button (click)="onPrint()">Print asset</button> -->
-
-
 <div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
     aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
@@ -63,19 +48,13 @@
                             <p>{{asset.assetLine?.name}}</p>
                         </div>
                     </div>
-          <!--#endregion -->
+                    <!--#endregion -->
                 </div>
             </div>
-              <div class="modal-footer">
-                  <button [disabled]="saving" type="button" class="btn btn-default"
-                      (click)="close()">{{l("Cancel")}}</button>
-                                <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
-                                    [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
-                                    <span>{{l("Save")}}</span></button>
-                        </div>
-
-
-                    </div>
-
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="close()">{{l("OK")}}</button>
+                <button type="button" class="btn btn-default" (click)="onPrint()">{{l("Print")}}</button>
             </div>
+        </div>
+    </div>
+</div>

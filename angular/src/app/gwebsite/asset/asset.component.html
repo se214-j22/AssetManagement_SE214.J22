@@ -1,22 +1,3 @@
-<!-- <button (click)='choose()'>Choose the way to detect(id/camera)</button>
-<div *ngIf='chooseBy == "id"'>
-    Detecting by Id
-    Asset Id: <input type="number" name="assetId" [(ngModel)]="assetId"><br>
-    <button (click)='getAssetByID()'>View Asset</button>
-</div>
-
-<div id = 'detectingByCamera' #detectingByCamera style='display:none'>
-    Detecting by camera
-    <div class="camera">
-        <video id="video" #video width="width" height="height" (canplay)="onCanPlay($event)">
-            Video stream not available.
-        </video>
-    </div>
-
-    <canvas id="canvas" #canvas width="width" height="height" style="display: none">
-    </canvas>
-</div>
-<app-view-asset-modal [asset]='asset'></app-view-asset-modal> -->
 <div [@routerTransition]>
 
     <div class="m-subheader ">
@@ -30,6 +11,8 @@
                 </span>
             </div>
             <div class="col-xs-6 text-right">
+                    <button (click)="createOrEditModal.showForModify()" *ngIf="isGranted('Pages.Administration.Asset.Create_Edit')"
+                    class="btn btn-primary"><i class="fa fa-plus"></i> {{l("ModifyMultipleAsset")}}</button>
                 <button (click)="createAsset()" *ngIf="isGranted('Pages.Administration.Asset.Create_Edit')"
                     class="btn btn-primary"><i class="fa fa-plus"></i> {{l("CreateNewAsset")}}</button>
             </div>
@@ -49,7 +32,7 @@
                                     <span class="input-group-btn">
                                         <button (click)="applyFilters()" class="btn btn-primary" type="submit"><i
                                                 class="icon-refresh"></i>
-                                            {{l("Refresh")}}</button>
+                                            {{l("Filter")}}</button>
                                     </span>
                                 </div>
                             </div>
@@ -101,23 +84,28 @@
                                     </td>
                                     <td>
                                         <span class="ui-column-title">Name</span>
-                                        <span title="{{record.code}}">{{record.assetLine.assetType.name}} {{record.assetLine.manufacturer.name}} {{record.assetLine.name}}</span>
+                                        <span title="{{record.code}}">{{record.assetLine.assetType.name}}
+                                            {{record.assetLine.manufacturer.name}} {{record.assetLine.name}}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">Asset Type</span>
-                                        <span title="{{record.assetLine.assetType.name}}">{{truncateString(record.assetLine.assetType.name)}}</span>
+                                        <span
+                                            title="{{record.assetLine.assetType.name}}">{{truncateString(record.assetLine.assetType.name)}}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">Manufacturer</span>
-                                        <span title="{{record.assetLine.manufacturer.name}}">{{truncateString(record.assetLine.manufacturer.name)}}</span>
+                                        <span
+                                            title="{{record.assetLine.manufacturer.name}}">{{truncateString(record.assetLine.manufacturer.name)}}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">Asset Line</span>
-                                        <span title="{{record.assetLine.name}}">{{truncateString(record.assetLine.name)}}</span>
+                                        <span
+                                            title="{{record.assetLine.name}}">{{truncateString(record.assetLine.name)}}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">Status</span>
-                                        <span title="{{record.isDamaged}}">{{record.isDamaged? 'Damaged' : record.organizationUnitId==mainOU.id?'Resting':'Using'}}</span>
+                                        <span
+                                            title="{{record.isDamaged}}">{{record.isDamaged? 'Damaged' : record.organizationUnitId==mainOU.id?'Resting':'Using'}}</span>
 
                                     </td>
                                     <td>
@@ -147,8 +135,7 @@
                         </div>
                         <div class="primeng-paging-container">
                             <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
-                                (onPageChange)="getAssets($event)"
-                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                (onPageChange)="getAssets($event)" [totalRecords]="primengTableHelper.totalRecordsCount"
                                 [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
                             </p-paginator>
                             <span class="total-records-count">
