@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, Injector, Input, Output, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective, DatePickerComponent } from 'ngx-bootstrap';
-import { HoaDonNhapServiceProxy, HoaDonNhapInput, DonViCungCapTaiSanDto, LoaiTaiSanDto, HoaDonNhapOutput, BienBanThanhLyInput, BienBanThanhLyServiceProxy, TaiSanCoDinhForViewDto } from '@shared/service-proxies/service-proxies';
+import { HoaDonNhapServiceProxy, HoaDonNhapInput, DonViCungCapTaiSanDto, LoaiTaiSanDto, HoaDonNhapOutput, BienBanThanhLyInput, BienBanThanhLyServiceProxy, TaiSanCoDinhForViewDto, TaiSanCoDinhServiceProxy } from '@shared/service-proxies/service-proxies';
 import * as moment from 'moment';
 
 
@@ -29,7 +29,8 @@ export class CreateOrEditBienBanThanhLyModalComponent extends AppComponentBase {
 
     constructor(
         injector: Injector,
-        private _bienBanThanhLyService: BienBanThanhLyServiceProxy
+        private _bienBanThanhLyService: BienBanThanhLyServiceProxy,
+        private _taiSanService: TaiSanCoDinhServiceProxy,
     ) {
         super(injector);
     }
@@ -54,11 +55,14 @@ export class CreateOrEditBienBanThanhLyModalComponent extends AppComponentBase {
             input.ngayThanhLy.utcOffset(0, true); // Khi gọi .toISOString() thì nó offset timezone nên phải set timezone là 0 trước
         }
 
-        this._bienBanThanhLyService.createOrEditBienBanThanhLy(input).subscribe(result => {
-            this.notify.info(this.l('SavedSuccessfully'));
-            this.close();
-        })
+        this._taiSanService.getTaiSanCoDinhForView(input.taiSanCoDinhId).subscribe(result => {
+            input.loiNhuan = result.giaTriTaiSan - input.chiPhiThanhLy;
 
+            this._bienBanThanhLyService.createOrEditBienBanThanhLy(input).subscribe(result => {
+                this.notify.info(this.l('SavedSuccessfully'));
+                this.close();
+            })
+        })
     }
 
     close(): void {

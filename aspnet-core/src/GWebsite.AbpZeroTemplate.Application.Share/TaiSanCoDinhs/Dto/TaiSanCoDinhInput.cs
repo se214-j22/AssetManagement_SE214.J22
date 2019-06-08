@@ -15,5 +15,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.TaiSanCoDinhs.Dto
         public string MoTa { get; set; }
         public bool TinhTrang { get; set; }
         public decimal GiaTriTaiSan { get; set; }
-    }
+		public decimal HaoMonTaiSan { get; set; }
+	}
 }

@@ -21839,6 +21839,7 @@ export class TaiSanCoDinhInput implements ITaiSanCoDinhInput {
     moTa!: string | undefined;
     tinhTrang!: boolean | undefined;
     giaTriTaiSan!: number | undefined;
+    haoMonTaiSan!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: ITaiSanCoDinhInput) {
@@ -21858,6 +21859,7 @@ export class TaiSanCoDinhInput implements ITaiSanCoDinhInput {
             this.moTa = data["moTa"];
             this.tinhTrang = data["tinhTrang"];
             this.giaTriTaiSan = data["giaTriTaiSan"];
+            this.haoMonTaiSan = data["haoMonTaiSan"];
             this.id = data["id"];
         }
     }
@@ -21877,6 +21879,7 @@ export class TaiSanCoDinhInput implements ITaiSanCoDinhInput {
         data["moTa"] = this.moTa;
         data["tinhTrang"] = this.tinhTrang;
         data["giaTriTaiSan"] = this.giaTriTaiSan;
+        data["haoMonTaiSan"] = this.haoMonTaiSan;
         data["id"] = this.id;
         return data; 
     }
@@ -21889,6 +21892,7 @@ export interface ITaiSanCoDinhInput {
     moTa: string | undefined;
     tinhTrang: boolean | undefined;
     giaTriTaiSan: number | undefined;
+    haoMonTaiSan: number | undefined;
     id: number | undefined;
 }
 

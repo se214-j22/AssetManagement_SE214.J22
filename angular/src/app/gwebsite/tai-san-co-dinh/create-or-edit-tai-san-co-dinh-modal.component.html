@@ -44,8 +44,11 @@
 
                     <div class="form-group">
                         <label>Tình trạng *</label>
-                        <input #tinhTrangInput="ngModel" class="form-control" type="checkbox" name="TinhTrang"
-                            [(ngModel)]="taiSanCoDinhInput.tinhTrang" required>
+                        <label style="margin-bottom: 0; margin-left: 20px; display: flex; align-items: center;">
+                            Còn mới:
+                            <input #tinhTrangInput="ngModel" class="form-control" type="checkbox" name="TinhTrang"
+                            [(ngModel)]="taiSanCoDinhInput.tinhTrang" required style="width: 25px;">
+                        </label>
                     </div>
 
                     <div class="form-group">
