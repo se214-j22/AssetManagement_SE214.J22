@@ -217,30 +217,11 @@ namespace GSoft.AbpZeroTemplate.Organizations
 
         public async Task<PagedResultDto<OrganizationUnitAssetListDto>> GetAssets(GetOrganizationUnitAssetsInput input)
         {
-            #region assetsInWarehouseQuery
-            var user = GetCurrentUser();
-            var organizationUnitId = _userOrganizationUnitRepository.FirstOrDefault(uo => uo.UserId == user.Id)?.OrganizationUnitId;
-            if (organizationUnitId == null)
-                return null;
-
-            IList<long> ouIds;
-            //if (containsChildOrganizationUnit)
-            //{
-            ouIds = await (from o in _organizationUnitRepository.GetAll()
-                           where (o.ParentId == organizationUnitId || o.Id == organizationUnitId)
-                           select o.Id).ToListAsync();
-            //}
-            //else
-            //{
-            //    ouIds = await (from o in _organizationUnitRepository.GetAll()
-            //                   where (o.Id == organizationUnitId)
-            //                   select o.Id).ToListAsync();
-            //}
+            // validation: check whether organization belongs to current user
 
             var assetsInWarehouseQuery = (from po in _assetOrganizationUnitRepository.GetAll()
-                                          where ouIds.Contains(po.OrganizationUnitId)
+                                          where po.OrganizationUnitId == input.Id && po.Asset.IsDelete==false
                                           select po.Asset).AsNoTracking();
-            #endregion
 
             var items = await assetsInWarehouseQuery.OrderBy(input.Sorting).PageBy(input).ToListAsync();
 
@@ -270,7 +251,7 @@ namespace GSoft.AbpZeroTemplate.Organizations
             //if (containsChildOrganizationUnit)
             //{
                 ouIds = await (from o in _organizationUnitRepository.GetAll()
-                               where (o.ParentId == organizationUnitId || o.Id == organizationUnitId)
+                               where (o.Id == organizationUnitId || o.ParentId == organizationUnitId)
                                select o.Id).ToListAsync();
             //}
             //else
@@ -334,16 +315,18 @@ namespace GSoft.AbpZeroTemplate.Organizations
             var user = GetCurrentUser();
             var organizationUnitId = (await _userOrganizationUnitRepository.FirstOrDefaultAsync(uo => uo.UserId == user.Id))?.OrganizationUnitId;
             if(organizationUnitId == null)  //this case occurs when current user granted organization unit permission don't have organization unit.
-                return new WarehouseStatus { AllNumber = 0, ParentNumber = 0, ChildrenNumber = 0 };
+                return new WarehouseStatus { AllNumber = 0, RestingNumber = 0, DamagedNumber = 0, UsingNumber = 0 };
             var childrendOrgIds = from o in _organizationUnitRepository.GetAll() where (o.ParentId == organizationUnitId) select o.Id;
-            var childrendNumber = (from po in _assetOrganizationUnitRepository.GetAll()
-                                   where childrendOrgIds.Contains(po.OrganizationUnitId)
-                                   select po).Count();
-            var parentNumber = (from po in _assetOrganizationUnitRepository.GetAll()
-                                where organizationUnitId == po.OrganizationUnitId
-                                select po).Count();
-            var allNumber = childrendNumber + parentNumber;
-            return new WarehouseStatus { AllNumber = allNumber, ParentNumber = parentNumber, ChildrenNumber = childrendNumber };
+            var usingNumber = (from po in _assetOrganizationUnitRepository.GetAll()
+                                   where childrendOrgIds.Contains(po.OrganizationUnitId) && po.Asset.IsDamaged == false && po.Asset.IsDelete == false
+                               select po).Count();
+            var allNumber = (from po in _assetOrganizationUnitRepository.GetAll()
+                                where (organizationUnitId == po.OrganizationUnitId || childrendOrgIds.Contains(po.OrganizationUnitId)) && po.Asset.IsDelete == false
+                                 select po).Count();
+            var damagedNumber = (from po in _assetOrganizationUnitRepository.GetAll()
+                                 where (organizationUnitId == po.OrganizationUnitId|| childrendOrgIds.Contains(po.OrganizationUnitId)) && po.Asset.IsDamaged == true && po.Asset.IsDelete == false
+                                 select po.Asset).Count();
+            return new WarehouseStatus { AllNumber = allNumber, RestingNumber = allNumber - usingNumber - damagedNumber, DamagedNumber = damagedNumber, UsingNumber = usingNumber };
         }
 
     }

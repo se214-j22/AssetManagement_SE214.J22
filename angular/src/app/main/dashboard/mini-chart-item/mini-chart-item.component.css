@@ -9,6 +9,7 @@
 .count {
     overflow:hidden;
     padding:16px 12px;
+    height: 120px;
 }
 
 .small{

@@ -578,7 +578,6 @@ export class AssetServiceProxy {
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        console.log('ass',this);
         this.http = http;
         this.baseUrl = baseUrl ? baseUrl : "";
     }
@@ -18111,8 +18110,9 @@ export interface IAssetsToOrganizationUnitInput {
 
 export class WarehouseStatus implements IWarehouseStatus {
     allNumber!: number | undefined;
-    parentNumber!: number | undefined;
-    childrenNumber!: number | undefined;
+    restingNumber!: number | undefined;
+    damagedNumber!: number | undefined;
+    usingNumber!: number | undefined;
 
     constructor(data?: IWarehouseStatus) {
         if (data) {
@@ -18126,8 +18126,9 @@ export class WarehouseStatus implements IWarehouseStatus {
     init(data?: any) {
         if (data) {
             this.allNumber = data["allNumber"];
-            this.parentNumber = data["parentNumber"];
-            this.childrenNumber = data["childrenNumber"];
+            this.restingNumber = data["restingNumber"];
+            this.damagedNumber = data["damagedNumber"];
+            this.usingNumber = data["usingNumber"];
         }
     }
 
@@ -18141,16 +18142,18 @@ export class WarehouseStatus implements IWarehouseStatus {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["allNumber"] = this.allNumber;
-        data["parentNumber"] = this.parentNumber;
-        data["childrenNumber"] = this.childrenNumber;
+        data["restingNumber"] = this.restingNumber;
+        data["damagedNumber"] = this.damagedNumber;
+        data["usingNumber"] = this.usingNumber;
         return data; 
     }
 }
 
 export interface IWarehouseStatus {
     allNumber: number | undefined;
-    parentNumber: number | undefined;
-    childrenNumber: number | undefined;
+    restingNumber: number | undefined;
+    damagedNumber: number | undefined;
+    usingNumber: number | undefined;
 }
 
 export class PaymentInfoDto implements IPaymentInfoDto {

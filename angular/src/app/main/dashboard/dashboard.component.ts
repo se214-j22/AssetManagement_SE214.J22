@@ -42,15 +42,15 @@ export class DashboardComponent extends AppComponentBase implements OnInit, Afte
         };
         this.miniChartData[1] = {
             link: 'https://www.techjockey.com/asset-management/asset/list',
-            color: 'aquamarine', title: 'Resting Assets', count: this.warehouseStatus.parentNumber
+            color: 'aquamarine', title: 'Resting Assets', count: this.warehouseStatus.restingNumber
         };
         this.miniChartData[2] = {
             link: 'https://www.techjockey.com/asset-management/asset/list',
-            color: 'crimson', title: 'Damaged Assets', count: 0
+            color: 'crimson', title: 'Damaged Assets', count: this.warehouseStatus.damagedNumber
         };
         this.miniChartData[3] =  {
             link: 'https://www.techjockey.com/asset-management/asset/list',
-            color: 'violet', title: 'Using Assets', count: this.warehouseStatus.childrenNumber
+            color: 'violet', title: 'Using Assets', count: this.warehouseStatus.usingNumber
         };
     }
     ngOnInit() {
@@ -229,8 +229,9 @@ class SalesSummaryChart extends DashboardChartBase {
 }
 class WarehouseStatus extends DashboardChartBase {
     allNumber = 0;
-    childrenNumber = 0;
-    parentNumber = 0
+    restingNumber = 0;
+    damagedNumber = 0;
+    usingNumber = 0
 
     constructor(private _organizationUnitService: OrganizationUnitServiceProxy) {
         super();
