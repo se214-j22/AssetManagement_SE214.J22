@@ -12,5 +12,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Assets.Dto
         public int Number { get; set; }
         public int AssetLineID { get; set; }
         public bool IsDamaged { get; set; }
+        public long OrganizationUnitId { get; set; }
     }
 }

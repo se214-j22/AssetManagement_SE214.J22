@@ -1,37 +1,44 @@
 import { Component, OnInit, Input, ViewChild, Injector } from '@angular/core';
-import { AssetDto, AssetServiceProxy } from '@shared/service-proxies/service-proxies';
+import { AssetDto, AssetServiceProxy, OrganizationUnitServiceProxy, ListResultDtoOfOrganizationUnitDto } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap';
 import { AppComponentBase } from '@shared/common/app-component-base';
 
 @Component({
-  selector: 'viewAssetModal',
-  templateUrl: './view-asset-modal.component.html',
-  // styleUrls: ['./view-asset-modal.component.css']
+    selector: 'viewAssetModal',
+    templateUrl: './view-asset-modal.component.html',
+    // styleUrls: ['./view-asset-modal.component.css']
 })
-export class ViewAssetModalComponent extends AppComponentBase {
-  @Input() asset: AssetDto = new AssetDto();
-  @ViewChild('viewModal') modal: ModalDirective;
+export class ViewAssetModalComponent extends AppComponentBase implements OnInit {
+    @Input() asset: AssetDto = new AssetDto();
+    @ViewChild('viewModal') modal: ModalDirective;
+    OU: ListResultDtoOfOrganizationUnitDto;
 
-  constructor(
-      injector: Injector,
-      private _assetService: AssetServiceProxy
-  ) {
-      super(injector);
-  }
+    constructor(
+        injector: Injector,
+        private _assetService: AssetServiceProxy,
+        private _organizationUnitService: OrganizationUnitServiceProxy
+    ) {
+        super(injector);
+    }
 
-  show(assetId?: number | null | undefined): void {
-    this._assetService.getById(assetId).subscribe(result => {
-        this.asset = result;
-        this.modal.show();
-    })
-}
+    ngOnInit(): void {
+        this._organizationUnitService.getOrganizationUnits().subscribe(ou =>
+            this.OU = ou);
+    }
 
-close() : void{
-    this.modal.hide();
-}
+    show(assetId?: number | null | undefined): void {
+        this._assetService.getById(assetId).subscribe(result => {
+            this.asset = result;
+            this.modal.show();
+        })
+    }
 
-  onPrint() {
-    window.print();
-  }
+    close(): void {
+        this.modal.hide();
+    }
+
+    onPrint() {
+        window.print();
+    }
 
 }

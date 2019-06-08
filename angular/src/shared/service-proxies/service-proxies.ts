@@ -578,6 +578,7 @@ export class AssetServiceProxy {
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        console.log('ass',this);
         this.http = http;
         this.baseUrl = baseUrl ? baseUrl : "";
     }
@@ -12138,6 +12139,7 @@ export class AssetInput implements IAssetInput {
     number!: number | undefined;
     assetLineID!: number | undefined;
     isDamaged!: boolean | undefined;
+    organizationUnitId!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: IAssetInput) {
@@ -12154,6 +12156,7 @@ export class AssetInput implements IAssetInput {
             this.number = data["number"];
             this.assetLineID = data["assetLineID"];
             this.isDamaged = data["isDamaged"];
+            this.organizationUnitId = data["organizationUnitId"];
             this.id = data["id"];
         }
     }
@@ -12170,6 +12173,7 @@ export class AssetInput implements IAssetInput {
         data["number"] = this.number;
         data["assetLineID"] = this.assetLineID;
         data["isDamaged"] = this.isDamaged;
+        data["organizationUnitId"] = this.organizationUnitId;
         data["id"] = this.id;
         return data; 
     }
@@ -12179,6 +12183,7 @@ export interface IAssetInput {
     number: number | undefined;
     assetLineID: number | undefined;
     isDamaged: boolean | undefined;
+    organizationUnitId: number | undefined;
     id: number | undefined;
 }
 

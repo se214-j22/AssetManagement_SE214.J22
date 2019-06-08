@@ -83,8 +83,8 @@
                                     <th pSortableColumn="assetLine">
                                         Asset Line
                                     </th>
-                                    <th pSortableColumn="isDamaged">
-                                        Is damaged
+                                    <th>
+                                        Status
                                     </th>
                                     <th>{{l('Action')}}</th>
                                 </tr>
@@ -116,8 +116,8 @@
                                         <span title="{{record.assetLine.name}}">{{truncateString(record.assetLine.name)}}</span>
                                     </td>
                                     <td>
-                                        <span class="ui-column-title">Is damaged</span>
-                                        <span title="{{record.isDamaged}}">{{record.isDamaged? 'Yes' : 'No'}}</span>
+                                        <span class="ui-column-title">Status</span>
+                                        <span title="{{record.isDamaged}}">{{record.isDamaged? 'Damaged' : record.organizationUnitId==mainOU.id?'Resting':'Using'}}</span>
 
                                     </td>
                                     <td>

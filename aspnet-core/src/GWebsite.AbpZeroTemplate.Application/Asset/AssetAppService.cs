@@ -111,7 +111,9 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
             }
             assetEntity.AssetLine = this.assetLineRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking()
                .Include(b => b.AssetType).Include(b => b.Manufacturer).SingleOrDefault(x => x.Id == assetEntity.AssetLineId);
-            return ObjectMapper.Map<AssetDto>(assetEntity);
+            var result = ObjectMapper.Map<AssetDto>(assetEntity);
+            result.OrganizationUnitId = (await assetOrganizationUnitRepository.GetAll().FirstOrDefaultAsync(ao => ao.AssetId == result.Id)).OrganizationUnitId;
+            return result;
         }
 
         public async Task<AssetDto> GetAsyncForView(string code)
@@ -125,7 +127,9 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
             assetEntity.AssetLine = this.assetLineRepository.GetAll().Where(x => !x.IsDelete).AsNoTracking()
               .Include(b => b.AssetType).Include(b => b.Manufacturer).SingleOrDefault(x => x.Id == assetEntity.AssetLineId);
 
-            return ObjectMapper.Map<AssetDto>(assetEntity);
+            var result = ObjectMapper.Map<AssetDto>(assetEntity);
+            result.OrganizationUnitId = (await assetOrganizationUnitRepository.GetAll().FirstOrDefaultAsync(ao => ao.AssetId == result.Id)).OrganizationUnitId;
+            return result;
         }
         public async Task<AssetInput> GetForEdit(int id)
         {
@@ -135,7 +139,9 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
             {
                 return null;
             }
-            return ObjectMapper.Map<AssetInput>(assetEntity);
+            var result = ObjectMapper.Map<AssetInput>(assetEntity);
+            result.OrganizationUnitId = (await assetOrganizationUnitRepository.GetAll().FirstOrDefaultAsync(ao => ao.AssetId == result.Id)).OrganizationUnitId;
+            return result;
         }
 
         [AbpAuthorize(GWebsitePermissions.Pages_Administration_Asset_Create_Edit)]
@@ -185,6 +191,21 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
             ObjectMapper.Map(assetInput, assetEntity);
             SetAuditEdit(assetEntity);
             await assetRepository.UpdateAsync(assetEntity);
+            if(assetInput.OrganizationUnitId>0)
+            {
+                var isExisting= assetOrganizationUnitRepository.GetAll()
+                    .Where(x => x.AssetId == assetInput.Id).Any();
+                if(isExisting)
+                {
+                    await assetOrganizationUnitRepository.GetAll()
+                    .Where(x => x.AssetId == assetInput.Id).ForEachAsync(p => p.OrganizationUnitId = assetInput.OrganizationUnitId);
+                }
+                else
+                {
+                    var newAssetOrganizationUnit = new AssetOrganizationUnit() { AssetId = assetEntity.Id, OrganizationUnitId = assetInput.OrganizationUnitId };
+                    await assetOrganizationUnitRepository.InsertAsync(newAssetOrganizationUnit);
+                }
+            }
             await CurrentUnitOfWork.SaveChangesAsync();
         }
 
