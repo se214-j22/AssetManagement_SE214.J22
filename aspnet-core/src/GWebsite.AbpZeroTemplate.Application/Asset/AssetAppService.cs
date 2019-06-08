@@ -4,11 +4,13 @@ using Abp.Authorization.Users;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Abp.Organizations;
+using GSoft.AbpZeroTemplate.Authorization.Users;
 using GWebsite.AbpZeroTemplate.Application;
 using GWebsite.AbpZeroTemplate.Application.Share.Assets;
 using GWebsite.AbpZeroTemplate.Application.Share.Assets.Dto;
 using GWebsite.AbpZeroTemplate.Core.Authorization;
 using GWebsite.AbpZeroTemplate.Core.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -26,38 +28,52 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
         private readonly IRepository<AssetOrganizationUnit> assetOrganizationUnitRepository;
         private readonly IRepository<OrganizationUnit, long> organizationUnitRepository;
         private readonly IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository;
+        private readonly IRepository<AppUserRole> userRoleRepository;
+        private readonly UserManager<User> userManager;
+
 
         public AssetAppService(IRepository<Asset> assetRepository, IRepository<AssetLine> assetLineRepository,
             IRepository<AssetOrganizationUnit> assetOrganizationUnitRepository,
             IRepository<OrganizationUnit, long> organizationUnitRepository,
-        IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository)
+        IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository,
+        IRepository<AppUserRole> userRoleRepository,
+        UserManager<User> userManager
+        )
         {
             this.assetRepository = assetRepository;
             this.assetLineRepository = assetLineRepository;
             this.assetOrganizationUnitRepository = assetOrganizationUnitRepository;
             this.organizationUnitRepository = organizationUnitRepository;
             this.userOrganizationUnitRepository = userOrganizationUnitRepository;
+            this.userRoleRepository = userRoleRepository;
+            this.userManager = userManager;
         }
         public async Task<IQueryable<Asset>> GetAssetsOfCurrentUser()
         {
-            //var user = GetCurrentUser();
-            //var organizationUnitId = userOrganizationUnitRepository.FirstOrDefault(uo => uo.UserId == user.Id)?.OrganizationUnitId;
-            //if (organizationUnitId == null)
-            //    return null;
-            //return from po in assetOrganizationUnitRepository.GetAll()
-            //       where organizationUnitId == po.OrganizationUnitId
-            //       select po.Asset;
 
-            var user = GetCurrentUser();
-            var organizationUnitId = userOrganizationUnitRepository.FirstOrDefault(uo => uo.UserId == user.Id)?.OrganizationUnitId;
-            if (organizationUnitId == null)
-                return null;
 
             IList<long> ouIds;
-            ouIds = await(from o in organizationUnitRepository.GetAll()
-                          where (o.ParentId == organizationUnitId || o.Id == organizationUnitId)
-                          select o.Id).ToListAsync();
-       
+
+
+            var user = GetCurrentUser();
+            var isInAdminRole= await userManager.IsInRoleAsync(user, "Admin");
+            if(isInAdminRole)
+            {
+                ouIds = await (from o in organizationUnitRepository.GetAll()
+                               select o.Id).ToListAsync();
+
+            }
+            else
+            {
+                var organizationUnitId = userOrganizationUnitRepository.FirstOrDefault(uo => uo.UserId == user.Id)?.OrganizationUnitId;
+                if (organizationUnitId == null)
+                    return null;
+
+                ouIds = await (from o in organizationUnitRepository.GetAll()
+                               where (o.ParentId == organizationUnitId || o.Id == organizationUnitId)
+                               select o.Id).ToListAsync();
+            }
+
             return (from po in assetOrganizationUnitRepository.GetAll()
                                           where ouIds.Contains(po.OrganizationUnitId)
                                           select po.Asset);

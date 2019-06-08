@@ -15,6 +15,8 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using Abp.Collections.Extensions;
 using GWebsite.AbpZeroTemplate.Core.Models;
+using Microsoft.AspNetCore.Identity;
+using GSoft.AbpZeroTemplate.Authorization.Users;
 
 namespace GSoft.AbpZeroTemplate.Organizations
 {
@@ -25,17 +27,20 @@ namespace GSoft.AbpZeroTemplate.Organizations
         private readonly IRepository<OrganizationUnit, long> _organizationUnitRepository;
         private readonly IRepository<UserOrganizationUnit, long> _userOrganizationUnitRepository;
         private readonly IRepository<AssetOrganizationUnit, int> _assetOrganizationUnitRepository;
+        private readonly UserManager<User> userManager;
 
         public OrganizationUnitAppService(
             OrganizationUnitManager organizationUnitManager,
             IRepository<OrganizationUnit, long> organizationUnitRepository,
             IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository,
-            IRepository<AssetOrganizationUnit, int> assetOrganizationUnitRepository)
+            IRepository<AssetOrganizationUnit, int> assetOrganizationUnitRepository,
+            UserManager<User> userManager)
         {
             _organizationUnitManager = organizationUnitManager;
             _organizationUnitRepository = organizationUnitRepository;
             _userOrganizationUnitRepository = userOrganizationUnitRepository;
             _assetOrganizationUnitRepository = assetOrganizationUnitRepository;
+            this.userManager = userManager;
         }
         public async Task<OrganizationUnitDto> GetOrganizationUnit()
         {
@@ -53,7 +58,7 @@ namespace GSoft.AbpZeroTemplate.Organizations
         public async Task<ListResultDto<OrganizationUnitDto>> GetOrganizationUnits()
         {
             var user = GetCurrentUser();
-            if (true) //not admin
+            if (!await userManager.IsInRoleAsync(user, "Admin")) //not admin
             {
                 var organizationUnitId = _userOrganizationUnitRepository.FirstOrDefault(uo => uo.UserId == user.Id)?.OrganizationUnitId;
                 if (organizationUnitId == null)
