@@ -51,6 +51,8 @@ export class CreateOrEditHoaDonNhapModalComponent extends AppComponentBase {
         let input = this.hoaDonNhap;
         this.saving = true;
 
+        console.log(input.ngayNhan);
+
         if (moment.isMoment(input.ngayNhan) === false) {
             input.ngayNhan = moment(input.ngayNhan + ' ' + '0:01'); // moment phải có thời gian thì mới gọi .toISOString() được
             input.ngayNhan.utcOffset(0, true); // Khi gọi .toISOString() thì nó offset timezone nên phải set timezone là 0 trước

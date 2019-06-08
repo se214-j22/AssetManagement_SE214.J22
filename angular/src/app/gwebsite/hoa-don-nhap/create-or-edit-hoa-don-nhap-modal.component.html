@@ -15,15 +15,16 @@
 
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Đon vị cung cấp tài sản {{hoaDonNhap.donViCungCapTaiSanId}} *</label>
+                        <label>Đon vị cung cấp tài sản *</label>
                         <select class="custom-select" [(ngModel)]="hoaDonNhap.donViCungCapTaiSanId" name="DonViCungCapTaiSanId">
                             <option value="{{item.id}}" *ngFor="let item of donViCungCapTaiSans">{{item.tenDonViCungCap}}</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label>Ngày nhận {{hoaDonNhap.ngayNhan}} *</label>
-                        <input type="date" class="form-control" [ngModel]="hoaDonNhap.ngayNhan | date:'yyyy-MM-dd'" (ngModelChange)="bienBanBanGiaoTaiSanInput.ngayNhan = $event" name="NgayNhan" required>
+                        <label>Ngày nhận *</label>
+                        <input type="date" class="form-control" [ngModel]="hoaDonNhap.ngayNhan | date:'yyyy-MM-dd'" (ngModelChange)="hoaDonNhap.ngayNhan = $event" name="NgayNhan" required>
+                        <!-- <input type="date" class="form-control" [(ngModel)]="hoaDonNhap.ngayNhan" name="NgayNhan" required> -->
                     </div>
 
                     <div class="form-group">

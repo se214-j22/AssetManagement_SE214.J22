@@ -56,16 +56,21 @@ export class CreateOrEditTaiSanCoDinhModalComponent extends AppComponentBase {
         let input = this.taiSanCoDinhInput;
         this.saving = true;
         
-        this.loaiTaiSans.forEach(loaiTaiSan => {
-            if (loaiTaiSan.id === input.loaiTaiSanId) {
-                input.haoMonTaiSan = input.giaTriTaiSan * ((100 - loaiTaiSan.tiLeHaoMon)/100);
-            }
-        })
+        // this.loaiTaiSans.forEach(loaiTaiSan => {
+        //     if (loaiTaiSan.id === input.loaiTaiSanId) {
+        //         input.haoMonTaiSan = input.giaTriTaiSan * ((100 - loaiTaiSan.tiLeHaoMon)/100);
+        //     }
+        // })
 
-        this._taiSanCoDinhService.createOrEditTaiSanCoDinh(input).subscribe(result => {
-            this.notify.info(this.l('SavedSuccessfully'));
-            this.close();
-        })
+        this._loaiTaiSanService.getLoaiTaiSanForView(input.loaiTaiSanId).subscribe(loaiTaiSan => {
+            input.haoMonTaiSan = input.giaTriTaiSan * ((100 - loaiTaiSan.tiLeHaoMon) / 100);
+
+            this._taiSanCoDinhService.createOrEditTaiSanCoDinh(input).subscribe(result => {
+                this.notify.info(this.l('SavedSuccessfully'));
+                this.close();
+            });
+        });
+
 
     }
 
