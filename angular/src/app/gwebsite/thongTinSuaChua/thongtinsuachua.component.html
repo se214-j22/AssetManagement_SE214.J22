@@ -1,0 +1,212 @@
+<div [@routerTransition]>
+
+    <div class="m-subheader ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-xs-6">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("ThongTinSuaChua")}}</span>
+                </h3>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form autocomplete="off">
+                    <div class="m-form m-form--label-align-right" id="TextsFilterForm">
+                        <div class="row align-items-center m--margin-bottom-10">
+                            <!-- <div class="row"> -->
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Số xe</label>
+                                    <div class="d-flex ">
+                                        <input #soXeInput="ngModel" class="form-control" type="text" name="soXe"
+                                            [disabled]="true" [(ngModel)]="thongtinxeDto.soXe" maxlength="64">
+                                        <button class="form-control btn btn-outline-primary"
+                                            (click)="viewThongTinXe.show()"
+                                            style="margin-right: 20px; width: 50px">...</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Model</label>
+                                    <input [disabled]="true" #modelInput="ngModel" class="form-control" type="text"
+                                        name="model" [(ngModel)]="thongtinxeDto.model" maxlength="64">
+                                </div>
+                                <div class="form-group">
+                                    <label>Đơn vị sử dụng </label>
+                                    <input [disabled]="true" #donvisudungInput="ngModel" class="form-control"
+                                        type="text" name="donViSuDung" [(ngModel)]="thongtinxeDto.mucDichSuDung"
+                                        maxlength="64">
+                                </div>
+                                <div class="form-group">
+                                    <label>Mục đích sử dụng </label>
+                                    <input [disabled]="true" #mucdichsudungInput="ngModel" class="form-control"
+                                        type="text" name="mucDichSuDung" [(ngModel)]="thongtinxeDto.mucDichSuDung"
+                                        maxlength="64">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Năm sản xuất</label>
+                                    <input [disabled]="true" #namSanxuatInput="ngModel" class="form-control" type="text"
+                                        name="namSanXuat" [(ngModel)]="thongtinxeDto.namSanXuat" maxlength="64">
+                                </div>
+                                <div class="form-group">
+                                    <label>Hãng sản xuất</label>
+                                    <input [disabled]="true" #hangSanXuatInput="ngModel" class="form-control"
+                                        type="text" name="trangThaiDuyet" [(ngModel)]="thongtinxeDto.hangSanXuat"
+                                        maxlength="64">
+                                </div>
+                                <div class="form-group">
+                                    <label>Loại xe</label>
+                                    <input [disabled]="true" #loaiXeInput="ngModel" class="form-control" type="text"
+                                        name="loaiXe" [(ngModel)]="thongtinxeDto.loaiXe" maxlength="64">
+                                </div>
+                                <div class="form-group">
+                                    <label>Trạng thái duyệt </label>
+                                    <input [disabled]="true" #trangthaiduyetInput="ngModel" class="form-control"
+                                        type="text" name="trangThaiDuyet" [(ngModel)]="thongtinxeDto.trangThaiDuyet"
+                                        maxlength="64">
+                                </div>
+                            </div>
+                            <div class="input-group w-100">
+                                <span class="input-group-btn w-100">
+                                    <button *ngIf="soXe!=undefined" class="btn btn-info float-right "
+                                        (click)="createOrEditModal.show(-1)"><i class="icon-refresh"></i>
+                                        {{l("Thêm mới")}}</button>
+                                </span>
+                            </div>
+                            <!-- <div class="input-group">
+                                    <input [(ngModel)]="thongTinSuaChuaName" name="thongTinSuaChuaName" autoFocus
+                                        class="form-control" placeholder="Nhập ... muốn tìm kiếm" type="text">
+                                    <span class="input-group-btn">
+                                        <button (click)="applyFilters()" class="btn btn-primary" type="submit">
+                                            <i class="icon-refresh"></i>
+                                            {{l("Làm mới")}}
+                                        </button>
+                                    </span>
+                                </div> -->
+                            <!-- </div> -->
+                        </div>
+                    </div>
+                </form>
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getThongTinSuaChuas($event)"
+                            [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [scrollable]="true" [responsive]="primengTableHelper.isResponsive">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th pSortableColumn="soXe" style="width: 200px;">
+                                        Số xe
+                                        <p-sortIcon field="soXe"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="ngaySuaChua" style="width: 200px;">
+                                        Ngày sữa chữa
+                                    </th>
+                                    <th pSortableColumn="ngayDuKienSuaXong" style="width: 200px;">
+                                        Ngày dự kiến sửa xong
+                                    </th>
+                                    <th pSortableColumn="chiPhiSuaChua" style="width: 200px;">
+                                        Chi phí sữa chữa
+                                    </th>
+                                    <th pSortableColumn="noiDungSuaChuaThucTe" style="width: 200px;">
+                                        Nội Dung Sữa Chữa Thực Tế
+                                    </th>
+                                    <th pSortableColumn="trangThaiDuyet" style="width: 200px;">
+                                        Trạng Thái Duyệt
+                                    </th>
+                                    <th pSortableColumn="ghiChu" style="width: 200px;">
+                                        Ghi Chú
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td style="width: 200px;">
+                                        <span class="ui-column-title">Số xe</span>
+                                        <span title="{{record.soXe}}">{{truncateString(record.soXe)}}</span>
+                                    </td>
+                                    <td style="width: 200px;">
+                                        <span class="ui-column-title">Ngày Sữa chữa</span>
+                                        <span
+                                            title="{{record.ngaySuaChua}}">{{truncateString(record.ngaySuaChua)|date}}</span>
+                                    </td>
+                                    <td style="width: 200px;">
+                                        <span class="ui-column-title">Ngày dự kiến sữa xong</span>
+                                        <span
+                                            title="{{record.ngayDuKienSuaXong}}">{{truncateString(record.ngayDuKienSuaXong)|date}}</span>
+                                    </td>
+                                    <td style="width: 200px;">
+                                        <span class="ui-column-title">Chi phí sữa chữa</span>
+                                        <span
+                                            title="{{record.chiPhiSuaChua}}">{{truncateString(record.chiPhiSuaChua)}}</span>
+                                    </td>
+                                    <td style="width: 200px;">
+                                        <span class="ui-column-title">Nội Dung Sữa Chữa Thực Tế </span>
+                                        <span
+                                            title="{{record.noiDungSuaChuaThucTe}}">{{truncateString(record.noiDungSuaChuaThucTe)}}</span>
+                                    </td>
+                                    <td style="width: 200px;">
+                                        <span class="ui-column-title">Trạng Thái Duyệt </span>
+                                        <span
+                                            title="{{record.trangThaiDuyet}}">{{truncateString(record.trangThaiDuyet)}}</span>
+                                    </td>
+
+                                    <td style="width: 200px;">
+                                        <span class="ui-column-title">Ghi chú</span>
+                                        <span title="{{record.ghiChu}}">{{truncateString(record.ghiChu)}}</span>
+                                    </td>
+
+                                    <td style="width: 200px;">
+                                        <button
+                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                            (click)="createOrEditModal.show(record.id)" title="{{l('Edit')}}"
+                                            *ngIf='record.trangThaiDuyet!="Đã duyệt" || isDuyet'>
+                                            <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
+                                        </button>
+
+                                        <button
+                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                            (click)="deleteThongTinSuaChua(record.id)" title="{{l('Delete')}}">
+                                            <i class="fa fa-times" [attr.aria-label]="l('Delete')"></i>
+                                        </button>
+
+                                        <button
+                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                            (click)="viewThongTinSuaChuaModal.show(record.id)" title="{{l('View')}}">
+                                            <i class="fa fa-eye" [attr.aria-label]="l('View')"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
+                                (onPageChange)="getThongTinSuaChuas($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <createOrEditThongTinSuaChuaModal #createOrEditModal (modalSave)="reloadPage()" [soXe]="soXe">
+    </createOrEditThongTinSuaChuaModal>
+    <viewThongTinSuaChuaModal #viewThongTinSuaChuaModal [soXe]="soXe"></viewThongTinSuaChuaModal>
+    <thongTinXeModalComponent #viewThongTinXe (thongtinxe)="getThongTinXe($event)"></thongTinXeModalComponent>
+</div>

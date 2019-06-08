@@ -19,7 +19,21 @@ export class AppNavigationService {
             new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [
                 new AppMenuItem('MenuClient', 'Pages.Administration.MenuClient', 'flaticon-menu-1', '/app/gwebsite/menu-client'),
                 new AppMenuItem('DemoModel', 'Pages.Administration.DemoModel', 'flaticon-menu-1', '/app/gwebsite/demo-model'),
-                new AppMenuItem('Customer', 'Pages.Administration.Customer', 'flaticon-menu-1', '/app/gwebsite/customer')
+                new AppMenuItem('Customer', 'Pages.Administration.Customer', 'flaticon-menu-1', '/app/gwebsite/customer'),
+                new AppMenuItem('nhacungcap', '', 'flaticon-menu-1', '/app/gwebsite/nhacungcap'),
+                new AppMenuItem('Quản lý xe', '', 'flaticon-menu-1', '', [
+                    new AppMenuItem('Thông tin xe', '', 'flaticon-menu-1', '/app/gwebsite/thongtinxe'),
+                    new AppMenuItem('Vận hành xe', '', 'flaticon-menu-1', '/app/gwebsite/vanhanhxe'),
+                    new AppMenuItem('Bảo hiểm xe', '', 'flaticon-menu-1', '/app/gwebsite/thongtinbaohiem'),
+                    new AppMenuItem('Phí đường bộ', '', 'flaticon-menu-1', '/app/gwebsite/phiduongbo'),
+                    new AppMenuItem('Thông tin bảo dưỡng', '', 'flaticon-menu-1', '/app/gwebsite/thongtinbaoduong'),
+                    new AppMenuItem('Thông tin đăng kiểm', '', 'flaticon-menu-1', '/app/gwebsite/thongtindangkiem'),
+
+                    new AppMenuItem('Thông tin sửa chữa', '', 'flaticon-menu-1', '/app/gwebsite/thongTinSuaChua'),
+                    new AppMenuItem('Thông tin chi tiết xe', '', 'flaticon-menu-1', '/app/gwebsite/chitietxe'),
+
+
+                ]),
             ]),
             new AppMenuItem('Systems', '', 'flaticon-layers', '', [
                 new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),

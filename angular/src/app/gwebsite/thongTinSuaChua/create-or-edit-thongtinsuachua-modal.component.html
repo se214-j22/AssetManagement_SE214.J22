@@ -1,0 +1,128 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="thongTinSuaChua.id">Cập nhật thông tin sữa chữa: {{thongTinSuaChua.soXe}}</span>
+                        <span *ngIf="!thongTinSuaChua.id">Tạo mới thông tin sữa chữa</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Số Xe </label>
+                                <input #soxeInput="ngModel" class="form-control" type="text" name="soXe"
+                                    [disabled]="true" [(ngModel)]="thongtinxe.soXe " required maxlength="64">
+                                <validation-messages [formCtrl]="soxeInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Loại xe </label>
+                                <input #loaixeInput="ngModel" class="form-control" type="text" name="loaiXe"
+                                    [disabled]="true" [(ngModel)]="model.loaiXe " required maxlength="64">
+                                <validation-messages [formCtrl]="loaixeInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Model </label>
+                                <input #modelInput="ngModel" class="form-control" type="text" name="model"
+                                    [disabled]="true" [(ngModel)]="thongtinxe.model" required maxlength="64">
+                                <validation-messages [formCtrl]="modelInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Nước sản xuất </label>
+                                <input #nuocsanxuatInput="ngModel" class="form-control" type="text" name="nuocSanXuat"
+                                    [disabled]="true" [(ngModel)]="thongtinxe.nuocSanXuat" required maxlength="64">
+                                <validation-messages [formCtrl]="nuocsanxuatInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Loại nhiên liệu </label>
+                                <input #loaiNhienLieuInput="ngModel" class="form-control" type="text"
+                                    name="loaiNhienLieu" [disabled]="true" [(ngModel)]="thongtinxe.loaiNhienLieu"
+                                    required maxlength="64">
+                                <validation-messages [formCtrl]="loaiNhienLieuInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Đơn vị sử dụng </label>
+                                <input #donViSuDungInput="ngModel" class="form-control" type="text" name="donViSuDung"
+                                    [disabled]="true" [(ngModel)]="thongtinxe.donViSuDung" required maxlength="64">
+                                <validation-messages [formCtrl]="donViSuDungInput"></validation-messages>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div>
+                                <p>Ngày sữa chữa: </p>
+                                <p-calendar #ngaySuaChuaInput="ngModel" [(ngModel)]="ngaySuaChua" [showIcon]="true"
+                                    required maxLength="64" name="ngaySuaChua" class="form-group">
+                                </p-calendar>
+                                <validation-messages [formCtrl]="ngaySuaChuaInput"></validation-messages>
+
+                            </div>
+                            <div>
+                                <p>Ngày dự kiến sữa xong:</p>
+                                <p-calendar [(ngModel)]="ngayDuKienSuaXong" required maxLength="64" [showIcon]="true"
+                                    class="form-group" name="ngayDuKienSuaXong" #ngayDuKienSuaXongInput="ngModel">
+                                </p-calendar>
+                                <validation-messages [formCtrl]="ngayDuKienSuaXongInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Chi phí sữa chữa:</label>
+                                <input #chiPhiSuaChuaInput="ngModel" type="number" name="chiPhiSuaChua"
+                                    class="form-control" [(ngModel)]="thongTinSuaChua.chiPhiSuaChua" required
+                                    maxlength="64">
+                                <label> Triệu Đồng </label>
+                                <validation-messages [formCtrl]="chiPhiSuaChuaInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Nội dung sữa chữa thực tế:</label>
+                                <input #noiDungSuaChuaThucTeInput="ngModel" type="text" name="noiDungSuaChuaThucTe"
+                                    class="form-control" [(ngModel)]="thongTinSuaChua.noiDungSuaChuaThucTe" required
+                                    maxlength="64">
+                                <validation-messages [formCtrl]="noiDungSuaChuaThucTeInput"></validation-messages>
+                            </div>
+                            <div class="form-group" *ngIf="isDuyet">
+                                <div class="form-group">
+                                    <label class="mr-3">Trạng thái duyệt:
+                                        <input value="Đã duyệt" [checked]="check" type="checkbox" name="trangThaiDuyet"
+                                            [(ngModel)]="check" required maxlength="64"> Đã
+                                        duyệt
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group" *ngIf="!isDuyet">
+                                <div class="form-group">
+                                    <label class="mr-3">Trạng thái duyệt:
+                                        <input value="Đã duyệt" [checked]="check" type="checkbox" name="trangThaiDuyet"
+                                            [(ngModel)]="check" required [disabled]="true" maxlength="64"> Đã
+                                        duyệt
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Ghi chú </label>
+                                <input #ghiChuInput="ngModel" class="form-control" type="text" name="ghiChu"
+                                    class="form-control" [(ngModel)]="thongTinSuaChua.ghiChu" required maxlength="64">
+                                <validation-messages [formCtrl]="ghiChuInput"></validation-messages>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">
+                        {{l("Cancel")}}
+                    </button>
+                    <button type="submit" class="btn btn-info" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')">
+                        <i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

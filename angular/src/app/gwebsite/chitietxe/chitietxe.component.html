@@ -1,0 +1,292 @@
+<div [@routerTransition]>
+
+    <div class="m-subheader ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-xs-6">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("Thông tin chi tiết xe")}}</span>
+                </h3>
+                <span class="m-section__sub">
+                    {{l("Thông tin chi tiết")}}
+                </span>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form autocomplete="off">
+                    <div class="m-form m-form--label-align-right" id="TextsFilterForm">
+                        <div class="row align-items-center m--margin-bottom-10">
+                            <div class="col-sm-12 row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Số xe</label>
+                                        <div class="d-flex ">
+                                            <input #soXeInput="ngModel" class="form-control" type="text" name="soXe"
+                                                [disabled]="true" [(ngModel)]="thongtinxeDto.soXe" maxlength="64">
+                                            <button class="form-control btn btn-outline-primary"
+                                                (click)="viewThongTinXe.show()"
+                                                style="margin-right: 20px; width: 50px">...</button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Model</label>
+                                        <input [disabled]="true" #modelInput="ngModel" class="form-control" type="text"
+                                            name="model" [(ngModel)]="thongtinxeDto.model" maxlength="64">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Đơn vị sử dụng </label>
+                                        <input [disabled]="true" #donvisudungInput="ngModel" class="form-control"
+                                            type="text" name="donViSuDung" [(ngModel)]="thongtinxeDto.mucDichSuDung"
+                                            maxlength="64">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Mục đích sử dụng </label>
+                                        <input [disabled]="true" #mucdichsudungInput="ngModel" class="form-control"
+                                            type="text" name="mucDichSuDung" [(ngModel)]="thongtinxeDto.mucDichSuDung"
+                                            maxlength="64">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Năm sản xuất</label>
+                                        <input [disabled]="true" #namSanxuatInput="ngModel" class="form-control"
+                                            type="text" name="namSanXuat" [(ngModel)]="thongtinxeDto.namSanXuat"
+                                            maxlength="64">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Hãng sản xuất</label>
+                                        <input [disabled]="true" #hangSanXuatInput="ngModel" class="form-control"
+                                            type="text" name="trangThaiDuyet" [(ngModel)]="thongtinxeDto.hangSanXuat"
+                                            maxlength="64">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Loại xe</label>
+                                        <input [disabled]="true" #loaiXeInput="ngModel" class="form-control" type="text"
+                                            name="loaiXe" [(ngModel)]="thongtinxeDto.loaiXe" maxlength="64">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Trạng thái duyệt </label>
+                                        <input [disabled]="true" #trangthaiduyetInput="ngModel" class="form-control"
+                                            type="text" name="trangThaiDuyet" [(ngModel)]="thongtinxeDto.trangThaiDuyet"
+                                            maxlength="64">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="row align-items-center">
+                    <div class="dinhdang">
+                        <!-- Bảng thông tin vận hành -->
+                        <div class=" dinhdangchu w-100 text-center">
+                            Thông tin thiết bị kèm theo
+                        </div>
+                        <p-table [value]="tbkts">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Thiết bị kèm theo</th>
+                                    <th>Số lượng</th>
+                                    <th>Diễn giải</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-tbkt>
+                                <tr>
+                                    <td>{{tbkt.thietBiKemTheo}}</td>
+                                    <td>{{tbkt.soLuong}}</td>
+                                    <td>{{tbkt.dienGiai}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                    <div class="dinhdang">
+                        <div class="dinhdangchu w-100 text-center">
+                            Thông tin bảo hiểm
+                        </div>
+                        <p-table [value]="baohiemxes">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Số xe</th>
+                                    <th>Ngày Mua bảo hiểm</th>
+                                    <th>Ngày hết hạn bảo hiểm</th>
+                                    <th>Thời hạn bảo hiểm</th>
+                                    <th>Công ty bảo hiểm</th>
+                                    <th>Loại bảo hiểm</th>
+                                    <th>Số tiền thanh toán</th>
+                                    <th>Trạng thái duyệt</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-baohiemxe>
+                                <tr>
+                                    <td>{{baohiemxe.soXe}}</td>
+                                    <td>{{baohiemxe.ngayMuaBaoHiem|date}}</td>
+                                    <td>{{baohiemxe.ngayHetHanBaoHiem|date}}</td>
+                                    <td>{{baohiemxe.thoiHanBaoHiem}}</td>
+                                    <td>{{baohiemxe.congTyBaoHiem}}</td>
+                                    <td>{{baohiemxe.loaiBaoHiem}}</td>
+                                    <td>{{baohiemxe.soTienThanhToan}}</td>
+                                    <td>{{baohiemxe.trangThaiDuyet}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                    <div class="dinhdang">
+                        <!-- Bảng thông tin vận hành -->
+                        <div class=" dinhdangchu w-100 text-center">
+                            Thông tin vận hành xe
+                        </div>
+                        <p-table [value]="vanhanhxes">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Số xe</th>
+                                    <th>Ngày cập nhập</th>
+                                    <th>Số Km</th>
+                                    <th>Xăng tiêu thụ</th>
+                                    <th>Trạng thái duyệt</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-vanhanhxe>
+                                <tr>
+                                    <td>{{vanhanhxe.soXe}}</td>
+                                    <td>{{vanhanhxe.NgayCapNhat|date}}</td>
+                                    <td>{{vanhanhxe.soKM}}</td>
+                                    <td>{{vanhanhxe.xangTieuThu}}</td>
+                                    <td>{{vanhanhxe.trangThaiDaDuyet}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                    <div class="dinhdang">
+                        <div class=" dinhdangchu w-100 text-center">
+                            Thông tin phí đường bộ
+                        </div>
+                        <p-table [value]="phiduongbos">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Số xe</th>
+                                    <th>Ngày cập nhâp</th>
+                                    <th>Ngày đóng phí</th>
+                                    <th>Ngày hết hạn đóng phí</th>
+                                    <th>Thời gian sử dụng</th>
+                                    <th>Số tiền thanh toán</th>
+                                    <th>Công ty thu phí</th>
+                                    <th>Loại phí</th>
+                                    <th>Ghi chú</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-phiduongbo>
+                                <tr>
+                                    <td>{{phiduongbo.soXe}}</td>
+                                    <td>{{phiduongbo.NgayCapNhat|date}}</td>
+                                    <td>{{phiduongbo.ngayDongPhi|date}}</td>
+                                    <td>{{phiduongbo.ngayHetHanDongPhi|date}}</td>
+                                    <td>{{phiduongbo.thoiGianSuDung}}</td>
+                                    <td>{{phiduongbo.soTienThanhToan}}</td>
+                                    <td>{{phiduongbo.congTyThuPhi}}</td>
+                                    <td>{{phiduongbo.loaiPhi}}</td>
+                                    <td>{{phiduongbo.ghiChu}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                    <div class="dinhdang">
+                        <div class=" dinhdangchu w-100 text-center">
+                            Thông tin sửa chữa xe
+                        </div>
+                        <p-table [value]="suachuaxes">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Số xe</th>
+                                    <th>Ngày sửa chữa</th>
+                                    <th>Ngày dự kiến sửa xong </th>
+                                    <th>Chi phí sửa chữa</th>
+                                    <th>Nội dung sửa chữa thực tế</th>
+                                    <th>Trạng thái duyệt</th>
+                                    <th>Ghi chú</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-suachuaxe>
+                                <tr>
+                                    <td>{{suachuaxe.soXe}}</td>
+                                    <td>{{suachuaxe.ngaySuachua|date}}</td>
+                                    <td>{{suachuaxe.ngayDuKienSuaXong|date}}</td>
+                                    <td>{{suachuaxe.chiPhiSuaChua|date}}</td>
+                                    <td>{{suachuaxe.noiDungSuaChuaThucTe}}</td>
+                                    <td>{{suachuaxe.trangThaiDuyet}}</td>
+                                    <td>{{suachuaxe.loaiPhi}}</td>
+                                    <td>{{suachuaxe.ghiChu}}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                    <div class="dinhdang">
+                        <div class="dinhdangchu w-100 text-center">
+                            Thông tin bảo dưỡng
+                        </div>
+                        <p-table [value]="baoduongxes">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Số xe</th>
+                                    <th>Ngày bảo dưỡng</th>
+                                    <th>Ngày ngày bảo dưỡng tiếp theo </th>
+                                    <th>Số tiền thanh toán</th>
+                                    <th>Hạng mục bảo dưỡng</th>
+                                    <th>Đơn vị bảo dưỡng</th>
+                                    <th>Trạng thái duyệt</th>
+
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-baoduongxe>
+                                <tr>
+                                    <td>{{baoduongxe.soXe}}</td>
+                                    <td>{{baoduongxe.ngayBaoDuong|date}}</td>
+                                    <td>{{baoduongxe.ngayBaoDuongTieoTheo|date}}</td>
+                                    <td>{{baoduongxe.soTienThanhToan|date}}</td>
+                                    <td>{{baoduongxe.hangMucBaoDuong}}</td>
+                                    <td>{{baoduongxe.donViBaoDuong}}</td>
+                                    <td>{{baoduongxe.trangThaiDuyet}}</td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                    <div class="dinhdang">
+                        <div class=" dinhdangchu w-100 text-center">
+                            Thông tin bảo dưỡng
+                        </div>
+                        <p-table [value]="dangkiemxes">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Số xe</th>
+                                    <th>Ngày đăng kiểm</th>
+                                    <th>Ngày hết hạng đăng kiểm </th>
+                                    <th>Thời hạn đăng kiểm</th>
+                                    <th>Cơ quan đăng kiểm</th>
+                                    <th>Trạng thái duyệt</th>
+                                    <th>Ghi chú</th>
+
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-dangkiemxe>
+                                <tr>
+                                    <td>{{dangkiemxe.soXe}}</td>
+                                    <td>{{dangkiemxe.ngayDangKiem|date}}</td>
+                                    <td>{{dangkiemxe.ngayHetHanDangKiem|date}}</td>
+                                    <td>{{dangkiemxe.thoiHanDangKiem|date}}</td>
+                                    <td>{{dangkiemxe.coQuanDangKiem}}</td>
+                                    <td>{{dangkiemxe.trangThaiDuyet}}</td>
+                                    <td>{{dangkiemxe.ghiChu}}</td>
+
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <thongTinXeModalComponent #viewThongTinXe (thongtinxe)="getThongTinXe($event)"></thongTinXeModalComponent>
+</div>

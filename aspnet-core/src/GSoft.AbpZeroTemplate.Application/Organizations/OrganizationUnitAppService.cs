@@ -11,6 +11,7 @@ using GSoft.AbpZeroTemplate.Organizations.Dto;
 using System.Linq.Dynamic.Core;
 using Abp.Extensions;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace GSoft.AbpZeroTemplate.Organizations
 {
@@ -166,6 +167,33 @@ namespace GSoft.AbpZeroTemplate.Organizations
             var dto = ObjectMapper.Map<OrganizationUnitDto>(organizationUnit);
             dto.MemberCount = await _userOrganizationUnitRepository.CountAsync(uou => uou.OrganizationUnitId == organizationUnit.Id);
             return dto;
+        }
+
+        public List<OrganizationUnitDto> GetOrganizationUnitDtosForTree()
+        {
+            var user = GetCurrentUser();
+
+            var organizationUnitIds = _userOrganizationUnitRepository
+                                        .GetAll()
+                                        .Where(x => x.UserId == user.Id && x.IsDeleted == false)
+                                        .Select(x => x.OrganizationUnitId)
+                                        .ToList();
+
+
+            var organizationUnitOrUserCodes = _organizationUnitRepository
+                                                            .GetAll()
+                                                            .Where(x => organizationUnitIds.Contains(x.Id))
+                                                            .Select(x => x.Code)
+                                                            .ToList();
+
+            List<OrganizationUnit> result = new List<OrganizationUnit>();
+
+            foreach (var code in organizationUnitOrUserCodes)
+            {
+                result.AddRange(_organizationUnitRepository.GetAll().Where(x => x.Code.StartsWith(code)).ToList());
+            }
+
+            return result.Select(x => ObjectMapper.Map<OrganizationUnitDto>(x)).ToList();
         }
     }
 }

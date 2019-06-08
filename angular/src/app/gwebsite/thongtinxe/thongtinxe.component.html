@@ -1,0 +1,203 @@
+<div [@routerTransition]>
+
+    <div class="m-subheader  ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-xs-6">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("Thông tin xe")}}</span>
+                </h3>
+                <span class="m-section__sub">
+                    {{l("Thông tin chi tiết")}}
+                </span>
+            </div>
+            <div class="col-xs-6 text-right">
+                <button (click)="createThongTinXe()" *ngIf="isGranted('Pages.Administration.ThongTinXe.Create')"
+                    class="btn btn-info "><i class="fa fa-plus"></i> {{l("Tạo mới thông tin xe")}}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form autocomplete="off">
+                    <div class="m-form m-form--label-align-right" id="TextsFilterForm">
+                        <div class="row align-items-center m--margin-bottom-10 ">
+                            <div class="col-sm-12 row ">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Số xe</label>
+                                        <input #soXeInput="ngModel" class="form-control" type="text" name="soXe"
+                                            [(ngModel)]="filter.soXe" maxlength="64">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Mục đích sử dụng </label>
+                                        <input #mucdichsudungInput="ngModel" class="form-control" type="text"
+                                            name="mucDichSuDung" [(ngModel)]="filter.mucDichSuDung" maxlength="64">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Model</label>
+                                        <input #modelInput="ngModel" class="form-control" type="text" name="model"
+                                            [(ngModel)]="filter.model" maxlength="64">
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Năm sản xuất</label>
+                                        <input #namSanxuatInput="ngModel" class="form-control" type="text"
+                                            name="namSanXuat" [(ngModel)]="filter.namSanXuat" maxlength="64">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Trạng thái duyệt</label>
+                                        <input #trangthaiduyetInput="ngModel" class="form-control" type="text"
+                                            name="trangThaiDuyet" [(ngModel)]="filter.trangThaiDuyet" maxlength="64">
+                                    </div>
+
+                                </div>
+
+                                <div class="input-group w-100">
+                                    <!-- <input [(ngModel)]="customerName" name="customerName" autoFocus class="form-control"
+                                        placeholder="Nhập tên khách hàng" type="text"> -->
+
+                                    <span class="input-group-btn w-100">
+
+                                        <button (click)="applyFilters()" class="btn btn-info float-right ml-2 "
+                                            type="submit"><i class="icon-refresh"></i>
+                                            {{l("Refresh")}}</button>
+                                        <button class="btn btn-info float-right " (click)="reloadList($event)"><i
+                                                class="icon-refresh"></i>
+                                            {{l("Tìm kiếm")}}</button>
+                                    </span>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                        <p-table class="dinhdangchutable" #dataTable (onLazyLoad)="getThongTinXes($event)"
+                            [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [responsive]="primengTableHelper.isResponsive" [scrollable]="true">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th pSortableColumn="soXe">
+                                        Số xe
+                                        <p-sortIcon field="soXe"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="donViSuDung">
+                                        Đơn vị sử dụng
+                                        <p-sortIcon field="donViSuDung"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="LoaiXe">
+                                        Loại xe
+                                        <p-sortIcon field="LoaiXe"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="hangSanXuat">
+                                        Hãng sản xuất
+                                        <p-sortIcon field="hangSanXuat"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="mucDichSuDung" style="width: 200px;">
+                                        Mục đích sử dụng
+                                        <p-sortIcon field="mucDichSuDung"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="Model">
+                                        Model
+                                        <p-sortIcon field="Model"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="namSanXuat">
+                                        Năm sản xuất
+                                        <p-sortIcon field="namSanXuat"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="trangThaiDuyet">
+                                        Trạng thái duyệt
+                                        <p-sortIcon field="trangThaiDuyet"></p-sortIcon>
+                                    </th>
+                                    <th style="width: 200px;">{{l('Edit')}}</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td>
+                                        <span class="ui-column-title">Số xe</span>
+                                        <span title="{{record.soXe}}">{{truncateString(record.soXe)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Đơn vị sử dụng</span>
+                                        <span
+                                            title="{{record.donViSuDung}}">{{truncateString(record.donViSuDung)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Loại xe</span>
+                                        <span title="{{record.model}}">{{truncateString(record.loaiXe)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Hãng sản xuất</span>
+                                        <span
+                                            title="{{record.hangSanXuat}}">{{truncateString(record.hangSanXuat)}}</span>
+                                    </td>
+                                    <td style="width: 200px;">
+                                        <span class="ui-column-title">Mục đích sử dụng</span>
+                                        <span
+                                            title="{{record.mucDichSuDung}}">{{truncateString(record.mucDichSuDung)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Model</span>
+                                        <span title="{{record.model}}">{{truncateString(record.model)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Năm sản xuất</span>
+                                        <span title="{{record.namSanXuat}}">{{truncateString(record.namSanXuat)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">Trạng thái duyệt</span>
+                                        <span title="{{record.trangThaiDuyet}">{{truncateString(record.trangThaiDuyet)}}</span>
+                                    </td>
+                                    <td style=" width: 200px;">
+                                            <button class=" btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only
+                                            m-btn--pill" (click)="createOrEditModal.show(record.soXe)"
+                                                title="{{l('Edit')}}"
+                                                *ngIf='record.trangThaiDuyet!="Đã duyệt" || isDuyet'>
+                                                <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
+                                            </button>
+
+                                            <button
+                                                class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                                (click)="deleteThongTinXe(record.soXe)" title="{{l('Delete')}}">
+                                                <i class="fa fa-times" [attr.aria-label]="l('Delete')"></i>
+                                            </button>
+
+                                            <button
+                                                class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                                (click)="viewThongTinXeModal.show(record.soXe)" title="{{l('View')}}">
+                                                <i class="fa fa-eye" [attr.aria-label]="l('View')"></i>
+                                            </button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
+                                (onPageChange)="getThongTinXes($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <createOrEditThongTinXeModal #createOrEditModal (modalSave)="reloadPage()"></createOrEditThongTinXeModal>
+    <viewThongTinXeModal #viewThongTinXeModal></viewThongTinXeModal>
+</div>

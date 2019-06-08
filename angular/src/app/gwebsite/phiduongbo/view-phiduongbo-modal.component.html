@@ -1,0 +1,75 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="font-family: 'Times New Roman', Times, serif; font-size: 16px">
+            <div class="modal-header" style=" background-color: #00C5DC">
+                <h4 class="modal-title  w-100 text-center"
+                    style="color: #ffffff; font-size: 30; text-transform: uppercase ; font-weight: 100">
+
+                    <span> Thông tin chi tiết Phí đường bộ</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6 pl-5">
+                        <div class="form-group">
+                            <label>Số xe : {{phiDuongBo.soXe}} </label>
+                        </div>
+                        <div class="form-group">
+                            <label>Model : {{thongtinxe.model}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Loại xe : {{model.loaiXe}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label> Nước sản xuất {{thongtinxe.nuocSanXuat}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Loại nhiên liệu : {{thongtinxe.loaiNhienLieu}} </label>
+                        </div>
+                        <div class="form-group">
+                            <label>Đơn vị sử dụng : {{thongtinxe.donViSuDung}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Định mức nhiên liệu : {{model.dinhMucNhienLieu}}</label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Ngày cập nhật: {{phiDuongBo.ngayCapNhat | date:'MM/dd/yyyy'}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Ngày đóng phí: {{phiDuongBo.ngayDongPhi| date:'MM/dd/yyyy'}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Ngày hết hạn đóng phí: {{phiDuongBo.ngayHetHanDongPhi| date:'MM/dd/yyyy'}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Thời gian sử dụng: {{phiDuongBo.thoiGianSuDung}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Số Tiền Thanh Toán: {{phiDuongBo.soTienThanhToan}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Công Ty Thu Phí: {{phiDuongBo.congTyThuPhi}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Loại phí: {{phiDuongBo.loaiPhi}}</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Ghi chú: {{phiDuongBo.ghiChu}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-info" (click)="close()">
+                    {{l("Cancel")}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

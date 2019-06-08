@@ -1,0 +1,25 @@
+h2.title{
+  
+    text-transform: uppercase;
+    font-family: Times,'Times New Roman', serif;  
+}
+
+h2.subTitle{
+    text-align: center ;
+     margin-bottom: 20px; 
+     font-family: Times,'Times New Roman', serif;  
+    color: #d65a31;
+    text-transform: uppercase;
+    padding-bottom: 15px;
+    padding-top: 15px;
+}
+
+div.dinhdanghang{
+    font-size: 18px;
+     font-family: Times,'Times New Roman', serif;
+}
+.dinhdangchu{
+    font-size: 16px;
+    font-style: italic;
+    
+}

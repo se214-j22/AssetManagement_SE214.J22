@@ -1,0 +1,55 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style=" background-color: #00C5DC">
+                <h4 class="modal-title text-center w-100"
+                    style="color: #ffffff; font-size: 30; text-transform: uppercase ; font-weight: 100">
+                    <span>Thông tin bảo dưỡng chi tiết </span>
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Số xe</label>
+                            <p>{{thongtinbaoduong.soXe}}</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Ngày bảo dưỡng</label>
+                            <p>{{thongtinbaoduong.ngayBaoDuong|date}}</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Ngày bảo dưỡng tiếp theo</label>
+                            <p>{{thongtinbaoduong.ngayBaoDuongTiepTheo|date}}</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Số tiền thanh toán</label>
+                            <p>{{thongtinbaoduong.soTienThanhToan}}</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Hạng mục bảo dưỡng</label>
+                            <p>{{thongtinbaoduong.hangMucBaoDuong}}</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Trạng thái duyệt</label>
+                            <p>{{thongtinbaoduong.trangThaiDuyet}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>
+                    <span>{{l("Cancel")}}</span></button>
+            </div>
+        </div>
+    </div>
+</div>

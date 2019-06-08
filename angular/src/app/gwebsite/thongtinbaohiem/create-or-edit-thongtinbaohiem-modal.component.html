@@ -1,0 +1,180 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content " style="font-family: 'Times New Roman', Times, serif; font-size: 16px">
+            <form #editForm="ngForm" novalidate>
+                <div class="modal-header " style=" background-color: #00C5DC">
+                    <h4 class="modal-title w-100 text-center "
+                        style="color: #ffffff; font-size: 30; text-transform: uppercase ; font-weight: 100">
+                        <span *ngIf="baohiemxe.id">Cập nhật Thông tin bảo hiểm : {{thongtinxe.soXe}}</span>
+                        <span *ngIf="!baohiemxe.id">Tạo mới Thông tin bảo hiểm</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Số Xe </label>
+                                <input #soxeInput="ngModel" class="form-control" type="text" name="soXe"
+                                    [disabled]="true" [(ngModel)]="thongtinxe.soXe " required maxlength="64">
+                                <validation-messages [formCtrl]="soxeInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Loại xe </label>
+                                <input #loaixeInput="ngModel" class="form-control" type="text" name="loaiXe"
+                                    [disabled]="true" [(ngModel)]="model.loaiXe " required maxlength="64">
+                                <validation-messages [formCtrl]="loaixeInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Model </label>
+                                <input #modelInput="ngModel" class="form-control" type="text" name="model"
+                                    [disabled]="true" [(ngModel)]="thongtinxe.model" required maxlength="64">
+                                <validation-messages [formCtrl]="modelInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Nước sản xuất </label>
+                                <input #nuocsanxuatInput="ngModel" class="form-control" type="text" name="nuocSanXuat"
+                                    [disabled]="true" [(ngModel)]="thongtinxe.nuocSanXuat" required maxlength="64">
+                                <validation-messages [formCtrl]="nuocsanxuatInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Loại nhiên liệu </label>
+                                <input #loaiNhienLieuInput="ngModel" class="form-control" type="text"
+                                    name="loaiNhienLieu" [disabled]="true" [(ngModel)]="thongtinxe.loaiNhienLieu"
+                                    required maxlength="64">
+                                <validation-messages [formCtrl]="loaiNhienLieuInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Đơn vị sử dụng </label>
+                                <input #donViSuDungInput="ngModel" class="form-control" type="text" name="donViSuDung"
+                                    [disabled]="true" [(ngModel)]="thongtinxe.donViSuDung" required maxlength="64">
+                                <validation-messages [formCtrl]="donViSuDungInput"></validation-messages>
+                            </div>
+
+                            <!-- <div class="form-group">
+                                <label>Ngày cập nhập </label>
+                                <p-calendar #ngayCapNhapInput="ngModel" class="form-control" [showIcon]="true"
+                                    [(ngModel)]="ngayCapNhap" name="ngayCapNhap">
+                                </p-calendar>
+                                <validation-messages [formCtrl]="ngayCapNhapInput"></validation-messages>
+                            </div> -->
+                        </div>
+                        <div class="col-6">
+                            <!-- // -->
+                            <!-- <input #ngayMuaBaoHiemInput="ngModel" class="form-control" type="text"
+                                    name="ngayMuaBaoHiem" [(ngModel)]="baohiemxe.ngayMuaBaoHiem" required
+                                    maxlength="64">
+                                <validation-messages [formCtrl]="ngayMuaBaoHiemInput"></validation-messages> -->
+
+                            <div>
+                                <p>Ngày mua bảo hiểm </p>
+                                <p-calendar [showIcon]="true" class="form-group" [(ngModel)]="ngayMua"
+                                    (onSelect)="ChonNgayMua()" name="ngayMuaBaoHiem">
+                                </p-calendar>
+                                <!-- </div> -->
+                            </div>
+                            <div>
+                                <p>Ngày hết hạn bảo hiểm </p>
+                                <!-- <input #ngayHetHanBaoHiemInput="ngModel" class="form-control" type="text"
+                                    name="ngayHetHanBaoHiem" [(ngModel)]="baohiemxe.ngayHetHanBaoHiem" required
+                                    maxlength="64"> -->
+                                <p-calendar #ngayHetHanBaoHiemInput="ngModel" class="form-group" [showIcon]="true"
+                                    (onSelect)="ChonNgayHetHan()" [(ngModel)]="ngayHetHan" name="ngayHetHanBaoHiem">
+                                </p-calendar>
+                                <p *ngIf="ngayHetHan<ngayMua" style="color: red; font-size: 10px"><i>Ngày hết hạn phải
+                                        lớn hơn ngày mua bảo hiểm </i></p>
+                            </div>
+                            <div class="form-group">
+                                <label>Thời hạn bảo hiểm (tháng)</label>
+                                <input #thoiHanBaoHiemInput="ngModel" class="form-control" type="text"
+                                    name="thoiHanBaoHiem" [(ngModel)]="baohiemxe.thoiHanBaoHiem" required
+                                    [disabled]="true" maxlength="64">
+                                <validation-messages [formCtrl]="thoiHanBaoHiemInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Công ty bảo hiểm </label>
+                                <!-- <input #congTyBaoHiemInput="ngModel" class="form-control" type="text"
+                                    name="congTyBaoHiem" required [(ngModel)]="baohiemxe.congTyBaoHiem" maxlength="64">
+                                <validation-messages [formCtrl]="congTyBaoHiemInput"></validation-messages> -->
+                                <!-- <p-dropdown class="form-control" optionLabel="baohiemxe.congTyBaoHiem"
+                                    [options]="arrCongTyBaoHiem" name="congTyBaoHiem"
+                                    [(ngModel)]="baohiemxe.congTyBaoHiem" placeholder="--chọn--">
+                                </p-dropdown> -->
+                                <!-- <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        <label name="congTyBaoHiem" class=" form-control"
+                                            [(ngModel)]="baohiemxe.congTyBaoHiem"></label>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" *ngFor="let ten of arrCongTyBaoHiem ">{{ten}}</a>
+                                    </div>
+                                </div> -->
+                                <select class="form-control" name="congTyBaoHiem" [(ngModel)]="baohiemxe.congTyBaoHiem">
+                                    <option *ngFor="let ten of arrCongTyBaoHiem " value="{{ten}}">{{ten}}</option>
+
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Loại bảo hiểm </label>
+                                <input #loaiBaoHiemInput="ngModel" class="form-control" type="text" name="loaiBaoHiem"
+                                    required [(ngModel)]="baohiemxe.loaiBaoHiem" maxlength="64">
+                                <validation-messages [formCtrl]="loaiBaoHiemInput"></validation-messages>
+                            </div>
+                            <div class="form-group">
+                                <label>Số tiền thanh toán </label>
+                                <input #soTienThanhToanInput="ngModel" class="form-control" type="text"
+                                    name="soTienThanhToan" [(ngModel)]="baohiemxe.soTienThanhToan" required
+                                    maxlength="64">
+                                <validation-messages [formCtrl]="soTienThanhToanInput"></validation-messages>
+                            </div>
+
+                            <!-- <div class="form-group">
+                                <label>Trạng thái duyệt </label>
+                                <input #trangThaiDuyetInput="ngModel" class="form-control" type="text"
+                                    name="trangThaiDuyet" [(ngModel)]="baohiemxe.trangThaiDuyet" required
+                                    maxlength="64">
+                                <validation-messages [formCtrl]="trangThaiDuyetInput"></validation-messages>
+                            </div> -->
+                            <div class="form-group" *ngIf="isDuyet">
+                                <label class="mr-3">Trạng thái duyệt:
+                                    <input value="Đã duyệt" [checked]="check" type="checkbox" name="trangThaiDuyet"
+                                        [(ngModel)]="check" required maxlength="64"> Đã
+                                    duyệt
+                                </label>
+                            </div>
+                             <div class="form-group" *ngIf="!isDuyet">
+                                <label class="mr-3">Trạng thái duyệt:
+                                    <input value="Đã duyệt" [checked]="check" type="checkbox" name="trangThaiDuyet" [disabled] = "true"
+                                        [(ngModel)]="check" required maxlength="64"> Đã
+                                    duyệt
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label>Ghi chú </label>
+                                <input #ghiChuInput="ngModel" class="form-control" type="text" name="ghiChu"
+                                    [(ngModel)]="baohiemxe.ghiChu" required maxlength="64">
+                                <validation-messages [formCtrl]="ghiChuInput"></validation-messages>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </form>
+
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-default"
+                    (click)="close()">{{l("Cancel")}}</button>
+                <button (click)="save()" class="btn btn-info"><i class="fa fa-save"></i>
+                    <span>{{l("Save")}}</span></button>
+            </div>
+        </div>
+    </div>
+</div>
