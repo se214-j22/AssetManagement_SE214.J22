@@ -1,18 +1,19 @@
-import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild, OnInit } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
 import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
-import { BidProfileDto, ApprovalStatusEnum, NewPJDto, BidProfileTypeInfo } from '../dto/bidProfile.dto';
+import { BidProfileDto, ApprovalStatusEnum, NewPJDto, BidProfileTypeInfo, BidTypeEnum } from '../dto/bidProfile.dto';
 import * as moment from 'moment';
+import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 
 @Component({
     selector: 'createOrEditBidProfileModal',
     templateUrl: './create-or-edit-bidProfile-modal.component.html',
     styleUrls: ['./create-or-edit-bidProfile-modal.component.css']
 })
-export class CreateOrEditBidProfileModalComponent extends AppComponentBase {
+export class CreateOrEditBidProfileModalComponent extends AppComponentBase implements OnInit {
 
     @ViewChild('createOrEditModal') modal: ModalDirective;
     @ViewChild('bidProfileCombobox') bidProfileCombobox: ElementRef;
@@ -38,6 +39,8 @@ export class CreateOrEditBidProfileModalComponent extends AppComponentBase {
     public pjDescription = '';
 
     public bidProfileTypeId: number;
+    public bidCatalogProductId: number;
+    public projectId: number;
 
     public bidProfileTypes = [
         {
@@ -56,6 +59,21 @@ export class CreateOrEditBidProfileModalComponent extends AppComponentBase {
             name: 'Fridge'
         }
     ];
+
+
+    public bidTypeEnum = BidTypeEnum;
+    public bidType = 1;
+    public bidTypes = [
+        {
+            id: BidTypeEnum.Bidding,
+            name: 'Bidding'
+        },
+        {
+            id: BidTypeEnum.AppointContractors,
+            name: 'Appoint Contractors'
+        }
+    ];
+
 
     public supplierId: number;
     public suppliers = [
@@ -79,15 +97,139 @@ export class CreateOrEditBidProfileModalComponent extends AppComponentBase {
     public bidProfileTypeInfoList = [];
     public supplierInfoList = [];
 
+    public projectInfos = [];
+    public allProjectFakes = [
+        {
+            id: 1,
+            code: 'Pd01',
+            name: 'Product1'
+        },
+        {
+            id: 2,
+            code: 'Pd02',
+            name: 'Product1'
+        },
+        {
+            id: 3,
+            code: 'Pd03',
+            name: 'Product1'
+        },
+        {
+            id: 4,
+            code: 'Pd04',
+            name: 'Product1'
+        },
+        {
+            id: 5,
+            code: 'Pd05',
+            name: 'Product1'
+        },
+        {
+            id: 6,
+            code: 'Pd06',
+            name: 'Product1'
+        }
+    ];
+
+    //api 8.7, get all products có status=1(active hay open)
+    public productInfos = [];
+    public productFakes = [
+        {
+            id: 1,
+            code: 'Pd01',
+            name: 'Product1'
+        },
+        {
+            id: 2,
+            code: 'Pd02',
+            name: 'Product1'
+        },
+        {
+            id: 3,
+            code: 'Pd03',
+            name: 'Product1'
+        },
+        {
+            id: 4,
+            code: 'Pd04',
+            name: 'Product1'
+        },
+        {
+            id: 5,
+            code: 'Pd05',
+            name: 'Product1'
+        },
+        {
+            id: 6,
+            code: 'Pd06',
+            name: 'Product1'
+        }
+    ];
+
     public isCheckActive = false;
     public statusEnum = ApprovalStatusEnum;
     public newBidProfile: NewPJDto;
+
+    public startDateString = '';
+    public endDateString = '';
+    public openDateString = '';
+
+    public openDatePickerOptions: IMyDpOptions = {
+        selectorWidth: '240px',
+        dateFormat: 'dd/mm/yyyy',
+        showTodayBtn: true,
+        todayBtnTxt: 'Now',
+        showClearDateBtn: true,
+        alignSelectorRight: true,
+        openSelectorOnInputClick: true,
+        inline: false,
+        editableDateField: false,
+        selectionTxtFontSize: '13px',
+        height: '37px',
+        firstDayOfWeek: 'su',
+        sunHighlight: true,
+        disableUntil: {
+            year: new Date().getFullYear(),
+            month: new Date().getMonth() + 1,
+            day: new Date().getDate() - 1
+        }
+    };
 
     constructor(
         injector: Injector,
         private _apiService: WebApiServiceProxy
     ) {
         super(injector);
+    }
+
+    ngOnInit(): void {
+        // this.isPermissionEditCloseActive = true;
+        // call hàm này khi subcribe api 8.6 get all project success
+        this.handelSelectsProject();
+
+        // call hàm này khi subcribe api 8.7 get all product success
+        this.handelSelectsProduct();
+    }
+
+    public handelSelectsProduct(): void {
+        // filter products
+        this.productInfos = [];
+        this.productFakes.forEach((item, i) => {
+            this.productInfos.push(
+                new BidProfileTypeInfo(item.id, `${item.code} - ${item.name}`));
+        });
+    }
+    public onDateChangedByStart(event: IMyDateModel): void {
+        const date = Object.assign({}, event);
+        this.startDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
+    }
+    public onDateChangedByEnd(event: IMyDateModel): void {
+        const date = Object.assign({}, event);
+        this.endDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
+    }
+    public onDateChangedByOpen(event: IMyDateModel): void {
+        const date = Object.assign({}, event);
+        this.openDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
     }
 
     show(bidProfileId?: number | null | undefined): void {
@@ -127,6 +269,15 @@ export class CreateOrEditBidProfileModalComponent extends AppComponentBase {
             setTimeout(() => {
                 $(this.bidProfileCombobox.nativeElement).selectpicker('refresh');
             }, 0);
+        });
+    }
+
+    public handelSelectsProject(): void {
+        // filter products
+        this.projectInfos = [];
+        this.allProjectFakes.forEach((item, i) => {
+            this.projectInfos.push(
+                new BidProfileTypeInfo(item.id, `${item.code} - ${item.name}`));
         });
     }
 
