@@ -3,7 +3,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
-import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
+import { ComboboxItemDto, ProductsServiceProxy, ProductSavedCreate } from '@shared/service-proxies/service-proxies';
 import { ProductDto, ApprovalStatusEnum, NewPJDto, ProductTypeInfo } from '../dto/product.dto';
 import * as moment from 'moment';
 
@@ -15,7 +15,7 @@ import * as moment from 'moment';
 export class CreateOrEditProductModalComponent extends AppComponentBase {
 
     @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('productCombobox') productCombobox: ElementRef;
+    // @ViewChild('productCombobox') productCombobox: ElementRef;
     @ViewChild('iconCombobox') iconCombobox: ElementRef;
 
     /**
@@ -85,7 +85,7 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
 
     constructor(
         injector: Injector,
-        private _apiService: WebApiServiceProxy
+        private _apiService: ProductsServiceProxy
     ) {
         super(injector);
     }
@@ -119,15 +119,8 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
             this.supplierInfoList.push(
                 new ProductTypeInfo(item.id, `${item.code} - ${item.name}`));
         });
+        this.modal.show();
 
-        this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', productId).subscribe(result => {
-            this.product = result.menuClient;
-            this.products = result.menuClients;
-            this.modal.show();
-            setTimeout(() => {
-                $(this.productCombobox.nativeElement).selectpicker('refresh');
-            }, 0);
-        });
     }
 
     save(): void {
@@ -145,7 +138,10 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
                 + '--' + this.pjCalUnit + '--' + this.pjDescription + '--' + status);
 
             // this.insertProduct();
-
+            this._apiService.createProductAsync(new ProductSavedCreate({ name: this.pjName, address: 'aaa', calUnit: this.pjCalUnit, code: this.pjCode, createDate: moment(new Date(this.pjCreateDate)), description: this.pjDescription, productTypeId: this.productTypeId, status: status, supplierId: this.supplierId, unitPrice: this.pjUnitPrice })).subscribe(item => {
+                console.log(item);
+                this.modalSave.emit(null);
+            })
             // call api create product category theo code,nam,status
             // add xuống, id tự tạo
 
@@ -156,27 +152,7 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
         }
     }
 
-    insertProduct() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.post('api/MenuClient/CreateMenuClient', this.product)
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
-            });
-    }
 
-    updateProduct() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.put('api/MenuClient/UpdateMenuClient', this.product)
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
-            });
-    }
 
     close(): void {
         this.active = false;

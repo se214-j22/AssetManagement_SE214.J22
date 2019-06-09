@@ -34,11 +34,11 @@ export enum ApprovalStatusEnum {
 // create sub plan by model
 export class SubPlanDto {
     planId: number;
-    productCode: string;
+    productCode: number;
     quantity: number;
     // month schedule: time now
 
-    constructor(planId: number, productCode: string, quantity: number) {
+    constructor(planId: number, productCode: number, quantity: number) {
         this.planId = planId;
         this.productCode = productCode;
         this.quantity = quantity;
@@ -46,10 +46,10 @@ export class SubPlanDto {
 }
 
 export class ProductSubPlanDto {
-    productCode: string;
+    productCode: number;
     productInfo: string;
 
-    constructor(productCode: string, productInfo: string) {
+    constructor(productCode: number, productInfo: string) {
         this.productCode = productCode;
         this.productInfo = productInfo;
     }
@@ -75,11 +75,11 @@ export class NewPlanProducts {
     }
 }
 export class NewProductAddList {
-    productCode: string;
+    productCode: number;
     quantity: number;
     isEdit: boolean;
 
-    constructor(productCode: string, quantity: number, isEdit: boolean) {
+    constructor(productCode: number, quantity: number, isEdit: boolean) {
         this.productCode = productCode;
         this.quantity = quantity;
         this.isEdit = isEdit;

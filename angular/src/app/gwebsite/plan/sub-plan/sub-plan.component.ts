@@ -10,6 +10,7 @@ import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.serv
 import { ApprovalStatusEnum } from '../dto/plan.dto';
 import { CreateOrEditSubPlanModalComponent } from './create-or-edit-subplan-modal/create-or-edit-subplan-modal.component';
 import { switchMap } from 'rxjs/operators';
+import { SubPlanServiceProxy, SubPlanSavedDto, PlanDto, SubPlanDto, PlanServiceProxy } from '@shared/service-proxies/service-proxies';
 
 // import { ScrollableView } from 'primeng/table';
 // import ResizeObserver from 'resize-observer-polyfill';
@@ -46,9 +47,8 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
    * tạo các biến dể filters
    */
   public filterText: string;
-  public productCode: string;
-  public yearImplement = 2019; //get by plan id
-  public YearImplementList = [this.yearImplement];
+  public productCode: number = undefined;
+  public YearImplementList = [(new Date()).getFullYear()];
   public approvalStatusEnum = ApprovalStatusEnum;
   public approvalStatus = ApprovalStatusEnum.AwaitingApproval;
   public ApprovalStatusList = [
@@ -58,142 +58,11 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
     }
   ];
   public effectiveDate = '10/05/2019';
-  public totalPrice = 56000000;
-  public implementPrice = 30000000;
+  public totalPrice = 0;
+  public implementPrice = 0;
   public residualPrice = +this.totalPrice - +this.implementPrice;
 
-  public datas = [
-    {
-      productCode: 'A001',
-      productName: 'Computer',
-      calculationUnit: 'Int',
-      quantity: 10,
-      totalPrice: 1000000,
-      scheduleMonth: 'Jan',
-      implementQuantity: 7,
-      implementPrice: 700000,
-      implementMonth: 'Feb',
-      pesidualQuantity: 3,
-      pesidualPrice: 300000
-    },
-    {
-      productCode: 'A002',
-      productName: 'Computer',
-      calculationUnit: 'Int',
-      quantity: 11,
-      totalPrice: 1000000,
-      scheduleMonth: 'Jan',
-      implementQuantity: 7,
-      implementPrice: 700000,
-      implementMonth: 'Feb',
-      pesidualQuantity: 3,
-      pesidualPrice: 300000
-    },
-    {
-      productCode: 'B001',
-      productName: 'Computer',
-      calculationUnit: 'Int',
-      quantity: 12,
-      totalPrice: 1000000,
-      scheduleMonth: 'Mar',
-      implementQuantity: 7,
-      implementPrice: 700000,
-      implementMonth: 'Apr',
-      pesidualQuantity: 3,
-      pesidualPrice: 300000
-    },
-    {
-      productCode: 'B002',
-      productName: 'Computer',
-      calculationUnit: 'Int',
-      quantity: 13,
-      totalPrice: 1000000,
-      scheduleMonth: 'Mar',
-      implementQuantity: 7,
-      implementPrice: 700000,
-      implementMonth: 'May',
-      pesidualQuantity: 3,
-      pesidualPrice: 300000
-    },
-    {
-      productCode: 'C001',
-      productName: 'Computer',
-      calculationUnit: 'Int',
-      quantity: 14,
-      totalPrice: 1000000,
-      scheduleMonth: 'Apr',
-      implementQuantity: 7,
-      implementPrice: 700000,
-      implementMonth: 'Jun',
-      pesidualQuantity: 3,
-      pesidualPrice: 300000
-    },
-    {
-      productCode: 'C002',
-      productName: 'Computer',
-      calculationUnit: 'Int',
-      quantity: 15,
-      totalPrice: 1000000,
-      scheduleMonth: 'Apr',
-      implementQuantity: 7,
-      implementPrice: 700000,
-      implementMonth: 'Jul',
-      pesidualQuantity: 3,
-      pesidualPrice: 300000
-    },
-    {
-      productCode: 'D001',
-      productName: 'Computer',
-      calculationUnit: 'Int',
-      quantity: 16,
-      totalPrice: 1000000,
-      scheduleMonth: 'May',
-      implementQuantity: 7,
-      implementPrice: 700000,
-      implementMonth: 'Aug',
-      pesidualQuantity: 3,
-      pesidualPrice: 300000
-    },
-    {
-      productCode: 'D002',
-      productName: 'Computer',
-      calculationUnit: 'Int',
-      quantity: 17,
-      totalPrice: 1000000,
-      scheduleMonth: 'May',
-      implementQuantity: 7,
-      implementPrice: 700000,
-      implementMonth: 'Jun',
-      pesidualQuantity: 3,
-      pesidualPrice: 300000
-    },
-    {
-      productCode: 'E001',
-      productName: 'Computer',
-      calculationUnit: 'Int',
-      quantity: 18,
-      totalPrice: 1000000,
-      scheduleMonth: 'May',
-      implementQuantity: 7,
-      implementPrice: 700000,
-      implementMonth: 'Jul',
-      pesidualQuantity: 3,
-      pesidualPrice: 300000
-    },
-    {
-      productCode: 'E002',
-      productName: 'Computer',
-      calculationUnit: 'Int',
-      quantity: 19,
-      totalPrice: 1000000,
-      scheduleMonth: 'Jun',
-      implementQuantity: 7,
-      implementPrice: 700000,
-      implementMonth: 'Oct',
-      pesidualQuantity: 3,
-      pesidualPrice: 300000
-    }
-  ];
+
 
   public isRoleApprovedMan = false;
   public planId: number;
@@ -212,7 +81,7 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
     injector: Injector,
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
-    private _apiService: WebApiServiceProxy
+    private _apiService: SubPlanServiceProxy, private apiService: PlanServiceProxy
   ) {
     super(injector);
   }
@@ -220,6 +89,8 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
   /**
    * Hàm xử lý trước khi View được init
    */
+
+  plan: PlanDto = new PlanDto();
   ngOnInit(): void {
     //dựa vào user id, get role approve cho user đó
     // nếu người đó có quyền duyệt thì cũng có quyền editQty(phòng ban tạo plan cũng edit đc)
@@ -238,9 +109,22 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
 
     // id lấy từ url là sting, phải dùng + để parse sang number
     this.planId = +this._activatedRoute.snapshot.paramMap.get('id');
-    console.log(this.planId);
+    this.apiService.getPlanForEdit(this.planId).subscribe(result => {
+      this.plan = result;
+      this.approvalStatus = result.status;
+      this.ApprovalStatusList = [
+        {
+          id: this.approvalStatus,
+          name: this.approvalStatus === 1 ? 'Approved' : 'Awaiting Approval'
+        }
+      ];
+      this.totalPrice = result.totalPrice;
+      this.YearImplementList = [result.implementDate.year()];
+      result.subPlans.map(item => this.implementPrice += item.implementPrice);
+      this.residualPrice = +this.totalPrice - +this.implementPrice;
+    });
 
-    // như v, tại đây đã có đc planId
+
   }
 
   /**
@@ -279,26 +163,17 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
      * Sử dụng _apiService để call các api của backend
      */
 
-    // this._apiService.get('api/MenuClient/GetMenuClientsByFilter',
-    //   [{ fieldName: 'Name', value: this.filterText }],
-    //   this.primengTableHelper.getSorting(this.dataTable),
-    //   this.primengTableHelper.getMaxResultCount(this.paginator, event),
-    //   this.primengTableHelper.getSkipCount(this.paginator, event),
-    // ).subscribe(result => {
-    //   this.primengTableHelper.totalRecordsCount = result.totalCount;
-    //   this.primengTableHelper.records = result.items;
-    //   this.primengTableHelper.hideLoadingIndicator();
-    // });
-
-    this.primengTableHelper.totalRecordsCount = 14;
-    this.primengTableHelper.records = this.datas;
-
-    this.primengTableHelper.records.forEach((row: any, i: number) => {
-      row.isEdit = false;
-      row.quantityEdit = 0;
-    });
-
-    this.primengTableHelper.hideLoadingIndicator();
+    this._apiService.getSubPlans(undefined, this.productCode, this.primengTableHelper.getSorting(this.dataTable),
+      this.primengTableHelper.getMaxResultCount(this.paginator, event),
+      this.primengTableHelper.getSkipCount(this.paginator, event)).subscribe(result => {
+        this.primengTableHelper.totalRecordsCount = 10;
+        this.primengTableHelper.records = result.items;
+        this.primengTableHelper.records.forEach((row: any, i: number) => {
+          row.isEdit = false;
+          row.quantityEdit = 0;
+        });
+        this.primengTableHelper.hideLoadingIndicator();
+      });
   }
 
   init(): void {
@@ -325,19 +200,15 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
   public approvedPlan(): void {
     // this.planId: approved theo planId
     if (this.approvalStatus === ApprovalStatusEnum.AwaitingApproval) {
+      this.apiService.approvedPlanAsync(this.planId).subscribe(result => {
+        this.approvalStatus = ApprovalStatusEnum.Approved;
+        this.ApprovalStatusList[0].id = 1;
+        this.ApprovalStatusList[0].name = 'Approved';
+      });
+    }
 
-    }
-    //call api approved plan
-    //if approved successful
-    if (1) {
-      this.approvalStatus = ApprovalStatusEnum.Approved;
-      this.ApprovalStatusList[0].id = 1;
-      this.ApprovalStatusList[0].name = 'Approved';
-    }
   }
-  public searchProductCode(): void {
-    //search by this.productCode
-  }
+
 
   public activeEditRow(row: any): void {
     row.quantityEdit = row.quantity;
@@ -355,6 +226,8 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
 
     // Chú ý: mỗi lần save change một subplan thành công, thì dưới BE tự tăng CountChanged++ cho Plan lớn (bao gồm các subplan)
     // theo planId.
+    console.log({ planId: row.planId, productId: row.product.id, quantity: row.quantity });
+    this._apiService.updateSubPlanAsync(new SubPlanSavedDto({ planId: row.planId, productId: row.product.id, quantity: row.quantity })).subscribe(item => console.log(item));
   }
 
   public cancelEditRow(row: any): void {
@@ -362,15 +235,26 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
   }
 
   //Refresh grid khi thực hiện create or edit thành công
-  refreshValueFromModal(): void {
-    if (this.createOrEditModal.newProduct.planId) {
-      for (let i = 0; i < this.primengTableHelper.records.length; i++) {
-        if (this.primengTableHelper.records[i].id === this.createOrEditModal.newProduct.planId) {
-          this.primengTableHelper.records[i] = this.createOrEditModal.newProduct;
-          return;
-        }
-      }
-    } else { this.reloadPage(); }
+  refreshValueFromModal(event): void {
+    // if (this.createOrEditModal.newProduct.planId) {
+    //   for (let i = 0; i < this.primengTableHelper.records.length; i++) {
+    //     if (this.primengTableHelper.records[i].id === this.createOrEditModal.newProduct.planId) {
+    //       this.primengTableHelper.records[i] = this.createOrEditModal.newProduct;
+    //       return;
+    //     }
+    //   }
+    // } else { this.reloadPage(); }
+    this._apiService.getSubPlans(undefined, this.productCode, this.primengTableHelper.getSorting(this.dataTable),
+      this.primengTableHelper.getMaxResultCount(this.paginator, event),
+      this.primengTableHelper.getSkipCount(this.paginator, event)).subscribe(result => {
+        this.primengTableHelper.totalRecordsCount = 10;
+        this.primengTableHelper.records = result.items;
+        this.primengTableHelper.records.forEach((row: any, i: number) => {
+          row.isEdit = false;
+          row.quantityEdit = 0;
+        });
+        this.primengTableHelper.hideLoadingIndicator();
+      });
   }
 
   //hàm show view create Plan

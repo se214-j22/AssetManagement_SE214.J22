@@ -22,7 +22,7 @@
   <div class="m-content">
     <div class="m-portlet m-portlet--mobile">
       <div class="m-portlet__body">
-        <form autocomplete="off" (ngSubmit)="searchProductCode()">
+        <form autocomplete="off" (ngSubmit)="getSubPlans(paginator)">
           <div class="m-form m-form--label-align-right" id="TextsFilterForm">
             <div *ngIf="isRoleApprovedMan" class="row align-items-center m--margin-bottom-10">
               <div class="col-sm-12">
@@ -84,7 +84,7 @@
                     <span class="float-right">Effective Date:</span>
                   </div>
                   <div class="col-8 col-sm-8 col-lg-8">
-                    <input type="text" [(ngModel)]="effectiveDate" [attr.disabled]="true" name="effectiveDate"
+                    <input type="text" [(ngModel)]="plan.effectiveDate" [attr.disabled]="true" name="effectiveDate"
                       class="form-control" required>
                   </div>
                 </div>
@@ -95,8 +95,8 @@
                     <span class="float-right">Total Price:</span>
                   </div>
                   <div class="col-8 col-sm-8 col-lg-8">
-                    <input type="text" value="{{totalPrice | currency:'VND':'symbol':'4.2-2'}}" [attr.disabled]="true"
-                      name="totalPrice" class="form-control" required>
+                    <input type="text" value="{{plan.totalPrice | currency:'VND':'symbol':'4.2-2'}}"
+                      [attr.disabled]="true" name="totalPrice" class="form-control" required>
                   </div>
                 </div>
                 <div class="row align-items-center m-b-5">
@@ -203,15 +203,15 @@
                     </td>
                     <td style="width: 150px">
                       <span class="ui-column-title">{{l('Product Code')}}</span>
-                      <span title="{{record.productCode}}">{{truncateString(record.productCode)}}</span>
+                      <span title="{{record.productCode}}">{{truncateString(record.product.id)}}</span>
                     </td>
                     <td style="width: 150px">
                       <span class="ui-column-title">{{l('Product Name')}}</span>
-                      <span title="{{record.productName}}">{{truncateString(record.productName)}}</span>
+                      <span title="{{record.productName}}">{{truncateString(record.product.name)}}</span>
                     </td>
                     <td style="width: 150px">
                       <span class="ui-column-title">{{l('Cal Unit')}}</span>
-                      <span title="{{record.calculationUnit}}">{{truncateString(record.calculationUnit)}}</span>
+                      <span title="{{record.calculationUnit}}">{{truncateString(record.product.calUnit)}}</span>
                     </td>
                     <td style="width: 150px">
                       <span class="ui-column-title">{{l('Quantity')}}</span>
@@ -225,7 +225,7 @@
                     <td style="width: 150px">
                       <span class="ui-column-title">{{l('Total Price')}}</span>
                       <span
-                        title="{{record.totalPrice}}">{{truncateString(record.totalPrice | currency:'VND':'symbol':'4.2-2')}}</span>
+                        title="{{record.totalPrice}}">{{truncateString(record.totalprice | currency:'VND':'symbol':'4.2-2')}}</span>
                     </td>
                     <td style="width: 150px">
                       <span class="ui-column-title">{{l('Schedule Month')}}</span>
@@ -233,7 +233,7 @@
                     </td>
                     <td style="width: 150px">
                       <span class="ui-column-title">{{l('Im Qty')}}</span>
-                      <span title="{{record.implementQuantity}}">{{truncateString(record.implementQuantity)}}</span>
+                      <span title="{{record.implementQuantity}}">{{truncateString(record.implementQantity)}}</span>
                     </td>
                     <td style="width: 150px">
                       <span class="ui-column-title">{{l('Implement Price')}}</span>
@@ -242,7 +242,7 @@
                     </td>
                     <td style="width: 150px">
                       <span class="ui-column-title">{{l('Im Month')}}</span>
-                      <span title="{{record.implementMonth}}">{{truncateString(record.implementMonth)}}</span>
+                      <span title="{{record.implementMonth}}">{{truncateString(record.scheduleMonth)}}</span>
                     </td>
                     <td style="width: 150px">
                       <span class="ui-column-title">{{l('Pesidual Qty')}}</span>
@@ -289,5 +289,6 @@
       </div>
     </div>
   </div>
-  <createOrEditSubPlanModal #createOrEditModal (modalSave)="refreshValueFromModal()"></createOrEditSubPlanModal>
+  <createOrEditSubPlanModal #createOrEditModal (modalSave)="refreshValueFromModal(paginator)">
+  </createOrEditSubPlanModal>
 </div>

@@ -1,10 +1,10 @@
 import { Component, OnInit, AfterViewChecked, ElementRef, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
-import { finalize } from 'rxjs/operators';
-import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
-import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
-import { SubPlanDto, ProductSubPlanDto, PurchaseProducts, StatusEnum } from '../../dto/plan.dto';
+import { SubPlanServiceProxy, SubPlanSavedDto, PlanDto, SubPlanDto, PlanServiceProxy } from '@shared/service-proxies/service-proxies';
+import { PurchaseProducts, ProductSubPlanDto } from '../../dto/plan.dto';
+import { ComboboxItemDto } from '@app/shared/service-proxies/service-proxies';
+
 
 @Component({
     selector: 'createOrEditSubPlanModal',
@@ -36,25 +36,25 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase implemen
     //results include: productCode, productName, CalUnit
     public productsNotAssignThisPlan = [
         {
-            productCode: 'F001',
+            productCode: 6,
             productName: 'Computer Screen',
             calUnit: 'Int',
             unitPrice: 20000
         },
         {
-            productCode: 'F002',
+            productCode: 8,
             productName: 'Computer CPU',
             calUnit: 'Char',
             unitPrice: 50000
         },
         {
-            productCode: 'G001',
+            productCode: 9,
             productName: 'Fridge',
             calUnit: 'Float',
             unitPrice: 30000
         },
         {
-            productCode: 'G002',
+            productCode: 7,
             productName: 'Water Purifier',
             calUnit: 'Bool',
             unitPrice: 40000
@@ -62,14 +62,14 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase implemen
     ];
 
     public productInfoList: ProductSubPlanDto[] = [];
-    public productCode = '';
+    public productCode = 0;
     public quantity = 0;
     public planId = 0;
-    public newProduct: SubPlanDto;
+    public newProduct: SubPlanSavedDto;
 
     constructor(
         injector: Injector,
-        private _apiService: WebApiServiceProxy
+        private _apiService: SubPlanServiceProxy
     ) {
         super(injector);
     }
@@ -95,13 +95,7 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase implemen
         // by planId
         if (planId) {
             this.planId = planId;
-            // this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', planId).subscribe(result => {
-            //     this.productsNotAssignThisPlan = result.products;
-            //     this.modal.show();
-            //     setTimeout(() => {
-            //         $(this.subPlanCombobox.nativeElement).selectpicker('refresh');
-            //     }, 0);
-            // });
+
 
             this.saving = false;
             this.productCode = this.productsNotAssignThisPlan[0].productCode;
@@ -121,14 +115,16 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase implemen
     save(): void {
         this.saving = true;
 
-        this.newProduct = new SubPlanDto(this.planId, this.productCode, this.quantity);
-
+        this.newProduct = new SubPlanSavedDto({ planId: this.planId, productId: this.productCode, quantity: this.quantity });
+        this._apiService.createProductCatalogAsync(this.newProduct).subscribe(item => this.modalSave.emit(item));
         //call api create, send newProduct
         // if (this.planId) {
         //     this.updateSubPlan();
         // } else {
         //     this.insertSubPlan();
         // }
+
+
 
         //post this.newProduct
 
@@ -138,28 +134,13 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase implemen
         this.close();
     }
 
-    insertSubPlan() {
-        this._apiService.post('api/Purchase/CreatePurchase', this.newProduct)
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
-            });
-    }
 
-    updateSubPlan() {
-        this._apiService.put('api/MenuClient/UpdateMenuClient', this.newProduct)
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
-            });
-    }
+
+
 
     close(): void {
         this.active = false;
         this.modal.hide();
+
     }
 }

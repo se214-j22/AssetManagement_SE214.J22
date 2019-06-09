@@ -3,7 +3,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
-import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
+import { ComboboxItemDto, SupplierServiceProxy, SupplierSavedDto, SupplierTypeDto } from '@shared/service-proxies/service-proxies';
 import { SupplierDto, ApprovalStatusEnum, NewPJDto, SupplierTypeInfo } from '../dto/supplier.dto';
 import * as moment from 'moment';
 
@@ -15,7 +15,7 @@ import * as moment from 'moment';
 export class CreateOrEditSupplierModalComponent extends AppComponentBase {
 
     @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('supplierCombobox') supplierCombobox: ElementRef;
+    // @ViewChild('supplierCombobox') supplierCombobox: ElementRef;
     @ViewChild('iconCombobox') iconCombobox: ElementRef;
 
     /**
@@ -41,35 +41,23 @@ export class CreateOrEditSupplierModalComponent extends AppComponentBase {
     public pjContact = '';
     public pjDescription = '';
 
-    public supplierTypes = [
-        {
-            id: 1,
-            code: 'F001',
-            name: 'Computer Screen'
-        },
-        {
-            id: 2,
-            code: 'F002',
-            name: 'Computer CPU'
-        },
-        {
-            id: 3,
-            code: 'G001',
-            name: 'Fridge'
-        }
-    ];
+    public supplierTypes: SupplierTypeDto[];
 
     public supplierTypeInfoList = [];
 
     public isCheckActive = false;
     public statusEnum = ApprovalStatusEnum;
-    public newSupplier: NewPJDto;
+    public newSupplier: SupplierSavedDto;
 
     constructor(
         injector: Injector,
-        private _apiService: WebApiServiceProxy
+        private _apiService: WebApiServiceProxy,
+        private _supplierType: SupplierServiceProxy,
+        private _supplierTypeService: SupplierServiceProxy
     ) {
         super(injector);
+        this._supplierType.getSupplierTypesWithFilter(undefined, undefined, undefined, undefined, undefined).subscribe(result =>
+            this.supplierTypes = result.items);
     }
 
     show(supplierId?: number | null | undefined): void {
@@ -100,9 +88,9 @@ export class CreateOrEditSupplierModalComponent extends AppComponentBase {
             this.supplier = result.menuClient;
             this.suppliers = result.menuClients;
             this.modal.show();
-            setTimeout(() => {
-                $(this.supplierCombobox.nativeElement).selectpicker('refresh');
-            }, 0);
+            // setTimeout(() => {
+            //     $(this.supplierCombobox.nativeElement).selectpicker('refresh');
+            // }, 0);
         });
     }
 
@@ -111,11 +99,13 @@ export class CreateOrEditSupplierModalComponent extends AppComponentBase {
             this.saving = true;
 
             let status = this.isCheckActive ? this.statusEnum.Active : this.statusEnum.Inactive;
-
             //createDate: BE lấy giờ hệ thống
-            this.newSupplier = new NewPJDto(this.pjCode, this.pjName, this.supplierTypeId, this.pjAddress,
-                this.pjEmail, this.pjFax, this.pjPhone, this.pjContact, this.pjDescription, status);
-
+            this.newSupplier = new SupplierSavedDto({
+                name: this.pjName, address: this.pjAddress, email: this.pjEmail
+                , fax: this.pjFax, code: this.pjCode, contact: this.pjContact, createDate: moment(this.pjCreateDate), description: this.pjDescription
+                , phone: this.pjPhone, status: status, supplierTypeId: this.supplierTypeId, id: 0
+            });
+            this._supplierType.createSupplier(this.newSupplier).subscribe(result => console.log(result));
 
             console.log(this.pjCode + '--' + this.pjName + '--' + this.supplierTypeId + '--' + this.pjAddress
                 + '--' + this.pjEmail + '--' + this.pjFax + '--' + this.pjPhone + '--' + this.pjContact + '--' +
@@ -128,32 +118,12 @@ export class CreateOrEditSupplierModalComponent extends AppComponentBase {
 
             //trước khi add nhớ check duplicat code.
 
-
+            this.modalSave.emit();
             this.close();
         }
     }
 
-    insertSupplier() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.post('api/MenuClient/CreateMenuClient', this.supplier)
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
-            });
-    }
 
-    updateSupplier() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.put('api/MenuClient/UpdateMenuClient', this.supplier)
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
-            });
-    }
 
     close(): void {
         this.active = false;

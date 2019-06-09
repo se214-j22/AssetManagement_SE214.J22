@@ -9,6 +9,7 @@ import { Table } from 'primeng/components/table/table';
 import { CreateOrEditPlanModalComponent } from './create-or-edit-plan-modal/create-or-edit-plan-modal.component';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import { ApprovalStatusEnum } from './dto/plan.dto';
+import { PlanServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @Component({
     selector: 'app-plan',
@@ -48,106 +49,16 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
     ];
 
     public YearImplementList = ['All Year', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'];
-    public yearImplement = this.YearImplementList[0];
+    public yearImplement = undefined;
     public UnitCodeList = ['All Units', 'HN', 'HP', 'DN', 'TPHCM', 'CT'];
-    public unitCode = this.UnitCodeList[0];
+    public unitCode = undefined;
 
-    public DepartmentCodeList = ['All Departments', 'IT', 'HR', 'Acco', 'Mark', 'Sale', 'PR'];
-    public deparmentCode = this.DepartmentCodeList[0];
-    public planIdFilter = 0;
+    DepartmentCodeList = [];
 
-    public datas = [
-        {
-            planId: 11,
-            effectiveDate: '01/01/2019',
-            totalPrice: 1000000,
-            unitCode: 'HN',
-            departmentCode: 'IT',
-            status: ApprovalStatusEnum.AwaitingApproval,
-            countChanged: 1
-        },
-        {
-            planId: 22,
-            effectiveDate: '02/01/2019',
-            totalPrice: 2000000,
-            unitCode: 'TPHCM1',
-            departmentCode: 'HR',
-            status: ApprovalStatusEnum.Approved,
-            countChanged: 3
-        },
-        {
-            planId: 33,
-            effectiveDate: '03/01/2019',
-            totalPrice: 3000000,
-            unitCode: 'HP',
-            departmentCode: 'Acco',
-            status: ApprovalStatusEnum.Approved,
-            countChanged: 2
-        },
-        {
-            planId: 44,
-            effectiveDate: '04/01/2019',
-            totalPrice: 4000000,
-            unitCode: 'DN',
-            departmentCode: 'Mark',
-            status: ApprovalStatusEnum.AwaitingApproval,
-            countChanged: 1
-        },
-        {
-            planId: 55,
-            effectiveDate: '01/01/2019',
-            totalPrice: 1000000,
-            unitCode: 'TPHCM2',
-            departmentCode: 'IT',
-            status: ApprovalStatusEnum.AwaitingApproval,
-            countChanged: 5
-        },
-        {
-            planId: 66,
-            effectiveDate: '02/01/2019',
-            totalPrice: 2000000,
-            unitCode: 'CT',
-            departmentCode: 'Sale',
-            status: ApprovalStatusEnum.Approved,
-            countChanged: 3
-        },
-        {
-            planId: 77,
-            effectiveDate: '03/01/2019',
-            totalPrice: 3000000,
-            unitCode: 'DN',
-            departmentCode: 'IT',
-            status: ApprovalStatusEnum.Approved,
-            countChanged: 2
-        },
-        {
-            planId: 88,
-            effectiveDate: '04/01/2019',
-            totalPrice: 4000000,
-            unitCode: 'HN2',
-            departmentCode: 'Marketing',
-            status: ApprovalStatusEnum.AwaitingApproval,
-            countChanged: 6
-        },
-        {
-            planId: 99,
-            effectiveDate: '01/01/2019',
-            totalPrice: 1000000,
-            unitCode: 'NT',
-            departmentCode: 'PR',
-            status: ApprovalStatusEnum.AwaitingApproval,
-            countChanged: 4
-        },
-        {
-            planId: 100,
-            effectiveDate: '02/01/2019',
-            totalPrice: 2000000,
-            unitCode: 'TPHCM3',
-            departmentCode: 'HR',
-            status: ApprovalStatusEnum.Approved,
-            countChanged: 2
-        }
-    ];
+
+    public deparmentCode = undefined;
+    public planIdFilter = undefined;
+
     public isRoleApprovedMan = false;
 
     public myConfigStyleHeader: any = {
@@ -164,9 +75,15 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
         injector: Injector,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
-        private _apiService: WebApiServiceProxy
+        private _apiService: PlanServiceProxy
     ) {
         super(injector);
+        this.DepartmentCodeList = ['All Departments', 'IT', 'HR', 'Acco', 'Mark', 'Sale', 'PR'];
+        this._apiService.getAllDepartment().subscribe((item: any) => {
+
+            this.DepartmentCodeList = item;
+            this.DepartmentCodeList.unshift('All Departments');
+        }, err => console.log(err));
     }
 
     /**
@@ -219,19 +136,15 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
          * Sử dụng _apiService để call các api của backend
          */
 
-        // this._apiService.get('api/MenuClient/GetMenuClientsByFilter',
-        //     [{ fieldName: 'Name', value: this.filterText }],
-        //     this.primengTableHelper.getSorting(this.dataTable),
-        //     this.primengTableHelper.getMaxResultCount(this.paginator, event),
-        //     this.primengTableHelper.getSkipCount(this.paginator, event),
-        // ).subscribe(result => {
-        //     this.primengTableHelper.totalRecordsCount = result.totalCount;
-        //     this.primengTableHelper.records = result.items;
-        //     this.primengTableHelper.hideLoadingIndicator();
-        // });
-        this.primengTableHelper.totalRecordsCount = 16;
-        this.primengTableHelper.records = this.datas;
-        this.primengTableHelper.hideLoadingIndicator();
+        this._apiService.getPlans(
+            this.planIdFilter, this.yearImplement, this.approvalStatus, this.unitCode, this.deparmentCode,
+            this.primengTableHelper.getSorting(this.dataTable),
+            this.primengTableHelper.getMaxResultCount(this.paginator, event),
+            this.primengTableHelper.getSkipCount(this.paginator, event)).subscribe(result => {
+                this.primengTableHelper.totalRecordsCount = 10;
+                this.primengTableHelper.records = result.items;
+                this.primengTableHelper.hideLoadingIndicator();
+            }, err => console.log(err));
     }
 
     init(): void {
@@ -241,6 +154,8 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
             //reload lại gridview
             this.reloadPage();
         });
+
+
     }
 
     reloadPage(): void {
@@ -277,10 +192,11 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
 
     }
 
-    public approvalPlan(planId: number, $event: Event, index: number): void {
+    public approvalPlan(record: any, $event: Event, index: number): void {
         $event.stopPropagation();
-        this.datas[index].status = ApprovalStatusEnum.Approved;
-
+        this._apiService.approvedPlanAsync(record.id).subscribe((i) => {
+            record.status = ApprovalStatusEnum.Approved;
+        }, err => console.log(err));
         //call api approved cho planId này.
     }
 

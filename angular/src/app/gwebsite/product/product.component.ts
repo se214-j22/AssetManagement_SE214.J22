@@ -11,6 +11,7 @@ import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.serv
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import * as moment from 'moment';
 import { ApprovalStatusEnum, StatusEnum } from './dto/product.dto';
+import { ProductsServiceProxy, ProductSavedDto } from '@shared/service-proxies/service-proxies';
 
 
 @Component({
@@ -85,162 +86,7 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
     // -những dự án của năm cũ, sẽ tự động close (mỗi lần đến 1/1/newyear, sẽ trigger cho nó close hết products năm cũ),
     //      dù có đc approved hay chưa.
     // -những dự án của năm hiện tại: chỉ dc phép close khi nó chưa đc approved.
-    public productFakes = [
-        {
-            id: 1,
-            code: 'S001',
-            name: 'Purchase early in the year',
-            productTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: true
-        },
-        {
-            id: 2,
-            code: 'S002',
-            name: 'Purchase early in the year',
-            productTypeId: 3,
-            supplierId: 1,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: false
-        },
-        {
-            id: 3,
-            code: 'S003',
-            name: 'Purchase early in the year',
-            productTypeId: 4,
-            supplierId: 6,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: false
-        },
-        {
-            id: 4,
-            code: 'S004',
-            name: 'Purchase early in the year',
-            productTypeId: 9,
-            supplierId: 7,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: true
-        },
-        {
-            id: 5,
-            code: 'S005',
-            name: 'Purchase early in the year',
-            productTypeId: 1,
-            supplierId: 5,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: false
-        },
-        {
-            id: 6,
-            code: 'S006',
-            name: 'Purchase early in the year',
-            productTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: false
-        },
-        {
-            id: 7,
-            code: 'S007',
-            name: 'Purchase early in the year',
-            productTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: true
-        },
-        {
-            id: 8,
-            code: 'S008',
-            name: 'Purchase early in the year',
-            productTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: false
-        },
-        {
-            id: 9,
-            code: 'S009',
-            name: 'Purchase early in the year',
-            productTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: true
-        },
-        {
-            id: 10,
-            code: 'S010',
-            name: 'Purchase early in the year',
-            productTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: true
-        },
-        {
-            id: 11,
-            code: 'S011',
-            name: 'Purchase early in the year',
-            productTypeId: 1,
-            supplierId: 2,
-            unitPrice: '20000',
-            calUnit: 'VND',
-            description: 'This is product item',
-            supplierAddress: 'Quan 3 - TP HCM',
-            createDate: '05/11/2018',
-            status: 2,
-            isUsed: true
-        }
-    ];
+
 
     public oldObject = {};
 
@@ -258,7 +104,7 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
         injector: Injector,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
-        private _apiService: WebApiServiceProxy
+        private _apiService: ProductsServiceProxy
     ) {
         super(injector);
     }
@@ -294,26 +140,18 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
         /**
          * Sử dụng _apiService để call các api của backend
          */
-
-        // this._apiService.get('api/MenuClient/GetMenuClientsByFilter',
-        //     [{ fieldName: 'Name', value: this.filterText }],
-        //     this.primengTableHelper.getSorting(this.dataTable),
-        //     this.primengTableHelper.getMaxResultCount(this.paginator, event),
-        //     this.primengTableHelper.getSkipCount(this.paginator, event),
-        // ).subscribe(result => {
-        //     this.primengTableHelper.totalRecordsCount = result.totalCount;
-        //     this.primengTableHelper.records = result.items;
-        //     this.primengTableHelper.hideLoadingIndicator();
-        // });
-
-        this.primengTableHelper.totalRecordsCount = 16;
-        this.primengTableHelper.records = this.productFakes;
-
-        this.primengTableHelper.records.forEach((item) => {
-            item.isEdit = false;
-        });
-
-        this.primengTableHelper.hideLoadingIndicator();
+        this._apiService.getProducts(
+            this.productNameFilter, this.status, this.productCodeFilter,
+            this.primengTableHelper.getSorting(this.dataTable),
+            this.primengTableHelper.getMaxResultCount(this.paginator, event),
+            this.primengTableHelper.getSkipCount(this.paginator, event)).subscribe(result => {
+                this.primengTableHelper.totalRecordsCount = 10;
+                this.primengTableHelper.records = result.items;
+                this.primengTableHelper.hideLoadingIndicator();
+                this.primengTableHelper.records.forEach((item) => {
+                    item.isEdit = false;
+                });
+            }, err => console.log(err));
     }
 
     init(): void {
@@ -404,7 +242,9 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
 
             // vì bên html đã tự bind [(ngModel)] vào row.name và row.note rồi, nên ở đây ta chỉ cần lấy ra giá trị để update
             console.log(id + '---' + row.name + '---' + row.unitPrice + '---' + row.calUnit + '---' + row.description);
-
+            this._apiService.updateProductAsync(new ProductSavedDto({ id: row.id, address: row.address, description: row.description, name: row.name, unitPrice: row.unitPrice })).subscribe(() => {
+                console.log('success');
+            });
             //save thành công
             row.isEdit = false;
         }

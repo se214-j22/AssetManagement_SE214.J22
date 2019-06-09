@@ -20,7 +20,7 @@
     <div class="m-content">
         <div class="m-portlet m-portlet--mobile">
             <div class="m-portlet__body">
-                <form autocomplete="off" (ngSubmit)="searchPlan()">
+                <form autocomplete="off" (ngSubmit)="getPlans(paginator)">
                     <div class="m-form m-form--label-align-right" id="TextsFilterForm">
                         <!-- filter -->
                         <div class="row m--margin-bottom-10">
@@ -86,6 +86,7 @@
                                             <option *ngFor="let item of DepartmentCodeList" [value]="item">
                                                 {{item}}</option>
                                         </select>
+
                                     </div>
                                 </div>
                             </div>
@@ -148,7 +149,7 @@
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record="$implicit" let-index="rowIndex">
-                                    <tr class="table-row text-center" (click)="gotoPlanDetail(record.planId, $event)">
+                                    <tr class="table-row text-center" (click)="gotoPlanDetail(record.id, $event)">
                                         <!-- <tr class="table-row" routerLink="app/gwebsite/plan/detail/{{record.planId}}"> -->
                                         <td style="width: 90px">
                                             <span class="ui-column-title">{{l('Number')}}</span>
@@ -156,7 +157,7 @@
                                         </td>
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Plan Id')}}</span>
-                                            <span title="{{record.planId}}">{{truncateString(record.planId)}}</span>
+                                            <span title="{{record.planId}}">{{truncateString(record.id)}}</span>
                                         </td>
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Effective Date')}}</span>
@@ -182,7 +183,7 @@
                                         </td>
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Count Changed')}}</span>
-                                            <span title="{{record.countChanged}}">{{ record.countChanged }}</span>
+                                            <span title="{{record.countChanged}}">{{ record.countChange }}</span>
                                         </td>
                                         <td *ngIf="isRoleApprovedMan" style="width: 115px">
                                             <!-- <button
@@ -193,7 +194,7 @@
                                             <button class="btn"
                                                 [ngClass]="{'btn-success': record.status === approvalStatusEnum.Approved, 'btn-danger': record.status === approvalStatusEnum.AwaitingApproval}"
                                                 [disabled]="record.status === approvalStatusEnum.Approved"
-                                                (click)="approvalPlan(record.id, $event, index)"
+                                                (click)="approvalPlan(record, $event, index)"
                                                 title="{{l(record.status === approvalStatusEnum.Approved ? 'Approved' : 'Awaiting Approval')}}">Approved
                                             </button>
                                         </td>

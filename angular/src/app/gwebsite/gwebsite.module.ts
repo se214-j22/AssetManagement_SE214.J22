@@ -13,7 +13,7 @@ import { GWebsiteRoutingModule } from './gwebsite-routing.module';
 import { MenuClientComponent, CreateOrEditMenuClientModalComponent } from './index';
 import { ProductCategoryComponent } from './productCategory/productCategory.component';
 import { CreateOrEditProductCategoryModalComponent } from './productCategory/create-or-edit-productCategory-modal/create-or-edit-productCategory-modal.component';
-import { SupplierServiceProxy, ProductsServiceProxy, ProjectServiceProxy } from '@shared/service-proxies/service-proxies';
+import { SupplierServiceProxy, ProductsServiceProxy, ProjectServiceProxy, SubPlanServiceProxy, PlanServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ProductComponent } from './product/product.component';
 import { CreateOrEditProductModalComponent } from './product/create-or-edit-product-modal/create-or-edit-product-modal.component';
 import { PlanComponent } from './plan/plan.component';
@@ -99,6 +99,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         SupplierServiceProxy,
         ProductsServiceProxy,
         ProjectServiceProxy,
+        PlanServiceProxy,
+        SubPlanServiceProxy,
         {
             provide: PERFECT_SCROLLBAR_CONFIG,
             useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
