@@ -69,5 +69,12 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.SubPlans
             await CurrentUnitOfWork.SaveChangesAsync();
             return ObjectMapper.Map<SubPlanDto>(subPlan);
         }
+
+
+        public async Task<SubPlanDto> GetSubPlanByIdAsync(EntityDto<int> input)
+        {
+            var entity = await this.subPlanRepository.GetAllIncluding(p => p.Product).FirstOrDefaultAsync(x => x.Id == input.Id);
+            return this.ObjectMapper.Map<SubPlanDto>(entity);
+        }
     }
 }

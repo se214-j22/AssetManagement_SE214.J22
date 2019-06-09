@@ -1,5 +1,5 @@
 ﻿using Abp.Domain.Entities;
-
+using GWebsite.AbpZeroTemplate.Application.Share.SubPlans.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Plans.Dto
         public string DepartmentCode { get; set; }
         public int Status { get; set; }
         public int CountChange { get; set; }
-        //public ICollection<SubPlan> SubPlans { get; set; }
+        public ICollection<SubPlanDto> SubPlans { get; set; }
     }
 
 }

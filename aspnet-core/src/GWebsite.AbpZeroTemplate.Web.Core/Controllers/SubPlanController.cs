@@ -39,6 +39,10 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
             return await this._SubPlanAppService.CreateSubPlanAsync(subPlanSavedDto);
         }
 
-
+        [HttpGet]
+        public async Task<SubPlanDto> GetSubPlanByIdAsync(EntityDto<int> input)
+        {
+            return await this._SubPlanAppService.GetSubPlanByIdAsync(input);
+        }
     }
 }
