@@ -11,6 +11,7 @@ import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.serv
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import * as moment from 'moment';
 import { ApprovalStatusEnum, BidTypeEnum, BidProfileTypeInfo } from './dto/bidProfile.dto';
+import { BidProfileServiceProxy } from '@shared/service-proxies/service-proxies';
 
 
 @Component({
@@ -280,7 +281,7 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         injector: Injector,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
-        private _apiService: WebApiServiceProxy
+        private _apiService: BidProfileServiceProxy
     ) {
         super(injector);
     }
@@ -327,25 +328,20 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
          * Sử dụng _apiService để call các api của backend
          */
 
-        // this._apiService.get('api/MenuClient/GetMenuClientsByFilter',
-        //     [{ fieldName: 'Name', value: this.filterText }],
-        //     this.primengTableHelper.getSorting(this.dataTable),
-        //     this.primengTableHelper.getMaxResultCount(this.paginator, event),
-        //     this.primengTableHelper.getSkipCount(this.paginator, event),
-        // ).subscribe(result => {
-        //     this.primengTableHelper.totalRecordsCount = result.totalCount;
-        //     this.primengTableHelper.records = result.items;
-        //     this.primengTableHelper.hideLoadingIndicator();
-        // });
-
-        this.primengTableHelper.totalRecordsCount = 16;
-        this.primengTableHelper.records = this.bidProfileFakes;
-
-        this.primengTableHelper.records.forEach((item) => {
-            item.isEdit = false;
-        });
-
-        this.primengTableHelper.hideLoadingIndicator();
+     
+        this._apiService.getBidProfiles(
+            this.bidProfileCodeFilter,moment(this.endDateString),this.bidCatalogFilterId,this.bidTypes[this.bidType].name,this.approvalStatus,
+            this.primengTableHelper.getSorting(this.dataTable),
+            this.primengTableHelper.getMaxResultCount(this.paginator, event),
+            this.primengTableHelper.getSkipCount(this.paginator, event)).subscribe(result => {
+                this.primengTableHelper.totalRecordsCount = 10;
+                this.primengTableHelper.records = result.items;
+                this.primengTableHelper.hideLoadingIndicator();
+                this.primengTableHelper.records.forEach((item) => {
+                    item.isEdit = false;
+                });
+            }, err => console.log(err));
+       
     }
 
     init(): void {

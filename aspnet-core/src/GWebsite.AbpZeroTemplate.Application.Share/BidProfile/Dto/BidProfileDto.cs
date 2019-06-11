@@ -22,5 +22,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.BidProfile.Dto
         public float CautionMoney { get; set; }
         public string Note { get; set; }
         public int Status { get; set; }
+        public int WinStatus { get; set; }
+        public int Type { get; set; }
     }
 }

@@ -94,5 +94,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.BidProfiles
             await this.CurrentUnitOfWork.SaveChangesAsync();
             return this.ObjectMapper.Map<BidProfileDto>(entity);
         }
+
+
     }
 }
