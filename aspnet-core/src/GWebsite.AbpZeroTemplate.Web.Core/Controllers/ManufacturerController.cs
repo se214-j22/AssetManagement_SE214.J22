@@ -53,7 +53,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         public async Task Delete(int id)
         {
             if (await manufacturerAppService.HasAnyRecordsPointTo(id))
-                throw new UserFriendlyException("Ooppps! Your request was bad!", "This record has any records point to! Please destruct them!");
+                throw new UserFriendlyException("Ooppps! Your request was bad!", "This record has any asset lines point to! Please destruct them!");
             await manufacturerAppService.DeleteAsync(id);
         }
     }

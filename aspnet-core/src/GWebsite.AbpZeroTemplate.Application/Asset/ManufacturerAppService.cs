@@ -117,8 +117,8 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
 
         public async Task<bool> HasAnyRecordsPointTo(int id)
         {
-            var assetTypeEntity = manufacturerRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == id);
-            if (assetTypeEntity != null)
+            var manufacturerEntity = manufacturerRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == id);
+            if (manufacturerEntity != null)
             {
                 return await assetLineRepository.GetAll().AnyAsync(x => x.ManufacturerID == id);
             }

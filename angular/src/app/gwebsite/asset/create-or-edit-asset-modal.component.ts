@@ -29,12 +29,13 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
 
     modifyMultipleAssetsMode = false;
     asset: AssetInput = new AssetInput();
+    assetCodesForMultiple: string[];
     assetLines: AssetLineDto[] = new Array<AssetLineDto>();
     beingCreated: boolean;
     status: 'IS_DAMAGED' | 'RESTING' | 'USING';
     OUs: ListResultDtoOfOrganizationUnitDto;
     mainOU: OrganizationUnitDto;
-    assetCode: string;
+    // assetCode: string;
 
     constructor(
         injector: Injector,
@@ -43,11 +44,9 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
         private _organizationUnitService: OrganizationUnitServiceProxy
     ) {
         super(injector);
-        console.log('cre_cons', this);
     }
 
-    ngOnInit() {
-        console.log('cre_on', this);
+    ngOnInit() {;
         this._organizationUnitService.getOrganizationUnit().subscribe(ou =>
             this.mainOU = ou);
         this._organizationUnitService.getOrganizationUnits().subscribe(ous => {
@@ -67,14 +66,13 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
         });
     }
 
-    getAssetByCode() {
-        this._assetService.getByCode(this.assetCode).subscribe(asset => {
-          if( asset!=null)
-          {
-           this.show(asset.id);
-          }
-        });
-      }
+    // getAssetByCode() {
+    //     this._assetService.getByCode(this.assetCode).subscribe(asset => {
+    //         if (asset != null) {
+    //             this.show(asset.id, true);
+    //         }
+    //     });
+    // }
 
     startup() {
         // this.video = document.createElement("video");
@@ -83,40 +81,42 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
         this.context = this.canvas.getContext('2d');
         // const nav = <any>navigator;
         // nav.getUserMedia = nav.getUserMedia || nav.mozGetUserMedia || nav.webkitGetUserMedia;
-    
+
         navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false })
-          .then((stream) => {
-            this.video.srcObject = stream;
-            this.video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-            this.video.play();
-            requestAnimationFrame(this.decodeQRCode);
-          });
-    
-      }
-      video: any;
-      canvas: any;
-      context: any;
-      decodeQRCode = () => {
+            .then((stream) => {
+                this.video.srcObject = stream;
+                this.video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+                this.video.play();
+                requestAnimationFrame(this.decodeQRCode);
+            });
+
+    }
+    video: any;
+    canvas: any;
+    context: any;
+    decodeQRCode = () => {
         // console.log(this.video.readyState);
         if (this.video.readyState === this.video.HAVE_ENOUGH_DATA) {
-          this.canvas.height = this.video.videoHeight;
-          this.canvas.width = this.video.videoWidth;
-          this.context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
-          var imageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
-          var code = jsQR(imageData.data, imageData.width, imageData.height, {
-            inversionAttempts: "dontInvert",
-          });
-          if (code && code.data) {
-            console.log("Found QR code", code.data);
-            this.assetCode = code.data;
-            this.getAssetByCode();
-          }
-          // else { console.log("Not found QR code", code); }
-          requestAnimationFrame(this.decodeQRCode)
+            this.canvas.height = this.video.videoHeight;
+            this.canvas.width = this.video.videoWidth;
+            this.context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
+            var imageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+            var code = jsQR(imageData.data, imageData.width, imageData.height, {
+                inversionAttempts: "dontInvert",
+            });
+            if (code && code.data) {
+                console.log("Found QR code", code.data);
+                this.assetCodesForMultiple.push(code.data);
+                // this.assetCode = code.data;
+                // this.getAssetByCode();
+
+            }
+            // else { console.log("Not found QR code", code); }
+            requestAnimationFrame(this.decodeQRCode)
         }
         else
-          requestAnimationFrame(this.decodeQRCode);
-      }
+            requestAnimationFrame(this.decodeQRCode);
+    }
 
     getStatus() {
         if (this.asset.isDamaged)
@@ -144,8 +144,9 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
             $(this.statusCombobox.nativeElement).selectpicker('refresh');
         }, 0);
     }
-    
+
     show(assetId?: number | null | undefined): void {
+        console.log(assetId);
         this.saving = false;
         console.log(this);
         this._assetService.getForEdit(assetId).subscribe(result2 => {
@@ -173,7 +174,7 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
         })
     }
 
-    save(): void {
+    save(multiple = false): void {
         this.asset.isDamaged = this.status == 'IS_DAMAGED';
         if (this.status == 'IS_DAMAGED' || this.status == 'RESTING')
             this.asset.organizationUnitId = this.mainOU.id;
@@ -181,7 +182,8 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
         this.saving = true;
         this._assetService.createOrEdit(input).subscribe(result => {
             this.notify.info(this.l('SavedSuccessfully'));
-            this.close();
+            if (multiple)
+                this.close();
         })
 
     }

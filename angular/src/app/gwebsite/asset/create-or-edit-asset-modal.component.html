@@ -58,8 +58,8 @@
                 </div>
             </form>
             <!-- QR CODE -->
-            <div>
-                <div id='detectingByCamera' #detectingByCamera style='display:none'>
+            <div class ='row'>
+                <div class='col-xs-6' id='detectingByCamera' #detectingByCamera style='display:none'>
                     Detecting by camera
                     <div class="camera">
                         <video id="video" #video width="width" height="height" (canplay)="onCanPlay($event)">
@@ -69,6 +69,9 @@
 
                     <canvas id="canvas" #canvas width="width" height="height" style="display: none">
                     </canvas>
+                </div>
+                <div class = 'col-xs-6'>
+                    Asset
                 </div>
             </div>
             <!-- -->
