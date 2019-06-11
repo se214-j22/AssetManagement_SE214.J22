@@ -1,11 +1,12 @@
 import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild, OnInit, OnChanges } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
-import { CustomerServiceProxy, CustomerInput, AssetInput, AssetServiceProxy, AssetLine, AssetLineServiceProxy, AssetLineDto, ComboboxItemDto, OrganizationUnitServiceProxy, ListResultDtoOfOrganizationUnitDto, OrganizationUnitDto } from '@shared/service-proxies/service-proxies';
+import { CustomerServiceProxy, CustomerInput, AssetInput, AssetServiceProxy, AssetLine, AssetLineServiceProxy, AssetLineDto, ComboboxItemDto, OrganizationUnitServiceProxy, ListResultDtoOfOrganizationUnitDto, OrganizationUnitDto, SoftAssetInput } from '@shared/service-proxies/service-proxies';
 import jsQR from "jsqr";
 
 @Component({
     selector: 'createOrEditAssetModal',
+    styles: ['./create-or-edit-asset-modal.component.css'],
     templateUrl: './create-or-edit-asset-modal.component.html'
 })
 export class CreateOrEditAssetModalComponent extends AppComponentBase implements OnInit {
@@ -29,7 +30,9 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
 
     modifyMultipleAssetsMode = false;
     asset: AssetInput = new AssetInput();
-    assetCodesForMultiple: string[];
+    processingAssetCodes: string[] = [];
+    completedAssetCodes: string[] = [];
+    errorAssetCodes: string[] = [];
     assetLines: AssetLineDto[] = new Array<AssetLineDto>();
     beingCreated: boolean;
     status: 'IS_DAMAGED' | 'RESTING' | 'USING';
@@ -46,16 +49,17 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
         super(injector);
     }
 
-    ngOnInit() {;
+    ngOnInit() {
         this._organizationUnitService.getOrganizationUnit().subscribe(ou =>
             this.mainOU = ou);
         this._organizationUnitService.getOrganizationUnits().subscribe(ous => {
-            this.OUs = ous;
-            this.organizationUnitComboboxs = ous.items.filter(ou => ou.id != this.mainOU.id).map(ou => {
-                return new ComboboxItemDto({ value: ou.id.toString(), displayText: ou.displayName, isSelected: false })
-            })
-        }
-        );
+            if (ous) {
+                this.OUs = ous;
+                this.organizationUnitComboboxs = ous.items.filter(ou => ou.id != this.mainOU.id).map(ou => {
+                    return new ComboboxItemDto({ value: ou.id.toString(), displayText: ou.displayName, isSelected: false })
+                })
+            }
+        });
         this._assetLineService.getByFilter(undefined, undefined, undefined, undefined, 999, undefined).subscribe(result => {
             if (result) {
                 this.assetLines = result.items;
@@ -66,22 +70,10 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
         });
     }
 
-    // getAssetByCode() {
-    //     this._assetService.getByCode(this.assetCode).subscribe(asset => {
-    //         if (asset != null) {
-    //             this.show(asset.id, true);
-    //         }
-    //     });
-    // }
-
     startup() {
-        // this.video = document.createElement("video");
         this.video = document.getElementById('video');
         this.canvas = document.getElementById('canvas');
         this.context = this.canvas.getContext('2d');
-        // const nav = <any>navigator;
-        // nav.getUserMedia = nav.getUserMedia || nav.mozGetUserMedia || nav.webkitGetUserMedia;
-
         navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false })
             .then((stream) => {
                 this.video.srcObject = stream;
@@ -106,13 +98,19 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
             });
             if (code && code.data) {
                 console.log("Found QR code", code.data);
-                this.assetCodesForMultiple.push(code.data);
-                // this.assetCode = code.data;
-                // this.getAssetByCode();
-
+                if (this.processingAssetCodes.some(c => c == code.data)
+                    || this.completedAssetCodes.some(c => c == code.data)) {
+                    this.notify.info('This asset have aready edited!');
+                }
+                else {
+                    this.processingAssetCodes.push(code.data);
+                    this.editAsset(code.data);
+                }
+                setTimeout(() => requestAnimationFrame(this.decodeQRCode), 2000);
             }
-            // else { console.log("Not found QR code", code); }
-            requestAnimationFrame(this.decodeQRCode)
+            else {
+                requestAnimationFrame(this.decodeQRCode);
+            }
         }
         else
             requestAnimationFrame(this.decodeQRCode);
@@ -132,6 +130,9 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
     }
 
     showForModify(): void {
+        this.processingAssetCodes = [];
+        this.completedAssetCodes = [];
+        this.errorAssetCodes = [];
         this.saving = false;
         this.modifyMultipleAssetsMode = true;
         this.asset.isDamaged = false;
@@ -173,6 +174,22 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
             }
         })
     }
+    editAsset(code: string) {
+        this.asset.isDamaged = this.status == 'IS_DAMAGED';
+        if (this.status == 'IS_DAMAGED' || this.status == 'RESTING')
+            this.asset.organizationUnitId = this.mainOU.id;
+        let softUpdateAsset = new SoftAssetInput(Object.assign(this.asset, { code: code }));
+        this.saving = true;
+        this._assetService.softUpdate(softUpdateAsset).subscribe(result => {
+            this.processingAssetCodes = this.processingAssetCodes.filter(c => c != code);
+            this.completedAssetCodes.push(code);
+            this.notify.info(this.l('SavedSuccessfully'));
+        },
+            error => {
+                this.processingAssetCodes = this.processingAssetCodes.filter(c => c != code);
+                this.errorAssetCodes.push(code);
+            })
+    }
 
     save(multiple = false): void {
         this.asset.isDamaged = this.status == 'IS_DAMAGED';
@@ -185,10 +202,10 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
             if (multiple)
                 this.close();
         })
-
     }
 
     close(): void {
+
         this.modal.hide();
         this.modalSave.emit(null);
     }

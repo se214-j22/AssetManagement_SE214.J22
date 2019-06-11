@@ -64,7 +64,19 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
                 return BadRequest(e);
             }
         }
-
+        [HttpPost]
+        public async Task<ActionResult> SoftUpdate([FromBody] SoftAssetInput input)
+        {
+            try
+            {
+                await assetAppService.SoftUpdateAsync(input);
+                return Ok();
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e);
+            }
+        }
         [HttpDelete("{id}")]
         public async Task Delete(int id)
         {

@@ -867,6 +867,58 @@ export class AssetServiceProxy {
     }
 
     /**
+     * @input (optional) 
+     * @return Success
+     */
+    softUpdate(input: SoftAssetInput | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/Asset/SoftUpdate";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSoftUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSoftUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processSoftUpdate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
      * @return Success
      */
     delete(id: number): Observable<void> {
@@ -12180,6 +12232,58 @@ export class AssetInput implements IAssetInput {
 
 export interface IAssetInput {
     number: number | undefined;
+    assetLineID: number | undefined;
+    isDamaged: boolean | undefined;
+    organizationUnitId: number | undefined;
+    id: number | undefined;
+}
+
+export class SoftAssetInput implements ISoftAssetInput {
+    code!: string | undefined;
+    assetLineID!: number | undefined;
+    isDamaged!: boolean | undefined;
+    organizationUnitId!: number | undefined;
+    id!: number | undefined;
+
+    constructor(data?: ISoftAssetInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.code = data["code"];
+            this.assetLineID = data["assetLineID"];
+            this.isDamaged = data["isDamaged"];
+            this.organizationUnitId = data["organizationUnitId"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): SoftAssetInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SoftAssetInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["assetLineID"] = this.assetLineID;
+        data["isDamaged"] = this.isDamaged;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ISoftAssetInput {
+    code: string | undefined;
     assetLineID: number | undefined;
     isDamaged: boolean | undefined;
     organizationUnitId: number | undefined;

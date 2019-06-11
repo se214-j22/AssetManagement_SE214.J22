@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
@@ -197,7 +198,46 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Assets
             }
             await CurrentUnitOfWork.SaveChangesAsync();
         }
-
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_Asset_Create_Edit)]
+        public async Task SoftUpdateAsync(SoftAssetInput assetInput)
+        {
+            var assetEntity = assetRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Code == assetInput.Code);
+            if (assetEntity == null)
+            {
+                throw new ArgumentException("Asset don't exist!");
+            }
+            //Map
+            var assetInputType = assetInput.GetType().GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any());
+            foreach (PropertyInfo propertyInfo in assetInputType)
+            {
+                var assetInputPropertyValue = propertyInfo.GetValue(assetInput, null);
+                if (assetInputPropertyValue != null)
+                {
+                    PropertyInfo assetEntityProperty = assetEntity.GetType().GetProperty(propertyInfo.Name);
+                    if(assetEntityProperty!= null)
+                        assetEntityProperty.SetValue(assetEntity, assetInputPropertyValue);
+                }
+            }
+            //ObjectMapper.Map(assetInput, assetEntity);
+            SetAuditEdit(assetEntity);
+            await assetRepository.UpdateAsync(assetEntity);
+            if (assetInput.OrganizationUnitId !=null && assetInput.OrganizationUnitId > 0)
+            {
+                var isExisting = assetOrganizationUnitRepository.GetAll()
+                    .Where(x => x.AssetId == assetInput.Id).Any();
+                if (isExisting)
+                {
+                    await assetOrganizationUnitRepository.GetAll()
+                    .Where(x => x.AssetId == assetInput.Id).ForEachAsync(p => p.OrganizationUnitId = (long)assetInput.OrganizationUnitId);
+                }
+                else
+                {
+                    var newAssetOrganizationUnit = new AssetOrganizationUnit() { AssetId = assetEntity.Id, OrganizationUnitId = (long)assetInput.OrganizationUnitId };
+                    await assetOrganizationUnitRepository.InsertAsync(newAssetOrganizationUnit);
+                }
+            }
+            await CurrentUnitOfWork.SaveChangesAsync();
+        }
         private async Task UpdateAsync(AssetInput assetInput)
         {
             var assetEntity = assetRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == assetInput.Id);

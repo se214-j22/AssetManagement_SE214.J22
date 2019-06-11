@@ -48,33 +48,77 @@
                             [(ngModel)]="asset.number" required maxlength="64">
                         <validation-messages [formCtrl]="assetNumberInput"></validation-messages>
                     </div>
+                    <!-- #region QR -->
+                    <div class='row' *ngIf='modifyMultipleAssetsMode'>
+                        <div class='col-sm-4' id='detectingByCamera' #detectingByCamera style='display:block'>
+                            Detecting by camera
+                            <div class="camera">
+                                <video id="video" #video width="200" height="200px">
+                                    Video stream not available.
+                                </video>
+                            </div>
+
+                            <canvas id="canvas" #canvas width="width" height="height" style="display: none">
+                            </canvas>
+                        </div>
+                        <!-- <div class='col-sm-9'>
+
+                            <table class='table'>
+                                <tr>
+                                    <th scope="col">Processing Asset</th>
+                                    <th scope="col">Completed Asset</th>
+                                    <th scope="col">Error Asset</th>
+                                </tr>
+                                <tr>
+                                    <td *ngFor="let code of processingAssetCodes">{{code}}</td>
+                                    <td *ngFor="let code of completedAssetCodes">{{code}}</td>
+                                    <td *ngFor="let code of errorAssetCodes">{{code}}</td>
+                                </tr>
+                            </table>
+                        </div> -->
+                        <div class='col-sm-3'>
+
+                            <table class='scrollable-table'>
+                                <tr>
+                                    <th>Processing Assets</th>
+                                </tr>
+                                <tr *ngFor="let code of processingAssetCodes">
+                                    <td>{{code}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class='col-sm-3'>
+                            <table class='scrollable-table'>
+                                <tr>
+                                    <th>Completed Assets</th>
+                                </tr>
+                                <tr *ngFor="let code of completedAssetCodes">
+                                    <td>{{code}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class='col-sm-2'>
+                            <table class='scrollable-table'>
+                                <tr>
+                                    <th>Error Assets</th>
+                                </tr>
+                                <tr *ngFor="let code of errorAssetCodes">
+                                    <td>{{code}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <!--  -->
                 </div>
                 <div class="modal-footer">
                     <button [disabled]="saving" type="button" class="btn btn-default"
                         (click)="close()">{{l("Cancel")}}</button>
-                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
-                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                    <button *ngIf='!modifyMultipleAssetsMode' type="submit" class="btn btn-primary"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
                         <span>{{l("Save")}}</span></button>
                 </div>
             </form>
-            <!-- QR CODE -->
-            <div class ='row'>
-                <div class='col-xs-6' id='detectingByCamera' #detectingByCamera style='display:none'>
-                    Detecting by camera
-                    <div class="camera">
-                        <video id="video" #video width="width" height="height" (canplay)="onCanPlay($event)">
-                            Video stream not available.
-                        </video>
-                    </div>
 
-                    <canvas id="canvas" #canvas width="width" height="height" style="display: none">
-                    </canvas>
-                </div>
-                <div class = 'col-xs-6'>
-                    Asset
-                </div>
-            </div>
-            <!-- -->
         </div>
     </div>
 </div>
