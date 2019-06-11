@@ -41,3 +41,4 @@ Thumbs.db
 project.lock.json
 Properties/launchSettings.json
 /MyCompanyName.AbpZeroTemplate.AngularUI.xproj.user
+.vscode/

@@ -34,7 +34,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core
 
             myReq.Headers["accept"] = "text/plain";
 
-            WebResponse wr = myReq.GetResponse();
+            // WebResponse wr = myReq.GetResponse();
 
             Console.WriteLine("Scanning now !!!");
         }
