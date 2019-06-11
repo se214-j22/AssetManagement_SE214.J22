@@ -11,7 +11,8 @@ import { ModalDirective } from 'ngx-bootstrap';
 })
 
 export class ViewScanReportModalComponent extends AppComponentBase {
-
+    objectKeys = Object.keys;
+    scanReportData: object;
     scanReport : ScanReportForViewDto;
     @ViewChild('viewModal') modal: ModalDirective;
 
@@ -29,8 +30,21 @@ export class ViewScanReportModalComponent extends AppComponentBase {
 
         this._scanReportService.getScanReportForView(scanReportId).subscribe(result => {
             this.scanReport = result;
+            this.scanReportData = JSON.parse(this.scanReport.scannedData);
             this.modal.show();
         })
 
+    }
+    computeLabel(label: string): string {
+        switch (label) {
+            case "cpuManufacture":
+                return "Nhà sản xuất CPU";
+            case "cpuCores":
+                return "Xung nhịp CPU";
+            case "biosMaker":
+                return "Nhà sản xuất Bios";;
+            default:
+                return label;
+        }
     }
 }

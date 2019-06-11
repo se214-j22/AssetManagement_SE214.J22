@@ -12,9 +12,21 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="form-group" *ngIf="scanReport !== undefined">
-                    <label>{{l("ScanReportData")}} *</label>
-                    <p>{{scanReport.scannedData}}</p>
+                <div *ngIf="scanReport !== undefined">
+                    <div class="col-12">
+                        <h3>Thông tin phần cứng</h3>
+                        <div *ngFor="let key of objectKeys(scanReportData.hardwareScan)" class="form-group">
+                            <label>{{l(computeLabel(key))}} *</label>
+                            <p>{{scanReportData.hardwareScan[key]}}</p>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <h3>Thông tin phần mềm</h3>
+                        <div *ngFor="let key of objectKeys(scanReportData.softwareScan)" class="form-group">
+                            <label>{{l(computeLabel(key))}} *</label>
+                            <p>{{scanReportData.softwareScan[key]}}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
