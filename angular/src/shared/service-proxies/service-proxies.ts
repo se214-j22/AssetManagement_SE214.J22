@@ -1854,7 +1854,12 @@ export class ScanReportServiceProxy {
         let url_ = this.baseUrl + "/api/ScanReport/GetScanReportsByFilter?";
         if (scannedData !== undefined)
             url_ += "ScannedData=" + encodeURIComponent("" + scannedData) + "&";
-      
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: any = {
