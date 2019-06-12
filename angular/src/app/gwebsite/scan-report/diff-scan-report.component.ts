@@ -10,7 +10,6 @@ import {of as _observableOf} from '@node_modules/rxjs';
 @Component({
     selector: 'diffScanReport',
     templateUrl: './diff-scan-report.component.html',
-    styleUrls: ['node_modules/jsondiffpatch/dist/formatters-styles/html.css']
 })
 export class DiffScanReportComponent extends AppComponentBase {
     objectKeys = Object.keys;
@@ -20,6 +19,7 @@ export class DiffScanReportComponent extends AppComponentBase {
     rightScanReport: object;
     diffSelectOtions: Array<object>;
     visualDiff: string;
+    diffHandler: JsonDiffPatch.DiffPatcher;
     @ViewChild('viewModal') modal: ModalDirective;
 
     constructor(
@@ -27,6 +27,18 @@ export class DiffScanReportComponent extends AppComponentBase {
         private _scanReportService: ScanReportServiceProxy
     ) {
         super(injector);
+
+        this.diffHandler = new JsonDiffPatch.DiffPatcher({
+            objectHash: function(obj, index) {
+                if (typeof obj._id !== 'undefined') {
+                    return obj._id;
+                }
+                if (typeof obj.id !== 'undefined') {
+                    return obj.id;
+                }
+                return '$$index:' + index;
+            },
+        });
     }
 
     close() {
@@ -63,7 +75,9 @@ export class DiffScanReportComponent extends AppComponentBase {
     }
 
     getDiff(): void {
-        let diff = JsonDiffPatch.diff(this.leftScanReport, this.rightScanReport);
+        let diff = this.diffHandler.diff(this.leftScanReport, this.rightScanReport);
+
+        JsonDiffPatch.formatters.html.hideUnchanged();
 
         this.visualDiff = JsonDiffPatch.formatters.html.format(diff, this.leftScanReport);
 
