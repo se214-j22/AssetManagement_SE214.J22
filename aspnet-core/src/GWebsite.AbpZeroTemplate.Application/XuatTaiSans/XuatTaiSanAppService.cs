@@ -139,7 +139,6 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.XuatTaiSans
                 CurrentUnitOfWork.SaveChanges();
 
                 var updatesoluongtaisan = thongtintaisanrepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == xuatTaiSanInput.MaTaiSan);
-                updatesoluongtaisan.SoLuongTon -= xuatTaiSanInput.SoLuong;
                 CurrentUnitOfWork.SaveChanges();
 
                 for (int i = 0; i < xuatTaiSanInput.SoLuong; i++)

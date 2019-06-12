@@ -110,7 +110,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.TaiSans
         public TaiSanInput getSoLuongTonTaiSan (int id)
         {
 
-            var taisanEntity = taisanrepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == id && x.SoLuongTon >0);
+            var taisanEntity = taisanrepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == id);
             if (taisanEntity == null)
             {
                 return null;
@@ -122,69 +122,60 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.TaiSans
         [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient_Create)]
         private void Create(TaiSanInput taiSanInput)
         {
-            LoTaiSanInput loTaiSanInput = new LoTaiSanInput();
-            loTaiSanInput.SoLuong = taiSanInput.SoLuong;
-            loTaiSanInput.NgayNhap = DateTime.Now.Date;
-            loTaiSanInput.TongGiaTri = taiSanInput.NguyenGia * taiSanInput.SoLuong;
-
-            
-            var lotaisanEntity = ObjectMapper.Map<LoTaiSan>(loTaiSanInput);
-            SetAuditInsert(lotaisanEntity);
-            lotaisanrepository.Insert(lotaisanEntity);
-            CurrentUnitOfWork.SaveChanges();
-
-            var manhomtaisan = nhomTaiSanrepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.tenNhomTaiSan == taiSanInput.TenNhomTS).Id;
-            taiSanInput.SoLuongTon = taiSanInput.SoLuong;
-            taiSanInput.NgayNhap =DateTime.Now.Date;
-            taiSanInput.MaLo = lotaisanEntity.Id;
-            taiSanInput.MaNhomTS = manhomtaisan;
-            var taisanEnity = ObjectMapper.Map<ThongTinTaiSan>(taiSanInput);
-            SetAuditInsert(taisanEnity);
-            taisanrepository.Insert(taisanEnity);
-            CurrentUnitOfWork.SaveChanges();
-
-            string[] arrseri = taiSanInput.DSSoseri.Split(',');
-
-            for (int i = 0; i < arrseri.Count(); i++)
+            for (int i = 0; i < taiSanInput.SoLuong; i++)
             {
-                CTTaiSanInput cTTaiSanInput = new CTTaiSanInput();
-                cTTaiSanInput.MaLo = lotaisanEntity.Id;
-                cTTaiSanInput.MaTS = taisanEnity.Id;
-                cTTaiSanInput.SoSeri = arrseri[i];
-                cTTaiSanInput.MaSC = 0;
-                cTTaiSanInput.MaTL = 0;
-                cTTaiSanInput.MADC = 0;
-                cTTaiSanInput.MaXuatTS = 0;
-                cTTaiSanInput.MATH = 0;
-
-                var cttaisanEnity = ObjectMapper.Map<CTTaiSan>(cTTaiSanInput);
-                SetAuditInsert(cttaisanEnity);
-                cttaisanrepository.Insert(cttaisanEnity);
+                var manhomtaisan = nhomTaiSanrepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.tenNhomTaiSan == taiSanInput.TenNhomTS).Id;
+                taiSanInput.NgayNhap = DateTime.Now.Date;
+                taiSanInput.MaNhomTS = manhomtaisan;
+                var taisanEnity = ObjectMapper.Map<ThongTinTaiSan>(taiSanInput);
+                SetAuditInsert(taisanEnity);
+                taisanrepository.Insert(taisanEnity);
                 CurrentUnitOfWork.SaveChanges();
+  
+                switch (taisanEnity.MaNhomTS.ToString().Length)
+                {
+                    case 1:
+                        taisanEnity.MaTS = "T" + "00" + manhomtaisan.ToString();
+                        break;
+                    case 2:
+                        taisanEnity.MaTS = "T" + "0" + manhomtaisan.ToString();
+                        break;
+                    case 3:
+                        taisanEnity.MaTS = "T" + manhomtaisan.ToString();
+                        break;
+                    default:
+                        break;
+                }
+                switch (taisanEnity.Id.ToString().Length)
+                {
+                    case 1:
+                        taisanEnity.MaTS += "00000" + taisanEnity.Id;
+                        break;
+                    case 2:
+                        taisanEnity.MaTS += "0000" + taisanEnity.Id;
+                        break;
+                    case 3:
+                        taisanEnity.MaTS += "000" + taisanEnity.Id;
+                        break;
+                    case 4:
+                        taisanEnity.MaTS += "00" + taisanEnity.Id;
+                        break;
+                    case 5:
+                        taisanEnity.MaTS += "0" + taisanEnity.Id;
+                        break;
+                    case 6:
+                        taisanEnity.MaTS += taisanEnity.Id;
+                        break;
+                    default:
+                        break;
+                }
             }
-            for (int i = arrseri.Count(); i < taiSanInput.SoLuong; i++)
-            {
-                CTTaiSanInput cTTaiSanInput = new CTTaiSanInput();
-                cTTaiSanInput.MaLo = lotaisanEntity.Id;
-                cTTaiSanInput.MaTS = taisanEnity.Id;
-                cTTaiSanInput.MaSC = 0;
-                cTTaiSanInput.MaTL = 0;
-                cTTaiSanInput.MADC = 0;
-                cTTaiSanInput.MaXuatTS = 0;
-                cTTaiSanInput.MATH = 0;
-
-                var cttaisanEnity = ObjectMapper.Map<CTTaiSan>(cTTaiSanInput);
-                SetAuditInsert(cttaisanEnity);
-                cttaisanrepository.Insert(cttaisanEnity);
-                CurrentUnitOfWork.SaveChanges();
-            }
-           
-
         }
 
         [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient_Edit)]
         private void Update(TaiSanInput taiSanInput)
         {
+            
             var taisanEnity = taisanrepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == taiSanInput.Id);
             if (taisanEnity == null)
             {

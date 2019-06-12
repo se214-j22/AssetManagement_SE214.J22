@@ -4,14 +4,16 @@ using GSoft.AbpZeroTemplate.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GSoft.AbpZeroTemplate.Migrations
 {
     [DbContext(typeof(AbpZeroTemplateDbContext))]
-    partial class AbpZeroTemplateDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190612023925_FixTaiSan_1")]
+    partial class FixTaiSan_1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2128,8 +2130,6 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<string>("LoaiTS");
 
-                    b.Property<int>("MaDV");
-
                     b.Property<int?>("MaLo");
 
                     b.Property<int>("MaNhomTS");
@@ -2145,8 +2145,6 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     b.Property<int>("SoThangKhauHao");
 
                     b.Property<string>("Soseri");
-
-                    b.Property<string>("TenDV");
 
                     b.Property<string>("TenNhomTS");
 
