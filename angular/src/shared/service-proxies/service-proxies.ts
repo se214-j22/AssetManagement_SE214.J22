@@ -1850,6 +1850,27 @@ export class ScanReportServiceProxy {
      * @skipCount (optional) 
      * @return Success
      */
+
+    getAllScanReport(): Observable<object> {
+        let url_ = this.baseUrl + "/api/ScanReport/GetAllScanReport";
+
+        let options_: any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Authorization": this.token
+            })
+        };
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return blobToText(response_).pipe(_observableMergeMap(_responseText => {
+                let result200: any = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                return _observableOf(resultData200);
+            }));
+        }));
+    }
     getScanReportsByFilter(scannedData: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfScanReportDto> {
         let url_ = this.baseUrl + "/api/ScanReport/GetScanReportsByFilter?";
         if (scannedData !== undefined)

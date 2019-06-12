@@ -41,9 +41,11 @@ export class DiffScanReportComponent extends AppComponentBase {
     }
 
     onOpenModal(): void {
-        this._scanReportService.getScanReportsByFilter(undefined, undefined, undefined, undefined).subscribe(result => {
-            let records = result.items;
+        this._scanReportService.getAllScanReport().subscribe(result => {
+            // @ts-ignore
+            let records = result.result;
 
+            // @ts-ignore
             this.diffSelectOtions = records.map(elm => {
                 return {
                     'label': `Bản quét #${elm.id} - lúc ${this.computeDateString(elm.createdDate)}`,
@@ -67,6 +69,7 @@ export class DiffScanReportComponent extends AppComponentBase {
     getDiff(): void {
         let diff = this.diffHandler.diff(this.leftScanReport, this.rightScanReport);
 
+        // @ts-ignore
         JsonDiffPatch.formatters.html.hideUnchanged();
 
         this.visualDiff = JsonDiffPatch.formatters.html.format(diff, this.leftScanReport);

@@ -1,6 +1,7 @@
 ﻿using Abp.Application.Services.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.ScanReports;
 using GWebsite.AbpZeroTemplate.Application.Share.ScanReports.Dto;
+using GWebsite.AbpZeroTemplate.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,12 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         public PagedResultDto<ScanReportDto> GetScanReportsByFilter(ScanReportFilter scanReportFilter)
         {
             return scanReportAppService.GetScanReports(scanReportFilter);
+        }
+
+        [HttpGet]
+        public List<OnlyIdDto> GetAllScanReport()
+        {
+            return scanReportAppService.GetAllScanReport();
         }
 
         [HttpGet]

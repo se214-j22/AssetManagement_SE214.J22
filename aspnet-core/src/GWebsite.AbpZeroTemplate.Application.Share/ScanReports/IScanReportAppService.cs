@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.ScanReports.Dto;
+using GWebsite.AbpZeroTemplate.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.ScanReports
 
         Dictionary<string, object> ScanHardware();
         ScanReportDto Scan();
+        List<OnlyIdDto> GetAllScanReport();
     }
 }

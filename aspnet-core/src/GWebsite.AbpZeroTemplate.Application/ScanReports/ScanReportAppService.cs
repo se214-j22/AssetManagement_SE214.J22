@@ -216,5 +216,14 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.ScanReports
                 totalCount,
                 items.Select(item => ObjectMapper.Map<ScanReportDto>(item)).ToList());
         }
+
+        public List<OnlyIdDto> GetAllScanReport()
+        {
+            var query = scanReportRepository.GetAll();
+          
+            query = query.OrderByDescending(item => item.CreatedDate);
+           
+            return query.ToList().Select(item => ObjectMapper.Map<OnlyIdDto>(item)).ToList();
+        }
     }
 }
