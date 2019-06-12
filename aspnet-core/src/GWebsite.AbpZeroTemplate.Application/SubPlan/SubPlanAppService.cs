@@ -1,9 +1,11 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using GWebsite.AbpZeroTemplate.Application;
 using GWebsite.AbpZeroTemplate.Application.Share.SubPlans;
 using GWebsite.AbpZeroTemplate.Application.Share.SubPlans.Dto;
+using GWebsite.AbpZeroTemplate.Core.Authorization;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,6 +15,8 @@ using System.Threading.Tasks;
 
 namespace GWebsite.AbpZeroTemplate.Web.Core.SubPlans
 {
+
+    [AbpAuthorize(GWebsitePermissions.Pages_Administration_SubPlan)]
     public class SubPlanAppService : GWebsiteAppServiceBase, ISubPlanAppService
     {
         private readonly IRepository<SubPlan, int> subPlanRepository;
@@ -45,7 +49,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.SubPlans
             totalCount,
              items.Select(item => this.ObjectMapper.Map<SubPlanDto>(item)).ToList());
         }
-
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_SubPlan_Edit)]
         public async Task<SubPlanDto> UpdateSubPlanAsync(SubPlanSavedDto SubPlanSavedDto)
         {
             SubPlan entity = await this.subPlanRepository.GetAllIncluding(p => p.Product, p => p.Plan).FirstOrDefaultAsync(item => item.ProductId == SubPlanSavedDto.ProductId && item.PlanId == SubPlanSavedDto.PlanId);
@@ -54,7 +58,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.SubPlans
             await this.CurrentUnitOfWork.SaveChangesAsync();
             return this.ObjectMapper.Map<SubPlanDto>(entity);
         }
-
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_SubPlan_Create)]
         public async Task<SubPlanDto> CreateSubPlanAsync(SubPlanSavedDto subPlanSavedDto)
         {
             SubPlan subPlan = ObjectMapper.Map<SubPlan>(subPlanSavedDto);

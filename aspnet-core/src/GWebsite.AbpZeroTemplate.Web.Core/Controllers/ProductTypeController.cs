@@ -19,7 +19,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<ListResultDto<ProductTypeDto>> GetProductTypes(ProductTypeListInputDto input)
+        public async Task<PagedResultDto<ProductTypeDto>> GetProductTypes(ProductTypeListInputDto input)
         {
             return await this.productTypeAppService.GetProductTypesWithFilterAsync(input);
         }

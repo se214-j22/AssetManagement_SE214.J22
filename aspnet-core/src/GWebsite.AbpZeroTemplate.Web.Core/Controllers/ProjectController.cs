@@ -22,7 +22,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
 
 
         [HttpGet]
-        public async Task<ListResultDto<ProjectDto>> GetProjects(GetProjectInput input)
+        public async Task<PagedResultDto<ProjectDto>> GetProjects(GetProjectInput input)
         {
             return await this._ProjectAppService.GetSupplierWithFilterAsync(input);
         }

@@ -29,6 +29,36 @@
         public const string Pages_Administration_SupplierCatalog_Edit = "Pages.Administration.SupplierCatalog.Edit";
         public const string Pages_Administration_SupplierCatalog_Delete = "Pages.Administration.SupplierCatalog.Delete";
 
+        public const string Pages_Administration_ProductCatalog = "Pages.Administration.ProductCatalog";
+        public const string Pages_Administration_ProductCatalog_Create = "Pages.Administration.ProductCatalog.Create";
+        public const string Pages_Administration_ProductCatalog_Edit = "Pages.Administration.ProductCatalog.Edit";
+        public const string Pages_Administration_ProductCatalog_Delete = "Pages.Administration.ProductCatalog.Delete";
+
+        public const string Pages_Administration_Project = "Pages.Administration.Project";
+        public const string Pages_Administration_Project_Create = "Pages.Administration.Project.Create";
+        public const string Pages_Administration_Project_Edit = "Pages.Administration.Project.Edit";
+        public const string Pages_Administration_Project_Delete = "Pages.Administration.Project.Delete";
+
+        public const string Pages_Administration_Plan = "Pages.Administration.Plan";
+        public const string Pages_Administration_Plan_Create = "Pages.Administration.Plan.Create";
+        public const string Pages_Administration_Plan_Edit = "Pages.Administration.Plan.Edit";
+        public const string Pages_Administration_Plan_Delete = "Pages.Administration.Plan.Delete";
+
+        public const string Pages_Administration_SubPlan = "Pages.Administration.SubPlan";
+        public const string Pages_Administration_SubPlan_Create = "Pages.Administration.SubPlan.Create";
+        public const string Pages_Administration_SubPlan_Edit = "Pages.Administration.SubPlan.Edit";
+        public const string Pages_Administration_SubPlan_Delete = "Pages.Administration.SubPlan.Delete";
+
+        public const string Pages_Administration_BidProfile = "Pages.Administration.BidProfile";
+        public const string Pages_Administration_BidProfile_Create = "Pages.Administration.BidProfile.Create";
+        public const string Pages_Administration_BidProfile_Edit = "Pages.Administration.BidProfile.Edit";
+        public const string Pages_Administration_BidProfile_Delete = "Pages.Administration.BidProfile.Delete";
+
+        //public const string Pages_Administration_ABSsss = "Pages.Administration.ABSsss";
+        //public const string Pages_Administration_ABSsss_Create = "Pages.Administration.ABSsss.Create";
+        //public const string Pages_Administration_ABSsss_Edit = "Pages.Administration.ABSsss.Edit";
+        //public const string Pages_Administration_ABSsss_Delete = "Pages.Administration.ABSsss.Delete";
+
         public const string Pages_Administration_OrderPackage = "Pages.Administration.OrderPackage";
         public const string Pages_Administration_OrderPackage_Create = "Pages.Administration.OrderPackage.Create";
         public const string Pages_Administration_OrderPackage_Edit = "Pages.Administration.OrderPackage.Edit";

@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share;
 using GWebsite.AbpZeroTemplate.Application.Share.BidProfile;
 using GWebsite.AbpZeroTemplate.Application.Share.BidProfile.Dto;
 using Microsoft.AspNetCore.Mvc;
@@ -21,17 +22,17 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
 
 
         [HttpGet]
-        public async Task<ListResultDto<BidProfileDto>> GetBidProfiles(BidProfileImput input)
+        public async Task<PagedResultDto<BidProfileDto>> GetBidProfiles(BidProfileImput input)
         {
             return await this._BidProfileAppService.GetBidProfileWithFilterAsync(input);
         }
-        [HttpDelete("{id}")]
-        public async Task DeleteBidProfileAsync(int id)
+        [HttpDelete]
+        public async Task<IServiceResult> DeleteBidProfileAsync(int id)
         {
-            await this._BidProfileAppService.DeleteBidProfileAsync(id);
+          return  await this._BidProfileAppService.DeleteBidProfileAsync(id);
         }
 
-        [HttpPut("edit")]
+        [HttpPut]
         public async Task<BidProfileDto> UpdateBidProfileAsync([FromBody] BidProfileSaved dto)
         {
             return await this._BidProfileAppService.UpdateProductCatalogAsync(dto);

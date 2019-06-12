@@ -22,7 +22,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<ListResultDto<ContractDto>> GetContracts(GetMenuClientInput input)
+        public async Task<PagedResultDto<ContractDto>> GetContracts(GetMenuClientInput input)
         {
             return await this._ContractAppService.GetContractsAsync(input);
         }

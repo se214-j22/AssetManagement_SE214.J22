@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace GWebsite.AbpZeroTemplate.Web.Core
 {
-    [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient)]
+    [AbpAuthorize(GWebsitePermissions.Pages_Administration_ProductCatalog)]
     public class ProductAppService : GWebsiteAppServiceBase, IProductAppService
     {
         private readonly IRepository<Product, int> productRepository;
@@ -56,6 +56,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core
              items.Select(item => this.ObjectMapper.Map<ProductDto>(item)).ToList());
         }
 
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_ProductCatalog_Edit)]
         public async Task<ProductDto> UpdateProductAsync(ProductSavedDto productSavedDto)
         {
             Product entity = await this.productRepository.GetAllIncluding().Include(p => p.ProductType).Include(p => p.Supplier).FirstOrDefaultAsync(item => item.Id == productSavedDto.Id);
@@ -78,11 +79,13 @@ namespace GWebsite.AbpZeroTemplate.Web.Core
             await this.CurrentUnitOfWork.SaveChangesAsync();
             return this.ObjectMapper.Map<ProductDto>(entity);
         }
-
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_ProductCatalog_Delete)]
         public async Task DeleteProductAsync(int id)
         {
             await this.productRepository.DeleteAsync(id);
         }
+
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_ProductCatalog_Create)]
         public async Task<ProductDto> CreateProductAsync(ProductSavedCreate productSavedCreate)
         {
             Product product = ObjectMapper.Map<Product>(productSavedCreate);

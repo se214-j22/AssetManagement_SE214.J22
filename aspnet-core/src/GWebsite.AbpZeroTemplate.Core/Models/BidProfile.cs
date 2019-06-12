@@ -1,4 +1,5 @@
 ﻿using Abp.Domain.Entities;
+using Abp.Organizations;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,8 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public int? WinStatus { get; set; }
         public int? Status { get; set; }
         public ICollection<BidUnit> BidUnits { get; set; }
+        public OrganizationUnit OrganizationUnit { get; set; }
+        public long? OrganizationUnitId { get; set; }
         public BidProfile()
         {
             BidUnits = new Collection<BidUnit>();

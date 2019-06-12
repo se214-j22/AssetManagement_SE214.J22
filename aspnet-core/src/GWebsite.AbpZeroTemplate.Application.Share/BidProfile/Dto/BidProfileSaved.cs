@@ -13,5 +13,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.BidProfile.Dto
         public string BidCatalog { get; set; }
         public string BidType { get; set; }
         public int ProjectId { get; set; }
+        public string Name { get; set; }
+        public long? OrganizationUnitId { get; set; }
     }
 }

@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace GWebsite.AbpZeroTemplate.Web.Core.SupplierCategory
 {
-    //[AbpAuthorize(GWebsitePermissions.Pages_Catalog_SupplierCatalog)]
+    [AbpAuthorize(GWebsitePermissions.Pages_Catalog_SupplierCatalog)]
     public class SupplierTypeAppService : GWebsiteAppServiceBase, ISupplierTypeAppService
     {
         private readonly IRepository<SupplierType, int> supplierTypeRepository;
@@ -49,7 +49,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.SupplierCategory
              totalCount,
              items.Select(model => this.ObjectMapper.Map<SupplierTypeDto>(model)).ToList());
         }
-
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_SupplierCatalog_Edit)]
         public async Task<SupplierTypeDto> EditNameSupplierTypeAsync(int id, string name, string note)
         {
             SupplierType current = await this.supplierTypeRepository
@@ -68,7 +68,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.SupplierCategory
             await this.CurrentUnitOfWork.SaveChangesAsync();
             return this.ObjectMapper.Map<SupplierTypeDto>(current);
         }
-
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_SupplierCatalog_Edit)]
         public async Task<SupplierTypeDto> SetStatusSupplierTypeAsync(int id)
         {
             SupplierType current = await this.supplierTypeRepository
@@ -93,12 +93,13 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.SupplierCategory
             await this.CurrentUnitOfWork.SaveChangesAsync();
             return this.ObjectMapper.Map<SupplierTypeDto>(current);
         }
-
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_SupplierCatalog_Delete)]
         public async Task DeleteSupplierTypeAsync(int id)
         {
             await this.supplierTypeRepository.DeleteAsync(id);
         }
 
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_SupplierCatalog_Create)]
         public async Task<SupplierTypeDto> CreateSupplierTypeAsync(SupplierTypeDto dto)
         {
             SupplierType current = await this.supplierTypeRepository

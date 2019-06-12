@@ -23,7 +23,6 @@ namespace GSoft.AbpZeroTemplate.Authorization.Users
         public string GoogleAuthenticatorKey { get; set; }
 
         //Can add application specific user properties here
-
         public int Level { get; set; }
         public string DepartmentCode { get; set; }
 

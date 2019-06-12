@@ -7,6 +7,7 @@ using GWebsite.AbpZeroTemplate.Application;
 using GWebsite.AbpZeroTemplate.Application.Share.Plans;
 using GWebsite.AbpZeroTemplate.Application.Share.Plans.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.SubPlans.Dto;
+using GWebsite.AbpZeroTemplate.Core.Authorization;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,6 +18,8 @@ using System.Threading.Tasks;
 
 namespace GWebsite.AbpZeroTemplate.Web.Core.Plans
 {
+
+    [AbpAuthorize(GWebsitePermissions.Pages_Administration_Plan)]
     public class PlanAppService : GWebsiteAppServiceBase, IPlanAppService
     {
         private readonly IRepository<Plan, int> planRepository;
@@ -70,6 +73,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Plans
             return query.Select(p => p.Name);
         }
 
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_Plan_Edit)]
         public async Task<PlanDto> ApprovedPlanAsync(int id)
         {
             var query = await planRepository.GetAllIncluding(p => p.SubPlans).FirstOrDefaultAsync(item => item.Id == id);
@@ -84,6 +88,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Plans
             return await GetCurrentUserAsync();
         }
 
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_Plan_Create)]
         public async Task<PlanDto> CreatePlanAsync(PlanSavedDto PlanSavedDto)
         {
             //Plan productType = ObjectMapper.Map<Plan>(PlanSavedDto);

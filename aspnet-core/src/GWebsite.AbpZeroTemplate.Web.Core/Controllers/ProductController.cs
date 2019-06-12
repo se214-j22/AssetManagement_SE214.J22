@@ -19,7 +19,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<ListResultDto<ProductDto>> GetProducts(GetProductInput input)
+        public async Task<PagedResultDto<ProductDto>> GetProducts(GetProductInput input)
         {
             return await _ProductAppService.GetProductsAsync(input);
         }

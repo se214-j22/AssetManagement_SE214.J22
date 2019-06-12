@@ -42,16 +42,50 @@ namespace GWebsite.AbpZeroTemplate.Core.Authorization
             purchase.CreateChildPermission(GWebsitePermissions.Pages_Administration_Purchase_Delete, L("DeletingPurchase"));
 
             var SupplierCatalog = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_SupplierCatalog, L("SupplierCatalog"));
-            purchase.CreateChildPermission(GWebsitePermissions.Pages_Administration_SupplierCatalog_Create, L("CreatingNewSupplierCatalog"));
-            purchase.CreateChildPermission(GWebsitePermissions.Pages_Administration_SupplierCatalog_Edit, L("EditingSupplierCatalog"));
-            purchase.CreateChildPermission(GWebsitePermissions.Pages_Administration_SupplierCatalog_Delete, L("DeletingSupplierCatalog"));
+            SupplierCatalog.CreateChildPermission(GWebsitePermissions.Pages_Administration_SupplierCatalog_Create, L("CreatingNewSupplierCatalog"));
+            SupplierCatalog.CreateChildPermission(GWebsitePermissions.Pages_Administration_SupplierCatalog_Edit, L("EditingSupplierCatalog"));
+            SupplierCatalog.CreateChildPermission(GWebsitePermissions.Pages_Administration_SupplierCatalog_Delete, L("DeletingSupplierCatalog"));
 
 
+            var ProductCatalog = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_ProductCatalog, L("ProductCatalog"));
+            ProductCatalog.CreateChildPermission(GWebsitePermissions.Pages_Administration_ProductCatalog_Create, L("CreatingNewProductCatalog"));
+            ProductCatalog.CreateChildPermission(GWebsitePermissions.Pages_Administration_ProductCatalog_Edit, L("EditingProductCatalog"));
+            ProductCatalog.CreateChildPermission(GWebsitePermissions.Pages_Administration_ProductCatalog_Delete, L("DeletingProductCatalog"));
+
+
+            var Plan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Plan, L("Plan"));
+            Plan.CreateChildPermission(GWebsitePermissions.Pages_Administration_Plan_Create, L("CreatingNewPlan"));
+            Plan.CreateChildPermission(GWebsitePermissions.Pages_Administration_Plan_Edit, L("EditingPlan"));
+            Plan.CreateChildPermission(GWebsitePermissions.Pages_Administration_Plan_Delete, L("DeletingPlan"));
+
+            var SubPlan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_SubPlan, L("SubPlan"));
+            SubPlan.CreateChildPermission(GWebsitePermissions.Pages_Administration_SubPlan_Create, L("CreatingNewSubPlan"));
+            SubPlan.CreateChildPermission(GWebsitePermissions.Pages_Administration_SubPlan_Edit, L("EditingSubPlan"));
+            SubPlan.CreateChildPermission(GWebsitePermissions.Pages_Administration_SubPlan_Delete, L("DeletingSubPlan"));
+
+            var BidProfile = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_BidProfile, L("BidProfile"));
+            BidProfile.CreateChildPermission(GWebsitePermissions.Pages_Administration_BidProfile_Create, L("CreatingNewBidProfile"));
+            BidProfile.CreateChildPermission(GWebsitePermissions.Pages_Administration_BidProfile_Edit, L("EditingBidProfile"));
+            BidProfile.CreateChildPermission(GWebsitePermissions.Pages_Administration_BidProfile_Delete, L("DeletingBidProfile"));
+
+
+
+            var Project = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Project, L("Project"));
+            Project.CreateChildPermission(GWebsitePermissions.Pages_Administration_Project_Create, L("CreatingNewProject"));
+            Project.CreateChildPermission(GWebsitePermissions.Pages_Administration_Project_Edit, L("EditingProject"));
+            Project.CreateChildPermission(GWebsitePermissions.Pages_Administration_Project_Delete, L("DeletingProject"));
+
+            //var abcxyz = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_abcxyz, L("abcxyz"));
+            //abcxyz.CreateChildPermission(GWebsitePermissions.Pages_Administration_abcxyz_Create, L("CreatingNewabcxyz"));
+            //abcxyz.CreateChildPermission(GWebsitePermissions.Pages_Administration_abcxyz_Edit, L("Editingabcxyz"));
+            //abcxyz.CreateChildPermission(GWebsitePermissions.Pages_Administration_abcxyz_Delete, L("Deletingabcxyz"));
 
             var orderPackages = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_MenuClient, L("OrderPackage"));
             orderPackages.CreateChildPermission(GWebsitePermissions.Pages_Administration_MenuClient_Create, L("CreatingNewOrderPackage"));
             orderPackages.CreateChildPermission(GWebsitePermissions.Pages_Administration_MenuClient_Edit, L("EditingOrderPackage"));
             orderPackages.CreateChildPermission(GWebsitePermissions.Pages_Administration_MenuClient_Delete, L("DeletingOrderPackage"));
+
+           
 
             var videoInstructions = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_VideoInstruction, L("VideoInstruction"));
             videoInstructions.CreateChildPermission(GWebsitePermissions.Pages_Administration_VideoInstruction_Create, L("CreatingNewVideoInstruction"));

@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using GWebsite.AbpZeroTemplate.Application;
@@ -7,6 +8,7 @@ using GWebsite.AbpZeroTemplate.Application.Share.Bidding;
 using GWebsite.AbpZeroTemplate.Application.Share.Bidding.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Product.Dto;
+using GWebsite.AbpZeroTemplate.Core.Authorization;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,6 +19,7 @@ using System.Threading.Tasks;
 
 namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
 {
+    [AbpAuthorize(GWebsitePermissions.Pages_Administration_SupplierCatalog)]
     public class SupplierAppService : GWebsiteAppServiceBase, ISupplierAppService
     {
         private readonly IRepository<Supplier, int> supplierRepository;
@@ -32,7 +35,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
         /// </summary>
         /// <param name="biddingProduct"></param>
         /// <returns>SupplierDto</returns>
-      
+
 
         /// <summary>
         /// when  change owner of  product 
@@ -70,7 +73,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
 
 
         //}
-
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_SupplierCatalog_Create)]
         public async Task<SupplierDto> CreateSupplierAsync(SupplierSavedDto supplierSavedDto)
         {
             var supplier = this.ObjectMapper.Map<Supplier>(supplierSavedDto);
@@ -113,6 +116,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
             }).ToList());
         }
 
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_SupplierCatalog_Delete)]
         public async Task DeleteSupplierAsync(EntityDto<int> input)
         {
             var query = await this.supplierRepository.FirstOrDefaultAsync(item => item.Id == input.Id);
@@ -138,6 +142,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
         /// </summary>
         /// <param name="supplierSavedDto"></param>
         /// <returns></returns>
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_SupplierCatalog_Edit)]
         public async Task<SupplierDto> UpdateSupplierAsync(SupplierSavedDto supplierSavedDto)
         {
             var entity = await this.supplierRepository.GetAllIncluding(p => p.Products).FirstOrDefaultAsync(x => x.Id == supplierSavedDto.Id);
@@ -239,6 +244,9 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        /// 
+
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_SupplierCatalog_Edit)]
         public async Task<SupplierTypeDto> ToggleStatusSupplierCatalogAsync(EntityDto<int> input)
         {
             var query = await supplierTypeRepository.GetAllIncluding(p => p.Suppliers).FirstOrDefaultAsync(item => item.Id == input.Id);
@@ -248,13 +256,15 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
             return ObjectMapper.Map<SupplierTypeDto>(query);
         }
 
-     
+
 
         /// <summary>
         /// delete supplier category
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
+        /// 
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_SupplierCatalog_Delete)]
         public async Task DeleteSupplierCatalogAsync(EntityDto<int> input)
         {
             var query = await this.supplierTypeRepository.FirstOrDefaultAsync(item => item.Id == input.Id);
@@ -265,6 +275,8 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
         /// </summary>
         /// <param name="supplierTypeSavedDto"></param>
         /// <returns></returns>
+        /// 
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_SupplierCatalog_Edit)]
         public async Task<SupplierTypeDto> UpdateSupplierCatalogAsync(SupplierTypeSavedDto supplierTypeSavedDto)
         {
             var entity = await this.supplierTypeRepository.GetAllIncluding(p => p.Suppliers).FirstOrDefaultAsync(item => item.Id == supplierTypeSavedDto.Id);
@@ -274,7 +286,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Suppliers
             return this.ObjectMapper.Map<SupplierTypeDto>(entity);
         }
 
-
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_SupplierCatalog_Create)]
         public async Task<SupplierTypeDto> CreateSupplierCatalogAsync(SupplierTypeSavedDto supplierTypeSavedDto)
         {
             var supplier = ObjectMapper.Map<SupplierType>(supplierTypeSavedDto);

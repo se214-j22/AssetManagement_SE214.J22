@@ -61,7 +61,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<ListResultDto<FilterSupplierTypeResponeModel>> GetSupplierTypesWithFilter(
+        public async Task<PagedResultDto<FilterSupplierTypeResponeModel>> GetSupplierTypesWithFilter(
             int? skipCount, 
             int? maxResultCount,
             int? status,
@@ -89,7 +89,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
 
 
         [HttpGet]
-        public async Task<ListResultDto<SupplierDto>> GetSupplierWithFilterAsync(GetProductInput input)
+        public async Task<PagedResultDto<SupplierDto>> GetSupplierWithFilterAsync(GetProductInput input)
         {
             return await this._SupplierAppService.GetSupplierWithFilterAsync(input);
         }

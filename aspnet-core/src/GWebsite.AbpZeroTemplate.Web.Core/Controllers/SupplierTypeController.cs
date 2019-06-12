@@ -19,7 +19,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<ListResultDto<SupplierTypeDto>> GetSupplierTypes(SupplierTypeListInputDto input)
+        public async Task<PagedResultDto<SupplierTypeDto>> GetSupplierTypes(SupplierTypeListInputDto input)
         {
             return await this.supplierTypeAppService.GetSupplierTypesAsync(input);
         }

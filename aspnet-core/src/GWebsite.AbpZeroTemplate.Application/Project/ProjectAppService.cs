@@ -1,9 +1,11 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using GWebsite.AbpZeroTemplate.Application;
 using GWebsite.AbpZeroTemplate.Application.Share.Projects;
 using GWebsite.AbpZeroTemplate.Application.Share.Projects.Dto;
+using GWebsite.AbpZeroTemplate.Core.Authorization;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,7 +16,8 @@ using System.Threading.Tasks;
 
 namespace GWebsite.AbpZeroTemplate.Web.Core.Projects
 {
-  public  class ProjectAppService : GWebsiteAppServiceBase, IProjectAppService
+    [AbpAuthorize(GWebsitePermissions.Pages_Administration_Project)]
+    public  class ProjectAppService : GWebsiteAppServiceBase, IProjectAppService
     {
         private readonly IRepository<Project, int> projectRepository;
         public ProjectAppService(IRepository<Project, int> projectRepository)
@@ -45,7 +48,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Projects
             totalCount,
             items.Select(item => this.ObjectMapper.Map<ProjectDto>(item)).ToList());
         }
-
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_Project_Edit)]
         public async Task<ProjectDto> ChangeNameAsync(ModelName modelName)
         {
             Project query = await projectRepository.GetAllIncluding(p => p.BidProfiles).FirstOrDefaultAsync(item => item.Id == modelName.Id);
@@ -55,6 +58,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Projects
             return ObjectMapper.Map<ProjectDto>(query);
         }
 
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_Project_Edit)]
         public async Task<ProjectDto> CloseProjectAsync(int id)
         {
             Project query = await projectRepository.GetAllIncluding(p => p.BidProfiles).FirstOrDefaultAsync(item => item.Id == id);
@@ -64,6 +68,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Projects
             return ObjectMapper.Map<ProjectDto>(query);
         }
 
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_Project_Edit)]
         public async Task<ProjectDto> ActiveProjectAsync(int id)
         {
             Project query = await projectRepository.GetAllIncluding(p => p.BidProfiles).FirstOrDefaultAsync(item => item.Id == id);
@@ -73,6 +78,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Projects
             return ObjectMapper.Map<ProjectDto>(query);
         }
 
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_Project_Create)]
         public async Task<ProjectDto> CreateProjectAsync(ProjectSavedDto projectSavedDto)
         {
             Project project = ObjectMapper.Map<Project>(projectSavedDto);

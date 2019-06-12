@@ -20,6 +20,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.BidProfile.Dto
         public float CautionMoney { get; set; }
         public string Note { get; set; }
         public int Status { get; set; }
+        public long? OrganizationUnitId { get; set; }
         public ICollection<BidUnitDto> BidUnits { get; set; }
     }
 }

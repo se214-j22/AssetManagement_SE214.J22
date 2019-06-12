@@ -20,7 +20,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<ListResultDto<SubPlanDto>> GetSubPlans(SubPlanListInputDto input)
+        public async Task<PagedResultDto<SubPlanDto>> GetSubPlans(SubPlanListInputDto input)
         {
             return await this._SubPlanAppService.GetSubPlanWithFilterAsync(input);
         }

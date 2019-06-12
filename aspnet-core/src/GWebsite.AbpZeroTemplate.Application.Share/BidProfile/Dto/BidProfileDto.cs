@@ -1,4 +1,6 @@
 ﻿using Abp.Domain.Entities;
+using Abp.Organizations;
+using GSoft.AbpZeroTemplate.Organizations.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -24,5 +26,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.BidProfile.Dto
         public int Status { get; set; }
         public int WinStatus { get; set; }
         public int Type { get; set; }
+        public OrganizationUnitDto OrganizationUnit { get; set; }
     }
 }

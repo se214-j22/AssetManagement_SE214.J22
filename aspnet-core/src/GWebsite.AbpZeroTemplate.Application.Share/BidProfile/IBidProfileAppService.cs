@@ -11,7 +11,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.BidProfile
   public  interface IBidProfileAppService
     {
         Task<PagedResultDto<BidProfileDto>> GetBidProfileWithFilterAsync(BidProfileImput input);
-        Task DeleteBidProfileAsync(int id);
+        Task<IServiceResult> DeleteBidProfileAsync(int id);
         Task<BidProfileDto> UpdateProductCatalogAsync(BidProfileSaved bidProfileSaved);
         Task<BidProfileDto> CreateProductCatalogAsync(BidProfileSaveForCreate BidProfile);
         Task<BidProfileAllDto> GetBidProfileByIdAsync(int id);

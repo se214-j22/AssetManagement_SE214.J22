@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace GWebsite.AbpZeroTemplate.Web.Core.ProductCategory
 {
-    //[AbpAuthorize(GWebsitePermissions.Pages_Catalog_ProductCatalog)]
+    [AbpAuthorize(GWebsitePermissions.Pages_Administration_ProductCatalog)]
     public class ProductTypeAppService : GWebsiteAppServiceBase, IProductTypeAppService
     {
         private readonly IRepository<ProductType, int> productTypeRepository;
@@ -43,11 +43,11 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.ProductCategory
                 query = query.Where(p => p.Status == input.Status);
             }
             int totalCount = await query.CountAsync();
-            if (totalCount == 0)
-            {
-                query = productTypeRepository.GetAllIncluding(p => p.Products);
-                totalCount = await query.CountAsync();
-            }
+            //if (totalCount == 0)
+            //{
+            //    query = productTypeRepository.GetAllIncluding(p => p.Products);
+            //    totalCount = await query.CountAsync();
+            //}
             List<ProductType> items = await query.OrderBy(input.Sorting).PageBy(input).ToListAsync();
             return new PagedResultDto<ProductTypeDto>(
             totalCount,
@@ -59,6 +59,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.ProductCategory
             }).ToList());
         }
 
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_ProductCatalog_Edit)]
         public async Task<ProductTypeDto> ToggleStatusProductCatalogAsync(int id)
         {
             ProductType query = await productTypeRepository.GetAllIncluding(p => p.Products).FirstOrDefaultAsync(item => item.Id == id);
@@ -67,13 +68,14 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.ProductCategory
             await CurrentUnitOfWork.SaveChangesAsync();
             return ObjectMapper.Map<ProductTypeDto>(query);
         }
-
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_ProductCatalog_Delete)]
         public async Task DeleteProductCatalogAsync(int id)
         {
             ProductType query = await this.productTypeRepository.FirstOrDefaultAsync(item => item.Id == id);
             await this.productTypeRepository.DeleteAsync(query);
         }
 
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_ProductCatalog_Edit)]
         public async Task<ProductTypeDto> UpdateProductCatalogAsync(ProductTypeSavedDto productTypeSavedDto)
         {
             ProductType entity = await this.productTypeRepository.GetAllIncluding(p => p.Products).FirstOrDefaultAsync(item => item.Id == productTypeSavedDto.Id);
@@ -83,7 +85,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.ProductCategory
             return this.ObjectMapper.Map<ProductTypeDto>(entity);
         }
 
-
+        [AbpAuthorize(GWebsitePermissions.Pages_Administration_ProductCatalog_Create)]
         public async Task<ProductTypeDto> CreateProductCatalogAsync(ProductTypeSavedDto productTypeSavedDto)
         {
             ProductType productType = ObjectMapper.Map<ProductType>(productTypeSavedDto);
