@@ -43,7 +43,9 @@ export class DiffScanReportComponent extends AppComponentBase {
     onOpenModal(): void {
         this._scanReportService.getAllScanReport().subscribe(result => {
             // @ts-ignore
-            let records = result.result;
+            let records = result;
+
+            console.log(result);
 
             // @ts-ignore
             this.diffSelectOtions = records.map(elm => {

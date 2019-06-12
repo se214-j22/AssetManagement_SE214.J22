@@ -1856,7 +1856,7 @@ export class ScanReportServiceProxy {
 
         let options_: any = {
             observe: "response",
-            responseType: "blob",
+            responseType: "application/json",
             headers: new HttpHeaders({
                 "Content-Type": "application/json",
                 "Accept": "application/json",
@@ -1864,11 +1864,8 @@ export class ScanReportServiceProxy {
             })
         };
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
-            return blobToText(response_).pipe(_observableMergeMap(_responseText => {
-                let result200: any = null;
-                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                return _observableOf(resultData200);
-            }));
+            let response = JSON.parse(response_.body).result;
+            return _observableOf(response);
         }));
     }
     getScanReportsByFilter(scannedData: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfScanReportDto> {
