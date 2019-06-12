@@ -13900,20 +13900,22 @@ export interface IPagedResultDtoOfTaiSanDto {
 
 export class TaiSanDto implements ITaiSanDto {
     tenTs!: string | undefined;
+    maTS!: string | undefined;
     thongTinMoTa!: string | undefined;
     ngayNhap!: Date | undefined;
     maNhomTS!: number | undefined;
     tenNhomTS!: string | undefined;
     maLo!: number | undefined;
     nguyenGia!: number | undefined;
-    dSSoseri!: string | undefined;
+    soseri!: string | undefined;
     giaTriKhauHao!: number | undefined;
     soThangKhauHao!: number | undefined;
     tyLeKhauHao!: Float32Array | undefined;
     soThangBaoHanh!: number | undefined;
     tinhTrangKhauHao!: string | undefined;
-    soLuong!: number | undefined;   
-    soLuongTon!:number|undefined;
+    loaiTS!: string | undefined;
+    maDV!: number | undefined;
+    tenDV!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: ITaiSanDto) {
@@ -13928,20 +13930,22 @@ export class TaiSanDto implements ITaiSanDto {
     init(data?: any) {
         if (data) {
             this.tenTs = data["tenTs"];
+            this.maTS = data["maTS"];
             this.thongTinMoTa = data["thongTinMoTa"];
             this.ngayNhap = data["ngayNhap"];
             this.maNhomTS = data["maNhomTS"];
             this.tenNhomTS = data["tenNhomTS"];
             this.maLo = data["maLo"];
             this.nguyenGia = data["nguyenGia"];
-            this.dSSoseri = data["dSSoseri"];
+            this.soseri = data["soseri"];
             this.giaTriKhauHao = data["giaTriKhauHao"];
             this.soThangKhauHao = data["soThangKhauHao"];
             this.tyLeKhauHao = data["tyLeKhauHao"];
             this.soThangBaoHanh = data["soThangBaoHanh"];
             this.tinhTrangKhauHao = data["tinhTrangKhauHao"];
-            this.soLuong = data["soLuong"];
-            this.soLuongTon=data["soLuongTon"];
+            this.loaiTS = data["loaiTS"];
+            this.maDV = data["maDV"];
+            this.tenDV = data["tenDV"];
             this.id = data["id"];
         }
     }
@@ -13956,20 +13960,22 @@ export class TaiSanDto implements ITaiSanDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["tenTs"] = this.tenTs;
+        data["maTS"] = this.maTS;
         data["thongTinMoTa"] = this.thongTinMoTa;
         data["ngayNhap"] = this.ngayNhap;
         data["maNhomTS"] = this.maNhomTS;
         data["tenNhomTS"] = this.tenNhomTS;
         data["maLo"] = this.maLo;
         data["nguyenGia"] = this.nguyenGia;
-        data["dSSoseri"] = this.dSSoseri;
+        data["soseri"] = this.soseri;
         data["giaTriKhauHao"] = this.giaTriKhauHao;
         data["soThangKhauHao"] = this.soThangKhauHao;
         data["tyLeKhauHao"] = this.tyLeKhauHao;
         data["soThangBaoHanh"] = this.soThangBaoHanh;
         data["tinhTrangKhauHao"] = this.tinhTrangKhauHao;
-        data["soLuong"] = this.soLuong;
-        data["soLuongTon"]=this.soLuongTon;
+        data["loaiTS"] = this.loaiTS;
+        data["maDV"] = this.maDV;
+        data["tenDV"] = this.tenDV;
         data["id"] = this.id;
         return data;
     }
@@ -13977,39 +13983,44 @@ export class TaiSanDto implements ITaiSanDto {
 
 export interface ITaiSanDto {
     tenTs: string | undefined;
+    maTS: string | undefined;
     thongTinMoTa: string | undefined;
     ngayNhap: Date | undefined;
     maNhomTS: number | undefined;
     tenNhomTS: string | undefined;
     maLo: number | undefined;
     nguyenGia: number | undefined;
-    dSSoseri: string | undefined;
+    soseri: string | undefined;
     giaTriKhauHao: number | undefined;
     soThangKhauHao: number | undefined;
     tyLeKhauHao: Float32Array | undefined;
     soThangBaoHanh: number | undefined;
     tinhTrangKhauHao: string | undefined;
-    soLuong: number | undefined; 
-    soLuongTon:number | undefined; 
+    loaiTS: string | undefined;
+    maDV: number | undefined;
+    tenDV: string | undefined;
     id: number | undefined;
 }
 
 export class TaiSanInput implements ITaiSanInput {
     tenTs!: string | undefined;
+    maTS!: string | undefined;
     thongTinMoTa!: string | undefined;
     ngayNhap!: Date | undefined;
     maNhomTS!: number | undefined;
     tenNhomTS!: string | undefined;
     maLo!: number | undefined;
     nguyenGia!: number | undefined;
-    dSSoseri!: string | undefined;
+    soseri!: string | undefined;
     giaTriKhauHao!: number | undefined;
     soThangKhauHao!: number | undefined;
     tyLeKhauHao!: Float32Array | undefined;
     soThangBaoHanh!: number | undefined;
     tinhTrangKhauHao!: string | undefined;
-    soLuong!: number | undefined;  
-    soLuongTon!:number|undefined;
+    loaiTS!: string | undefined;
+    maDV!: number | undefined;
+    tenDV!: string | undefined;
+    soLuong!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: ITaiSanInput) {
@@ -14024,20 +14035,23 @@ export class TaiSanInput implements ITaiSanInput {
     init(data?: any) {
         if (data) {
             this.tenTs = data["tenTs"];
+            this.maTS = data["maTS"];
             this.thongTinMoTa = data["thongTinMoTa"];
             this.ngayNhap = data["ngayNhap"];
             this.maNhomTS = data["maNhomTS"];
             this.tenNhomTS = data["tenNhomTS"];
             this.maLo = data["maLo"];
             this.nguyenGia = data["nguyenGia"];
-            this.dSSoseri = data["dSSoseri"];
+            this.soseri = data["soseri"];
             this.giaTriKhauHao = data["giaTriKhauHao"];
             this.soThangKhauHao = data["soThangKhauHao"];
             this.tyLeKhauHao = data["tyLeKhauHao"];
             this.soThangBaoHanh = data["soThangBaoHanh"];
             this.tinhTrangKhauHao = data["tinhTrangKhauHao"];
+            this.loaiTS = data["loaiTS"];
+            this.maDV = data["maDV"];
+            this.tenDV = data["tenDV"];
             this.soLuong = data["soLuong"];
-            this.soLuongTon=data["soLuongTon"]
             this.id = data["id"];
         }
     }
@@ -14052,20 +14066,23 @@ export class TaiSanInput implements ITaiSanInput {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["tenTs"] = this.tenTs;
+        data["maTS"] = this.maTS;
         data["thongTinMoTa"] = this.thongTinMoTa;
         data["ngayNhap"] = this.ngayNhap;
         data["maNhomTS"] = this.maNhomTS;
         data["tenNhomTS"] = this.tenNhomTS;
         data["maLo"] = this.maLo;
         data["nguyenGia"] = this.nguyenGia;
-        data["dSSoseri"] = this.dSSoseri;
+        data["soseri"] = this.soseri;
         data["giaTriKhauHao"] = this.giaTriKhauHao;
         data["soThangKhauHao"] = this.soThangKhauHao;
         data["tyLeKhauHao"] = this.tyLeKhauHao;
         data["soThangBaoHanh"] = this.soThangBaoHanh;
         data["tinhTrangKhauHao"] = this.tinhTrangKhauHao;
+        data["loaiTS"] = this.loaiTS;
+        data["maDV"] = this.maDV;
+        data["tenDV"] = this.tenDV;
         data["soLuong"] = this.soLuong;
-        data["soLuongTon"] = this.soLuongTon;
         data["id"] = this.id;
         return data;
     }
@@ -14073,39 +14090,44 @@ export class TaiSanInput implements ITaiSanInput {
 
 export interface ITaiSanInput {
     tenTs: string | undefined;
+    maTS: string | undefined;
     thongTinMoTa: string | undefined;
     ngayNhap: Date | undefined;
     maNhomTS: number | undefined;
     tenNhomTS: string | undefined;
     maLo: number | undefined;
     nguyenGia: number | undefined;
-    dSSoseri: string | undefined;
+    soseri: string | undefined;
     giaTriKhauHao: number | undefined;
     soThangKhauHao: number | undefined;
     tyLeKhauHao: Float32Array | undefined;
     soThangBaoHanh: number | undefined;
     tinhTrangKhauHao: string | undefined;
-    soLuong: number | undefined;
-    soLuongTon: number | undefined;
+    loaiTS: string | undefined;
+    maDV: number | undefined;
+    tenDV: string | undefined;
+    soLuong: string | undefined;
     id: number | undefined;
 }
 
 export class TaiSanForViewDto implements ITaiSanForViewDto {
     tenTs!: string | undefined;
+    maTS!: string | undefined;
     thongTinMoTa!: string | undefined;
     ngayNhap!: Date | undefined;
     maNhomTS!: number | undefined;
     tenNhomTS!: string | undefined;
     maLo!: number | undefined;
     nguyenGia!: number | undefined;
-    dSSoseri!: string | undefined;
+    soseri!: string | undefined;
     giaTriKhauHao!: number | undefined;
     soThangKhauHao!: number | undefined;
     tyLeKhauHao!: Float32Array | undefined;
     soThangBaoHanh!: number | undefined;
     tinhTrangKhauHao!: string | undefined;
-    soLuong!: number | undefined;
-    soLuongTon:number | undefined;
+    loaiTS!: string | undefined;
+    maDV!: number | undefined;
+    tenDV!: string | undefined;
     constructor(data?: ITaiSanForViewDto) {
         if (data) {
             for (var property in data) {
@@ -14118,20 +14140,22 @@ export class TaiSanForViewDto implements ITaiSanForViewDto {
     init(data?: any) {
         if (data) {
             this.tenTs = data["tenTs"];
+            this.maTS = data["maTS"];
             this.thongTinMoTa = data["thongTinMoTa"];
             this.ngayNhap = data["ngayNhap"];
             this.maNhomTS = data["maNhomTS"];
             this.tenNhomTS = data["tenNhomTS"];
             this.maLo = data["maLo"];
             this.nguyenGia = data["nguyenGia"];
-            this.dSSoseri = data["dSSoseri"];
+            this.soseri = data["soseri"];
             this.giaTriKhauHao = data["giaTriKhauHao"];
             this.soThangKhauHao = data["soThangKhauHao"];
             this.tyLeKhauHao = data["tyLeKhauHao"];
             this.soThangBaoHanh = data["soThangBaoHanh"];
             this.tinhTrangKhauHao = data["tinhTrangKhauHao"];
-            this.soLuong = data["soLuong"];
-            this.soLuongTon=data["soLuongTon"];
+            this.loaiTS = data["loaiTS"];
+            this.maDV = data["maDV"];
+            this.tenDV = data["tenDV"];
         }
     }
 
@@ -14145,40 +14169,44 @@ export class TaiSanForViewDto implements ITaiSanForViewDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["tenTs"] = this.tenTs;
+        data["maTS"] = this.maTS;
         data["thongTinMoTa"] = this.thongTinMoTa;
         data["ngayNhap"] = this.ngayNhap;
         data["maNhomTS"] = this.maNhomTS;
         data["tenNhomTS"] = this.tenNhomTS;
         data["maLo"] = this.maLo;
         data["nguyenGia"] = this.nguyenGia;
-        data["dSSoseri"] = this.dSSoseri;
+        data["soseri"] = this.soseri;
         data["giaTriKhauHao"] = this.giaTriKhauHao;
         data["soThangKhauHao"] = this.soThangKhauHao;
         data["tyLeKhauHao"] = this.tyLeKhauHao;
         data["soThangBaoHanh"] = this.soThangBaoHanh;
         data["tinhTrangKhauHao"] = this.tinhTrangKhauHao;
-        data["soLuong"] = this.soLuong;
-        data["soLuongTon"]=this.soLuongTon;
+        data["loaiTS"] = this.loaiTS;
+        data["maDV"] = this.maDV;
+        data["tenDV"] = this.tenDV;
         return data;
     }
 }
 
 export interface ITaiSanForViewDto {
     tenTs: string | undefined;
+    maTS: string | undefined;
     thongTinMoTa: string | undefined;
     ngayNhap: Date | undefined;
     maNhomTS: number | undefined;
     tenNhomTS: string | undefined;
     maLo: number | undefined;
     nguyenGia: number | undefined;
-    dSSoseri: string | undefined;
+    soseri: string | undefined;
     giaTriKhauHao: number | undefined;
     soThangKhauHao: number | undefined;
     tyLeKhauHao: Float32Array | undefined;
     soThangBaoHanh: number | undefined;
     tinhTrangKhauHao: string | undefined;
-    soLuong: number | undefined;
-    soLuongTon:number|undefined;
+    loaiTS: string | undefined;
+    maDV: number | undefined;
+    tenDV: string |undefined;
 }
 //endregion TaiSan
 

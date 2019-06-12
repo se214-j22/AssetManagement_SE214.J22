@@ -28,19 +28,19 @@
                     <div class="form-group">
                         <label>Ngày nhập *</label>
                         <input class="form-control" type="text" name="ngayNhap" disabled
-                               value="{{ngayNhap | date}}" required maxlength="64">                        
+                               value="{{ngayNhap | date}}" required maxlength="64">
                     </div>
                     <!-- <div class="form-group">
-                        <label>Mã nhóm tài sản *</label>
-                        <input #MaNhomTS="ngModel" class="form-control" type="text" name="maNhomTS"
-                               [(ngModel)]="taiSan.maNhomTS" required maxlength="64">
-                        <validation-messages [formCtrl]="MaNhomTS"></validation-messages>
-                    </div> -->
+        <label>Mã nhóm tài sản *</label>
+        <input #MaNhomTS="ngModel" class="form-control" type="text" name="maNhomTS"
+               [(ngModel)]="taiSan.maNhomTS" required maxlength="64">
+        <validation-messages [formCtrl]="MaNhomTS"></validation-messages>
+    </div> -->
                     <div class="form-group">
-                        <label>Tên nhóm tài sản *</label>  
+                        <label>Tên nhóm tài sản *</label>
                         <select #TenNhomTS="ngModel" class="form-control" name="tenNhomTS"
                                 [(ngModel)]="taiSan.tenNhomTS" required maxlength="64">
-                                <option>...</option>
+                            <option>...</option>
                             <option *ngFor="let listTen of listTenNhomTaiSan">
                                 {{listTen}}
                             </option>
@@ -48,11 +48,11 @@
                         <validation-messages [formCtrl]="TenNhomTS"></validation-messages>
                     </div>
                     <!-- <div class="form-group">
-                        <label>Mã lô *</label>
-                        <input #MaLoInput="ngModel" class="form-control" type="text" name="maLo"
-                               [(ngModel)]="taiSan.maLo" required maxlength="64">
-                        <validation-messages [formCtrl]="MaLoInput"></validation-messages>
-                    </div> -->
+        <label>Mã lô *</label>
+        <input #MaLoInput="ngModel" class="form-control" type="text" name="maLo"
+               [(ngModel)]="taiSan.maLo" required maxlength="64">
+        <validation-messages [formCtrl]="MaLoInput"></validation-messages>
+    </div> -->
                     <div class="form-group">
                         <label>Nguyên giá *</label>
                         <input #NguyenGiaInput="ngModel" class="form-control" type="text" name="nguyenGia"
@@ -60,10 +60,10 @@
                         <validation-messages [formCtrl]="NguyenGiaInput"></validation-messages>
                     </div>
                     <div class="form-group">
-                        <label>Danh sách số seri *</label>
-                        <input #DSSoseriInput="ngModel" class="form-control" type="text" name="dSSoseri"
-                               [(ngModel)]="taiSan.dSSoseri" required maxlength="64">
-                        <validation-messages [formCtrl]="DSSoseriInput"></validation-messages>
+                        <label>Số seri *</label>
+                        <input #soseriInput="ngModel" class="form-control" type="text" name="soseri"
+                               [(ngModel)]="taiSan.soseri" required maxlength="64">
+                        <validation-messages [formCtrl]="soseriInput"></validation-messages>
                     </div>
                     <div class="form-group">
                         <label>Giá trị khấu hao *</label>
@@ -90,17 +90,17 @@
                         <validation-messages [formCtrl]="SoThangBaoHanhInput"></validation-messages>
                     </div>
                     <!-- <div class="form-group">
-                        <label>Tình trạng khấu hao *</label>
-                        <input #TinhTrangKhauHaoInput="ngModel" class="form-control" type="text" name="tinhTrangKhauHao"
-                               [(ngModel)]="taiSan.tinhTrangKhauHao" required maxlength="64">
-                        <validation-messages [formCtrl]="TinhTrangKhauHaoInput"></validation-messages>
-                    </div> -->
+        <label>Tình trạng khấu hao *</label>
+        <input #TinhTrangKhauHaoInput="ngModel" class="form-control" type="text" name="tinhTrangKhauHao"
+               [(ngModel)]="taiSan.tinhTrangKhauHao" required maxlength="64">
+        <validation-messages [formCtrl]="TinhTrangKhauHaoInput"></validation-messages>
+    </div> -->
                     <div class="form-group">
                         <label>Số lượng *</label>
                         <input #SoLuongInput="ngModel" class="form-control" type="text" name="soLuong"
                                [(ngModel)]="taiSan.soLuong" required maxlength="64">
                         <validation-messages [formCtrl]="SoLuongInput"></validation-messages>
-                    </div>
+                    </div>                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"
