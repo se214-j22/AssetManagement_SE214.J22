@@ -16,5 +16,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.NhanViens.Dto
     {
         public string TenNhanVien { get; set; }
         public int MaDV { get; set; }
+        public string TenDV { get; set; }
     }
 }

@@ -15,9 +15,11 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.NhanViens
     public class NhanVienAppService : GWebsiteAppServiceBase, INhanVienAppService
     {
         private readonly IRepository<NhanVien> nhanVienRepository;
-        public NhanVienAppService(IRepository<NhanVien> nhanVienRepository)
+        private readonly IRepository<DonVi> donvirepository;
+        public NhanVienAppService(IRepository<NhanVien> nhanVienRepository, IRepository<DonVi> donvirepository)
         {
             this.nhanVienRepository = nhanVienRepository;
+            this.donvirepository = donvirepository;
         }
         public void CreateOrEditNhanVien(NhanVienInput nhanVienInput)
         {
@@ -69,7 +71,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.NhanViens
             // filter by value
             if (input.TenNhanVien != null)
             {
-                query = query.Where(x => x.TenNhanVien.ToLower().Equals(input.TenNhanVien));
+                query = query.Where(x => x.TenNhanVien.ToLower().Contains(input.TenNhanVien));
             }
 
             var totalCount = query.Count();
@@ -88,11 +90,19 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.NhanViens
                 totalCount,
                 items.Select(item => ObjectMapper.Map<NhanVienDto>(item)).ToList());
         }
+        public string[] GetArrTenDonVi()
+        {
+            var query = donvirepository.GetAll().Where(x => !x.IsDelete).Select(x => x.TenDonVi).ToArray();
+            string[] str = query.Select(x => x.ToString()).ToArray();
+            return str;
+        }
         #region Private Method
 
         [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient_Create)]
         private void Create(NhanVienInput nhanVienInput)
         {
+            var MaDonVi = donvirepository.GetAll().Where(x => !x.IsDelete).FirstOrDefault(x => x.TenDonVi == nhanVienInput.TenDV).Id;
+            nhanVienInput.MaDV = MaDonVi;
             var nhanVienEnity = ObjectMapper.Map<NhanVien>(nhanVienInput);
             SetAuditInsert(nhanVienEnity);
             nhanVienRepository.Insert(nhanVienEnity);

@@ -56,6 +56,11 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         {
             return taiSanAppservice.GetArrTenNhomTaiSan();
         }
+        [HttpGet]
+        public TaiSanInput getSoLuongTonTaiSan(int id)
+        {
+            return taiSanAppservice.getSoLuongTonTaiSan(id);
+        }
     }
 }
 

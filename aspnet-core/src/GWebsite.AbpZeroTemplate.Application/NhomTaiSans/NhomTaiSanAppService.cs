@@ -69,7 +69,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.NhomTaiSans
             // filter by value
             if (input.tenNhomTaiSan != null)
             {
-                query = query.Where(x => x.tenNhomTaiSan.ToLower().Equals(input.tenNhomTaiSan));
+                query = query.Where(x => x.tenNhomTaiSan.ToLower().Contains(input.tenNhomTaiSan));
             }
 
             var totalCount = query.Count();

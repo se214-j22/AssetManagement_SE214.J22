@@ -45,27 +45,27 @@
                             [responsive]="primengTableHelper.isResponsive">
                             <ng-template pTemplate="header">
                                 <tr>
+                                    <th pSortableColumn="tenDV">
+                                        Tên đơn vị
+                                        <p-sortIcon field="tenDV"></p-sortIcon>
+                                    </th>
                                     <th pSortableColumn="tenNhanVien">
                                         Tên nhân viên
                                         <p-sortIcon field="tenNhanVien"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="maDV">
-                                        Mã đơn vị
-                                        <p-sortIcon field="maDV"></p-sortIcon>
-                                    </th>
+                                    </th>                                    
                                     <th>{{l('Edit')}}</th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-record="$implicit">
                                 <tr>
                                     <td>
-                                        <span class="ui-column-title">Tên nhân viên</span>
-                                        <span title="{{record.tenNhanVien}}">{{truncateString(record.tenNhanVien)}}</span>
+                                        <span class="ui-column-title">Tên đơn vị</span>
+                                        <span title="{{record.tenDV}}">{{truncateString(record.tenDV)}}</span>
                                     </td>
                                     <td>
-                                        <span class="ui-column-title">Mã đơn vị</span>
-                                        <span title="{{record.maDV}}">{{truncateString(record.maDV)}}</span>
-                                    </td>
+                                        <span class="ui-column-title">Tên nhân viên</span>
+                                        <span title="{{record.tenNhanVien}}">{{truncateString(record.tenNhanVien)}}</span>
+                                    </td>                                    
                                     <td>
                                         <button class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
                                                 (click)="createOrEditModal.show(record.id)" title="{{l('Edit')}}">

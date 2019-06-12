@@ -12,25 +12,36 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body">                    
+                    <!-- <div class="form-group">
+                        <label>Danh mục đơn vị *</label>
+                        <input #tenDVInput="ngModel" class="form-control" type="text" name="tenDV"
+                               [(ngModel)]="nhanVien.tenDV" required maxlength="64">
+                        <validation-messages [formCtrl]="tenDVInput"></validation-messages>
+                    </div> -->
+                    <div class="form-group">
+                            <label>Danh mục đơn vị *</label>
+                            <select #tenDVInput="ngModel" class="form-control" name="tenDV"
+                                    [(ngModel)]="nhanVien.tenDV" required maxlength="64"
+                                    (change)="getTenDonVi()">
+                                <option>...</option>
+                                <option *ngFor="let listTen of listTenDonVi">
+                                    {{listTen}}
+                                </option>
+                            </select>
+                            <validation-messages [formCtrl]="tenDVInput"></validation-messages>
+                        </div>
                     <div class="form-group">
                         <label>Tên nhân viên *</label>
                         <input #tenNhanVienInput="ngModel" class="form-control" type="text" name="tenNhanVien"
                                [(ngModel)]="nhanVien.tenNhanVien" required maxlength="64">
                         <validation-messages [formCtrl]="tenNhanVienInput"></validation-messages>
                     </div>
-                    <div class="form-group">
-                        <label>Mã đơn vị *</label>
-                        <input #maDVInput="ngModel" class="form-control" type="text" name="maDV"
-                               [(ngModel)]="nhanVien.maDV" required maxlength="64">
-                        <validation-messages [formCtrl]="maDVInput"></validation-messages>
-                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button [disabled]="saving" type="button" class="btn btn-default"
+                    <button type="button" class="btn btn-default"
                         (click)="close()">{{l("Cancel")}}</button>
-                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
-                        [busyText]="l('SavingWithThreeDot')" (click)="save()"><i class="fa fa-save"></i>
+                    <button type="submit" class="btn btn-primary" (click)="save()"><i class="fa fa-save"></i>
                         <span>{{l("Save")}}</span></button>
                 </div>
             <!--</form>-->

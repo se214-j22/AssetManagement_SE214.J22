@@ -8,6 +8,7 @@ using GWebsite.AbpZeroTemplate.Application.Share.DieuChuyens;
 using GWebsite.AbpZeroTemplate.Application.Share.DieuChuyens.Dto;
 using GWebsite.AbpZeroTemplate.Core.Authorization;
 using GWebsite.AbpZeroTemplate.Core.Models;
+using System;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 namespace GWebsite.AbpZeroTemplate.Web.Core.DieuChuyens
@@ -78,7 +79,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.DieuChuyens
             // filter by value
             if (input.TenDonVi != null)
             {
-                query = query.Where(x => x.TenDonVi.ToLower().Equals(input.TenDonVi));
+                query = query.Where(x => x.TenDonVi.ToLower().Contains(input.TenDonVi));
             }
 
             var totalCount = query.Count();
@@ -127,7 +128,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.DieuChuyens
 
             if (dieuChuyenInput.SoLuong <= soluong && maDonViDC!=maDonViNhan)
             {
-
+                dieuChuyenInput.NgayDieuChuyen = DateTime.Now;
                 dieuChuyenInput.MaNhanVienNhan = maNhanVien;
                 dieuChuyenInput.MaDonVi = maDonViNhan;
                 var dieuChuyenEnity = ObjectMapper.Map<DieuChuyen>(dieuChuyenInput);

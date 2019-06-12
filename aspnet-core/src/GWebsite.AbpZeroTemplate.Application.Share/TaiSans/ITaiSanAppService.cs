@@ -16,5 +16,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.TaiSans
         PagedResultDto<TaiSanDto> GetTaiSans(TaiSanFilter input);
         TaiSanForViewDto GetTaiSanForView(int id);
         string[] GetArrTenNhomTaiSan();
+        TaiSanInput getSoLuongTonTaiSan(int id);
     }
 }

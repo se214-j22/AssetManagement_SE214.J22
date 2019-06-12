@@ -4,14 +4,16 @@ using GSoft.AbpZeroTemplate.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GSoft.AbpZeroTemplate.Migrations
 {
     [DbContext(typeof(AbpZeroTemplateDbContext))]
-    partial class AbpZeroTemplateDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190607045001_SoLuong")]
+    partial class SoLuong
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1767,7 +1769,7 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<int>("MaTaiSan");
 
-                    b.Property<DateTime>("NgayDieuChuyen");
+                    b.Property<DateTime>("NgayDC");
 
                     b.Property<int>("SoLuong");
 
@@ -1965,8 +1967,6 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<int>("MaDV");
 
-                    b.Property<string>("TenDV");
-
                     b.Property<string>("TenNhanVien");
 
                     b.Property<string>("UpdatedBy");
@@ -2137,8 +2137,6 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     b.Property<int>("NguyenGia");
 
                     b.Property<int>("SoLuong");
-
-                    b.Property<int>("SoLuongTon");
 
                     b.Property<int>("SoThangBaoHanh");
 

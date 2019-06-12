@@ -23,5 +23,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.DieuChuyens.Dto
         public int MaNhanVienNhan { get; set; }
         public string TenNhanVienNhan { get; set; }
         public string GhiChu { get; set; }
+        public DateTime NgayDieuChuyen { get; set; }
     }
 }

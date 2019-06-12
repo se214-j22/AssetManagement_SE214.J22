@@ -51,6 +51,11 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         {
             return nhanVienAppservice.GetNhanVienForView(id);
         }
+        [HttpGet]
+        public string[] GetArrTenDonVi()
+        {
+            return nhanVienAppservice.GetArrTenDonVi();
+        }
     }
 }
 

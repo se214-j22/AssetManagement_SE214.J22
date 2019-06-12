@@ -69,7 +69,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.DonVis
             // filter by value
             if (input.TenDonVi != null)
             {
-                query = query.Where(x => x.TenDonVi.ToLower().Equals(input.TenDonVi));
+                query = query.Where(x => x.TenDonVi.ToLower().Contains(input.TenDonVi));
             }
 
             var totalCount = query.Count();

@@ -15,5 +15,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.NhanViens
         void DeleteNhanVien(int id);
         PagedResultDto<NhanVienDto> GetNhanViens(NhanVienFilter input);
         NhanVienForViewDto GetNhanVienForView(int id);
+        string[] GetArrTenDonVi();
     }
 }

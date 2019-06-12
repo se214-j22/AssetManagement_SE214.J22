@@ -17,7 +17,7 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public string TenDonVi { get; set; }
         public int MaNhanVienNhan { get; set; }
         public string TenNhanVienNhan { get; set; }
-        public DateTime NgayDC { get; set; }
+        public DateTime NgayDieuChuyen { get; set; }
         public string GhiChu { get; set; }
     }
 }

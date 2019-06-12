@@ -27,6 +27,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.TaiSans.Dto
         public int SoThangBaoHanh { get; set; }
         public string TinhTrangKhauHao { get; set; }
         public int SoLuong { get; set; }
+        public int SoLuongTon { get; set; }
     }
 }
 

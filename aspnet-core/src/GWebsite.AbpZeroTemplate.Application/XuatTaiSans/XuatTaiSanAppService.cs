@@ -21,13 +21,17 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.XuatTaiSans
         private readonly IRepository<CTDonVi> ctDonVirepository;
         private readonly IRepository<DonVi> donVirepository;
         private readonly IRepository<NhanVien> nhanVienrepository;
-        public XuatTaiSanAppService(IRepository<CTTaiSan> cttaisanrepository, IRepository<XuatTaiSan> xuatttaisanRepository, IRepository<CTDonVi> ctDonVirepository, IRepository<DonVi> donVirepository, IRepository<NhanVien> nhanVienrepository)
+        private readonly IRepository<ThongTinTaiSan> thongtintaisanrepository;
+        public XuatTaiSanAppService(IRepository<CTTaiSan> cttaisanrepository, IRepository<XuatTaiSan> xuatttaisanRepository, IRepository<CTDonVi> ctDonVirepository, IRepository<DonVi> donVirepository
+            , IRepository<NhanVien> nhanVienrepository
+            , IRepository<ThongTinTaiSan> thongtintaisanrepository)
         {
             this.cttaisanRepository = cttaisanrepository;
             this.xuatttaisanRepository = xuatttaisanRepository;
             this.ctDonVirepository = ctDonVirepository;
             this.donVirepository = donVirepository;
             this.nhanVienrepository = nhanVienrepository;
+            this.thongtintaisanrepository = thongtintaisanrepository;
         }
         public void CreateOrEditXuatTaiSan(XuatTaiSanInput xuatTaiSanInput)
         {
@@ -132,6 +136,10 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.XuatTaiSans
                 var xuattaisanEnity = ObjectMapper.Map<XuatTaiSan>(xuatTaiSanInput);
                 SetAuditInsert(xuattaisanEnity);
                 xuatttaisanRepository.Insert(xuattaisanEnity);
+                CurrentUnitOfWork.SaveChanges();
+
+                var updatesoluongtaisan = thongtintaisanrepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == xuatTaiSanInput.MaTaiSan);
+                updatesoluongtaisan.SoLuongTon -= xuatTaiSanInput.SoLuong;
                 CurrentUnitOfWork.SaveChanges();
 
                 for (int i = 0; i < xuatTaiSanInput.SoLuong; i++)

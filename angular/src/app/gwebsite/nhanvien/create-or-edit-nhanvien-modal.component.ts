@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild, OnInit } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
 import { NhanVienServiceProxy, NhanVienInput } from '@shared/service-proxies/service-proxies';
@@ -8,7 +8,7 @@ import { NhanVienServiceProxy, NhanVienInput } from '@shared/service-proxies/ser
     selector: 'createOrEditNhanVienModal',
     templateUrl: './create-or-edit-nhanvien-modal.component.html'
 })
-export class CreateOrEditNhanVienModalComponent extends AppComponentBase {
+export class CreateOrEditNhanVienModalComponent extends AppComponentBase implements OnInit{
 
 
     @ViewChild('createOrEditModal') modal: ModalDirective;
@@ -25,12 +25,24 @@ export class CreateOrEditNhanVienModalComponent extends AppComponentBase {
     saving = false;
 
     nhanVien: NhanVienInput = new NhanVienInput();
+    listTenDonVi: string[];
 
     constructor(
         injector: Injector,
         private _nhanVienService: NhanVienServiceProxy
     ) {
         super(injector);
+    }
+
+    ngOnInit(): void {        
+        this.getTenDonVi();
+    }
+
+    getTenDonVi(): void {
+        this._nhanVienService.getTenDonVi().subscribe(
+            result => {
+                this.listTenDonVi = result['result'];
+            })
     }
 
     show(nhanVienId?: number | null | undefined): void {

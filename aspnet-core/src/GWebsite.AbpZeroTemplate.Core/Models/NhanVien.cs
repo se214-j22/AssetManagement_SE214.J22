@@ -10,5 +10,6 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
     {
         public string TenNhanVien { get; set; }
         public int MaDV { get; set; }
+        public string TenDV { get; set; }
     }
 }

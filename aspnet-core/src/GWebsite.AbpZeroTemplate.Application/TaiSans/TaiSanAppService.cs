@@ -81,7 +81,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.TaiSans
             // filter by value
             if (input.TenTs != null)
             {
-                query = query.Where(x => x.TenTs.ToLower().Equals(input.TenTs));
+                query = query.Where(x => x.TenTs.ToLower().Contains(input.TenTs));
             }
 
             var totalCount = query.Count();
@@ -107,6 +107,16 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.TaiSans
             string[] str = query.Select(x => x.ToString()).ToArray();
             return str;
         }
+        public TaiSanInput getSoLuongTonTaiSan (int id)
+        {
+
+            var taisanEntity = taisanrepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == id && x.SoLuongTon >0);
+            if (taisanEntity == null)
+            {
+                return null;
+            }
+            return ObjectMapper.Map<TaiSanInput>(taisanEntity);
+        }
         #region Private Method
 
         [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient_Create)]
@@ -117,12 +127,14 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.TaiSans
             loTaiSanInput.NgayNhap = DateTime.Now.Date;
             loTaiSanInput.TongGiaTri = taiSanInput.NguyenGia * taiSanInput.SoLuong;
 
+            
             var lotaisanEntity = ObjectMapper.Map<LoTaiSan>(loTaiSanInput);
             SetAuditInsert(lotaisanEntity);
             lotaisanrepository.Insert(lotaisanEntity);
             CurrentUnitOfWork.SaveChanges();
 
             var manhomtaisan = nhomTaiSanrepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.tenNhomTaiSan == taiSanInput.TenNhomTS).Id;
+            taiSanInput.SoLuongTon = taiSanInput.SoLuong;
             taiSanInput.NgayNhap =DateTime.Now.Date;
             taiSanInput.MaLo = lotaisanEntity.Id;
             taiSanInput.MaNhomTS = manhomtaisan;

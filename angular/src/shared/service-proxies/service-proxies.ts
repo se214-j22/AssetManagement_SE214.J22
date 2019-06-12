@@ -1947,6 +1947,34 @@ export class TaiSanServiceProxy {
         }));
     }
 
+    getSoLuongTonTaiSan(id: number | null | undefined): Observable<TaiSanInput> {
+        let url_ = this.baseUrl + "/api/TaiSan/GetTaiSanForEdit?";
+        if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
+            return this.processGetTaiSanForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTaiSanForEdit(<any>response_);
+                } catch (e) {
+                    return <Observable<TaiSanInput>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<TaiSanInput>><any>_observableThrow(response_);
+        }));
+    }
     protected processGetTaiSanForEdit(response: HttpResponseBase): Observable<TaiSanInput> {
         const status = response.status;
         const responseBlob =
@@ -3704,6 +3732,19 @@ export class NhanVienServiceProxy {
      * @skipCount (optional) 
      * @return Success
      */
+
+    getTenDonVi() {
+        let options_: any = {
+            //observe: "response",
+            responseType: { responseType: "text" },
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+        return this.http.get(this.baseUrl + "/api/NhanVien/GetArrTenDonVi?");
+    }
+
     getTenNhomNhanVien() {
         let options_: any = {
             //observe: "response",
@@ -13872,6 +13913,7 @@ export class TaiSanDto implements ITaiSanDto {
     soThangBaoHanh!: number | undefined;
     tinhTrangKhauHao!: string | undefined;
     soLuong!: number | undefined;   
+    soLuongTon!:number|undefined;
     id!: number | undefined;
 
     constructor(data?: ITaiSanDto) {
@@ -13899,6 +13941,7 @@ export class TaiSanDto implements ITaiSanDto {
             this.soThangBaoHanh = data["soThangBaoHanh"];
             this.tinhTrangKhauHao = data["tinhTrangKhauHao"];
             this.soLuong = data["soLuong"];
+            this.soLuongTon=data["soLuongTon"];
             this.id = data["id"];
         }
     }
@@ -13926,6 +13969,7 @@ export class TaiSanDto implements ITaiSanDto {
         data["soThangBaoHanh"] = this.soThangBaoHanh;
         data["tinhTrangKhauHao"] = this.tinhTrangKhauHao;
         data["soLuong"] = this.soLuong;
+        data["soLuongTon"]=this.soLuongTon;
         data["id"] = this.id;
         return data;
     }
@@ -13945,7 +13989,8 @@ export interface ITaiSanDto {
     tyLeKhauHao: Float32Array | undefined;
     soThangBaoHanh: number | undefined;
     tinhTrangKhauHao: string | undefined;
-    soLuong: number | undefined;    
+    soLuong: number | undefined; 
+    soLuongTon:number | undefined; 
     id: number | undefined;
 }
 
@@ -13964,6 +14009,7 @@ export class TaiSanInput implements ITaiSanInput {
     soThangBaoHanh!: number | undefined;
     tinhTrangKhauHao!: string | undefined;
     soLuong!: number | undefined;  
+    soLuongTon!:number|undefined;
     id!: number | undefined;
 
     constructor(data?: ITaiSanInput) {
@@ -13991,6 +14037,7 @@ export class TaiSanInput implements ITaiSanInput {
             this.soThangBaoHanh = data["soThangBaoHanh"];
             this.tinhTrangKhauHao = data["tinhTrangKhauHao"];
             this.soLuong = data["soLuong"];
+            this.soLuongTon=data["soLuongTon"]
             this.id = data["id"];
         }
     }
@@ -14018,6 +14065,7 @@ export class TaiSanInput implements ITaiSanInput {
         data["soThangBaoHanh"] = this.soThangBaoHanh;
         data["tinhTrangKhauHao"] = this.tinhTrangKhauHao;
         data["soLuong"] = this.soLuong;
+        data["soLuongTon"] = this.soLuongTon;
         data["id"] = this.id;
         return data;
     }
@@ -14038,6 +14086,7 @@ export interface ITaiSanInput {
     soThangBaoHanh: number | undefined;
     tinhTrangKhauHao: string | undefined;
     soLuong: number | undefined;
+    soLuongTon: number | undefined;
     id: number | undefined;
 }
 
@@ -14056,7 +14105,7 @@ export class TaiSanForViewDto implements ITaiSanForViewDto {
     soThangBaoHanh!: number | undefined;
     tinhTrangKhauHao!: string | undefined;
     soLuong!: number | undefined;
-
+    soLuongTon:number | undefined;
     constructor(data?: ITaiSanForViewDto) {
         if (data) {
             for (var property in data) {
@@ -14082,6 +14131,7 @@ export class TaiSanForViewDto implements ITaiSanForViewDto {
             this.soThangBaoHanh = data["soThangBaoHanh"];
             this.tinhTrangKhauHao = data["tinhTrangKhauHao"];
             this.soLuong = data["soLuong"];
+            this.soLuongTon=data["soLuongTon"];
         }
     }
 
@@ -14108,6 +14158,7 @@ export class TaiSanForViewDto implements ITaiSanForViewDto {
         data["soThangBaoHanh"] = this.soThangBaoHanh;
         data["tinhTrangKhauHao"] = this.tinhTrangKhauHao;
         data["soLuong"] = this.soLuong;
+        data["soLuongTon"]=this.soLuongTon;
         return data;
     }
 }
@@ -14127,6 +14178,7 @@ export interface ITaiSanForViewDto {
     soThangBaoHanh: number | undefined;
     tinhTrangKhauHao: string | undefined;
     soLuong: number | undefined;
+    soLuongTon:number|undefined;
 }
 //endregion TaiSan
 
@@ -15373,6 +15425,7 @@ export interface IPagedResultDtoOfNhanVienDto {
 export class NhanVienDto implements INhanVienDto {
     tenNhanVien!: string | undefined;
     maDV!: number | undefined;
+    tenDV!:string | undefined;
     id!: number | undefined;
 
     constructor(data?: INhanVienDto) {
@@ -15388,6 +15441,7 @@ export class NhanVienDto implements INhanVienDto {
         if (data) {
             this.tenNhanVien = data["tenNhanVien"];
             this.maDV = data["maDV"];
+            this.tenDV=data["tenDV"]
             this.id = data["id"];
         }
     }
@@ -15403,6 +15457,7 @@ export class NhanVienDto implements INhanVienDto {
         data = typeof data === 'object' ? data : {};
         data["tenNhanVien"] = this.tenNhanVien;
         data["maDV"] = this.maDV;
+        data["tenDV"]=this.tenDV;
         data["id"] = this.id;
         return data;
     }
@@ -15411,12 +15466,14 @@ export class NhanVienDto implements INhanVienDto {
 export interface INhanVienDto {
     tenNhanVien: string | undefined;
     maDV: number | undefined;
+    tenDV:string | undefined;
     id: number | undefined;
 }
 
 export class NhanVienInput implements INhanVienInput {
     tenNhanVien!: string | undefined;
     maDV!: number | undefined;
+    tenDV!:string | undefined;
     id!: number | undefined;
 
     constructor(data?: INhanVienInput) {
@@ -15447,6 +15504,7 @@ export class NhanVienInput implements INhanVienInput {
         data = typeof data === 'object' ? data : {};
         data["tenNhanVien"] = this.tenNhanVien;
         data["maDV"] = this.maDV;
+        data["tenDV"]=this.tenDV;
         data["id"] = this.id;
         return data;
     }
@@ -15455,13 +15513,14 @@ export class NhanVienInput implements INhanVienInput {
 export interface INhanVienInput {
     tenNhanVien: string | undefined;
     maDV: number | undefined;
+    tenDV:string | undefined;
     id: number | undefined;
 }
 
 export class NhanVienForViewDto implements INhanVienForViewDto {
     tenNhanVien!: string | undefined;
     maDV!: number | undefined;
-
+    tenDV! :string | undefined;
     constructor(data?: INhanVienForViewDto) {
         if (data) {
             for (var property in data) {
@@ -15475,6 +15534,7 @@ export class NhanVienForViewDto implements INhanVienForViewDto {
         if (data) {
             this.tenNhanVien = data["tenNhanVien"];
             this.maDV = data["maDV"];
+            this.tenDV=data["tenDV"]
         }
     }
 
@@ -15489,6 +15549,7 @@ export class NhanVienForViewDto implements INhanVienForViewDto {
         data = typeof data === 'object' ? data : {};
         data["tenNhanVien"] = this.tenNhanVien;
         data["maDV"] = this.maDV;
+        data["tenDV"]=this.tenDV;
         return data;
     }
 }
@@ -15496,6 +15557,7 @@ export class NhanVienForViewDto implements INhanVienForViewDto {
 export interface INhanVienForViewDto {
     tenNhanVien: string | undefined;
     maDV: number | undefined;
+    tenDV:string | undefined;
 }
 //endregion NhanVien
 

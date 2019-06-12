@@ -40,6 +40,7 @@
                         <label>Tên nhóm tài sản *</label>  
                         <select #TenNhomTS="ngModel" class="form-control" name="tenNhomTS"
                                 [(ngModel)]="taiSan.tenNhomTS" required maxlength="64">
+                                <option>...</option>
                             <option *ngFor="let listTen of listTenNhomTaiSan">
                                 {{listTen}}
                             </option>
@@ -102,10 +103,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button [disabled]="saving" type="button" class="btn btn-default"
+                    <button type="button" class="btn btn-default"
                         (click)="close()">{{l("Cancel")}}</button>
-                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
-                        [busyText]="l('SavingWithThreeDot')" (click)="save()"><i class="fa fa-save"></i>
+                    <button type="submit" class="btn btn-primary" (click)="save()"><i class="fa fa-save"></i>
                         <span>{{l("Save")}}</span></button>
                 </div>
             <!--</form>-->
