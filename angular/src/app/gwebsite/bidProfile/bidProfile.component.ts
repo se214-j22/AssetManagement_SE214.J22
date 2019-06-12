@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild, NgZone } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild, NgZone, HostListener } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -11,7 +11,9 @@ import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.serv
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import * as moment from 'moment';
 import { ApprovalStatusEnum, BidTypeEnum, BidProfileTypeInfo } from './dto/bidProfile.dto';
-import { BidProfileServiceProxy, ProductsServiceProxy, BidProfileSaved } from '@shared/service-proxies/service-proxies';
+import { BidProfileServiceProxy, ProductsServiceProxy, BidProfileSaved, PlanServiceProxy, UserServiceProxy, User } from '@shared/service-proxies/service-proxies';
+import { SharedService } from 'account/login/share.service';
+import { AbpSessionService } from 'abp-ng2-module/dist/src/session/abp-session.service';
 
 
 @Component({
@@ -158,7 +160,7 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
      bidProfileCodeFilter = undefined;
      bidCatalogFilterId = undefined;
      bidCatalogEditId;
-
+     userPermission: any[]= [];
      bidProfileFakes = [];
 
     //api 8.7, get all products có status=1(active hay open)
@@ -205,19 +207,16 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         'font-size': '11px'
     };
      header;
-
     constructor(
         injector: Injector,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
         private _apiService: BidProfileServiceProxy,
         private _productService: ProductsServiceProxy,
-        private zone: NgZone
+        private _sessionService: AbpSessionService,
+        private _userService: UserServiceProxy,
     ) {
         super(injector);
-        this.zone.run(() => {
-            this.handelSelects();
-          });
     }
 
     /**
@@ -227,6 +226,9 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         this.isPermissionEditCloseActive = true;
         // call hàm này khi subcribe api 8.7 get all product success
         this.handelSelects();
+        this._userService.getUserForEdit(this._sessionService.userId).subscribe(user => {
+            this.userPermission = user.memberedOrganizationUnits;
+        });
     }
 
     /**
@@ -322,6 +324,14 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         };
     }
 
+    compareOrganizationUnit(code: string ) {
+        for (let i = 0; i < this.userPermission.length; i++) {
+           if (this.userPermission[i].indexOf(code) === 0) {
+               return true;
+           }
+        }
+        return false;
+    }
     reloadPage(): void {
         this.paginator.changePage(this.paginator.getPage());
     }

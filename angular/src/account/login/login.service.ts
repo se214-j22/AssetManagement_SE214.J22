@@ -9,6 +9,7 @@ import { UrlHelper } from '@shared/helpers/UrlHelper';
 import { AuthenticateModel, AuthenticateResultModel, ExternalAuthenticateModel, ExternalAuthenticateResultModel, ExternalLoginProviderInfoModel, TokenAuthServiceProxy } from '@shared/service-proxies/service-proxies';
 import * as _ from 'lodash';
 import { finalize } from 'rxjs/operators';
+import { SharedService } from './share.service';
 
 declare const FB: any; // Facebook API
 declare const gapi: any; // Facebook API
@@ -60,7 +61,8 @@ export class LoginService {
         private _utilsService: UtilsService,
         private _messageService: MessageService,
         private _tokenService: TokenService,
-        private _logService: LogService
+        private _logService: LogService,
+        private _sharedService: SharedService
     ) {
         this.clear();
     }
@@ -79,6 +81,7 @@ export class LoginService {
             .subscribe((result: AuthenticateResultModel) => {
                 this.processAuthenticateResult(result, redirectUrl);
             });
+            this._sharedService.sendMessage(this._tokenAuthService);
     }
 
     externalAuthenticate(provider: ExternalLoginProvider): void {

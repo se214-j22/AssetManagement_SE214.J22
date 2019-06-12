@@ -210,7 +210,8 @@
                                             <span
                                                 title="{{record.projectCode}}">{{ record.projectId }}</span>
                                         </td>
-                                        <td *ngIf="isPermissionEditCloseActive" style="width: 180px">
+                                        <td  style="width: 180px">
+                                            <div *ngIf="compareOrganizationUnit(record.organizationUnit.code)">
                                             <button *ngIf="!record.isEdit" class="btn btn-primary"
                                                 (click)="actionEdit(record, $event)">Edit
                                             </button>
@@ -235,6 +236,7 @@
                                                 (click)="removePcItem(record.id, record, index)"
                                                 title="{{record.isIncludeBidProfile ? 'Cannot remove bidProfile exist reference': 'Delete this'}}">
                                                 Remove</button>
+                                            </div>
                                         </td>
                                     </tr>
                                 </ng-template>

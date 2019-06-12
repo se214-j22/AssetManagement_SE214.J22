@@ -31,7 +31,7 @@ import { BidProfileComponent } from './bidProfile/bidProfile.component';
                 children: [
                     {
                         path: 'supplier-category', component: SupplierCategoryComponent,
-                        data: { permission: 'Pages.Administration.MenuClient' }
+                        data: { permission: 'Pages.Administration.SupplierCatalog' }
                     },
                 ]
             },
@@ -40,7 +40,7 @@ import { BidProfileComponent } from './bidProfile/bidProfile.component';
                 children: [
                     {
                         path: 'supplier', component: SupplierComponent,
-                        data: { permission: 'Pages.Administration.MenuClient' }
+                        data: { permission: 'Pages.Administration.SupplierCatalog' }
                     },
                 ]
             },
@@ -49,7 +49,7 @@ import { BidProfileComponent } from './bidProfile/bidProfile.component';
                 children: [
                     {
                         path: 'product-category', component: ProductCategoryComponent,
-                        data: { permission: 'Pages.Administration.MenuClient' }
+                        data: { permission: 'Pages.Administration.ProductCatalog' }
                     },
                 ]
             },
@@ -58,11 +58,11 @@ import { BidProfileComponent } from './bidProfile/bidProfile.component';
                 children: [
                     {
                         path: 'plan', component: PlanComponent,
-                        data: { permission: 'Pages.Administration.MenuClient' }
+                        data: { permission: 'Pages.Administration.Plan' }
                     },
                     {
                         path: 'plan/detail/:id', component: SubPlanComponent,
-                        data: { permission: 'Pages.Administration.MenuClient' }
+                        data: { permission: 'Pages.Administration.SubPlan' }
                     }
                 ]
             },
@@ -72,11 +72,11 @@ import { BidProfileComponent } from './bidProfile/bidProfile.component';
 
                     {
                         path: 'product', component: ProductComponent,
-                        data: { permission: 'Pages.Administration.MenuClient' }
+                        data: { permission: 'Pages.Administration.ProductCatalog' }
                     },
                     {
                         path: 'supplier', component: SupplierComponent,
-                        data: { permission: 'Pages.Administration.MenuClient' }
+                        data: { permission: 'Pages.Administration.SupplierCatalog' }
                     }
                 ]
             },
@@ -85,7 +85,7 @@ import { BidProfileComponent } from './bidProfile/bidProfile.component';
                 children: [
                     {
                         path: 'project', component: ProjectComponent,
-                        data: { permission: 'Pages.Administration.MenuClient' }
+                        data: { permission: 'Pages.Administration.Project' }
                     },
                 ]
             },
@@ -94,7 +94,7 @@ import { BidProfileComponent } from './bidProfile/bidProfile.component';
                 children: [
                     {
                         path: 'bidProfile', component: BidProfileComponent,
-                        data: { permission: 'Pages.Administration.MenuClient' }
+                        data: { permission: 'Pages.Administration.BidProfile' }
                     },
                 ]
             },
