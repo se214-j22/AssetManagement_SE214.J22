@@ -14,18 +14,64 @@
             <div class="modal-body">
                 <div *ngIf="scanReport !== undefined">
                     <div class="col-12">
-                        <h3>Thông tin phần cứng</h3>
-                        <div *ngFor="let key of objectKeys(scanReportData.hardwareScan)" class="form-group">
-                            <label>{{l(computeLabel(key))}} *</label>
-                            <p>{{scanReportData.hardwareScan[key]}}</p>
+                        <h3 style="margin-bottom: 20px;">Thông tin máy</h3>
+                        <div *ngFor="let key of objectKeys(scanReportData.hardwareScan)">
+                            <div *ngIf="['osInformation','macAddress','accountName', 'computerName'].includes(key) === true" class="form-group">
+                                <div>
+                                    <span><label style="margin-right: 20px">{{l(computeLabel(key))}}: </label> <strong>{{scanReportData.hardwareScan[key]}}</strong></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-12">
-                        <h3>Thông tin phần mềm</h3>
-                        <div *ngFor="let key of objectKeys(scanReportData.softwareScan)" class="form-group">
-                            <label>{{l(computeLabel(key))}} *</label>
-                            <p>{{scanReportData.softwareScan[key]}}</p>
+                        <h3 style="margin-bottom: 20px;">Thông tin phần cứng</h3>
+                        <div *ngFor="let key of objectKeys(scanReportData.hardwareScan)">
+                            <div *ngIf="['osInformation','macAddress','accountName', 'computerName'].includes(key) === false" class="form-group">
+                                <div *ngIf="key !== 'drives'">
+                                    <span><label style="margin-right: 20px">{{l(computeLabel(key))}}: </label> <strong>{{scanReportData.hardwareScan[key]}}</strong></span>
+                                </div>
+
+                                <div *ngIf="key === 'drives'">
+                                    <div style="margin-bottom: 20px; font-weight: bold"><h3>Thông tin ổ cứng</h3></div>
+                                    <p-table #dataTable [value]="scanReportData.hardwareScan.drives">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th *ngFor="let driveKey of objectKeys(scanReportData.hardwareScan.drives[0])">
+                                                    {{l(computeLabel(driveKey))}}
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-record="$implicit">
+                                            <tr>
+                                                <td *ngFor="let driveKey of objectKeys(scanReportData.hardwareScan.drives[0])">
+                                                    {{record[driveKey]}}
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                </div>
+
+                            </div>
                         </div>
+                    </div>
+                    <div class="col-12">
+                        <h3 style="margin-bottom: 20px">Thông tin phần mềm</h3>
+                        <p-table #softwareTable [value]="scanReportData.softwareScan">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th *ngFor="let driveKey of objectKeys(scanReportData.softwareScan[0])">
+                                        {{l(computeLabel(driveKey))}}
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td *ngFor="let softwareKey of objectKeys(scanReportData.softwareScan[0])">
+                                        {{record[softwareKey]}}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
                     </div>
                 </div>
             </div>
