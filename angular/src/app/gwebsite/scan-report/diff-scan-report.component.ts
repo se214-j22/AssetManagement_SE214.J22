@@ -9,7 +9,8 @@ import {of as _observableOf} from '@node_modules/rxjs';
 
 @Component({
     selector: 'diffScanReport',
-    templateUrl: './diff-scan-report.component.html'
+    templateUrl: './diff-scan-report.component.html',
+    styleUrls: ['node_modules/jsondiffpatch/dist/formatters-styles/html.css']
 })
 export class DiffScanReportComponent extends AppComponentBase {
     objectKeys = Object.keys;

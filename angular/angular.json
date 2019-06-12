@@ -36,7 +36,6 @@
               }
             ],
             "styles": [
-              "node_modules/jsondiffpatch/dist/formatters-styles/html.css",
               "node_modules/tether/dist/css/tether.css",
               "node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css",
               "node_modules/prismjs/themes/prism.css",
