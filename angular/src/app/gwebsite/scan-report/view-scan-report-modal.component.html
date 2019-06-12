@@ -4,8 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" *ngIf="scanReport !== undefined">
-                    <span *ngIf="scanReport.id">{{l("EditScanReport")}}: #{{scanReport.id}}</span>
-                    <span *ngIf="!scanReport.id">{{l("CreateNewScanReport")}}</span>
+                    Scan #{{ scanReport.id }} - lúc {{ scannedDate }}
                 </h4>
                 <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
                     <span aria-hidden="true">&times;</span>

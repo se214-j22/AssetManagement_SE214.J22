@@ -12,6 +12,7 @@ import {ModalDirective} from 'ngx-bootstrap';
 
 export class ViewScanReportModalComponent extends AppComponentBase {
     objectKeys = Object.keys;
+    scannedDate: string;
     scanReportData: object;
     scanReport: ScanReportForViewDto;
     @ViewChild('viewModal') modal: ModalDirective;
@@ -32,6 +33,7 @@ export class ViewScanReportModalComponent extends AppComponentBase {
         this._scanReportService.getScanReportForView(scanReportId).subscribe(result => {
             this.scanReport = result;
             this.scanReportData = JSON.parse(this.scanReport.scannedData);
+            this.scannedDate = new Date(this.scanReport.createdDate).toLocaleTimeString('vi') + ' ' + new Date(this.scanReport.createdDate).toLocaleDateString('vi')
             this.modal.show();
         });
 
