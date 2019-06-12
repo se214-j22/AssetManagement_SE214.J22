@@ -10,6 +10,7 @@ import { Table } from 'primeng/components/table/table';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import { ScanReportServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOrEditScanReportModalComponent } from './create-or-edit-scan-report-modal.component';
+import { DiffScanReportComponent } from '@app/gwebsite/scan-report/diff-scan-report.component';
 
 @Component({
     templateUrl: './scan-report.component.html',
@@ -25,12 +26,12 @@ export class ScanReportComponent extends AppComponentBase implements AfterViewIn
     @ViewChild('paginator') paginator: Paginator;
     @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditScanReportModalComponent;
     @ViewChild('viewScanReportModal') viewScanReportModal: ViewScanReportModalComponent;
-    
+    @ViewChild('diffScanReport') diffScanReport: DiffScanReportComponent;
+
     /**
      * tạo các biến dể filters
      */
     filterText: string;
-
     constructor(
         injector: Injector,
         private _scanReportService: ScanReportServiceProxy,
@@ -55,7 +56,6 @@ export class ScanReportComponent extends AppComponentBase implements AfterViewIn
             this.init();
         });
     }
-
     /**
      * Hàm get danh sách ScanReport
      * @param event

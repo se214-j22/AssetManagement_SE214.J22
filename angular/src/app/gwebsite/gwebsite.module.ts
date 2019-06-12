@@ -25,6 +25,9 @@ import { ScanReportServiceProxy } from '@shared/service-proxies/service-proxies'
 import { ViewScanReportModalComponent } from './scan-report/view-scan-report-modal.component';
 
 
+import { DiffScanReportComponent } from './scan-report/diff-scan-report.component';
+
+
 import { CustomerComponent } from './customer/customer.component';
 import { ViewCustomerModalComponent } from './customer/view-customer-modal.component';
 import { CreateOrEditCustomerModalComponent } from './customer/create-or-edit-customer-modal.component';
@@ -46,13 +49,14 @@ import { CreateOrEditCustomerModalComponent } from './customer/create-or-edit-cu
         PrimeNgFileUploadModule,
         AutoCompleteModule,
         EditorModule,
-        InputMaskModule
+        InputMaskModule,
     ],
     declarations: [
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
         DemoModelComponent, CreateOrEditDemoModelModalComponent, ViewDemoModelModalComponent,
         ScanReportComponent, CreateOrEditScanReportModalComponent, ViewScanReportModalComponent,
         CustomerComponent, CreateOrEditCustomerModalComponent, ViewCustomerModalComponent,
+        DiffScanReportComponent
     ],
     providers: [
         DemoModelServiceProxy,

@@ -10,9 +10,13 @@
                     {{l("ScanReportInfo")}}
                 </span>
             </div>
-            <div class="col-xs-6 text-right">
+            <div class="col-xs-2 text-right">
                 <button (click)="createScanReport()" *ngIf="isGranted('Pages.Administration.ScanReport.Create')"
                     class="btn btn-primary"><i class="fa fa-plus"></i> {{l("CreateNewScanReport")}}</button>
+            </div>
+            <div class="col-xs-2 text-right" style="margin-left: 10px">
+                <button (click)="diffScanReport.onOpenModal()"
+                    class="btn btn-primary">So sánh các bản quét</button>
             </div>
         </div>
     </div>
@@ -116,4 +120,5 @@
     </div>
     <createOrEditScanReportModal #createOrEditModal (modalSave)="reloadPage()"></createOrEditScanReportModal>
     <viewScanReportModal #viewScanReportModal (modalSave)="reloadPage()"></viewScanReportModal>
+    <diffScanReport #diffScanReport></diffScanReport>
 </div>

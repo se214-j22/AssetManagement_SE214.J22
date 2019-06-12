@@ -4,6 +4,8 @@ import {AfterViewInit, Injector, Component, ViewChild} from '@angular/core';
 import {ScanReportServiceProxy} from '@shared/service-proxies/service-proxies';
 import {Router} from '@angular/router';
 import {ModalDirective} from 'ngx-bootstrap';
+import * as JsonDiffPatch from 'jsondiffpatch';
+import {of as _observableOf} from '@node_modules/rxjs';
 
 @Component({
     selector: 'diffScanReport',
@@ -11,9 +13,12 @@ import {ModalDirective} from 'ngx-bootstrap';
 })
 export class DiffScanReportComponent extends AppComponentBase {
     objectKeys = Object.keys;
-    scannedDate: string;
-    scanReportData: object;
-    scanReport: ScanReportForViewDto;
+    leftSelected: number;
+    rightSelected: number;
+    leftScanReport: object;
+    rightScanReport: object;
+    diffSelectOtions: Array<object>;
+    visualDiff: string;
     @ViewChild('viewModal') modal: ModalDirective;
 
     constructor(
@@ -27,15 +32,61 @@ export class DiffScanReportComponent extends AppComponentBase {
         this.modal.hide();
     }
 
-    show(scanReportId?: number | null | undefined): void {
+    computeDateString(dateString: string) {
+        let date = new Date(dateString);
+        return date.toLocaleTimeString('vi') + ' ' + date.toLocaleDateString('vi');
+    }
 
-        this._scanReportService.getScanReportForView(scanReportId).subscribe(result => {
-            this.scanReport = result;
-            this.scanReportData = JSON.parse(this.scanReport.scannedData);
-            this.scannedDate = new Date(this.scanReport.createdDate).toLocaleTimeString('vi') + ' ' + new Date(this.scanReport.createdDate).toLocaleDateString('vi')
+    onOpenModal(): void {
+        this._scanReportService.getScanReportsByFilter(undefined, undefined, undefined, undefined).subscribe(result => {
+            let records = result.items;
+
+            this.diffSelectOtions = records.map(elm => {
+                return {
+                    'label': `Bản quét #${elm.id} - lúc ${this.computeDateString(elm.createdDate)}`,
+                    'value': elm.id
+                };
+            });
+
             this.modal.show();
         });
+    }
+    submitGetDiff(): void {
+        // trigger fetch left
+        // alert(`${this.rightSelected} ${this.leftSelected}`);
 
+
+
+        this.fetchLeftScanReport(this.leftSelected);
+
+    }
+
+    getDiff(): void {
+        let diff = JsonDiffPatch.diff(this.leftScanReport, this.rightScanReport);
+
+        this.visualDiff = JsonDiffPatch.formatters.html.format(diff, this.leftScanReport);
+
+        if (this.visualDiff) {
+            document.getElementById('visual-diff').innerHTML = this.visualDiff;
+        } else {
+            document.getElementById('visual-diff').innerHTML = 'Chưa có dữ liệu';
+        }
+    }
+
+    fetchLeftScanReport(scanReportId?: number | null | undefined): void {
+        this._scanReportService.getScanReportForView(scanReportId).subscribe(result => {
+            this.leftScanReport = JSON.parse(result.scannedData);
+            this.fetchRightScanReport(this.rightSelected);
+        });
+    }
+
+    fetchRightScanReport(scanReportId?: number | null | undefined): void {
+        this._scanReportService.getScanReportForView(scanReportId).subscribe(result => {
+            this.rightScanReport = JSON.parse(result.scannedData);
+            this.getDiff();
+
+            // alert(this.visualDiff);
+        });
     }
 
     computeLabel(label: string): string {
