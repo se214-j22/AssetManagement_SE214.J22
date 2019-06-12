@@ -30,11 +30,19 @@ export class DiffScanReportComponent extends AppComponentBase {
 
         this.diffHandler = new JsonDiffPatch.DiffPatcher({
             objectHash: function(obj, index) {
+                console.log(obj);
+
                 if (typeof obj._id !== 'undefined') {
                     return obj._id;
                 }
                 if (typeof obj.id !== 'undefined') {
                     return obj.id;
+                }
+                if (typeof obj.driveName !== 'undefined') {
+                    return obj.driveName;
+                }
+                if (typeof obj.displayName !== 'undefined') {
+                    return obj.displayName;
                 }
                 return '$$index:' + index;
             },
