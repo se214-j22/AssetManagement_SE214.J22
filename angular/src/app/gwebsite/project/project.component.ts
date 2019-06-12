@@ -127,7 +127,7 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
             this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getMaxResultCount(this.paginator, event),
             this.primengTableHelper.getSkipCount(this.paginator, event)).subscribe(result => {
-                this.primengTableHelper.totalRecordsCount = 10;
+                this.primengTableHelper.totalRecordsCount = result.totalCount;
                 this.primengTableHelper.records = result.items;
                 this.primengTableHelper.hideLoadingIndicator();
             }, err => console.log(err));

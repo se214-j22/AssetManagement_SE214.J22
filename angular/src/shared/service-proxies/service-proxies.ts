@@ -1042,7 +1042,7 @@ export class BidProfileServiceProxy {
      * @skipCount (optional) 
      * @return Success
      */
-    getBidProfiles(code: string | null | undefined, receivedDate: moment.Moment | null | undefined, bidCatalog: string | null | undefined, bidType: string | null | undefined, status: number | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<ListResultDtoOfBidProfileDto> {
+    getBidProfiles(code: string | null | undefined, receivedDate: moment.Moment | null | undefined, bidCatalog: string | null | undefined, bidType: string | null | undefined, status: number | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfBidProfileDto> {
         let url_ = this.baseUrl + "/api/BidProfile/GetBidProfiles?";
         if (code !== undefined)
             url_ += "Code=" + encodeURIComponent("" + code) + "&"; 
@@ -1078,14 +1078,14 @@ export class BidProfileServiceProxy {
                 try {
                     return this.processGetBidProfiles(<any>response_);
                 } catch (e) {
-                    return <Observable<ListResultDtoOfBidProfileDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfBidProfileDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ListResultDtoOfBidProfileDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfBidProfileDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetBidProfiles(response: HttpResponseBase): Observable<ListResultDtoOfBidProfileDto> {
+    protected processGetBidProfiles(response: HttpResponseBase): Observable<PagedResultDtoOfBidProfileDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -1096,7 +1096,7 @@ export class BidProfileServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ListResultDtoOfBidProfileDto.fromJS(resultData200) : new ListResultDtoOfBidProfileDto();
+            result200 = resultData200 ? PagedResultDtoOfBidProfileDto.fromJS(resultData200) : new PagedResultDtoOfBidProfileDto();
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1104,17 +1104,17 @@ export class BidProfileServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ListResultDtoOfBidProfileDto>(<any>null);
+        return _observableOf<PagedResultDtoOfBidProfileDto>(<any>null);
     }
 
     /**
+     * @id (optional) 
      * @return Success
      */
-    deleteBidProfileAsync(id: number): Observable<void> {
-        let url_ = this.baseUrl + "/api/BidProfile/DeleteBidProfileAsync/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+    deleteBidProfileAsync(id: number | null | undefined): Observable<IServiceResult> {
+        let url_ = this.baseUrl + "/api/BidProfile/DeleteBidProfileAsync?";
+        if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1122,6 +1122,7 @@ export class BidProfileServiceProxy {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json", 
+                "Accept": "application/json"
             })
         };
 
@@ -1132,14 +1133,14 @@ export class BidProfileServiceProxy {
                 try {
                     return this.processDeleteBidProfileAsync(<any>response_);
                 } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
+                    return <Observable<IServiceResult>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<void>><any>_observableThrow(response_);
+                return <Observable<IServiceResult>><any>_observableThrow(response_);
         }));
     }
 
-    protected processDeleteBidProfileAsync(response: HttpResponseBase): Observable<void> {
+    protected processDeleteBidProfileAsync(response: HttpResponseBase): Observable<IServiceResult> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -1148,14 +1149,73 @@ export class BidProfileServiceProxy {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? IServiceResult.fromJS(resultData200) : new IServiceResult();
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<void>(<any>null);
+        return _observableOf<IServiceResult>(<any>null);
+    }
+
+    /**
+     * @dto (optional) 
+     * @return Success
+     */
+    updateBidProfileAsync(dto: BidProfileSaved | null | undefined): Observable<BidProfileDto> {
+        let url_ = this.baseUrl + "/api/BidProfile/UpdateBidProfileAsync";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(dto);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateBidProfileAsync(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateBidProfileAsync(<any>response_);
+                } catch (e) {
+                    return <Observable<BidProfileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<BidProfileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateBidProfileAsync(response: HttpResponseBase): Observable<BidProfileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? BidProfileDto.fromJS(resultData200) : new BidProfileDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<BidProfileDto>(<any>null);
     }
 
     /**
@@ -1303,74 +1363,6 @@ export class BidProfileServiceProxy {
     }
 
     protected processApprovalBidProfileAsync(response: HttpResponseBase): Observable<BidProfileDto> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? BidProfileDto.fromJS(resultData200) : new BidProfileDto();
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<BidProfileDto>(<any>null);
-    }
-}
-
-@Injectable()
-export class UpdateBidProfileAsyncServiceProxy {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "";
-    }
-
-    /**
-     * @dto (optional) 
-     * @return Success
-     */
-    edit(dto: BidProfileSaved | null | undefined): Observable<BidProfileDto> {
-        let url_ = this.baseUrl + "/api/BidProfile/UpdateBidProfileAsync/edit";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(dto);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processEdit(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processEdit(<any>response_);
-                } catch (e) {
-                    return <Observable<BidProfileDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<BidProfileDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processEdit(response: HttpResponseBase): Observable<BidProfileDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -1927,7 +1919,7 @@ export class ContractServiceProxy {
      * @skipCount (optional) 
      * @return Success
      */
-    getContracts(name: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<ListResultDtoOfContractDto> {
+    getContracts(name: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfContractDto> {
         let url_ = this.baseUrl + "/api/Contract/GetContracts?";
         if (name !== undefined)
             url_ += "Name=" + encodeURIComponent("" + name) + "&"; 
@@ -1955,14 +1947,14 @@ export class ContractServiceProxy {
                 try {
                     return this.processGetContracts(<any>response_);
                 } catch (e) {
-                    return <Observable<ListResultDtoOfContractDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfContractDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ListResultDtoOfContractDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfContractDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetContracts(response: HttpResponseBase): Observable<ListResultDtoOfContractDto> {
+    protected processGetContracts(response: HttpResponseBase): Observable<PagedResultDtoOfContractDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -1973,7 +1965,7 @@ export class ContractServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ListResultDtoOfContractDto.fromJS(resultData200) : new ListResultDtoOfContractDto();
+            result200 = resultData200 ? PagedResultDtoOfContractDto.fromJS(resultData200) : new PagedResultDtoOfContractDto();
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1981,7 +1973,7 @@ export class ContractServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ListResultDtoOfContractDto>(<any>null);
+        return _observableOf<PagedResultDtoOfContractDto>(<any>null);
     }
 
     /**
@@ -6175,7 +6167,7 @@ export class PlanServiceProxy {
      * @skipCount (optional) 
      * @return Success
      */
-    getPlans(id: number | null | undefined, year: number | null | undefined, status: number | null | undefined, unitCode: string | null | undefined, departmentCode: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<ListResultDtoOfPlanDto> {
+    getPlans(id: number | null | undefined, year: number | null | undefined, status: number | null | undefined, unitCode: string | null | undefined, departmentCode: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfPlanDto> {
         let url_ = this.baseUrl + "/api/Plan/GetPlans?";
         if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
@@ -6211,14 +6203,14 @@ export class PlanServiceProxy {
                 try {
                     return this.processGetPlans(<any>response_);
                 } catch (e) {
-                    return <Observable<ListResultDtoOfPlanDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfPlanDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ListResultDtoOfPlanDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfPlanDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetPlans(response: HttpResponseBase): Observable<ListResultDtoOfPlanDto> {
+    protected processGetPlans(response: HttpResponseBase): Observable<PagedResultDtoOfPlanDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -6229,7 +6221,7 @@ export class PlanServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ListResultDtoOfPlanDto.fromJS(resultData200) : new ListResultDtoOfPlanDto();
+            result200 = resultData200 ? PagedResultDtoOfPlanDto.fromJS(resultData200) : new PagedResultDtoOfPlanDto();
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -6237,7 +6229,7 @@ export class PlanServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ListResultDtoOfPlanDto>(<any>null);
+        return _observableOf<PagedResultDtoOfPlanDto>(<any>null);
     }
 
     /**
@@ -6535,7 +6527,7 @@ export class ProductsServiceProxy {
      * @skipCount (optional) 
      * @return Success
      */
-    getProducts(name: string | null | undefined, status: number | null | undefined, code: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<ListResultDtoOfProductDto> {
+    getProducts(name: string | null | undefined, status: number | null | undefined, code: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfProductDto> {
         let url_ = this.baseUrl + "/api/Products/GetProducts?";
         if (name !== undefined)
             url_ += "Name=" + encodeURIComponent("" + name) + "&"; 
@@ -6567,14 +6559,14 @@ export class ProductsServiceProxy {
                 try {
                     return this.processGetProducts(<any>response_);
                 } catch (e) {
-                    return <Observable<ListResultDtoOfProductDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfProductDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ListResultDtoOfProductDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfProductDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetProducts(response: HttpResponseBase): Observable<ListResultDtoOfProductDto> {
+    protected processGetProducts(response: HttpResponseBase): Observable<PagedResultDtoOfProductDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -6585,7 +6577,7 @@ export class ProductsServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ListResultDtoOfProductDto.fromJS(resultData200) : new ListResultDtoOfProductDto();
+            result200 = resultData200 ? PagedResultDtoOfProductDto.fromJS(resultData200) : new PagedResultDtoOfProductDto();
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -6593,7 +6585,7 @@ export class ProductsServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ListResultDtoOfProductDto>(<any>null);
+        return _observableOf<PagedResultDtoOfProductDto>(<any>null);
     }
 
     /**
@@ -6890,7 +6882,7 @@ export class ProductTypeServiceProxy {
      * @skipCount (optional) 
      * @return Success
      */
-    getProductTypes(code: string | null | undefined, status: number | null | undefined, name: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<ListResultDtoOfProductTypeDto> {
+    getProductTypes(code: string | null | undefined, status: number | null | undefined, name: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfProductTypeDto> {
         let url_ = this.baseUrl + "/api/ProductType/GetProductTypes?";
         if (code !== undefined)
             url_ += "Code=" + encodeURIComponent("" + code) + "&"; 
@@ -6922,14 +6914,14 @@ export class ProductTypeServiceProxy {
                 try {
                     return this.processGetProductTypes(<any>response_);
                 } catch (e) {
-                    return <Observable<ListResultDtoOfProductTypeDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfProductTypeDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ListResultDtoOfProductTypeDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfProductTypeDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetProductTypes(response: HttpResponseBase): Observable<ListResultDtoOfProductTypeDto> {
+    protected processGetProductTypes(response: HttpResponseBase): Observable<PagedResultDtoOfProductTypeDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -6940,7 +6932,7 @@ export class ProductTypeServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ListResultDtoOfProductTypeDto.fromJS(resultData200) : new ListResultDtoOfProductTypeDto();
+            result200 = resultData200 ? PagedResultDtoOfProductTypeDto.fromJS(resultData200) : new PagedResultDtoOfProductTypeDto();
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -6948,7 +6940,7 @@ export class ProductTypeServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ListResultDtoOfProductTypeDto>(<any>null);
+        return _observableOf<PagedResultDtoOfProductTypeDto>(<any>null);
     }
 
     /**
@@ -7858,7 +7850,7 @@ export class ProjectServiceProxy {
      * @skipCount (optional) 
      * @return Success
      */
-    getProjects(code: string | null | undefined, name: string | null | undefined, createDate: moment.Moment | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<ListResultDtoOfProjectDto> {
+    getProjects(code: string | null | undefined, name: string | null | undefined, createDate: moment.Moment | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfProjectDto> {
         let url_ = this.baseUrl + "/api/Project/GetProjects?";
         if (code !== undefined)
             url_ += "Code=" + encodeURIComponent("" + code) + "&"; 
@@ -7890,14 +7882,14 @@ export class ProjectServiceProxy {
                 try {
                     return this.processGetProjects(<any>response_);
                 } catch (e) {
-                    return <Observable<ListResultDtoOfProjectDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfProjectDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ListResultDtoOfProjectDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfProjectDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetProjects(response: HttpResponseBase): Observable<ListResultDtoOfProjectDto> {
+    protected processGetProjects(response: HttpResponseBase): Observable<PagedResultDtoOfProjectDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -7908,7 +7900,7 @@ export class ProjectServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ListResultDtoOfProjectDto.fromJS(resultData200) : new ListResultDtoOfProjectDto();
+            result200 = resultData200 ? PagedResultDtoOfProjectDto.fromJS(resultData200) : new PagedResultDtoOfProjectDto();
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -7916,7 +7908,7 @@ export class ProjectServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ListResultDtoOfProjectDto>(<any>null);
+        return _observableOf<PagedResultDtoOfProjectDto>(<any>null);
     }
 
     /**
@@ -8504,7 +8496,7 @@ export class SubPlanServiceProxy {
      * @skipCount (optional) 
      * @return Success
      */
-    getSubPlans(name: string | null | undefined, productId: number | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<ListResultDtoOfSubPlanDto> {
+    getSubPlans(name: string | null | undefined, productId: number | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfSubPlanDto> {
         let url_ = this.baseUrl + "/api/SubPlan/GetSubPlans?";
         if (name !== undefined)
             url_ += "Name=" + encodeURIComponent("" + name) + "&"; 
@@ -8534,14 +8526,14 @@ export class SubPlanServiceProxy {
                 try {
                     return this.processGetSubPlans(<any>response_);
                 } catch (e) {
-                    return <Observable<ListResultDtoOfSubPlanDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfSubPlanDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ListResultDtoOfSubPlanDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfSubPlanDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetSubPlans(response: HttpResponseBase): Observable<ListResultDtoOfSubPlanDto> {
+    protected processGetSubPlans(response: HttpResponseBase): Observable<PagedResultDtoOfSubPlanDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -8552,7 +8544,7 @@ export class SubPlanServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ListResultDtoOfSubPlanDto.fromJS(resultData200) : new ListResultDtoOfSubPlanDto();
+            result200 = resultData200 ? PagedResultDtoOfSubPlanDto.fromJS(resultData200) : new PagedResultDtoOfSubPlanDto();
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -8560,7 +8552,7 @@ export class SubPlanServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ListResultDtoOfSubPlanDto>(<any>null);
+        return _observableOf<PagedResultDtoOfSubPlanDto>(<any>null);
     }
 
     /**
@@ -8931,7 +8923,7 @@ export class SupplierServiceProxy {
      * @name (optional) 
      * @return Success
      */
-    getSupplierTypesWithFilter(skipCount: number | null | undefined, maxResultCount: number | null | undefined, status: number | null | undefined, code: string | null | undefined, name: string | null | undefined): Observable<ListResultDtoOfFilterSupplierTypeResponeModel> {
+    getSupplierTypesWithFilter(skipCount: number | null | undefined, maxResultCount: number | null | undefined, status: number | null | undefined, code: string | null | undefined, name: string | null | undefined): Observable<PagedResultDtoOfFilterSupplierTypeResponeModel> {
         let url_ = this.baseUrl + "/api/Supplier/GetSupplierTypesWithFilter?";
         if (skipCount !== undefined)
             url_ += "skipCount=" + encodeURIComponent("" + skipCount) + "&"; 
@@ -8961,14 +8953,14 @@ export class SupplierServiceProxy {
                 try {
                     return this.processGetSupplierTypesWithFilter(<any>response_);
                 } catch (e) {
-                    return <Observable<ListResultDtoOfFilterSupplierTypeResponeModel>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfFilterSupplierTypeResponeModel>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ListResultDtoOfFilterSupplierTypeResponeModel>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfFilterSupplierTypeResponeModel>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetSupplierTypesWithFilter(response: HttpResponseBase): Observable<ListResultDtoOfFilterSupplierTypeResponeModel> {
+    protected processGetSupplierTypesWithFilter(response: HttpResponseBase): Observable<PagedResultDtoOfFilterSupplierTypeResponeModel> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -8979,7 +8971,7 @@ export class SupplierServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ListResultDtoOfFilterSupplierTypeResponeModel.fromJS(resultData200) : new ListResultDtoOfFilterSupplierTypeResponeModel();
+            result200 = resultData200 ? PagedResultDtoOfFilterSupplierTypeResponeModel.fromJS(resultData200) : new PagedResultDtoOfFilterSupplierTypeResponeModel();
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -8987,7 +8979,7 @@ export class SupplierServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ListResultDtoOfFilterSupplierTypeResponeModel>(<any>null);
+        return _observableOf<PagedResultDtoOfFilterSupplierTypeResponeModel>(<any>null);
     }
 
     /**
@@ -8999,7 +8991,7 @@ export class SupplierServiceProxy {
      * @skipCount (optional) 
      * @return Success
      */
-    getSupplierWithFilterAsync(name: string | null | undefined, status: number | null | undefined, code: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<ListResultDtoOfSupplierDto> {
+    getSupplierWithFilterAsync(name: string | null | undefined, status: number | null | undefined, code: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfSupplierDto> {
         let url_ = this.baseUrl + "/api/Supplier/GetSupplierWithFilterAsync?";
         if (name !== undefined)
             url_ += "Name=" + encodeURIComponent("" + name) + "&"; 
@@ -9031,14 +9023,14 @@ export class SupplierServiceProxy {
                 try {
                     return this.processGetSupplierWithFilterAsync(<any>response_);
                 } catch (e) {
-                    return <Observable<ListResultDtoOfSupplierDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfSupplierDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ListResultDtoOfSupplierDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfSupplierDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetSupplierWithFilterAsync(response: HttpResponseBase): Observable<ListResultDtoOfSupplierDto> {
+    protected processGetSupplierWithFilterAsync(response: HttpResponseBase): Observable<PagedResultDtoOfSupplierDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -9049,7 +9041,7 @@ export class SupplierServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ListResultDtoOfSupplierDto.fromJS(resultData200) : new ListResultDtoOfSupplierDto();
+            result200 = resultData200 ? PagedResultDtoOfSupplierDto.fromJS(resultData200) : new PagedResultDtoOfSupplierDto();
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -9057,7 +9049,7 @@ export class SupplierServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ListResultDtoOfSupplierDto>(<any>null);
+        return _observableOf<PagedResultDtoOfSupplierDto>(<any>null);
     }
 
     /**
@@ -9407,7 +9399,7 @@ export class SupplierTypeServiceProxy {
      * @skipCount (optional) 
      * @return Success
      */
-    getSupplierTypes(code: string | null | undefined, name: string | null | undefined, status: number | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<ListResultDtoOfSupplierTypeDto> {
+    getSupplierTypes(code: string | null | undefined, name: string | null | undefined, status: number | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfSupplierTypeDto> {
         let url_ = this.baseUrl + "/api/SupplierType/GetSupplierTypes?";
         if (code !== undefined)
             url_ += "Code=" + encodeURIComponent("" + code) + "&"; 
@@ -9439,14 +9431,14 @@ export class SupplierTypeServiceProxy {
                 try {
                     return this.processGetSupplierTypes(<any>response_);
                 } catch (e) {
-                    return <Observable<ListResultDtoOfSupplierTypeDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfSupplierTypeDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ListResultDtoOfSupplierTypeDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfSupplierTypeDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetSupplierTypes(response: HttpResponseBase): Observable<ListResultDtoOfSupplierTypeDto> {
+    protected processGetSupplierTypes(response: HttpResponseBase): Observable<PagedResultDtoOfSupplierTypeDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -9457,7 +9449,7 @@ export class SupplierTypeServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? ListResultDtoOfSupplierTypeDto.fromJS(resultData200) : new ListResultDtoOfSupplierTypeDto();
+            result200 = resultData200 ? PagedResultDtoOfSupplierTypeDto.fromJS(resultData200) : new PagedResultDtoOfSupplierTypeDto();
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -9465,7 +9457,7 @@ export class SupplierTypeServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ListResultDtoOfSupplierTypeDto>(<any>null);
+        return _observableOf<PagedResultDtoOfSupplierTypeDto>(<any>null);
     }
 
     /**
@@ -13575,10 +13567,11 @@ export interface IEntityPropertyChangeDto {
     id: number | undefined;
 }
 
-export class ListResultDtoOfBidProfileDto implements IListResultDtoOfBidProfileDto {
+export class PagedResultDtoOfBidProfileDto implements IPagedResultDtoOfBidProfileDto {
+    totalCount!: number | undefined;
     items!: BidProfileDto[] | undefined;
 
-    constructor(data?: IListResultDtoOfBidProfileDto) {
+    constructor(data?: IPagedResultDtoOfBidProfileDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -13589,6 +13582,7 @@ export class ListResultDtoOfBidProfileDto implements IListResultDtoOfBidProfileD
 
     init(data?: any) {
         if (data) {
+            this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
                 for (let item of data["items"])
@@ -13597,15 +13591,16 @@ export class ListResultDtoOfBidProfileDto implements IListResultDtoOfBidProfileD
         }
     }
 
-    static fromJS(data: any): ListResultDtoOfBidProfileDto {
+    static fromJS(data: any): PagedResultDtoOfBidProfileDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ListResultDtoOfBidProfileDto();
+        let result = new PagedResultDtoOfBidProfileDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
             for (let item of this.items)
@@ -13615,7 +13610,8 @@ export class ListResultDtoOfBidProfileDto implements IListResultDtoOfBidProfileD
     }
 }
 
-export interface IListResultDtoOfBidProfileDto {
+export interface IPagedResultDtoOfBidProfileDto {
+    totalCount: number | undefined;
     items: BidProfileDto[] | undefined;
 }
 
@@ -13631,6 +13627,9 @@ export class BidProfileDto implements IBidProfileDto {
     cautionMoney!: number | undefined;
     note!: string | undefined;
     status!: number | undefined;
+    winStatus!: number | undefined;
+    type!: number | undefined;
+    organizationUnit!: OrganizationUnitDto | undefined;
     id!: number | undefined;
 
     constructor(data?: IBidProfileDto) {
@@ -13655,6 +13654,9 @@ export class BidProfileDto implements IBidProfileDto {
             this.cautionMoney = data["cautionMoney"];
             this.note = data["note"];
             this.status = data["status"];
+            this.winStatus = data["winStatus"];
+            this.type = data["type"];
+            this.organizationUnit = data["organizationUnit"] ? OrganizationUnitDto.fromJS(data["organizationUnit"]) : <any>undefined;
             this.id = data["id"];
         }
     }
@@ -13679,6 +13681,9 @@ export class BidProfileDto implements IBidProfileDto {
         data["cautionMoney"] = this.cautionMoney;
         data["note"] = this.note;
         data["status"] = this.status;
+        data["winStatus"] = this.winStatus;
+        data["type"] = this.type;
+        data["organizationUnit"] = this.organizationUnit ? this.organizationUnit.toJSON() : <any>undefined;
         data["id"] = this.id;
         return data; 
     }
@@ -13696,7 +13701,134 @@ export interface IBidProfileDto {
     cautionMoney: number | undefined;
     note: string | undefined;
     status: number | undefined;
+    winStatus: number | undefined;
+    type: number | undefined;
+    organizationUnit: OrganizationUnitDto | undefined;
     id: number | undefined;
+}
+
+export class OrganizationUnitDto implements IOrganizationUnitDto {
+    parentId!: number | undefined;
+    code!: string | undefined;
+    displayName!: string | undefined;
+    memberCount!: number | undefined;
+    lastModificationTime!: moment.Moment | undefined;
+    lastModifierUserId!: number | undefined;
+    creationTime!: moment.Moment | undefined;
+    creatorUserId!: number | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IOrganizationUnitDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.parentId = data["parentId"];
+            this.code = data["code"];
+            this.displayName = data["displayName"];
+            this.memberCount = data["memberCount"];
+            this.lastModificationTime = data["lastModificationTime"] ? moment(data["lastModificationTime"].toString()) : <any>undefined;
+            this.lastModifierUserId = data["lastModifierUserId"];
+            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
+            this.creatorUserId = data["creatorUserId"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): OrganizationUnitDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new OrganizationUnitDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["parentId"] = this.parentId;
+        data["code"] = this.code;
+        data["displayName"] = this.displayName;
+        data["memberCount"] = this.memberCount;
+        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toISOString() : <any>undefined;
+        data["lastModifierUserId"] = this.lastModifierUserId;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["creatorUserId"] = this.creatorUserId;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IOrganizationUnitDto {
+    parentId: number | undefined;
+    code: string | undefined;
+    displayName: string | undefined;
+    memberCount: number | undefined;
+    lastModificationTime: moment.Moment | undefined;
+    lastModifierUserId: number | undefined;
+    creationTime: moment.Moment | undefined;
+    creatorUserId: number | undefined;
+    id: number | undefined;
+}
+
+export class IServiceResult implements IIServiceResult {
+    isSuccess!: boolean | undefined;
+    message!: string | undefined;
+    payload!: any | undefined;
+
+    constructor(data?: IIServiceResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.isSuccess = data["isSuccess"];
+            this.message = data["message"];
+            if (data["payload"]) {
+                this.payload = {};
+                for (let key in data["payload"]) {
+                    if (data["payload"].hasOwnProperty(key))
+                        this.payload[key] = data["payload"][key];
+                }
+            }
+        }
+    }
+
+    static fromJS(data: any): IServiceResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new IServiceResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isSuccess"] = this.isSuccess;
+        data["message"] = this.message;
+        if (this.payload) {
+            data["payload"] = {};
+            for (let key in this.payload) {
+                if (this.payload.hasOwnProperty(key))
+                    data["payload"][key] = this.payload[key];
+            }
+        }
+        return data; 
+    }
+}
+
+export interface IIServiceResult {
+    isSuccess: boolean | undefined;
+    message: string | undefined;
+    payload: any | undefined;
 }
 
 export class BidProfileSaved implements IBidProfileSaved {
@@ -13704,6 +13836,8 @@ export class BidProfileSaved implements IBidProfileSaved {
     bidCatalog!: string | undefined;
     bidType!: string | undefined;
     projectId!: number | undefined;
+    name!: string | undefined;
+    organizationUnitId!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: IBidProfileSaved) {
@@ -13721,6 +13855,8 @@ export class BidProfileSaved implements IBidProfileSaved {
             this.bidCatalog = data["bidCatalog"];
             this.bidType = data["bidType"];
             this.projectId = data["projectId"];
+            this.name = data["name"];
+            this.organizationUnitId = data["organizationUnitId"];
             this.id = data["id"];
         }
     }
@@ -13738,6 +13874,8 @@ export class BidProfileSaved implements IBidProfileSaved {
         data["bidCatalog"] = this.bidCatalog;
         data["bidType"] = this.bidType;
         data["projectId"] = this.projectId;
+        data["name"] = this.name;
+        data["organizationUnitId"] = this.organizationUnitId;
         data["id"] = this.id;
         return data; 
     }
@@ -13748,6 +13886,8 @@ export interface IBidProfileSaved {
     bidCatalog: string | undefined;
     bidType: string | undefined;
     projectId: number | undefined;
+    name: string | undefined;
+    organizationUnitId: number | undefined;
     id: number | undefined;
 }
 
@@ -13763,6 +13903,7 @@ export class BidProfileSaveForCreate implements IBidProfileSaveForCreate {
     cautionMoney!: number | undefined;
     note!: string | undefined;
     status!: number | undefined;
+    organizationUnitId!: number | undefined;
     bidUnits!: BidUnitDto[] | undefined;
     id!: number | undefined;
 
@@ -13788,6 +13929,7 @@ export class BidProfileSaveForCreate implements IBidProfileSaveForCreate {
             this.cautionMoney = data["cautionMoney"];
             this.note = data["note"];
             this.status = data["status"];
+            this.organizationUnitId = data["organizationUnitId"];
             if (data["bidUnits"] && data["bidUnits"].constructor === Array) {
                 this.bidUnits = [];
                 for (let item of data["bidUnits"])
@@ -13817,6 +13959,7 @@ export class BidProfileSaveForCreate implements IBidProfileSaveForCreate {
         data["cautionMoney"] = this.cautionMoney;
         data["note"] = this.note;
         data["status"] = this.status;
+        data["organizationUnitId"] = this.organizationUnitId;
         if (this.bidUnits && this.bidUnits.constructor === Array) {
             data["bidUnits"] = [];
             for (let item of this.bidUnits)
@@ -13839,6 +13982,7 @@ export interface IBidProfileSaveForCreate {
     cautionMoney: number | undefined;
     note: string | undefined;
     status: number | undefined;
+    organizationUnitId: number | undefined;
     bidUnits: BidUnitDto[] | undefined;
     id: number | undefined;
 }
@@ -13919,7 +14063,10 @@ export class BidProfileAllDto implements IBidProfileAllDto {
     cautionMoney!: number | undefined;
     note!: string | undefined;
     status!: number | undefined;
+    winStatus!: number | undefined;
+    type!: number | undefined;
     bidUnits!: BidUnitAllDto[] | undefined;
+    organizationUnit!: OrganizationUnitDto | undefined;
     id!: number | undefined;
 
     constructor(data?: IBidProfileAllDto) {
@@ -13944,11 +14091,14 @@ export class BidProfileAllDto implements IBidProfileAllDto {
             this.cautionMoney = data["cautionMoney"];
             this.note = data["note"];
             this.status = data["status"];
+            this.winStatus = data["winStatus"];
+            this.type = data["type"];
             if (data["bidUnits"] && data["bidUnits"].constructor === Array) {
                 this.bidUnits = [];
                 for (let item of data["bidUnits"])
                     this.bidUnits.push(BidUnitAllDto.fromJS(item));
             }
+            this.organizationUnit = data["organizationUnit"] ? OrganizationUnitDto.fromJS(data["organizationUnit"]) : <any>undefined;
             this.id = data["id"];
         }
     }
@@ -13973,11 +14123,14 @@ export class BidProfileAllDto implements IBidProfileAllDto {
         data["cautionMoney"] = this.cautionMoney;
         data["note"] = this.note;
         data["status"] = this.status;
+        data["winStatus"] = this.winStatus;
+        data["type"] = this.type;
         if (this.bidUnits && this.bidUnits.constructor === Array) {
             data["bidUnits"] = [];
             for (let item of this.bidUnits)
                 data["bidUnits"].push(item.toJSON());
         }
+        data["organizationUnit"] = this.organizationUnit ? this.organizationUnit.toJSON() : <any>undefined;
         data["id"] = this.id;
         return data; 
     }
@@ -13995,7 +14148,10 @@ export interface IBidProfileAllDto {
     cautionMoney: number | undefined;
     note: string | undefined;
     status: number | undefined;
+    winStatus: number | undefined;
+    type: number | undefined;
     bidUnits: BidUnitAllDto[] | undefined;
+    organizationUnit: OrganizationUnitDto | undefined;
     id: number | undefined;
 }
 
@@ -14791,10 +14947,11 @@ export interface IGetDefaultEditionNameOutput {
     name: string | undefined;
 }
 
-export class ListResultDtoOfContractDto implements IListResultDtoOfContractDto {
+export class PagedResultDtoOfContractDto implements IPagedResultDtoOfContractDto {
+    totalCount!: number | undefined;
     items!: ContractDto[] | undefined;
 
-    constructor(data?: IListResultDtoOfContractDto) {
+    constructor(data?: IPagedResultDtoOfContractDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -14805,6 +14962,7 @@ export class ListResultDtoOfContractDto implements IListResultDtoOfContractDto {
 
     init(data?: any) {
         if (data) {
+            this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
                 for (let item of data["items"])
@@ -14813,15 +14971,16 @@ export class ListResultDtoOfContractDto implements IListResultDtoOfContractDto {
         }
     }
 
-    static fromJS(data: any): ListResultDtoOfContractDto {
+    static fromJS(data: any): PagedResultDtoOfContractDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ListResultDtoOfContractDto();
+        let result = new PagedResultDtoOfContractDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
             for (let item of this.items)
@@ -14831,7 +14990,8 @@ export class ListResultDtoOfContractDto implements IListResultDtoOfContractDto {
     }
 }
 
-export interface IListResultDtoOfContractDto {
+export interface IPagedResultDtoOfContractDto {
+    totalCount: number | undefined;
     items: ContractDto[] | undefined;
 }
 
@@ -19001,74 +19161,6 @@ export interface IListResultDtoOfOrganizationUnitDto {
     items: OrganizationUnitDto[] | undefined;
 }
 
-export class OrganizationUnitDto implements IOrganizationUnitDto {
-    parentId!: number | undefined;
-    code!: string | undefined;
-    displayName!: string | undefined;
-    memberCount!: number | undefined;
-    lastModificationTime!: moment.Moment | undefined;
-    lastModifierUserId!: number | undefined;
-    creationTime!: moment.Moment | undefined;
-    creatorUserId!: number | undefined;
-    id!: number | undefined;
-
-    constructor(data?: IOrganizationUnitDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.parentId = data["parentId"];
-            this.code = data["code"];
-            this.displayName = data["displayName"];
-            this.memberCount = data["memberCount"];
-            this.lastModificationTime = data["lastModificationTime"] ? moment(data["lastModificationTime"].toString()) : <any>undefined;
-            this.lastModifierUserId = data["lastModifierUserId"];
-            this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
-            this.creatorUserId = data["creatorUserId"];
-            this.id = data["id"];
-        }
-    }
-
-    static fromJS(data: any): OrganizationUnitDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new OrganizationUnitDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["parentId"] = this.parentId;
-        data["code"] = this.code;
-        data["displayName"] = this.displayName;
-        data["memberCount"] = this.memberCount;
-        data["lastModificationTime"] = this.lastModificationTime ? this.lastModificationTime.toISOString() : <any>undefined;
-        data["lastModifierUserId"] = this.lastModifierUserId;
-        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
-        data["creatorUserId"] = this.creatorUserId;
-        data["id"] = this.id;
-        return data; 
-    }
-}
-
-export interface IOrganizationUnitDto {
-    parentId: number | undefined;
-    code: string | undefined;
-    displayName: string | undefined;
-    memberCount: number | undefined;
-    lastModificationTime: moment.Moment | undefined;
-    lastModifierUserId: number | undefined;
-    creationTime: moment.Moment | undefined;
-    creatorUserId: number | undefined;
-    id: number | undefined;
-}
-
 export class PagedResultDtoOfOrganizationUnitUserListDto implements IPagedResultDtoOfOrganizationUnitUserListDto {
     totalCount!: number | undefined;
     items!: OrganizationUnitUserListDto[] | undefined;
@@ -19861,10 +19953,11 @@ export interface IFlatPermissionWithLevelDto {
     isGrantedByDefault: boolean | undefined;
 }
 
-export class ListResultDtoOfPlanDto implements IListResultDtoOfPlanDto {
+export class PagedResultDtoOfPlanDto implements IPagedResultDtoOfPlanDto {
+    totalCount!: number | undefined;
     items!: PlanDto[] | undefined;
 
-    constructor(data?: IListResultDtoOfPlanDto) {
+    constructor(data?: IPagedResultDtoOfPlanDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -19875,6 +19968,7 @@ export class ListResultDtoOfPlanDto implements IListResultDtoOfPlanDto {
 
     init(data?: any) {
         if (data) {
+            this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
                 for (let item of data["items"])
@@ -19883,15 +19977,16 @@ export class ListResultDtoOfPlanDto implements IListResultDtoOfPlanDto {
         }
     }
 
-    static fromJS(data: any): ListResultDtoOfPlanDto {
+    static fromJS(data: any): PagedResultDtoOfPlanDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ListResultDtoOfPlanDto();
+        let result = new PagedResultDtoOfPlanDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
             for (let item of this.items)
@@ -19901,7 +19996,8 @@ export class ListResultDtoOfPlanDto implements IListResultDtoOfPlanDto {
     }
 }
 
-export interface IListResultDtoOfPlanDto {
+export interface IPagedResultDtoOfPlanDto {
+    totalCount: number | undefined;
     items: PlanDto[] | undefined;
 }
 
@@ -20841,10 +20937,11 @@ export interface ISubPlanSavedDto {
     quantity: number | undefined;
 }
 
-export class ListResultDtoOfProductDto implements IListResultDtoOfProductDto {
+export class PagedResultDtoOfProductDto implements IPagedResultDtoOfProductDto {
+    totalCount!: number | undefined;
     items!: ProductDto[] | undefined;
 
-    constructor(data?: IListResultDtoOfProductDto) {
+    constructor(data?: IPagedResultDtoOfProductDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -20855,6 +20952,7 @@ export class ListResultDtoOfProductDto implements IListResultDtoOfProductDto {
 
     init(data?: any) {
         if (data) {
+            this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
                 for (let item of data["items"])
@@ -20863,15 +20961,16 @@ export class ListResultDtoOfProductDto implements IListResultDtoOfProductDto {
         }
     }
 
-    static fromJS(data: any): ListResultDtoOfProductDto {
+    static fromJS(data: any): PagedResultDtoOfProductDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ListResultDtoOfProductDto();
+        let result = new PagedResultDtoOfProductDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
             for (let item of this.items)
@@ -20881,7 +20980,8 @@ export class ListResultDtoOfProductDto implements IListResultDtoOfProductDto {
     }
 }
 
-export interface IListResultDtoOfProductDto {
+export interface IPagedResultDtoOfProductDto {
+    totalCount: number | undefined;
     items: ProductDto[] | undefined;
 }
 
@@ -21009,10 +21109,11 @@ export interface IProductSavedCreate {
     productTypeId: number | undefined;
 }
 
-export class ListResultDtoOfProductTypeDto implements IListResultDtoOfProductTypeDto {
+export class PagedResultDtoOfProductTypeDto implements IPagedResultDtoOfProductTypeDto {
+    totalCount!: number | undefined;
     items!: ProductTypeDto[] | undefined;
 
-    constructor(data?: IListResultDtoOfProductTypeDto) {
+    constructor(data?: IPagedResultDtoOfProductTypeDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -21023,6 +21124,7 @@ export class ListResultDtoOfProductTypeDto implements IListResultDtoOfProductTyp
 
     init(data?: any) {
         if (data) {
+            this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
                 for (let item of data["items"])
@@ -21031,15 +21133,16 @@ export class ListResultDtoOfProductTypeDto implements IListResultDtoOfProductTyp
         }
     }
 
-    static fromJS(data: any): ListResultDtoOfProductTypeDto {
+    static fromJS(data: any): PagedResultDtoOfProductTypeDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ListResultDtoOfProductTypeDto();
+        let result = new PagedResultDtoOfProductTypeDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
             for (let item of this.items)
@@ -21049,7 +21152,8 @@ export class ListResultDtoOfProductTypeDto implements IListResultDtoOfProductTyp
     }
 }
 
-export interface IListResultDtoOfProductTypeDto {
+export interface IPagedResultDtoOfProductTypeDto {
+    totalCount: number | undefined;
     items: ProductTypeDto[] | undefined;
 }
 
@@ -21505,10 +21609,11 @@ export interface IChangeUserLanguageDto {
     languageName: string;
 }
 
-export class ListResultDtoOfProjectDto implements IListResultDtoOfProjectDto {
+export class PagedResultDtoOfProjectDto implements IPagedResultDtoOfProjectDto {
+    totalCount!: number | undefined;
     items!: ProjectDto[] | undefined;
 
-    constructor(data?: IListResultDtoOfProjectDto) {
+    constructor(data?: IPagedResultDtoOfProjectDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -21519,6 +21624,7 @@ export class ListResultDtoOfProjectDto implements IListResultDtoOfProjectDto {
 
     init(data?: any) {
         if (data) {
+            this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
                 for (let item of data["items"])
@@ -21527,15 +21633,16 @@ export class ListResultDtoOfProjectDto implements IListResultDtoOfProjectDto {
         }
     }
 
-    static fromJS(data: any): ListResultDtoOfProjectDto {
+    static fromJS(data: any): PagedResultDtoOfProjectDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ListResultDtoOfProjectDto();
+        let result = new PagedResultDtoOfProjectDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
             for (let item of this.items)
@@ -21545,7 +21652,8 @@ export class ListResultDtoOfProjectDto implements IListResultDtoOfProjectDto {
     }
 }
 
-export interface IListResultDtoOfProjectDto {
+export interface IPagedResultDtoOfProjectDto {
+    totalCount: number | undefined;
     items: ProjectDto[] | undefined;
 }
 
@@ -22301,10 +22409,11 @@ export interface IUpdateUserSignInTokenOutput {
     encodedTenantId: string | undefined;
 }
 
-export class ListResultDtoOfSubPlanDto implements IListResultDtoOfSubPlanDto {
+export class PagedResultDtoOfSubPlanDto implements IPagedResultDtoOfSubPlanDto {
+    totalCount!: number | undefined;
     items!: SubPlanDto[] | undefined;
 
-    constructor(data?: IListResultDtoOfSubPlanDto) {
+    constructor(data?: IPagedResultDtoOfSubPlanDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -22315,6 +22424,7 @@ export class ListResultDtoOfSubPlanDto implements IListResultDtoOfSubPlanDto {
 
     init(data?: any) {
         if (data) {
+            this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
                 for (let item of data["items"])
@@ -22323,15 +22433,16 @@ export class ListResultDtoOfSubPlanDto implements IListResultDtoOfSubPlanDto {
         }
     }
 
-    static fromJS(data: any): ListResultDtoOfSubPlanDto {
+    static fromJS(data: any): PagedResultDtoOfSubPlanDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ListResultDtoOfSubPlanDto();
+        let result = new PagedResultDtoOfSubPlanDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
             for (let item of this.items)
@@ -22341,7 +22452,8 @@ export class ListResultDtoOfSubPlanDto implements IListResultDtoOfSubPlanDto {
     }
 }
 
-export interface IListResultDtoOfSubPlanDto {
+export interface IPagedResultDtoOfSubPlanDto {
+    totalCount: number | undefined;
     items: SubPlanDto[] | undefined;
 }
 
@@ -22429,10 +22541,11 @@ export interface ISupplierDto {
     id: number | undefined;
 }
 
-export class ListResultDtoOfFilterSupplierTypeResponeModel implements IListResultDtoOfFilterSupplierTypeResponeModel {
+export class PagedResultDtoOfFilterSupplierTypeResponeModel implements IPagedResultDtoOfFilterSupplierTypeResponeModel {
+    totalCount!: number | undefined;
     items!: FilterSupplierTypeResponeModel[] | undefined;
 
-    constructor(data?: IListResultDtoOfFilterSupplierTypeResponeModel) {
+    constructor(data?: IPagedResultDtoOfFilterSupplierTypeResponeModel) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -22443,6 +22556,7 @@ export class ListResultDtoOfFilterSupplierTypeResponeModel implements IListResul
 
     init(data?: any) {
         if (data) {
+            this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
                 for (let item of data["items"])
@@ -22451,15 +22565,16 @@ export class ListResultDtoOfFilterSupplierTypeResponeModel implements IListResul
         }
     }
 
-    static fromJS(data: any): ListResultDtoOfFilterSupplierTypeResponeModel {
+    static fromJS(data: any): PagedResultDtoOfFilterSupplierTypeResponeModel {
         data = typeof data === 'object' ? data : {};
-        let result = new ListResultDtoOfFilterSupplierTypeResponeModel();
+        let result = new PagedResultDtoOfFilterSupplierTypeResponeModel();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
             for (let item of this.items)
@@ -22469,7 +22584,8 @@ export class ListResultDtoOfFilterSupplierTypeResponeModel implements IListResul
     }
 }
 
-export interface IListResultDtoOfFilterSupplierTypeResponeModel {
+export interface IPagedResultDtoOfFilterSupplierTypeResponeModel {
+    totalCount: number | undefined;
     items: FilterSupplierTypeResponeModel[] | undefined;
 }
 
@@ -22529,10 +22645,11 @@ export interface IFilterSupplierTypeResponeModel {
     isInCludeSupplier: boolean | undefined;
 }
 
-export class ListResultDtoOfSupplierDto implements IListResultDtoOfSupplierDto {
+export class PagedResultDtoOfSupplierDto implements IPagedResultDtoOfSupplierDto {
+    totalCount!: number | undefined;
     items!: SupplierDto[] | undefined;
 
-    constructor(data?: IListResultDtoOfSupplierDto) {
+    constructor(data?: IPagedResultDtoOfSupplierDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -22543,6 +22660,7 @@ export class ListResultDtoOfSupplierDto implements IListResultDtoOfSupplierDto {
 
     init(data?: any) {
         if (data) {
+            this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
                 for (let item of data["items"])
@@ -22551,15 +22669,16 @@ export class ListResultDtoOfSupplierDto implements IListResultDtoOfSupplierDto {
         }
     }
 
-    static fromJS(data: any): ListResultDtoOfSupplierDto {
+    static fromJS(data: any): PagedResultDtoOfSupplierDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ListResultDtoOfSupplierDto();
+        let result = new PagedResultDtoOfSupplierDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
             for (let item of this.items)
@@ -22569,7 +22688,8 @@ export class ListResultDtoOfSupplierDto implements IListResultDtoOfSupplierDto {
     }
 }
 
-export interface IListResultDtoOfSupplierDto {
+export interface IPagedResultDtoOfSupplierDto {
+    totalCount: number | undefined;
     items: SupplierDto[] | undefined;
 }
 
@@ -22761,10 +22881,11 @@ export interface ISupplierTypeDto {
     id: number | undefined;
 }
 
-export class ListResultDtoOfSupplierTypeDto implements IListResultDtoOfSupplierTypeDto {
+export class PagedResultDtoOfSupplierTypeDto implements IPagedResultDtoOfSupplierTypeDto {
+    totalCount!: number | undefined;
     items!: SupplierTypeDto[] | undefined;
 
-    constructor(data?: IListResultDtoOfSupplierTypeDto) {
+    constructor(data?: IPagedResultDtoOfSupplierTypeDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -22775,6 +22896,7 @@ export class ListResultDtoOfSupplierTypeDto implements IListResultDtoOfSupplierT
 
     init(data?: any) {
         if (data) {
+            this.totalCount = data["totalCount"];
             if (data["items"] && data["items"].constructor === Array) {
                 this.items = [];
                 for (let item of data["items"])
@@ -22783,15 +22905,16 @@ export class ListResultDtoOfSupplierTypeDto implements IListResultDtoOfSupplierT
         }
     }
 
-    static fromJS(data: any): ListResultDtoOfSupplierTypeDto {
+    static fromJS(data: any): PagedResultDtoOfSupplierTypeDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ListResultDtoOfSupplierTypeDto();
+        let result = new PagedResultDtoOfSupplierTypeDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
         if (this.items && this.items.constructor === Array) {
             data["items"] = [];
             for (let item of this.items)
@@ -22801,7 +22924,8 @@ export class ListResultDtoOfSupplierTypeDto implements IListResultDtoOfSupplierT
     }
 }
 
-export interface IListResultDtoOfSupplierTypeDto {
+export interface IPagedResultDtoOfSupplierTypeDto {
+    totalCount: number | undefined;
     items: SupplierTypeDto[] | undefined;
 }
 

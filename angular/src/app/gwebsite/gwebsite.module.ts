@@ -100,7 +100,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         ProductsServiceProxy,
         ProjectServiceProxy,
         PlanServiceProxy,
-        BidProfileServiceProxy,
         SubPlanServiceProxy,
         {
             provide: PERFECT_SCROLLBAR_CONFIG,

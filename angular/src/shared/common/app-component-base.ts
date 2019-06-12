@@ -12,7 +12,7 @@ import { AppSessionService } from '@shared/common/session/app-session.service';
 import { AppUiCustomizationService } from '@shared/common/ui/app-ui-customization.service';
 import { PrimengTableHelper } from 'shared/helpers/PrimengTableHelper';
 
-export abstract class AppComponentBase {
+export abstract class AppComponentBase  {
 
     localizationSourceName = AppConsts.localization.defaultLocalizationSourceName;
 

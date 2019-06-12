@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild, NgZone } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -11,7 +11,7 @@ import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.serv
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import * as moment from 'moment';
 import { ApprovalStatusEnum, BidTypeEnum, BidProfileTypeInfo } from './dto/bidProfile.dto';
-import { BidProfileServiceProxy } from '@shared/service-proxies/service-proxies';
+import { BidProfileServiceProxy, ProductsServiceProxy, BidProfileSaved } from '@shared/service-proxies/service-proxies';
 
 
 @Component({
@@ -38,11 +38,11 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
     // duyệt: chỉ mỗi Admin đc duyệt
     // sửa, đóng: department tạo ra bidProfile đó và Admin.
     // thêm: ai thêm cũng đc, ko phân quyền
-    public isPermissionEditCloseActive = false;
+     isPermissionEditCloseActive = false;
 
-    public approvalStatusEnum = ApprovalStatusEnum;
-    public approvalStatus = 3; // all status
-    public ApprovalStatusList = [
+     approvalStatusEnum = ApprovalStatusEnum;
+     approvalStatus = 3; // all status
+     ApprovalStatusList = [
         {
             id: ApprovalStatusEnum.All,
             name: 'All'
@@ -57,9 +57,9 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         }
     ];
 
-    public bidTypeEnum = BidTypeEnum;
-    public bidType = 1;
-    public bidTypes = [
+     bidTypeEnum = BidTypeEnum;
+     bidType = 1;
+     bidTypes = [
         {
             id: BidTypeEnum.Bidding,
             name: 'Bidding'
@@ -70,7 +70,7 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         }
     ];
 
-    public createStartDatePickerOptions: IMyDpOptions = {
+     createStartDatePickerOptions: IMyDpOptions = {
         selectorWidth: '240px',
         dateFormat: 'dd/mm/yyyy',
         showTodayBtn: true,
@@ -90,7 +90,7 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
             day: new Date().getDate() - 1
         }
     };
-    public editStartDatePickerOptions: IMyDpOptions = {
+     editStartDatePickerOptions: IMyDpOptions = {
         selectorWidth: '270px',
         dateFormat: 'dd/mm/yyyy',
         showTodayBtn: true,
@@ -110,7 +110,7 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
             day: new Date().getDate() - 1
         }
     };
-    public editEndDatePickerOptions: IMyDpOptions = {
+     editEndDatePickerOptions: IMyDpOptions = {
         selectorWidth: '270px',
         dateFormat: 'dd/mm/yyyy',
         showTodayBtn: true,
@@ -130,7 +130,7 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
             day: new Date().getDate() - 1
         }
     };
-    public createEndDatePickerOptions: IMyDpOptions = {
+     createEndDatePickerOptions: IMyDpOptions = {
         selectorWidth: '240px',
         dateFormat: 'dd/mm/yyyy',
         showTodayBtn: true,
@@ -151,90 +151,19 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         }
     };
 
-    // public model: any = { date: { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate() } };
-    // public model = new Date();
-    public startDateString = '';
-    public endDateString = '';
-    public bidProfileCodeFilter = '';
-    public bidCatalogFilterId;
-    public bidCatalogEditId;
+    //  model: any = { date: { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate() } };
+    //  model = new Date();
+     startDateString = undefined;
+     endDateString = undefined;
+     bidProfileCodeFilter = undefined;
+     bidCatalogFilterId = undefined;
+     bidCatalogEditId;
 
-    public bidProfileFakes = [
-        {
-            id: 1,
-            code: 'S001',
-            name: 'Purchase early in the year',
-            bidCatalog: 'ProductCode1',
-            startReceivedDate: '05/11/2018',
-            endReceivedDate: '06/11/2018',
-            projectCode: 'ProjectCode1',
-            bidType: 1
-        },
-        {
-            id: 2,
-            code: 'S002',
-            name: 'Purchase early in the year',
-            bidCatalog: 'ProductCode1',
-            startReceivedDate: '05/11/2018',
-            endReceivedDate: '06/11/2018',
-            projectCode: 'ProjectCode1',
-            bidType: 2
-        },
-        {
-            id: 3,
-            code: 'S003',
-            name: 'Purchase early in the year',
-            bidCatalog: 'ProductCode1',
-            startReceivedDate: '05/11/2018',
-            endReceivedDate: '06/11/2018',
-            projectCode: 'ProjectCode1',
-            bidType: 1
-        },
-        {
-            id: 3,
-            code: 'S003',
-            name: 'Purchase early in the year',
-            bidCatalog: 'ProductCode1',
-            startReceivedDate: '05/11/2018',
-            endReceivedDate: '06/11/2018',
-            projectCode: 'ProjectCode1',
-            bidType: 1
-        },
-        {
-            id: 4,
-            code: 'S004',
-            name: 'Purchase early in the year',
-            bidCatalog: 'ProductCode1',
-            startReceivedDate: '05/11/2018',
-            endReceivedDate: '06/11/2018',
-            projectCode: 'ProjectCode1',
-            bidType: 2
-        },
-        {
-            id: 5,
-            code: 'S005',
-            name: 'Purchase early in the year',
-            bidCatalog: 'ProductCode1',
-            startReceivedDate: '05/11/2018',
-            endReceivedDate: '06/11/2018',
-            projectCode: 'ProjectCode1',
-            bidType: 1
-        },
-        {
-            id: 6,
-            code: 'S006',
-            name: 'Purchase early in the year',
-            bidCatalog: 'ProductCode1',
-            startReceivedDate: '05/11/2018',
-            endReceivedDate: '06/11/2018',
-            projectCode: 'ProjectCode1',
-            bidType: 2
-        }
-    ];
+     bidProfileFakes = [];
 
     //api 8.7, get all products có status=1(active hay open)
-    public productInfos = [];
-    public productFakes = [
+     productInfos = [];
+     productFakes = [
         {
             id: 1,
             code: 'Pd01',
@@ -267,23 +196,28 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         }
     ];
 
-    public oldObject = {};
+     oldObject = {};
 
-    public myConfigStyleHeader: any = {
+     myConfigStyleHeader: any = {
         'font-size': '11px'
     };
-    public myConfigStyle: any = {
+     myConfigStyle: any = {
         'font-size': '11px'
     };
-    public header;
+     header;
 
     constructor(
         injector: Injector,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
-        private _apiService: BidProfileServiceProxy
+        private _apiService: BidProfileServiceProxy,
+        private _productService: ProductsServiceProxy,
+        private zone: NgZone
     ) {
         super(injector);
+        this.zone.run(() => {
+            this.handelSelects();
+          });
     }
 
     /**
@@ -304,19 +238,21 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         });
     }
 
-    public handelSelects(): void {
+    handelSelects() {
         // filter products
-        this.productInfos = [];
-        this.productFakes.forEach((item, i) => {
-            this.productInfos.push(
-                new BidProfileTypeInfo(item.id, `${item.code} - ${item.name}`));
-        });
+            this._productService.getProducts(undefined, undefined, undefined, undefined, undefined, undefined).subscribe(result => {
+                this.productFakes = result.items;
+                result.items.forEach((item, i) => {
+                    this.productInfos.push(
+                        new BidProfileTypeInfo(item.id, `${item.code} - ${item.name}`));
+                });
+            });
     }
     /**
      * Hàm get danh sách BidProfile
      * @param event
      */
-    getBidProfiles(event?: LazyLoadEvent) {
+    getBidProfilesInit(event?: LazyLoadEvent) {
         if (!this.paginator || !this.dataTable) {
             return;
         }
@@ -328,9 +264,34 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
          * Sử dụng _apiService để call các api của backend
          */
 
-     
         this._apiService.getBidProfiles(
-            this.bidProfileCodeFilter,moment(this.endDateString),this.bidCatalogFilterId,this.bidTypes[this.bidType].name,this.approvalStatus,
+            undefined, undefined, undefined, undefined, undefined,
+            this.primengTableHelper.getSorting(this.dataTable),
+            this.primengTableHelper.getMaxResultCount(this.paginator, event),
+            this.primengTableHelper.getSkipCount(this.paginator, event)).subscribe(result => {
+                this.primengTableHelper.totalRecordsCount = result.totalCount;
+                this.primengTableHelper.records = result.items;
+                this.primengTableHelper.hideLoadingIndicator();
+                this.primengTableHelper.records.forEach((item) => {
+                    item.isEdit = false;
+                });
+            }, err => console.log(err));
+    }
+
+
+    getBidProfiles(event?: LazyLoadEvent) {
+        if (!this.paginator || !this.dataTable) {
+            return;
+        }
+
+        //show loading trong gridview
+        // this.primengTableHelper.showLoadingIndicator();
+
+        /**
+         * Sử dụng _apiService để call các api của backend
+         */
+        this._apiService.getBidProfiles(
+            this.bidProfileCodeFilter, this.endDateString ? moment(this.endDateString) : undefined, this.bidCatalogFilterId, this.bidTypes[this.bidType - 1].name, this.approvalStatus,
             this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getMaxResultCount(this.paginator, event),
             this.primengTableHelper.getSkipCount(this.paginator, event)).subscribe(result => {
@@ -341,9 +302,7 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
                     item.isEdit = false;
                 });
             }, err => console.log(err));
-       
     }
-
     init(): void {
         //get params từ url để thực hiện filter
         this._activatedRoute.params.subscribe((params: Params) => {
@@ -356,7 +315,7 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
      * onScrollX
      * @param event
      */
-    public onScrollX(event): void {
+     onScrollX(event): void {
         this.myConfigStyleHeader = {
             ...this.myConfigStyle,
             left: this.header ? `${this.header.getBoundingClientRect().left}px` : 'auto'
@@ -404,32 +363,32 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         this.createOrEditModal.show();
     }
 
-    public searchBidProfile(): void {
+     searchBidProfile(): void {
         //3 params filter FE truyền vào api
         // filter, values default = ''
         console.log(this.approvalStatus + '--' + this.bidProfileCodeFilter + '--' + this.bidCatalogFilterId +
         '--' + this.bidType + '--' + this.startDateString + '--' + this.endDateString);
     }
 
-    public onDateChangedByStart(event: IMyDateModel): void {
+     onDateChangedByStart(event: IMyDateModel): void {
         const date = Object.assign({}, event);
         this.startDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
     }
-    public onDateChangedByEnd(event: IMyDateModel): void {
+     onDateChangedByEnd(event: IMyDateModel): void {
         const date = Object.assign({}, event);
         this.endDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
     }
 
-    public onDateChangedByEditStart(event: IMyDateModel): void {
+     onDateChangedByEditStart(event: IMyDateModel): void {
         // const date = Object.assign({}, event);
         // this.startDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
     }
-    public onDateChangedByEditEnd(event: IMyDateModel): void {
+     onDateChangedByEditEnd(event: IMyDateModel): void {
         // const date = Object.assign({}, event);
         // this.endDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
     }
 
-    public actionEdit(row: any, $event: Event): void {
+     actionEdit(row: any, $event: Event): void {
         // $event.stopPropagation();
         this.oldObject['name'] = row.name;
         this.oldObject['bidCatalog'] = row.bidCatalog; // 1, 2, 3, ...
@@ -443,31 +402,32 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         row.isEdit = true;
     }
 
-    public saveEditItem(id: number, row: any, $event: Event): void {
+     saveEditItem(id: number, row: any, $event: Event): void {
         if (this.isPermissionEditCloseActive && row.name && row.name !== '') {
 
             // vì bên html đã tự bind [(ngModel)] vào row.name và row.note rồi, nên ở đây ta chỉ cần lấy ra giá trị để update
             console.log(id + '---' + row.name + '---' + row.unitPrice + '---' + row.calUnit + '---' + row.description);
-
-           
             if (this.bidCatalogEditId !== 0) {
-                row.bidCatalog = this.productFakes.find(x => +x.id === +this.bidCatalogEditId).code;
-
-
+                row.bidCatalog = this.productFakes.find(x => +x.id === this.bidCatalogEditId).code;
                 //update TẠI ĐÂY với các params cần update là: row.name, row.bidCatalog
                 // sau khi đã đc xử lý ở FE, e chỉ cần nhập mấy cái này là params đưa vào api là đc.
                 //Hiện tại row.name, row.bidCatalog... đã mang giá trị mới, e chỉ cần gọi nó vào api update.
-
-                
             }
 
             //save thành công
-            row.isEdit = false;
+            this._apiService.updateBidProfileAsync(new BidProfileSaved({
+                id,
+                bidCatalog: row.bidCatalog,
+                bidType: row.bidType,
+                code: row.code,
+                projectId: row.projectId, name: row.name,
+                organizationUnitId: 1})).subscribe(item =>   row.isEdit = false);
+
         }
 
     }
 
-    public cancelEdit(row: any, $event: Event): void {
+     cancelEdit(row: any, $event: Event): void {
         row.name = this.oldObject['name'];
         row.bidCatalog = this.oldObject['bidCatalog'];
 
@@ -478,7 +438,7 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         row.isEdit = false;
     }
 
-    public actionPCItem(id: number, row: any): void {
+     actionPCItem(id: number, row: any): void {
         if (this.isPermissionEditCloseActive) {
             // dựa vào id, set status cho bidProfile là close nếu nó đang open và ngược lại.
 
@@ -488,7 +448,7 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
     }
 
     //chỉ những người có permission mới đc phép thực thi action với PC
-    public removePcItem(id: number, row: any, index: number): void {
+     removePcItem(id: number, row: any, index: number): void {
         if (this.isPermissionEditCloseActive) {
             // dựa vào id truyền vào, remove
 

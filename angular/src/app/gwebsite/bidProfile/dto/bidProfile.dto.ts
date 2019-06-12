@@ -54,10 +54,10 @@ export class NewPJDto {
 }
 
 export class BidProfileTypeInfo {
-    id: number;
-    info: string;
+    value: number;
+    label: string;
     constructor(id: number, info: string) {
-        this.id = id;
-        this.info = info;
+        this.value = id;
+        this.label = info;
     }
 }

@@ -28,6 +28,7 @@ import { WebApiServiceProxy } from './webapi.service';
         ApiServiceProxies.UserServiceProxy,
         ApiServiceProxies.UserLinkServiceProxy,
         ApiServiceProxies.UserLoginServiceProxy,
+        ApiServiceProxies.BidProfileServiceProxy,
         ApiServiceProxies.WebLogServiceProxy,
         ApiServiceProxies.AccountServiceProxy,
         ApiServiceProxies.TokenAuthServiceProxy,

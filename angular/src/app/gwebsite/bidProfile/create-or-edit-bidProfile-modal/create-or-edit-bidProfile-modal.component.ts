@@ -3,7 +3,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
-import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
+import { ComboboxItemDto, BidProfileServiceProxy, BidProfileSaveForCreate } from '@shared/service-proxies/service-proxies';
 import { BidProfileDto, ApprovalStatusEnum, NewPJDto, BidProfileTypeInfo, BidTypeEnum } from '../dto/bidProfile.dto';
 import * as moment from 'moment';
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
@@ -16,7 +16,7 @@ import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 export class CreateOrEditBidProfileModalComponent extends AppComponentBase implements OnInit {
 
     @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('bidProfileCombobox') bidProfileCombobox: ElementRef;
+    // @ViewChild('bidProfileCombobox') bidProfileCombobox: ElementRef;
     @ViewChild('iconCombobox') iconCombobox: ElementRef;
 
     /**
@@ -197,7 +197,7 @@ export class CreateOrEditBidProfileModalComponent extends AppComponentBase imple
 
     constructor(
         injector: Injector,
-        private _apiService: WebApiServiceProxy
+        private _apiService: BidProfileServiceProxy
     ) {
         super(injector);
     }
@@ -261,15 +261,7 @@ export class CreateOrEditBidProfileModalComponent extends AppComponentBase imple
             this.supplierInfoList.push(
                 new BidProfileTypeInfo(item.id, `${item.code} - ${item.name}`));
         });
-
-        this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', bidProfileId).subscribe(result => {
-            this.bidProfile = result.menuClient;
-            this.bidProfiles = result.menuClients;
-            this.modal.show();
-            setTimeout(() => {
-                $(this.bidProfileCombobox.nativeElement).selectpicker('refresh');
-            }, 0);
-        });
+        this.modal.show();
     }
 
     public handelSelectsProject(): void {
@@ -294,7 +286,7 @@ export class CreateOrEditBidProfileModalComponent extends AppComponentBase imple
 
             console.log(this.pjCode + '--' + this.pjName + '--' + this.bidProfileTypeId + '--' + this.supplierId + '--' + this.pjUnitPrice
                 + '--' + this.pjCalUnit + '--' + this.pjDescription + '--' + status);
-
+// this._apiService.createBidProfileAsync(new BidProfileSaveForCreate({id:0,projectId:this.projectId,bidType:this.bidTypes[this.bidType].name,bidCatalog:this.bidCatalogProductId}))
             // this.insertBidProfile();
 
             // call api create bidProfile category theo code,nam,status
@@ -305,28 +297,6 @@ export class CreateOrEditBidProfileModalComponent extends AppComponentBase imple
 
             this.close();
         }
-    }
-
-    insertBidProfile() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.post('api/MenuClient/CreateMenuClient', this.bidProfile)
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
-            });
-    }
-
-    updateBidProfile() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.put('api/MenuClient/UpdateMenuClient', this.bidProfile)
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
-            });
     }
 
     close(): void {
