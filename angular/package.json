@@ -77,6 +77,7 @@
     "js-cookie": "^2.1.4",
     "js-url": "^2.3.0",
     "json2": "*",
+    "jsondiffpatch": "^0.3.11",
     "jstree": "^3.3.4",
     "karma": "^1.7.0",
     "localforage": "^1.5.0",
