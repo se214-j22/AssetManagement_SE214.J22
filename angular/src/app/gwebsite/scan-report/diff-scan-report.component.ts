@@ -28,25 +28,7 @@ export class DiffScanReportComponent extends AppComponentBase {
     ) {
         super(injector);
 
-        this.diffHandler = new JsonDiffPatch.DiffPatcher({
-            objectHash: function(obj, index) {
-                console.log(obj);
-
-                if (typeof obj._id !== 'undefined') {
-                    return obj._id;
-                }
-                if (typeof obj.id !== 'undefined') {
-                    return obj.id;
-                }
-                if (typeof obj.driveName !== 'undefined') {
-                    return obj.driveName;
-                }
-                if (typeof obj.displayName !== 'undefined') {
-                    return obj.displayName;
-                }
-                return '$$index:' + index;
-            },
-        });
+        this.diffHandler = new JsonDiffPatch.DiffPatcher({});
     }
 
     close() {
@@ -72,10 +54,10 @@ export class DiffScanReportComponent extends AppComponentBase {
             this.modal.show();
         });
     }
+
     submitGetDiff(): void {
         // trigger fetch left
         // alert(`${this.rightSelected} ${this.leftSelected}`);
-
 
 
         this.fetchLeftScanReport(this.leftSelected);
@@ -99,6 +81,32 @@ export class DiffScanReportComponent extends AppComponentBase {
     fetchLeftScanReport(scanReportId?: number | null | undefined): void {
         this._scanReportService.getScanReportForView(scanReportId).subscribe(result => {
             this.leftScanReport = JSON.parse(result.scannedData);
+
+            // @ts-ignore
+            this.leftScanReport.hardwareScan.drives = this.leftScanReport.hardwareScan.drives.reduce((accumulator, drive) => {
+                let driveObject = {};
+
+                driveObject[drive.driveName] = JSON.parse(JSON.stringify(drive));
+
+                Object.assign(accumulator, driveObject);
+
+                return accumulator;
+            }, {});
+
+            // @ts-ignore
+            this.leftScanReport.softwareScan = this.leftScanReport.softwareScan.reduce((accumulator, software) => {
+                if (software.displayName !== null) {
+                    let driveObject = {};
+
+                    driveObject[software.displayName] = JSON.parse(JSON.stringify(software));
+
+                    Object.assign(accumulator, driveObject);
+                }
+                return accumulator;
+            }, {});
+
+            this.leftScanReport = this.computeObjectWithReadableLabel(this.leftScanReport);
+
             this.fetchRightScanReport(this.rightSelected);
         });
     }
@@ -106,14 +114,61 @@ export class DiffScanReportComponent extends AppComponentBase {
     fetchRightScanReport(scanReportId?: number | null | undefined): void {
         this._scanReportService.getScanReportForView(scanReportId).subscribe(result => {
             this.rightScanReport = JSON.parse(result.scannedData);
+
+            // @ts-ignore
+            this.rightScanReport.hardwareScan.drives = this.rightScanReport.hardwareScan.drives.reduce((accumulator, drive) => {
+                let driveObject = {};
+
+                driveObject[drive.driveName] = JSON.parse(JSON.stringify(drive));
+
+                Object.assign(accumulator, driveObject);
+
+                return accumulator;
+            }, {});
+
+            // @ts-ignore
+            this.rightScanReport.softwareScan = this.rightScanReport.softwareScan.reduce((accumulator, software) => {
+                if (software.displayName !== null) {
+                    let driveObject = {};
+
+                    driveObject[software.displayName] = JSON.parse(JSON.stringify(software));
+
+                    Object.assign(accumulator, driveObject);
+                }
+                return accumulator;
+            }, {});
+
+            this.rightScanReport = this.computeObjectWithReadableLabel(this.rightScanReport);
+
             this.getDiff();
 
             // alert(this.visualDiff);
         });
     }
 
+    computeObjectWithReadableLabel(objectScanned: object) {
+        let result = {};
+
+        let tempo = JSON.parse(JSON.stringify(objectScanned));
+
+        // tslint:disable-next-line:forin
+        for (let key in tempo) {
+            result[this.computeLabel(key)] = tempo[key];
+
+            if (tempo[key] && typeof tempo[key] === 'object') {
+                result[this.computeLabel(key)] = this.computeObjectWithReadableLabel(tempo[key]);
+            }
+        }
+
+        return result;
+    }
+
     computeLabel(label: string): string {
         switch (label) {
+            case 'hardwareScan':
+                return 'Thông tin phần cứng';
+            case 'softwareScan':
+                return 'Thông tin phần mềm';
             case 'cpuManufacture':
                 return 'Nhà sản xuất CPU';
             case 'cpuCores':
