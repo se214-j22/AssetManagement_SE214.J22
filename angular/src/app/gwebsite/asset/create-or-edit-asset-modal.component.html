@@ -62,6 +62,12 @@
                                 {{item.displayText}}</option>
                         </select>
                     </div>
+                    <div class="form-group col-sm-12">
+                        <label>{{l("Note")}} </label>
+                        <input #noteInput="ngModel" class="form-control" type="text" name="Value"
+                            [(ngModel)]="asset.note" maxlength="256">
+                        <validation-messages [formCtrl]="valueInput"></validation-messages>
+                    </div>
                     <div class="form-group col-sm-12" *ngIf='beingCreated'>
                         <label>Created Asset Number*</label>
                         <input #assetNumberInput="ngModel" class="form-control" type="number" name="AssetNumber"

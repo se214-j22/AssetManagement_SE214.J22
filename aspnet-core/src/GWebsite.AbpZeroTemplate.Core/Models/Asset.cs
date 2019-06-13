@@ -15,5 +15,6 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public int AssetLineId { get; set; }
         public AssetLine AssetLine { get; set; }
         public bool IsDamaged { get; set; }
+        public string Note { get; set; }
     }
 }

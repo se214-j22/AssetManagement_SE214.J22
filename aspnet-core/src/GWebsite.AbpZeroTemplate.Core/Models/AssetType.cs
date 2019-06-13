@@ -14,5 +14,6 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public string Name { get; set; }
         public int? ParentId { get; set; }
         //public ICollection<AssetLine> AssetLines { get; set; }
+        public string Descriptions { get; set; }
     }
 }

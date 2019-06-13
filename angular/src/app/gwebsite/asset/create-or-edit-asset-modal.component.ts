@@ -195,7 +195,7 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
         this.saving = false;
         this.assetTypeID = String(0);
         this.manufacturerID = String(0);
-        this.asset.assetLineID = String(0);
+        this.asset.assetLineID = 0;
         this.modifyMultipleAssetsMode = true;
         this.beingCreated = false;
         this.asset.isDamaged = false;
@@ -276,7 +276,7 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
         this.saving = true;
         this._assetService.createOrEdit(input).subscribe(result => {
             this.notify.info(this.l('SavedSuccessfully'));
-            if (multiple)
+            if (!multiple)
                 this.close();
         })
     }

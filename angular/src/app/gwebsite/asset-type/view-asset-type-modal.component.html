@@ -13,7 +13,7 @@
             <div class="modal-body">
                 <div class='row'>
                     <!--#region INFORMATION  -->
-                    <div class='col-6'>
+                    <div class='col-12'>
                         <div class="form-group">
                             <label>Id</label>
                             <p>{{assetType.id}}</p>
@@ -26,18 +26,21 @@
                             <label>Name</label>
                             <p>{{assetType.name}}</p>
                         </div>
-                    </div>
-          <!--#endregion -->
-                </div>
-            </div>
-              <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
-                                    [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
-                                    <span>{{l("OK")}}</span></button>
+                        <div class="form-group">
+                            <label>Descriptions</label>
+                            <p>{{assetType.descriptions}}</p>
                         </div>
-
-
                     </div>
-
+                    <!--#endregion -->
                 </div>
             </div>
+            <div class="modal-footer">
+                <button (click)="close()" type="submit" class="btn btn-primary" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i></i>
+                    <span>{{l("OK")}}</span></button>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
