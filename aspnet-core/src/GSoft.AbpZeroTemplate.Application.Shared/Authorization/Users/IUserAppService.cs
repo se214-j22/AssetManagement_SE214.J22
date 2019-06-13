@@ -1,13 +1,17 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using GSoft.AbpZeroTemplate.Authorization.Users.Dto;
 using GSoft.AbpZeroTemplate.Dto;
+using GSoft.AbpZeroTemplate.Authorization.Roles;
 
 namespace GSoft.AbpZeroTemplate.Authorization.Users
 {
     public interface IUserAppService : IApplicationService
     {
+        Task<IList<string>> GetCurrentRolesOfUser();
+
         Task<PagedResultDto<UserListDto>> GetUsers(GetUsersInput input);
 
         Task<FileDto> GetUsersToExcel();

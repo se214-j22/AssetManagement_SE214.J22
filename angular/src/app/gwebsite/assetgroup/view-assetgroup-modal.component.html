@@ -1,0 +1,46 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-bledby="viewModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span>{{l("Xem chi tiết nhóm tài sản")}}: {{assetgroup.assetGroupName}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-b]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <b>Mã nhóm tài sản: </b>
+                    <span>{{assetgroup.assetGrouptId}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Tên nhóm tài sản: </b>
+                    <span>{{assetgroup.assetGroupName}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Loại tài sản: </b>
+                    <span *ngIf="assetgroup.assetType == 0">Công cụ lao động</span>
+                    <span *ngIf="assetgroup.assetType == 1">Tài sản cố định</span>
+                </div>
+                <div class="form-group">
+                    <b>Nhóm tài sản cha: </b>
+                    <span>{{assetGroupName}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Số tháng khấu hao: </b>
+                    <span>{{assetgroup.monthOfDepreciation}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Tỷ lệ khấu hao: </b>
+                    <span>{{assetgroup.depreciationRates}}</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-default"
+                    (click)="close()">{{l("Cancel")}}</button>
+            </div>
+        </div>
+    </div>
+</div>
