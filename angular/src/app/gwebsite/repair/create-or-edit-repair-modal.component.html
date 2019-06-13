@@ -1,0 +1,170 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="repair.id">Cập nhật danh sách sửa chữa: {{repair.}}</span>
+                        <span *ngIf="!repair.id">Tạo mới danh sách sửa chữa</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Mã tài sản</label>
+                        <input readonly #addressInput="ngModel" class="form-control" type="text" name="AssetId"
+                            [(ngModel)]="repair.address">
+                    </div>
+                    <div class="form-group">
+                        <label>Tên tài sản</label>
+                        <input readonly #addressInput="ngModel" class="form-control" type="text" name=""
+                            [(ngModel)]="">
+                    </div>
+                    <div class="form-group">
+                        <label>Nhóm tài sản *</label>
+                        <input #nameInput="ngModel" class="form-control" type="date" name=""
+                            [(ngModel)]="" required maxlength="64">
+                    </div>
+                    <div class="form-group">
+                        <label>Thông tin mô tả *</label>
+                        <input #nameInput="ngModel" class="form-control" type="date" name=""
+                            [(ngModel)]="" required maxlength="64">
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày bắt đầu khấu hao *</label>
+                        <input #nameInput="ngModel" class="form-control" type="date" name=""
+                            [(ngModel)]="" required maxlength="64">
+                    </div>
+                    <div class="form-group">
+                        <label>Số tháng khấu hao *</label>
+                        <input #nameInput="ngModel" class="form-control" type="date" name=""
+                            [(ngModel)]="" required maxlength="64">
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày kết thúc khấu hao *</label>
+                        <input #nameInput="ngModel" class="form-control" type="date" name=""
+                            [(ngModel)]="" required maxlength="64">
+                    </div>
+                    <div class="form-group">
+                        <label>Nguyên giá tài sản *</label>
+                        <input #nameInput="ngModel" class="form-control" type="date" name=""
+                            [(ngModel)]="" required maxlength="64">
+                    </div>
+                    <div class="form-group">
+                        <label>Giá trị khấu hao *</label>
+                        <input #nameInput="ngModel" class="form-control" type="date" name=""
+                            [(ngModel)]="" required maxlength="64">
+                    </div>
+                    <div class="form-group">
+                        <label>Giá trị khấu hao còn lại *</label>
+                        <input #nameInput="ngModel" class="form-control" type="date" name=""
+                            [(ngModel)]="" required maxlength="64">
+                    </div>
+                    <div class="form-group">
+                        <label>Đơn vị sử dụng *</label>
+                        <input #nameInput="ngModel" class="form-control" type="date" name=""
+                            [(ngModel)]="" required maxlength="64">
+                    </div>
+                    <div class="form-group">
+                        <label>Người sử dụng *</label>
+                        <input #nameInput="ngModel" class="form-control" type="date" name=""
+                            [(ngModel)]="" required maxlength="64">
+                    <div class="form-group">
+                        <label>Tình trạng tài sản *</label>
+                        <input #nameInput="ngModel" class="form-control" type="date" name=""
+                            [(ngModel)]="" required maxlength="64">
+                    </div>
+                    <div class="form-group">
+                        <label>Tình trạng khấu hao *</label>
+                        <input #nameInput="ngModel" class="form-control" type="date" name=""
+                            [(ngModel)]="" required maxlength="64">
+                    </div>                    
+                    <div class="form-group">
+                        <label>Ngày xuất</label>
+                        <input readonly #addressInput="ngModel" class="form-control" type="date" name="ExportDate"
+                            [(ngModel)]="repair.exportDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Đơn vị sửa chữa dự kiến *</label>
+                        <select #addressInput="ngModel" class="form-control" type="date" name="ExpectedRepairUnit"
+                            [(ngModel)]="repair.expectedRepairUnit">
+                    </div>
+                    <div class="form-group">
+                        <label>Chi phí dự kiến</label>
+                        <input *ngIf="repair.id" readonly #addressInput="ngModel" class="form-control" type="text" name="ExpectedCost"
+                            [(ngModel)]="repair.expectedCost" maxlength="64">
+                        <input *ngIf="!repair.id" #addressInput="ngModel" class="form-control" type="text" name="ExpectedCost"
+                            [(ngModel)]="repair.expectedCost" maxlength="64">
+                    </div>
+                    <div class="form-group">
+                        <label>Người đề xuất</label>
+                        <input #addressInput="ngModel" class="form-control" type="date" name="Proposer"
+                            [(ngModel)]="repair.proposer">
+                    </div>
+                    <div class="form-group">
+                        <label>Đơn vị đề xuất</label>
+                        <input #addressInput="ngModel" class="form-control" type="date" name=""
+                            [(ngModel)]="">
+                    </div>
+                    <div class="form-group">
+                        <label>Nhân viên phụ trách</label>
+                        <input #addressInput="ngModel" class="form-control" type="date" name="staffInCharge"
+                            [(ngModel)]="repair.staffInCharge">
+                    </div>
+                    <div class="form-group">
+                        <label>Nội dung sửa chữa</label>
+                        <input *ngIf="repair.id" readonly #addressInput="ngModel" class="form-control" type="text" name="ExpectedContent"
+                            [(ngModel)]="repair.expectedContent" maxlength="128">
+                        <input *ngIf="!repair.id" #addressInput="ngModel" class="form-control" type="text" name="ExpectedContent"
+                            [(ngModel)]="repair.expectedContent" maxlength="128">
+                    </div>
+                    <div class="form-group">
+                        <label>Ghi chú</label>
+                        <input *ngIf="repair.id" readonly #addressInput="ngModel" class="form-control" type="text" name="ExpectedNote"
+                            [(ngModel)]="repair.expectedNote" maxlength="128">
+                        <input *ngIf="!repair.id" #addressInput="ngModel" class="form-control" type="text" name="ExpectedNote"
+                            [(ngModel)]="repair.expectedNote" maxlength="128">
+                    </div>
+                    <div *ngIf="repair.id">
+                        <label class="text-primary">Thông tin sữa chữa thực tế</label>
+                    </div>
+                    <div *ngIf="repair.id">
+                        <label>Ngày sửa xong</label>
+                        <input #addressInput="ngModel" class="form-control" type="date" name="DateRepaired"
+                            [(ngModel)]="repair.dateRepaired" required>
+                    </div>
+                    <div *ngIf="repair.id">
+                        <label>Đơn vị sửa chữa</label>
+                        <select #addressInput="ngModel" class="form-control" type="text" name="RepairUnit"
+                            [(ngModel)]="repair.repairUnit" maxlength="64">
+                    </div>
+                    <div *ngIf="repair.id">
+                        <label>Chi phí sửa chữa</label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="Cost"
+                            [(ngModel)]="repair.cost" maxlength="64">
+                    </div>
+                    <div *ngIf="repair.id">
+                        <label>Nội dung sửa chữa</label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="Content"
+                            [(ngModel)]="repair.content" maxlength="128">
+                    </div>
+                    <div *ngIf="repair.id">
+                        <label>Ghi chú</label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="Note"
+                            [(ngModel)]="repair.note" maxlength="128">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

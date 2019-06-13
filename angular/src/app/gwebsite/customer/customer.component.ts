@@ -61,6 +61,7 @@ export class CustomerComponent extends AppComponentBase implements AfterViewInit
             return;
         }
 
+        this.permission
         //show loading trong gridview
         this.primengTableHelper.showLoadingIndicator();
 
@@ -69,7 +70,6 @@ export class CustomerComponent extends AppComponentBase implements AfterViewInit
          */
 
         this.reloadList(null, event);
-
     }
 
     reloadList(customerName, event?: LazyLoadEvent) {

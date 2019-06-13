@@ -40,6 +40,19 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
         public virtual DbSet<ThongTinTaiSan> ThongTinTaiSans { get; set; }
         public virtual DbSet<CTTS> CTTS { get; set; }
         public virtual DbSet<CTDonVi> CTDonVis { get; set; }
+
+        /// <summary>
+        /// add database qlts
+        /// </summary>
+
+        public virtual DbSet<AssetGroup> AssetGroups { get; set; }
+        public virtual DbSet<Asset> Assets { get; set; }
+        public virtual DbSet<Liquidation> Liquidations { get; set; }
+        public virtual DbSet<Repair> Repairs { get; set; }
+        public virtual DbSet<Revoke> Revokes { get; set; }
+        public virtual DbSet<Transfer> Transfers { get; set; }
+        public virtual DbSet<UseAsset> UseAssets { get; set; }
+
         /// <summary>
         /// GPermissions dùng cho bên Gwebsite
         /// </summary>

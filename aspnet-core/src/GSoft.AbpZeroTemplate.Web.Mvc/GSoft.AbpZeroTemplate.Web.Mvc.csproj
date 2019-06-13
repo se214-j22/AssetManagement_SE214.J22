@@ -83,8 +83,6 @@
   </ItemGroup>
 
   <Target Name="PreBuild" AfterTargets="PreBuildEvent">
-    <Exec Command="dotnet bundle clean" />
-    <Exec Command="dotnet bundle" />
   </Target>
 
 </Project>
