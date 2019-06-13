@@ -9,6 +9,8 @@ import { Table } from 'primeng/components/table/table';
 import { CreateOrEditSupplierCategoryModalComponent } from './create-or-edit-supplierCategory-modal/create-or-edit-supplierCategory-modal.component';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import { NewSupDto, StatusEnum, UpSupDto } from './dto/supplierCategory.dto';
+import { AbpSessionService } from 'abp-ng2-module/dist/src/session/abp-session.service';
+import { UserServiceProxy } from '@shared/service-proxies/service-proxies';
 
 
 @Component({
@@ -99,7 +101,9 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
         injector: Injector,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
-        private _apiService: WebApiServiceProxy
+        private _apiService: WebApiServiceProxy,
+        private _sessionService: AbpSessionService,
+        private _userService: UserServiceProxy,
     ) {
         super(injector);
     }
@@ -110,7 +114,9 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
     ngOnInit(): void {
         //get permission open/close PC item for this user:
         // nếu kq trả về true, nghĩa là đc phép action thì gán, để UI xuất hiện action
-        this.isRoleActionPC = true;
+        this._userService.getUserForEdit(this._sessionService.userId).subscribe(user => {
+            this.isRoleActionPC = user.roles.findIndex(item => item.roleName === 'Admin') !== -1;
+        });
     }
 
     public ngOnChanges(changes: SimpleChanges): void {

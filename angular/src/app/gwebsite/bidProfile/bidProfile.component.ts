@@ -165,38 +165,7 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
 
     //api 8.7, get all products có status=1(active hay open)
      productInfos = [];
-     productFakes = [
-        {
-            id: 1,
-            code: 'Pd01',
-            name: 'Product1'
-        },
-        {
-            id: 2,
-            code: 'Pd02',
-            name: 'Product1'
-        },
-        {
-            id: 3,
-            code: 'Pd03',
-            name: 'Product1'
-        },
-        {
-            id: 4,
-            code: 'Pd04',
-            name: 'Product1'
-        },
-        {
-            id: 5,
-            code: 'Pd05',
-            name: 'Product1'
-        },
-        {
-            id: 6,
-            code: 'Pd06',
-            name: 'Product1'
-        }
-    ];
+     productFakes = [];
 
      oldObject = {};
 
@@ -325,9 +294,14 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
     }
 
     compareOrganizationUnit(code: string ) {
+        let count = (code.match(/000/g) || []).length;
+        let k = 1;
         for (let i = 0; i < this.userPermission.length; i++) {
-           if (this.userPermission[i].indexOf(code) === 0) {
-               return true;
+           if (code.indexOf(this.userPermission[i]) === 0) {
+               if (k === count) {
+                return true;
+               }
+               k++;
            }
         }
         return false;
