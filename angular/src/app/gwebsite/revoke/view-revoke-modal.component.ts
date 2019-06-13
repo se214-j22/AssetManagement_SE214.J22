@@ -1,4 +1,4 @@
-import { RevokeForViewDto, AssetServiceProxy, AssetForViewDto, AssetGroupForViewDto, AssetGroupServiceProxy, UseAssetServiceProxy, UseAssetDto } from './../../../shared/service-proxies/service-proxies';
+import { RevokeForViewDto, AssetServiceProxy, AssetForViewDto, AssetGroupForViewDto, AssetGroupServiceProxy, UseAssetDto } from './../../../shared/service-proxies/service-proxies';
 import { AppComponentBase } from "@shared/common/app-component-base";
 import { AfterViewInit, Injector, Component, ViewChild } from "@angular/core";
 import { RevokeServiceProxy } from "@shared/service-proxies/service-proxies";
@@ -26,7 +26,6 @@ export class ViewRevokeModalComponent extends AppComponentBase {
         private _revokeService: RevokeServiceProxy,
         private _assetService: AssetServiceProxy,
         private _assetGroupService: AssetGroupServiceProxy,
-        private _useAsset: UseAssetServiceProxy,
     ) {
         super(injector);
     }
