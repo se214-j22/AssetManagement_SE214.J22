@@ -6,7 +6,6 @@ import * as _ from 'lodash';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
-import { CreateOrEditBidProfileModalComponent } from './create-or-edit-bidProfile-modal/create-or-edit-bidProfile-modal.component';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import * as moment from 'moment';
@@ -28,7 +27,6 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
      * @ViewChild là dùng get control và call thuộc tính, functions của control đó
      */
     @ViewChild('textsTable') textsTable: ElementRef;
-    @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditBidProfileModalComponent;
     @ViewChild('dataTable') dataTable: Table;
     @ViewChild('paginator') paginator: Paginator;
 
@@ -330,21 +328,8 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         return abp.utils.truncateStringWithPostfix(text, 32, '...');
     }
 
-    //Refresh grid khi thực hiện create or edit thành công
-    refreshValueFromModal(): void {
-        if (this.createOrEditModal.bidProfile.id) {
-            for (let i = 0; i < this.primengTableHelper.records.length; i++) {
-                if (this.primengTableHelper.records[i].id === this.createOrEditModal.bidProfile.id) {
-                    this.primengTableHelper.records[i] = this.createOrEditModal.bidProfile;
-                    return;
-                }
-            }
-        } else { this.reloadPage(); }
-    }
-
     //hàm show view create BidProfile
     createBidProfile() {
-        this.createOrEditModal.show();
     }
 
      searchBidProfile(): void {
