@@ -449,6 +449,75 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
                     .HasConstraintName("FK_dbo.Permissions_dbo.AppRoles_RoleId");
             });
 
+
+            #region seed
+            modelBuilder.Entity<SupplierType>().HasData(new SupplierType()
+            {
+                Id = 1,
+                Code = "SA001",
+                Name = "Electronic",
+                Note = "",
+                Status = 1,
+            });
+
+            modelBuilder.Entity<Supplier>().HasData(new Supplier()
+            {
+                Id = 1,
+                SupplierTypeId = 1,
+                Name = "DELL",
+                Code = "DELL001",
+                Status = 1,
+            });
+
+            modelBuilder.Entity<ProductType>().HasData(new ProductType()
+            {
+                Id = 1,
+                Code = "PJ001",
+                Name = "Projector",
+                Note = "",
+                Status = 1,
+            });
+
+            modelBuilder.Entity<Product>().HasData(new Product()
+            {
+                Id = 1,
+                ProductTypeId = 1,
+                SupplierId = 1,
+                CalUnit = "unit",
+                Code = "DELL-PJ",
+                Status = 1,
+                UnitPrice = 10000000,
+                Name = "Dell Projector",
+            });
+
+            modelBuilder.Entity<Department>().HasData(
+                new Department()
+                {
+                    Id = 1,
+                    Name = "All Departments",
+                },
+                new Department()
+                {
+                    Id = 2,
+                    Name = "IT",
+                },
+                new Department()
+                {
+                    Id = 3,
+                    Name = "HR",
+                },
+                new Department()
+                {
+                    Id = 4,
+                    Name = "Sale",
+                },
+                new Department()
+                {
+                    Id = 5,
+                    Name = "PR",
+                }
+            );
+            #endregion
         }
     }
 }
