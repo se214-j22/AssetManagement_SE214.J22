@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.BidProfile.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Contract.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
 using System;
@@ -16,5 +17,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Contract
         Task<ContractDto> CreateContractAsync( ContractSaved contractSaved);
         Task<ContractDto> updateContractAsync(ContractSaved contractSaved);
         Task DeleteContractAsync(EntityDto<int> input);
+        Task<PagedResultDto<BidProfileDto>> GetApprovedBidProfile();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.BidProfile.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Contract;
 using GWebsite.AbpZeroTemplate.Application.Share.Contract.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
@@ -31,6 +32,12 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         public async Task<ContractDto> GetContractById(EntityDto<int> input)
         {
             return await this._ContractAppService.GetContractByIdAsync(input);
+        }
+
+        [HttpGet("approvedBidProfile")]
+        public async Task<PagedResultDto<BidProfileDto>> GetApprovedBidProfile()
+        {
+            return await this._ContractAppService.GetApprovedBidProfile();
         }
 
         [HttpPost]
