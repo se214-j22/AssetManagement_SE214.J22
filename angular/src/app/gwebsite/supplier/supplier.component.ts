@@ -11,7 +11,8 @@ import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.serv
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import * as moment from 'moment';
 import { ApprovalStatusEnum, StatusEnum } from './dto/supplier.dto';
-import { ProductsServiceProxy, SupplierServiceProxy, SupplierSavedDto } from '@shared/service-proxies/service-proxies';
+import { ProductsServiceProxy, SupplierServiceProxy, SupplierSavedDto, UserServiceProxy } from '@shared/service-proxies/service-proxies';
+import { AbpSessionService } from 'abp-ng2-module/dist/src/session/abp-session.service';
 
 
 @Component({
@@ -270,7 +271,9 @@ export class SupplierComponent extends AppComponentBase implements AfterViewInit
         injector: Injector,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
-        private _apiService: SupplierServiceProxy
+        private _apiService: SupplierServiceProxy,
+        private _sessionService: AbpSessionService,
+        private _userService: UserServiceProxy,
     ) {
         super(injector);
     }
@@ -279,7 +282,9 @@ export class SupplierComponent extends AppComponentBase implements AfterViewInit
      * Hàm xử lý trước khi View được init
      */
     ngOnInit(): void {
-        this.isPermissionEditCloseActive = true;
+        this._userService.getUserForEdit(this._sessionService.userId).subscribe(user => {
+            this.isPermissionEditCloseActive = user.roles.findIndex(item => item.roleName === 'Admin') !== -1;
+        });
     }
 
     /**
