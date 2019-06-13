@@ -1,20 +1,24 @@
-import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild, OnInit, OnChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild, OnInit, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
-import { CustomerServiceProxy, CustomerInput, AssetInput, AssetServiceProxy, AssetLine, AssetLineServiceProxy, AssetLineDto, ComboboxItemDto, OrganizationUnitServiceProxy, ListResultDtoOfOrganizationUnitDto, OrganizationUnitDto, SoftAssetInput } from '@shared/service-proxies/service-proxies';
+import { CustomerServiceProxy, CustomerInput, AssetInput, AssetTypeServiceProxy, AssetType, AssetTypeDto, ManufacturerServiceProxy, Manufacturer, ManufacturerDto, AssetServiceProxy, AssetLine, AssetLineServiceProxy, AssetLineDto, ComboboxItemDto, OrganizationUnitServiceProxy, ListResultDtoOfOrganizationUnitDto, OrganizationUnitDto, SoftAssetInput } from '@shared/service-proxies/service-proxies';
 import jsQR from "jsqr";
 
 @Component({
     selector: 'createOrEditAssetModal',
-    styles: ['./create-or-edit-asset-modal.component.css'],
+    styles: ['./create-or-edit-asset-modal.component.scss'],
     templateUrl: './create-or-edit-asset-modal.component.html'
 })
-export class CreateOrEditAssetModalComponent extends AppComponentBase implements OnInit {
+export class CreateOrEditAssetModalComponent extends AppComponentBase implements OnInit, OnChanges {
 
 
     @ViewChild('createOrEditModal') modal: ModalDirective;
+    @ViewChild('assetTypeCombobox') assetTypeCombobox: ElementRef;
+    @ViewChild('manufacturerCombobox') manufacturerCombobox: ElementRef;
     @ViewChild('assetLineCombobox') assetLineCombobox: ElementRef;
     @ViewChild('statusCombobox') statusCombobox: ElementRef;
+    assetTypeComboboxs: ComboboxItemDto[] = [];
+    manufacturerComboboxs: ComboboxItemDto[] = [];
     assetLineComboboxs: ComboboxItemDto[] = [];
     organizationUnitComboboxs: ComboboxItemDto[] = [];
     statusComboboxs: ComboboxItemDto[] = [
@@ -30,9 +34,13 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
 
     modifyMultipleAssetsMode = false;
     asset: AssetInput = new AssetInput();
+    assetTypeID: string;
+    manufacturerID: string;
     processingAssetCodes: string[] = [];
     completedAssetCodes: string[] = [];
     errorAssetCodes: string[] = [];
+    assetTypes: AssetTypeDto[] = new Array<AssetTypeDto>();
+    manufacturers: ManufacturerDto[] = new Array<ManufacturerDto>();
     assetLines: AssetLineDto[] = new Array<AssetLineDto>();
     beingCreated: boolean;
     status: 'IS_DAMAGED' | 'RESTING' | 'USING';
@@ -43,10 +51,41 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
     constructor(
         injector: Injector,
         private _assetService: AssetServiceProxy,
+        private _assetTypeService: AssetTypeServiceProxy,
+        private _manufacturerService: ManufacturerServiceProxy,
         private _assetLineService: AssetLineServiceProxy,
         private _organizationUnitService: OrganizationUnitServiceProxy
     ) {
         super(injector);
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.assetTypeID && changes.assetTypeID.currentValue && changes.assetTypeID.currentValue != changes.assetTypeID.previousValue
+            || changes.manufacturerID && changes.manufacturerID.currentValue && changes.manufacturerID.currentValue != changes.manufacturerID.previousValue) {
+            this._assetLineService.getByFilter(undefined, changes.assetTypeID.currentValue, changes.manufacturerID.currentValue, undefined, 999, undefined).subscribe(result => {
+                if (result) {
+                    this.assetLines = result.items;
+                    this.assetLineComboboxs = result.items.map(m => {
+                        return new ComboboxItemDto({ value: m.id.toString(), displayText: m.name, isSelected: false })
+                    })
+                    setTimeout(() => {
+                        $(this.assetLineCombobox.nativeElement).selectpicker('refresh');
+                    }, 0);
+                }
+            });
+        }
+        if (changes.asset && changes.asset.currentValue.assetLineID != changes.assetTypeID.previousValue.assetLineID) {
+            this._assetLineService.getById(changes.asset.currentValue.assetLineID).subscribe(al => {
+                this.assetTypeID = al.assetType.id.toString();
+                this.manufacturerID = al.manufacturer.id.toString();
+                setTimeout(() => {
+                    $(this.assetTypeCombobox.nativeElement).selectpicker('refresh');
+                    $(this.manufacturerCombobox.nativeElement).selectpicker('refresh');
+                }, 0);
+            })
+        }
+
+
     }
 
     ngOnInit() {
@@ -60,11 +99,31 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
                 })
             }
         });
+
+        this._assetTypeService.getByFilter(undefined, undefined, 999, undefined).subscribe(result => {
+            if (result) {
+                this.assetTypes = result.items;
+                this.assetTypeComboboxs = result.items.map(at => {
+                    return new ComboboxItemDto({ value: at.id.toString(), displayText: at.name, isSelected: false })
+                })
+            }
+        });
+
+
+        this._manufacturerService.getByFilter(undefined, undefined, 999, undefined).subscribe(result => {
+            if (result) {
+                this.manufacturers = result.items;
+                this.manufacturerComboboxs = result.items.map(m => {
+                    return new ComboboxItemDto({ value: m.id.toString(), displayText: m.name, isSelected: false })
+                })
+            }
+        });
+
         this._assetLineService.getByFilter(undefined, undefined, undefined, undefined, 999, undefined).subscribe(result => {
             if (result) {
                 this.assetLines = result.items;
-                this.assetLineComboboxs = result.items.map(al => {
-                    return new ComboboxItemDto({ value: al.id.toString(), displayText: al.name, isSelected: false })
+                this.assetLineComboboxs = result.items.map(m => {
+                    return new ComboboxItemDto({ value: m.id.toString(), displayText: m.name, isSelected: false })
                 })
             }
         });
@@ -134,19 +193,27 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
         this.completedAssetCodes = [];
         this.errorAssetCodes = [];
         this.saving = false;
+        this.assetTypeID = String(0);
+        this.manufacturerID = String(0);
+        this.asset.assetLineID = String(0);
         this.modifyMultipleAssetsMode = true;
-        this.asset.isDamaged = false;
         this.beingCreated = false;
+        this.asset.isDamaged = false;
         this.getStatus();
         this.modal.show();
         setTimeout(() => {
             this.startup()
+            $(this.assetTypeCombobox.nativeElement).selectpicker('refresh');
+            $(this.manufacturerCombobox.nativeElement).selectpicker('refresh');
             $(this.assetLineCombobox.nativeElement).selectpicker('refresh');
             $(this.statusCombobox.nativeElement).selectpicker('refresh');
         }, 0);
     }
 
     show(assetId?: number | null | undefined): void {
+        this.assetTypeID = String(0);
+        this.manufacturerID = String(0);
+        this.modifyMultipleAssetsMode = false;
         console.log(assetId);
         this.saving = false;
         console.log(this);
@@ -163,11 +230,21 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
                 }
                 else {
                     this.beingCreated = false;
+                    this._assetLineService.getById(this.asset.assetLineID).subscribe(al => {
+                        this.assetTypeID = al.assetType.id.toString();
+                        this.manufacturerID = al.manufacturer.id.toString();
+                        setTimeout(() => {
+                            $(this.assetTypeCombobox.nativeElement).selectpicker('refresh');
+                            $(this.manufacturerCombobox.nativeElement).selectpicker('refresh');
+                        }, 0);
+                    })
                 }
                 console.log(this);
                 this.getStatus();
                 this.modal.show();
                 setTimeout(() => {
+                    $(this.assetTypeCombobox.nativeElement).selectpicker('refresh');
+                    $(this.manufacturerCombobox.nativeElement).selectpicker('refresh');
                     $(this.assetLineCombobox.nativeElement).selectpicker('refresh');
                     $(this.statusCombobox.nativeElement).selectpicker('refresh');
                 }, 0);
@@ -205,7 +282,6 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
     }
 
     close(): void {
-
         this.modal.hide();
         this.modalSave.emit(null);
     }

@@ -13,8 +13,28 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
+                <div class="modal-body row">
+                    <div class="form-group col-sm-6">
+                        <label>Asset Type*</label>
+                        <select [disabled]='!beingCreated||modifyMultipleAssetsMode' #assetTypeCombobox autofocus
+                            name="assetTypeName" class="form-control" [(ngModel)]="assetTypeID"
+                            [attr.data-live-search]="true" jq-plugin="selectpdateInputker" required>
+                            <option value="">{{emptyText}}</option>
+                            <option *ngFor="let item of assetTypeComboboxs" [value]="item.value">{{item.displayText}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>Manufacturer*</label>
+                        <select [disabled]='!beingCreated||modifyMultipleAssetsMode' #manufacturerCombobox autofocus
+                            name="manufacturerName" class="form-control" [(ngModel)]="manufacturerID"
+                            [attr.data-live-search]="true" jq-plugin="selectpdateInputker" required>
+                            <option value="">{{emptyText}}</option>
+                            <option *ngFor="let item of manufacturerComboboxs" [value]="item.value">{{item.displayText}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-12">
                         <label>Asset Line*</label>
                         <select [disabled]='!beingCreated||modifyMultipleAssetsMode' #assetLineCombobox autofocus
                             name="assetLineName" class="form-control" [(ngModel)]="asset.assetLineID"
@@ -24,7 +44,7 @@
                             </option>
                         </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group col-sm-12">
                         <label>Status*</label>
                         <select [disabled]='beingCreated' #statusCombobox autofocus name="statusName"
                             class="form-control" [(ngModel)]="status" [attr.data-live-search]="true"
@@ -33,7 +53,7 @@
                             </option>
                         </select>
                     </div>
-                    <div class="form-group" *ngIf="status=='USING'">
+                    <div class="form-group col-sm-12" *ngIf="status=='USING'">
                         <label>Using by*</label>
                         <select #organizationUnitCombobox autofocus name="organizationUnitName" class="form-control"
                             [(ngModel)]="asset.organizationUnitId" [attr.data-live-search]="true"
@@ -42,7 +62,7 @@
                                 {{item.displayText}}</option>
                         </select>
                     </div>
-                    <div class="form-group" *ngIf='beingCreated'>
+                    <div class="form-group col-sm-12" *ngIf='beingCreated'>
                         <label>Created Asset Number*</label>
                         <input #assetNumberInput="ngModel" class="form-control" type="number" name="AssetNumber"
                             [(ngModel)]="asset.number" required maxlength="64">
