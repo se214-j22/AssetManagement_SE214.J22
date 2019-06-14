@@ -57,6 +57,7 @@
     "detect-zoom": "^1.0.2",
     "dropzone": "^5.1.1",
     "easy-pie-chart": "^2.1.7",
+    "exceljs": "^1.12.1",
     "famfamfam-flags": "^1.0.0",
     "file-saver": "^2.0.2",
     "flot": "^0.8.0-alpha",

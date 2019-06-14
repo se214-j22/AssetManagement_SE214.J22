@@ -9,7 +9,6 @@ import { LoaiTaiSanComponent } from './loai-tai-san/loai-tai-san.component';
 import { BangYeuCauCungCapTaiSanComponent } from './bang-yeu-cau-cung-cap-tai-san/bang-yeu-cau-cung-cap-tai-san.component';
 import { SanPhamComponent } from './san-pham/san-pham.component';
 import { ScannerComponent } from './scanner/scanner.component';
-import { CapPhatComponent } from './cap-phat/cap-phat.component';
 
 @NgModule({
     imports: [
@@ -92,15 +91,6 @@ import { CapPhatComponent } from './cap-phat/cap-phat.component';
                     {
                         path: 'san-pham', component: SanPhamComponent,
                         data: { permission: 'Pages.Administration.SanPham' }
-                    },
-                ]
-            },
-            {
-                path: '',
-                children: [
-                    {
-                        path: 'cap-phat', component: CapPhatComponent,
-                        data: { permission: 'Pages.Administration.CapPhat' }
                     },
                 ]
             },

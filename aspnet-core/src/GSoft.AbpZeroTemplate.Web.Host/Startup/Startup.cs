@@ -51,7 +51,6 @@ namespace GSoft.AbpZeroTemplate.Web.Startup
 
             services.AddSignalR(options => { options.EnableDetailedErrors = true; });
 
-
             //Configure CORS for angular2 UI
             services.AddCors(options =>
             {
@@ -60,14 +59,13 @@ namespace GSoft.AbpZeroTemplate.Web.Startup
                     //App:CorsOrigins in appsettings.json can contain more than one address with splitted by comma.
                     builder
                         .WithOrigins(
-                             //App: CorsOrigins in appsettings.json can contain more than one address separated by comma.
+                            // App:CorsOrigins in appsettings.json can contain more than one address separated by comma.
                             _appConfiguration["App:CorsOrigins"]
                                 .Split(",", StringSplitOptions.RemoveEmptyEntries)
                                 .Select(o => o.RemovePostFix("/"))
                                 .ToArray()
                         )
-                    
-                       .SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .SetIsOriginAllowedToAllowWildcardSubdomains()
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();

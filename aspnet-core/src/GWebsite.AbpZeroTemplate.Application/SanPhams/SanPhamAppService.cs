@@ -10,7 +10,8 @@ using System.Linq.Dynamic.Core;
 using System.Linq;
 using Abp.Linq.Extensions;
 using System;
-
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace GWebsite.AbpZeroTemplate.Web.Core.SanPhams
 {
@@ -46,6 +47,30 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.SanPhams
                 sanPhamRepository.Update(sanPhamEntity);
                 CurrentUnitOfWork.SaveChanges();
             }
+        }
+
+        public IEnumerable<SanPhamReports> GetAllSanPhams()
+        {
+            var listSanPham= sanPhamRepository.GetAll().Where(x => !x.IsDelete).ToList();
+
+            List<SanPhamReports> list = new List<SanPhamReports>();
+            if (listSanPham != null)
+            {
+                foreach(SanPham s in listSanPham){
+                    SanPhamReports sanPham = new SanPhamReports();
+
+                    sanPham.MaSP = s.MaSP;
+                    sanPham.TenSP = s.TenSP;
+                    sanPham.NgayCapNhat = s.NgayCapNhat.ToString("dd/MM/yyyy");
+                    sanPham.NgayTao = s.NgayTao.ToString("dd/MM/yyyy");
+                    sanPham.TrangThai = s.TrangThai;
+
+                    list.Add(sanPham);
+               }
+            }
+            if (list == null)
+                return null;
+            return list;
         }
 
         public SanPhamInput GetSanPhamForEdit(int id)

@@ -1,6 +1,7 @@
 ﻿using Abp.Application.Services.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.SanPhams;
 using GWebsite.AbpZeroTemplate.Application.Share.SanPhams.Dto;
+using GWebsite.AbpZeroTemplate.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,11 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         public PagedResultDto<SanPhamDto> GetSanPhamsByFilter(SanPhamFilter sanPhamFilter)
         {
             return sanPhamAppService.GetSanPhams(sanPhamFilter);
+        }
+        [HttpGet]
+        public IEnumerable<SanPhamReports> GetAllSanPhams()
+        {
+            return sanPhamAppService.GetAllSanPhams();
         }
 
         [HttpGet]

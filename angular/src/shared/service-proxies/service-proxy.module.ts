@@ -45,7 +45,6 @@ import { DemoModelServiceProxy } from '@shared/service-proxies/service-proxies';
         ApiServiceProxies.PhongBanServiceProxy,
         ApiServiceProxies.LoaiTaiSanServiceProxy,
         ApiServiceProxies.BangYeuCauCungCapTaiSanServiceProxy,
-        ApiServiceProxies.CapPhatServiceProxy,
         ApiServiceProxies.SanPhamServiceProxy,
         WebApiServiceProxy,
         { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true },

@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.SanPhams.Dto;
+using GWebsite.AbpZeroTemplate.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.SanPhams
         SanPhamInput GetSanPhamForEditMaSP(string maSP);
         void DeleteSanPham(int id);
         PagedResultDto<SanPhamDto> GetSanPhams(SanPhamFilter input);
+        IEnumerable<SanPhamReports> GetAllSanPhams();
         SanPhamForViewDto GetSanPhamForView(int id);
     }
 }

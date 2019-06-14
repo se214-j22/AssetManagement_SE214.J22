@@ -10,8 +10,6 @@ import { SanPhamServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOrEditSanPhamModalComponent } from './create-or-edit-san-pham-modal.component';
 import { ViewSanPhamModalComponent } from './view-san-pham-modal.component';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
-import * as moment from 'moment/moment.js';
-import {ExcelService} from './services/excel.service';
 
 @Component({
     templateUrl: './san-pham.component.html',
@@ -30,12 +28,9 @@ export class SanPhamComponent extends AppComponentBase implements AfterViewInit,
     /**
      * tạo các biến dể filters
      */
-    //filterText:string;
-    //filterText: moment.Moment;
+
     maSP: string;
     id: string;
-    //ngay: Date;
-  
 
     constructor(
         injector: Injector,
@@ -43,20 +38,15 @@ export class SanPhamComponent extends AppComponentBase implements AfterViewInit,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
         private _apiService: WebApiServiceProxy,
-        private excelService:ExcelService
     ) {
         super(injector);
     }
 
-    exportAsXLSX():void {
-        this.excelService.exportAsExcelFile(this.data, 'report');
-     }
-
-     data: any = [];
     /**
      * Hàm xử lý trước khi View được init
      */
     ngOnInit(): void {
+       
     }
 
     /**
@@ -76,7 +66,7 @@ export class SanPhamComponent extends AppComponentBase implements AfterViewInit,
         if (!this.paginator || !this.dataTable) {
             return;
         }
-
+        
         //show loading trong gridview
         this.primengTableHelper.showLoadingIndicator();
 
@@ -85,7 +75,6 @@ export class SanPhamComponent extends AppComponentBase implements AfterViewInit,
          */
 
         this.reloadList(null,null,null,null,null, event);
-
     }
 
     reloadList(filterText,filterText1,filterText2,filterText3,filterText4,event?: LazyLoadEvent) {
@@ -97,9 +86,9 @@ export class SanPhamComponent extends AppComponentBase implements AfterViewInit,
             this.primengTableHelper.records = result.items;
             
             this.primengTableHelper.hideLoadingIndicator();
-            this.data=result.items;
         });
     }
+
     deleteSanPham(id): void {
         this._sanPhamService.deleteSanPham(id).subscribe(() => {
             this.reloadPage();
@@ -124,13 +113,6 @@ export class SanPhamComponent extends AppComponentBase implements AfterViewInit,
 
 
     applyFilters(): void {
-        //truyền params lên url thông qua router
-
-        // this._router.navigate(['app/gwebsite/san-pham', {
-        //      filterText: this.filterText
-        // }]);
-     
-        // this.filterText=null;
         this.reloadList(this.maSP,null,null,null,null,null);
 
         if (this.paginator.getPage() !== 0) {
@@ -139,6 +121,7 @@ export class SanPhamComponent extends AppComponentBase implements AfterViewInit,
         }
     
     }
+   
     //hàm show view create MenuClient
     createSanPham() {
         this.createOrEditModal.show();

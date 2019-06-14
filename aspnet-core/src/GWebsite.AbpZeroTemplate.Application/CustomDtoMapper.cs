@@ -66,12 +66,6 @@ namespace GWebsite.AbpZeroTemplate.Applications
 			configuration.CreateMap<BangYeuCauCungCapTaiSan, BangYeuCauCungCapTaiSanInput>();
 			configuration.CreateMap<BangYeuCauCungCapTaiSan, BangYeuCauCungCapTaiSanForViewDto>();
 
-            // CapPhat
-            configuration.CreateMap<CapPhat, CapPhatDto>();
-            configuration.CreateMap<CapPhatInput, CapPhat>();
-            configuration.CreateMap<CapPhat, CapPhatInput>();
-            configuration.CreateMap<CapPhat, CapPhatForViewDto>();
-
             // LoaiTaiSan
             configuration.CreateMap<LoaiTaiSan, LoaiTaiSanDto>();
 			configuration.CreateMap<LoaiTaiSanInput, LoaiTaiSan>();
@@ -83,6 +77,7 @@ namespace GWebsite.AbpZeroTemplate.Applications
             configuration.CreateMap<SanPhamInput, SanPham>();
             configuration.CreateMap<SanPhamInput, SanPham>();
             configuration.CreateMap<SanPham, SanPhamInput>();
+            configuration.CreateMap<SanPham, SanPhamReports>();
             configuration.CreateMap<SanPham, SanPhamForViewDto>();
         }
 	}

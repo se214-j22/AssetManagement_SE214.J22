@@ -1474,295 +1474,6 @@ export class CachingServiceProxy {
 }
 
 @Injectable()
-export class CapPhatServiceProxy {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "";
-    }
-
-    /**
-     * @phongBanId (optional) 
-     * @sorting (optional) 
-     * @maxResultCount (optional) 
-     * @skipCount (optional) 
-     * @return Success
-     */
-    getCapPhatsByFilter(phongBanId: number | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<PagedResultDtoOfCapPhatOutput> {
-        let url_ = this.baseUrl + "/api/CapPhat/GetCapPhatsByFilter?";
-        if (phongBanId !== undefined)
-            url_ += "PhongBanId=" + encodeURIComponent("" + phongBanId) + "&"; 
-        if (sorting !== undefined)
-            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
-        if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
-        if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetCapPhatsByFilter(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetCapPhatsByFilter(<any>response_);
-                } catch (e) {
-                    return <Observable<PagedResultDtoOfCapPhatOutput>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<PagedResultDtoOfCapPhatOutput>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetCapPhatsByFilter(response: HttpResponseBase): Observable<PagedResultDtoOfCapPhatOutput> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? PagedResultDtoOfCapPhatOutput.fromJS(resultData200) : new PagedResultDtoOfCapPhatOutput();
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<PagedResultDtoOfCapPhatOutput>(<any>null);
-    }
-
-    /**
-     * @id (optional) 
-     * @return Success
-     */
-    getCapPhatForEdit(id: number | null | undefined): Observable<CapPhatInput> {
-        let url_ = this.baseUrl + "/api/CapPhat/GetCapPhatForEdit?";
-        if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetCapPhatForEdit(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetCapPhatForEdit(<any>response_);
-                } catch (e) {
-                    return <Observable<CapPhatInput>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<CapPhatInput>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetCapPhatForEdit(response: HttpResponseBase): Observable<CapPhatInput> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? CapPhatInput.fromJS(resultData200) : new CapPhatInput();
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<CapPhatInput>(<any>null);
-    }
-
-    /**
-     * @input (optional) 
-     * @return Success
-     */
-    createOrEditCapPhat(input: CapPhatInput | null | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/CapPhat/CreateOrEditCapPhat";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(input);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreateOrEditCapPhat(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processCreateOrEditCapPhat(<any>response_);
-                } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<void>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processCreateOrEditCapPhat(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(<any>null);
-    }
-
-    /**
-     * @return Success
-     */
-    deleteCapPhat(id: number): Observable<void> {
-        let url_ = this.baseUrl + "/api/CapPhat/DeleteCapPhat/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-            })
-        };
-
-        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDeleteCapPhat(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processDeleteCapPhat(<any>response_);
-                } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<void>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processDeleteCapPhat(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(<any>null);
-    }
-
-    /**
-     * @id (optional) 
-     * @return Success
-     */
-    getCapPhatForView(id: number | null | undefined): Observable<CapPhatForViewDto> {
-        let url_ = this.baseUrl + "/api/CapPhat/GetCapPhatForView?";
-        if (id !== undefined)
-            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetCapPhatForView(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetCapPhatForView(<any>response_);
-                } catch (e) {
-                    return <Observable<CapPhatForViewDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<CapPhatForViewDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetCapPhatForView(response: HttpResponseBase): Observable<CapPhatForViewDto> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? CapPhatForViewDto.fromJS(resultData200) : new CapPhatForViewDto();
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<CapPhatForViewDto>(<any>null);
-    }
-}
-
-@Injectable()
 export class ChatServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -8342,6 +8053,62 @@ export class SanPhamServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    getAllSanPhams(): Observable<SanPhamReports[]> {
+        let url_ = this.baseUrl + "/api/SanPham/GetAllSanPhams";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllSanPhams(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllSanPhams(<any>response_);
+                } catch (e) {
+                    return <Observable<SanPhamReports[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<SanPhamReports[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllSanPhams(response: HttpResponseBase): Observable<SanPhamReports[]> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(SanPhamReports.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<SanPhamReports[]>(<any>null);
+    }
+
+    /**
      * @id (optional) 
      * @return Success
      */
@@ -13288,242 +13055,6 @@ export class EntityDtoOfString implements IEntityDtoOfString {
 
 export interface IEntityDtoOfString {
     id: string | undefined;
-}
-
-export class PagedResultDtoOfCapPhatOutput implements IPagedResultDtoOfCapPhatOutput {
-    totalCount!: number | undefined;
-    items!: CapPhatOutput[] | undefined;
-
-    constructor(data?: IPagedResultDtoOfCapPhatOutput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.totalCount = data["totalCount"];
-            if (data["items"] && data["items"].constructor === Array) {
-                this.items = [];
-                for (let item of data["items"])
-                    this.items.push(CapPhatOutput.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): PagedResultDtoOfCapPhatOutput {
-        data = typeof data === 'object' ? data : {};
-        let result = new PagedResultDtoOfCapPhatOutput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["totalCount"] = this.totalCount;
-        if (this.items && this.items.constructor === Array) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
-        }
-        return data; 
-    }
-}
-
-export interface IPagedResultDtoOfCapPhatOutput {
-    totalCount: number | undefined;
-    items: CapPhatOutput[] | undefined;
-}
-
-export class CapPhatOutput implements ICapPhatOutput {
-    capPhat!: CapPhatDto | undefined;
-    tenPhong!: string | undefined;
-    tenSanPham!: string | undefined;
-
-    constructor(data?: ICapPhatOutput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.capPhat = data["capPhat"] ? CapPhatDto.fromJS(data["capPhat"]) : <any>undefined;
-            this.tenPhong = data["tenPhong"];
-            this.tenSanPham = data["tenSanPham"];
-        }
-    }
-
-    static fromJS(data: any): CapPhatOutput {
-        data = typeof data === 'object' ? data : {};
-        let result = new CapPhatOutput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["capPhat"] = this.capPhat ? this.capPhat.toJSON() : <any>undefined;
-        data["tenPhong"] = this.tenPhong;
-        data["tenSanPham"] = this.tenSanPham;
-        return data; 
-    }
-}
-
-export interface ICapPhatOutput {
-    capPhat: CapPhatDto | undefined;
-    tenPhong: string | undefined;
-    tenSanPham: string | undefined;
-}
-
-export class CapPhatDto implements ICapPhatDto {
-    phongBanId!: number | undefined;
-    sanPhamId!: number | undefined;
-    ngayCap!: moment.Moment | undefined;
-    id!: number | undefined;
-
-    constructor(data?: ICapPhatDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.phongBanId = data["phongBanId"];
-            this.sanPhamId = data["sanPhamId"];
-            this.ngayCap = data["ngayCap"] ? moment(data["ngayCap"].toString()) : <any>undefined;
-            this.id = data["id"];
-        }
-    }
-
-    static fromJS(data: any): CapPhatDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CapPhatDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["phongBanId"] = this.phongBanId;
-        data["sanPhamId"] = this.sanPhamId;
-        data["ngayCap"] = this.ngayCap ? this.ngayCap.toISOString() : <any>undefined;
-        data["id"] = this.id;
-        return data; 
-    }
-}
-
-export interface ICapPhatDto {
-    phongBanId: number | undefined;
-    sanPhamId: number | undefined;
-    ngayCap: moment.Moment | undefined;
-    id: number | undefined;
-}
-
-export class CapPhatInput implements ICapPhatInput {
-    phongBanId!: number | undefined;
-    sanPhamId!: number | undefined;
-    ngayCap!: moment.Moment | undefined;
-    id!: number | undefined;
-
-    constructor(data?: ICapPhatInput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.phongBanId = data["phongBanId"];
-            this.sanPhamId = data["sanPhamId"];
-            this.ngayCap = data["ngayCap"] ? moment(data["ngayCap"].toString()) : <any>undefined;
-            this.id = data["id"];
-        }
-    }
-
-    static fromJS(data: any): CapPhatInput {
-        data = typeof data === 'object' ? data : {};
-        let result = new CapPhatInput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["phongBanId"] = this.phongBanId;
-        data["sanPhamId"] = this.sanPhamId;
-        data["ngayCap"] = this.ngayCap ? this.ngayCap.toISOString() : <any>undefined;
-        data["id"] = this.id;
-        return data; 
-    }
-}
-
-export interface ICapPhatInput {
-    phongBanId: number | undefined;
-    sanPhamId: number | undefined;
-    ngayCap: moment.Moment | undefined;
-    id: number | undefined;
-}
-
-export class CapPhatForViewDto implements ICapPhatForViewDto {
-    phongBanId!: number | undefined;
-    sanPhamId!: number | undefined;
-    ngayCap!: moment.Moment | undefined;
-    id!: number | undefined;
-
-    constructor(data?: ICapPhatForViewDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.phongBanId = data["phongBanId"];
-            this.sanPhamId = data["sanPhamId"];
-            this.ngayCap = data["ngayCap"] ? moment(data["ngayCap"].toString()) : <any>undefined;
-            this.id = data["id"];
-        }
-    }
-
-    static fromJS(data: any): CapPhatForViewDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new CapPhatForViewDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["phongBanId"] = this.phongBanId;
-        data["sanPhamId"] = this.sanPhamId;
-        data["ngayCap"] = this.ngayCap ? this.ngayCap.toISOString() : <any>undefined;
-        data["id"] = this.id;
-        return data; 
-    }
-}
-
-export interface ICapPhatForViewDto {
-    phongBanId: number | undefined;
-    sanPhamId: number | undefined;
-    ngayCap: moment.Moment | undefined;
-    id: number | undefined;
 }
 
 export class GetUserChatFriendsWithSettingsOutput implements IGetUserChatFriendsWithSettingsOutput {
@@ -20396,6 +19927,62 @@ export interface ISanPhamDto {
     tenSP: string | undefined;
     ngayTao: moment.Moment | undefined;
     ngayCapNhat: moment.Moment | undefined;
+    trangThai: string | undefined;
+    id: number | undefined;
+}
+
+export class SanPhamReports implements ISanPhamReports {
+    maSP!: string | undefined;
+    tenSP!: string | undefined;
+    ngayTao!: string | undefined;
+    ngayCapNhat!: string | undefined;
+    trangThai!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: ISanPhamReports) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.maSP = data["maSP"];
+            this.tenSP = data["tenSP"];
+            this.ngayTao = data["ngayTao"];
+            this.ngayCapNhat = data["ngayCapNhat"];
+            this.trangThai = data["trangThai"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): SanPhamReports {
+        data = typeof data === 'object' ? data : {};
+        let result = new SanPhamReports();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maSP"] = this.maSP;
+        data["tenSP"] = this.tenSP;
+        data["ngayTao"] = this.ngayTao;
+        data["ngayCapNhat"] = this.ngayCapNhat;
+        data["trangThai"] = this.trangThai;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ISanPhamReports {
+    maSP: string | undefined;
+    tenSP: string | undefined;
+    ngayTao: string | undefined;
+    ngayCapNhat: string | undefined;
     trangThai: string | undefined;
     id: number | undefined;
 }

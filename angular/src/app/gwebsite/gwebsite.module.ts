@@ -1,6 +1,6 @@
 import { ViewDemoModelModalComponent } from './demo-model/view-demo-model-modal.component';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppCommonModule } from '@app/shared/common/app-common.module';
 import { UtilsModule } from '@shared/utils/utils.module';
@@ -36,9 +36,7 @@ import { ViewSanPhamModalComponent } from './san-pham/view-san-pham-modal.compon
 import { ScannerComponent } from './scanner/scanner.component';
 import { ScanModalComponent } from './scanner/scan-modal.component';
 import { GenerateQrComponent } from './san-pham/generate-qr.component';
-import { CapPhatComponent } from './cap-phat/cap-phat.component';
-import { CreateOrEditCapPhatModalComponent } from './cap-phat/create-or-edit-cap-phat-modal.component';
-import { ViewCapPhatModalComponent } from './cap-phat/view-cap-phat-modal.component';
+import { ReportComponent } from './report/report.component';
 
 @NgModule({
     imports: [
@@ -62,7 +60,6 @@ import { ViewCapPhatModalComponent } from './cap-phat/view-cap-phat-modal.compon
         InputMaskModule,
         ZXingScannerModule,
         NgxKjuaModule,
-        
     ],
     declarations: [
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
@@ -72,8 +69,8 @@ import { ViewCapPhatModalComponent } from './cap-phat/view-cap-phat-modal.compon
         HoaDonNhapComponent, CreateOrEditHoaDonNhapModalComponent, ViewHoaDonNhapModalComponent,
         LoaiTaiSanComponent, CreateOrEditLoaiTaiSanModalComponent, ViewLoaiTaiSanModalComponent,
         BangYeuCauCungCapTaiSanComponent, CreateOrEditBangYeuCauCungCapTaiSanModalComponent, ViewBangYeuCauCungCapTaiSanModalComponent,
-        SanPhamComponent, CreateOrEditSanPhamModalComponent, ViewSanPhamModalComponent, ScannerComponent, ScanModalComponent, GenerateQrComponent, CapPhatComponent,
-        CapPhatComponent, CreateOrEditCapPhatModalComponent, ViewCapPhatModalComponent,
+        SanPhamComponent, CreateOrEditSanPhamModalComponent, ViewSanPhamModalComponent, ScannerComponent, ScanModalComponent, GenerateQrComponent,
+        ReportComponent
     ],
     providers: [
     ]

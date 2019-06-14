@@ -26,10 +26,7 @@
                             <div class="col-sm-12">
                                 <div class="input-group">
                                     <input [(ngModel)]="maSP" name="maSP" autoFocus class="form-control"
-                                        placeholder="Tìm kiếm" type="text">
-                                    
-                                    <!-- <input type="date" [value]="null" class="form-control"  [(ngModel)]="filterText" name="filterText" [required]="false"> -->
-                        
+                                        placeholder="Tìm kiếm" type="text">  
                                     <span class="input-group-btn">
                                         <button (click)="applyFilters()" class="btn btn-primary" type="submit"><i
                                                 class="icon-refresh"></i>
@@ -69,7 +66,6 @@
                                         <p-sortIcon field="trangThai"></p-sortIcon>
                                     </th>
                                     <th>{{l('Edit')}}</th>
-                                    <th><button (click)="exportAsXLSX()"><i class="fa fa-file-excel-o" style="color:blue"></i></button></th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-record="$implicit">

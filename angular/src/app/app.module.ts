@@ -73,7 +73,7 @@ import { NotificationsComponent } from './shared/layout/notifications/notificati
         TableModule,
         PaginatorModule,
         PrimeNgFileUploadModule,
-        ProgressBarModule
+        ProgressBarModule,
     ],
     providers: [
         ImpersonationService,

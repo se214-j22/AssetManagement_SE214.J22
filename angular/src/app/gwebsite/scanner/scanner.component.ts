@@ -11,6 +11,7 @@ import { ScanModalComponent } from './scan-modal.component';
 import { ZXingScannerComponent } from '@zxing/ngx-scanner';
 import { Result } from '@zxing/library';
 import * as moment from 'moment/moment.js';
+import { ExcelService } from '../report/excel.service';
 
 @Component({
   templateUrl: './scanner.component.html',
@@ -41,11 +42,13 @@ export class ScannerComponent extends AppComponentBase implements AfterViewInit,
     sanPhamName: string;
     maSP: string;
     filterDate: moment.Moment;
+    data: any[]= [];
 
     constructor(
       injector: Injector,
       private _sanPhamService: SanPhamServiceProxy,
       private _activatedRoute: ActivatedRoute,
+      private report:ExcelService
      
     ) {
         super(injector);
@@ -60,20 +63,14 @@ export class ScannerComponent extends AppComponentBase implements AfterViewInit,
             this.availableDevices = devices;
             this.currentDevice = this.availableDevices[0];
       
-            // selects the devices's back camera by default
-            // for (const device of devices) {
-            //     if (/back|rear|environment/gi.test(device.label)) {
-            //         this.scanner.changeDevice(device);
-            //         this.currentDevice = device;
-            //         break;
-            //     }
-            // }
           });
       
         this.scanner.camerasNotFound.subscribe(() => this.hasDevices = false);
-       // this.scanner.scanComplete.subscribe((result: Result) => {this.qrResult = result; this.ScanModal.showInfo(this.qrResultString)});
         this.scanner.scanComplete.subscribe((result: Result) => {this.qrResult = result});
         this.scanner.permissionResponse.subscribe((perm: boolean) => this.hasPermission = perm);
+        this._sanPhamService.getAllSanPhams().subscribe((result)=>{    
+            this.data  =  result;
+        });
     }
 
     /**
@@ -100,9 +97,6 @@ export class ScannerComponent extends AppComponentBase implements AfterViewInit,
         /**
          * mặc định ban đầu lấy hết dữ liệu nên dữ liệu filter = null
          */
-
-        this.reloadList(this.filterDate, event);
-
     }
 
     reloadList(filterText, event?: LazyLoadEvent) {
@@ -185,5 +179,10 @@ export class ScannerComponent extends AppComponentBase implements AfterViewInit,
         };
     
         return states['' + state];
+      }
+
+      
+      callReport(){
+        this.report.generateExcel(this.data);
       }
 }

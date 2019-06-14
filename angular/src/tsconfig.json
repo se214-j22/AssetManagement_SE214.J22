@@ -1,4 +1,5 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
     "declaration": false,
     "emitDecoratorMetadata": true,
@@ -20,7 +21,10 @@
       "@app/*": [ "./app/*" ],
       "@shared/*": [ "./shared/*" ],
       "@node_modules/*": [ "../node_modules/*" ],
-      "@angular/*": [ "../node_modules/@angular/*" ]
+      "@angular/*": [ "../node_modules/@angular/*" ],
+      "exceljs": [
+        "../node_modules/exceljs/dist/exceljs.min"
+    ]
     }
   },
   "exclude": [ "node_modules" ]
