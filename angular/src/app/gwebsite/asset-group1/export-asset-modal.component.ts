@@ -5,14 +5,17 @@ import { CustomerServiceProxy, CustomerInput, AssetInput, AssetTypeServiceProxy,
 import jsQR from "jsqr";
 
 @Component({
-    selector: 'createOrEditAssetModalGroup1',
-    templateUrl: './create-or-edit-asset-modal.component.html'
+    selector: 'exportAssetModal',
+    templateUrl: './export-asset-modal.component.html'
 })
-export class CreateOrEditAssetModalComponentGroup1 extends AppComponentBase implements OnInit {
-    @ViewChild('createOrEditModal') modal: ModalDirective;
+export class ExportAssetModalComponent extends AppComponentBase implements OnInit, OnChanges {
+
+
+    @ViewChild('exportModal') modal: ModalDirective;
     @ViewChild('assetTypeCombobox') assetTypeCombobox: ElementRef;
     @ViewChild('manufacturerCombobox') manufacturerCombobox: ElementRef;
     @ViewChild('assetLineCombobox') assetLineCombobox: ElementRef;
+    @ViewChild('SubscriptionEndDateUtc') subscriptionEndDateUtc: ElementRef;
     @ViewChild('statusCombobox') statusCombobox: ElementRef;
     assetTypeComboboxs: ComboboxItemDto[] = [];
     assetTypes: AssetTypeDto[] = [];
@@ -199,51 +202,18 @@ export class CreateOrEditAssetModalComponentGroup1 extends AppComponentBase impl
     }
 
     getStatus() {
-        if (this.asset.isDamaged)
-            this.status = 'IS_DAMAGED';
-        else {
-            if (this.asset.organizationUnitId && this.asset.organizationUnitId != this.mainOU.id) {
-                this.status = 'USING';
-            }
-            else {
-                this.status = 'RESTING';
-            }
-        }
+        this.status = 'USING';
     }
 
-    showForModify(): void {
-        this.processingAssetCodes = [];
-        this.completedAssetCodes = [];
-        this.errorAssetCodes = [];
-        this.saving = false;
-        this.assetTypeID = String(0);
-        this.manufacturerID = String(0);
-        this.asset = new AssetInput();
-        this.modifyMultipleAssetsMode = true;
-        this.beingCreated = false;
-        this.getStatus();
-        this.modal.show();
-        setTimeout(() => {
-            this.startup()
-            $(this.assetTypeCombobox.nativeElement).selectpicker('refresh');
-            $(this.manufacturerCombobox.nativeElement).selectpicker('refresh');
-            $(this.assetLineCombobox.nativeElement).selectpicker('refresh');
-            $(this.statusCombobox.nativeElement).selectpicker('refresh');
-        }, 0);
-    }
 
     show(assetId?: number | null | undefined): void {
         this.assetTypeID = String(0);
         this.manufacturerID = String(0);
         this.modifyMultipleAssetsMode = false;
         this.depreciationRate = undefined;
-        console.log(assetId);
         this.saving = false;
-        console.log(this);
         this._assetService.getForEdit(assetId).subscribe(result2 => {
-            console.log(this);
             if (result2) {
-                console.log(this);
                 this.asset = result2;
                 if (!this.asset.assetLineID) {
                     this.asset.isDamaged = false;
@@ -261,6 +231,10 @@ export class CreateOrEditAssetModalComponentGroup1 extends AppComponentBase impl
                             $(this.assetTypeCombobox.nativeElement).selectpicker('refresh');
                             $(this.manufacturerCombobox.nativeElement).selectpicker('refresh');
                             $(this.assetLineCombobox.nativeElement).selectpicker('refresh');
+                            $(this.subscriptionEndDateUtc.nativeElement).datetimepicker({
+                                locale: abp.localization.currentLanguage.name,
+                                format: 'L'
+                            });
                         }, 0);
                     })
                 }
@@ -300,7 +274,7 @@ export class CreateOrEditAssetModalComponentGroup1 extends AppComponentBase impl
         let input = this.asset;
         this.saving = true;
         this._assetService.createOrEdit(input).subscribe(result => {
-            this.notify.info(this.l('SavedSuccessfully'));
+            this.notify.info(this.l('Exportfully'));
             if (!multiple)
                 this.close();
         })

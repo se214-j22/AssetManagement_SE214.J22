@@ -26,6 +26,12 @@
                         <validation-messages [formCtrl]="nameInput"></validation-messages>
                     </div>
                     <div class="form-group">
+                            <label>Depreciation Rate* (%)</label>
+                            <input #depreciationRateInput="ngModel" class="form-control" type="number" step="0.01" name="DepreciationRate"
+                                [(ngModel)]="assetType.depreciationRate" maxlength="256">
+                            <validation-messages [formCtrl]="depreciationRateInput"></validation-messages>
+                        </div>
+                    <div class="form-group">
                             <label>Descriptions</label>
                             <input #descriptionsInput="ngModel" class="form-control" type="text" name="Descriptions"
                                 [(ngModel)]="assetType.descriptions">

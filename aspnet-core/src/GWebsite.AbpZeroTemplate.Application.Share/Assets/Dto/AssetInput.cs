@@ -14,5 +14,9 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Assets.Dto
         public bool IsDamaged { get; set; }
         public long OrganizationUnitId { get; set; }
         public string Note { get; set; }
+        public long PONumber { get; set; }
+        public int DepreciationMonths { get; set; }
+        public float FullDepreciationPrice { get; set; }
+        public float DepreciationValue { get; set; }
     }
 }

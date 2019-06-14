@@ -15,19 +15,23 @@
                     <!--#region INFORMATION  -->
                     <div class='col-12'>
                         <div class="form-group">
-                            <label>Id</label>
+                            <label>Id:   </label>
                             <p>{{assetType.id}}</p>
                         </div>
                         <div class="form-group">
-                            <label>CODE</label>
+                            <label>CODE:   </label>
                             <p>{{assetType.code}}</p>
                         </div>
                         <div class="form-group">
-                            <label>Name</label>
+                            <label>Name:   </label>
                             <p>{{assetType.name}}</p>
                         </div>
                         <div class="form-group">
-                            <label>Descriptions</label>
+                            <label>Depreciation Rate: </label>
+                            <p>{{assetType.depreciationRate}}%</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Descriptions:</label>
                             <p>{{assetType.descriptions}}</p>
                         </div>
                     </div>
@@ -35,7 +39,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button (click)="close()" type="submit" class="btn btn-primary" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i></i>
+                <button (click)="close()" type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                    [busyText]="l('SavingWithThreeDot')"><i></i>
                     <span>{{l("OK")}}</span></button>
             </div>
 

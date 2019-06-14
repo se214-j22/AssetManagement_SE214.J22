@@ -1,4 +1,4 @@
-<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-label class='width100' class='width100'ledby="viewModal"
     aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -15,15 +15,15 @@
                     <!--#region INFORMATION  -->
                     <div class='col-6'>
                         <div class="form-group">
-                            <label>Id</label>
+                            <label class='width100'>Id</label>
                             <p>{{manufacturer.id}}</p>
                         </div>
                         <div class="form-group">
-                            <label>CODE</label>
+                            <label class='width100'>CODE</label>
                             <p>{{manufacturer.code}}</p>
                         </div>
                         <div class="form-group">
-                            <label>Name</label>
+                            <label class='width100'>Name</label>
                             <p>{{manufacturer.name}}</p>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                         <img src="{{manufacturer.logo}}" alt="manufacturer logo" style="max-width:150px">
                     </div>
                     <div class="col-12 form-group" *ngIf='manufacturer.descriptions'>
-                        <label>Descriptions</label>
+                        <label class='width100'>Descriptions</label>
                         <p>{{manufacturer.descriptions}}</p>
                     </div>
                 </div>

@@ -16,5 +16,9 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public AssetLine AssetLine { get; set; }
         public bool IsDamaged { get; set; }
         public string Note { get; set; }
+        public long PONumber { get; set; }
+        public int DepreciationMonths { get; set; }
+        public float FullDepreciationPrice { get; set; }
+        public float DepreciationValue { get; set; }
     }
 }

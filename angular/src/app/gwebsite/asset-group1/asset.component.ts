@@ -10,8 +10,9 @@ import { Table } from 'primeng/components/table/table';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import { DemoModelServiceProxy, AssetServiceProxy, AssetDto, OrganizationUnitServiceProxy, OrganizationUnitDto } from '@shared/service-proxies/service-proxies';
 import jsQR from "jsqr";
-import { ViewAssetModalComponentGroup1 } from './view-asset-modal.component';
 import { CreateOrEditAssetModalComponentGroup1 } from './create-or-edit-asset-modal.component';
+import { ViewAssetModalComponentGroup1 } from './view-asset-modal.component';
+import { ExportAssetModalComponent } from './export-asset-modal.component';
 
 @Component({
   templateUrl: './asset.component.html',
@@ -21,6 +22,7 @@ export class AssetComponentGroup1 extends AppComponentBase implements OnInit, Af
   // @ViewChild('textsTable') textsTable: ElementRef;
   @ViewChild('dataTable') dataTable: Table;
   @ViewChild('paginator') paginator: Paginator;
+  @ViewChild('exportModal') exportModal: ExportAssetModalComponent;
   @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditAssetModalComponentGroup1;
   @ViewChild('viewModal') viewModal: ViewAssetModalComponentGroup1;
   filterTerm: string;
@@ -69,7 +71,6 @@ export class AssetComponentGroup1 extends AppComponentBase implements OnInit, Af
     this.reloadList(null, event);
 
   }
-
   createAsset() {
     this.createOrEditModal.show();
   }
@@ -80,6 +81,8 @@ export class AssetComponentGroup1 extends AppComponentBase implements OnInit, Af
     ).subscribe(result => {
       this.primengTableHelper.totalRecordsCount = result.totalCount;
       this.primengTableHelper.records = result.items;
+      this.primengTableHelper.records.forEach(i => {
+         i.isResting = i.isDamaged == false && i.organizationUnitId == this.mainOU.id; });
       this.primengTableHelper.hideLoadingIndicator();
     });
   }
