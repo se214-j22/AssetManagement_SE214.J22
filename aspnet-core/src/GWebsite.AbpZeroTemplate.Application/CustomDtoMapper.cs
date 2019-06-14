@@ -82,7 +82,7 @@ namespace GWebsite.AbpZeroTemplate.Applications
             configuration.CreateMap<SubPlanSavedDto, SubPlan>();
             configuration.CreateMap<PlanSavedDto, Plan>();
             configuration.CreateMap<BiddingSaved, Bidding>();
-            configuration.CreateMap<ContractSaved, Contract>();
+            configuration.CreateMap<ContractSavedDto, Contract>();
             configuration.CreateMap<PlanSavedDto, Plan>();
             //.ForMember(p => p.SubPlans, opt => opt.Ignore())
             //.AfterMap((pr, p) =>

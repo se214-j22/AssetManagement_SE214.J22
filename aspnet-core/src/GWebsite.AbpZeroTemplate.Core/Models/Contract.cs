@@ -9,27 +9,27 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
 {
     public partial class Contract : Entity<int>
     {
-        public int Index { get; set; }
+        public string Code { get; set; }
         public string Name { get; set; }
 
-        // ngày giao
         public DateTime DeliveryTime { get; set; }
 
-        // ghi chú
         public string Note { get; set; }
 
-        // hồ sơ thầu
-        public int BiddingId { get; set; }
-        public Bidding Bidding { get; set; }
+        public int BidProfileId { get; set; }
+        public BidProfile BidProfile { get; set; }
+
+        public int SupplierId { get; set; }
+        public Supplier Supplier { get; set; }
 
         public float TotalValueOfContract { get; set; }
         public float TotalValueOfImplementation { get; set; }
 
-        // bảo hành và bảo lãnh
+        public int Status { get; set; }
+
         public int GuaranteeId { get; set; }
         public Guarantee Guarantee { get; set; }
         public int GaranteeContractId { get; set; }
         public GaranteeContract GaranteeContract { get; set; }
-
     }
 }

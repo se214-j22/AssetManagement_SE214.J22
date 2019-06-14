@@ -14,9 +14,11 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Contract
     {
         Task<PagedResultDto<ContractDto>> GetContractsAsync(GetMenuClientInput input);
         Task<ContractDto> GetContractByIdAsync(EntityDto<int> input);
-        Task<ContractDto> CreateContractAsync( ContractSaved contractSaved);
-        Task<ContractDto> updateContractAsync(ContractSaved contractSaved);
+        Task<ContractDto> CreateContractAsync( ContractSavedDto contractSaved);
+        Task<ContractDto> updateContractAsync(ContractSavedDto contractSaved);
         Task DeleteContractAsync(EntityDto<int> input);
         Task<PagedResultDto<BidProfileDto>> GetApprovedBidProfile();
+        Task<ContractDto> ApproveContract(EntityDto<int> input);
+        Task<ContractDto> CloseContract(EntityDto<int> input);
     }
 }

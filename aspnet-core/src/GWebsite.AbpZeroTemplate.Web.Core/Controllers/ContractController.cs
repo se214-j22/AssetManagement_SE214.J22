@@ -22,6 +22,12 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
             this._ContractAppService = ContractService;
         }
 
+        [HttpPost]
+        public async Task<ContractDto> CreateContract(ContractSavedDto dto)
+        {
+            return await this._ContractAppService.CreateContractAsync(dto);
+        }
+
         [HttpGet]
         public async Task<PagedResultDto<ContractDto>> GetContracts(GetMenuClientInput input)
         {
@@ -34,20 +40,26 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
             return await this._ContractAppService.GetContractByIdAsync(input);
         }
 
+        [HttpGet("approve")]
+        public async Task<ContractDto> ApproveContract(EntityDto<int> input)
+        {
+            return await this._ContractAppService.ApproveContract(input);
+        }
+
+        [HttpGet("close")]
+        public async Task<ContractDto> CloseContract(EntityDto<int> input)
+        {
+            return await this._ContractAppService.CloseContract(input);
+        }
+
         [HttpGet("approvedBidProfile")]
         public async Task<PagedResultDto<BidProfileDto>> GetApprovedBidProfile()
         {
             return await this._ContractAppService.GetApprovedBidProfile();
         }
 
-        [HttpPost]
-        public async Task<ContractDto> CreateContract([FromBody]  ContractSaved ContractSaved)
-        {
-            return await this._ContractAppService.CreateContractAsync(ContractSaved);
-        }
-
         [HttpPut]
-        public async Task<ContractDto> updateContract([FromBody]  ContractSaved ContractSaved)
+        public async Task<ContractDto> updateContract([FromBody]  ContractSavedDto ContractSaved)
         {
             return await this._ContractAppService.updateContractAsync(ContractSaved);
         }
