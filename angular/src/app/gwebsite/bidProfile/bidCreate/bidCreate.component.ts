@@ -428,7 +428,7 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
             this.projectInfos.push(
                 new BidProfileTypeInfo(item.id, `${item.code} - ${item.name}`));
         });
-        this.bidProjectId = this.projectInfos[0].id;
+        this.bidProjectId = this.projectInfos[0].value; //id
     }
     public handelSelectsProduct(): void {
         this.productInfos = [];
@@ -436,7 +436,7 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
             this.productInfos.push(
                 new BidProfileTypeInfo(item.id, `${item.code} - ${item.name}`));
         });
-        this.bidCatalogProductId = this.productInfos[0].id;
+        this.bidCatalogProductId = this.productInfos[0].value; //id
     }
     public handelSelectsSupplier(): void {
         this.supplierInfos = [];
@@ -444,7 +444,7 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
             this.supplierInfos.push(
                 new BidProfileTypeInfo2(item.code, `${item.code} - ${item.name}`));
         });
-        this.newSupplierCode = this.supplierInfos[0].code;
+        this.newSupplierCode = this.supplierInfos[0].value; //code
     }
 
     addNewContractor(): void {
