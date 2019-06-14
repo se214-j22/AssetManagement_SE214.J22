@@ -61,3 +61,50 @@ export class BidProfileTypeInfo {
         this.label = info;
     }
 }
+
+export class BidProfileTypeInfo2 {
+    value: string;
+    label: string;
+    constructor(code: string, info: string) {
+        this.value = code;
+        this.label = info;
+    }
+}
+
+export enum ApprovalStatusEnum {
+    Active = 1,
+    Inactive = 2,
+    Close = 3
+}
+
+export enum StatusEnum {
+    Open = 1,
+    Close = 2,
+    All = 3
+}
+export class NewBidUnit {
+    bidProfileCode: string;
+
+    supplierCode: string;
+    submitDate: string;
+    proofNum: number;
+    beginCost: number;
+    bank: string;
+    note: string;
+    status: number;
+
+    constructor(thisBidProfileCode: string,
+        newSupplierCode: string, newSubmitDate: string, newProofNum: number, newBeginCost: number,
+        newBank: string, newNote: string, newStatus: number) {
+
+        this.bidProfileCode = thisBidProfileCode;
+
+        this.supplierCode = newSupplierCode;
+        this.submitDate = newSubmitDate;
+        this.proofNum = newProofNum;
+        this.beginCost = newBeginCost;
+        this.bank = newBank;
+        this.note = newNote;
+        this.status = newStatus;
+    }
+}

@@ -6,7 +6,6 @@ import * as _ from 'lodash';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
-import { CreateOrEditBidProfileModalComponent } from './create-or-edit-bidProfile-modal/create-or-edit-bidProfile-modal.component';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import * as moment from 'moment';
@@ -28,7 +27,6 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
      * @ViewChild là dùng get control và call thuộc tính, functions của control đó
      */
     @ViewChild('textsTable') textsTable: ElementRef;
-    @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditBidProfileModalComponent;
     @ViewChild('dataTable') dataTable: Table;
     @ViewChild('paginator') paginator: Paginator;
 
@@ -69,6 +67,29 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         {
             id: BidTypeEnum.AppointContractors,
             name: 'Appoint Contractors'
+        }
+    ];
+
+    public bidProfileFakes = [
+        {
+            id: 1,
+            code: 'S001',
+            name: 'Purchase early in the year',
+            bidCatalog: 'ProductCode1',
+            startReceivedDate: '05/11/2018',
+            endReceivedDate: '06/11/2018',
+            projectCode: 'ProjectCode1',
+            bidType: 1
+        },
+        {
+            id: 2,
+            code: 'S002',
+            name: 'Purchase early in the year',
+            bidCatalog: 'ProductCode1',
+            startReceivedDate: '05/11/2018',
+            endReceivedDate: '06/11/2018',
+            projectCode: 'ProjectCode1',
+            bidType: 2
         }
     ];
 
@@ -161,7 +182,6 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
      bidCatalogFilterId = undefined;
      bidCatalogEditId;
      userPermission: any[]= [];
-     bidProfileFakes = [];
 
     //api 8.7, get all products có status=1(active hay open)
      productInfos = [];
@@ -330,21 +350,9 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         return abp.utils.truncateStringWithPostfix(text, 32, '...');
     }
 
-    //Refresh grid khi thực hiện create or edit thành công
-    refreshValueFromModal(): void {
-        if (this.createOrEditModal.bidProfile.id) {
-            for (let i = 0; i < this.primengTableHelper.records.length; i++) {
-                if (this.primengTableHelper.records[i].id === this.createOrEditModal.bidProfile.id) {
-                    this.primengTableHelper.records[i] = this.createOrEditModal.bidProfile;
-                    return;
-                }
-            }
-        } else { this.reloadPage(); }
-    }
-
     //hàm show view create BidProfile
     createBidProfile() {
-        this.createOrEditModal.show();
+        this._router.navigate(['app/gwebsite/bidProfile/create']);
     }
 
      searchBidProfile(): void {
@@ -373,7 +381,7 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
     }
 
      actionEdit(row: any, $event: Event): void {
-        // $event.stopPropagation();
+        $event.stopPropagation();
         this.oldObject['name'] = row.name;
         this.oldObject['bidCatalog'] = row.bidCatalog; // 1, 2, 3, ...
         this.oldObject['bidType'] = row.bidType; // 1, 2
@@ -387,6 +395,8 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
     }
 
      saveEditItem(id: number, row: any, $event: Event): void {
+        $event.stopPropagation();
+
         if (this.isPermissionEditCloseActive && row.name && row.name !== '') {
 
             // vì bên html đã tự bind [(ngModel)] vào row.name và row.note rồi, nên ở đây ta chỉ cần lấy ra giá trị để update
@@ -412,6 +422,8 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
     }
 
      cancelEdit(row: any, $event: Event): void {
+        $event.stopPropagation();
+
         row.name = this.oldObject['name'];
         row.bidCatalog = this.oldObject['bidCatalog'];
 
@@ -432,12 +444,18 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
     }
 
     //chỉ những người có permission mới đc phép thực thi action với PC
-     removePcItem(id: number, row: any, index: number): void {
+     removePcItem(id: number, row: any, index: number, $event: Event): void {
+        $event.stopPropagation();
+
         if (this.isPermissionEditCloseActive) {
             // dựa vào id truyền vào, remove
 
             this.primengTableHelper.records.splice(index, 1);
         }
         this.primengTableHelper.hideLoadingIndicator();
+    }
+
+    public gotoBidDetail(bidId: number, $event: Event): void {
+        this._router.navigate(['app/gwebsite/bidProfile/detail/', bidId]);
     }
 }

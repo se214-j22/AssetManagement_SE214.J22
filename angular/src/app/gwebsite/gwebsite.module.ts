@@ -43,8 +43,8 @@ import { MyDatePickerModule } from 'mydatepicker';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { CreateOrEditSupplierModalComponent } from './supplier/create-or-edit-supplier-modal/create-or-edit-supplier-modal.component';
 import { BidProfileComponent } from './bidProfile/bidProfile.component';
-import { CreateOrEditBidProfileModalComponent } from './bidProfile/create-or-edit-bidProfile-modal/create-or-edit-bidProfile-modal.component';
-
+import { BidDetailComponent } from './bidProfile/bidDetail/bidDetail.component';
+import { BidCreateComponent } from './bidProfile/bidCreate/bidCreate.component';
 
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -84,7 +84,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         ProductCategoryComponent, CreateOrEditProductCategoryModalComponent,
         PlanComponent, CreateOrEditPlanModalComponent, SubPlanComponent,
         ProjectComponent, CreateOrEditProjectModalComponent,
-        BidProfileComponent, CreateOrEditBidProfileModalComponent,
+        BidProfileComponent, BidDetailComponent, BidCreateComponent,
         PurchaseContractComponent, CreateOrEditPurchaseContractModalComponent,
         PurchaseOrderComponent, CreateOrEditPurchaseOrderModalComponent,
         SubmissionComponent, CreateOrEditSubmissionModalComponent,

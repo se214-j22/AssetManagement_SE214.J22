@@ -12,6 +12,8 @@ import { PurchaseOrderComponent } from './purchaseOrder/purchaseOrder.component'
 import { SubmissionComponent } from './submission/submission.component';
 import { SubPlanComponent } from './plan/sub-plan/sub-plan.component';
 import { BidProfileComponent } from './bidProfile/bidProfile.component';
+import { BidDetailComponent } from './bidProfile/bidDetail/bidDetail.component';
+import { BidCreateComponent } from './bidProfile/bidCreate/bidCreate.component';
 
 
 @NgModule({
@@ -96,6 +98,14 @@ import { BidProfileComponent } from './bidProfile/bidProfile.component';
                         path: 'bidProfile', component: BidProfileComponent,
                         data: { permission: 'Pages.Administration.BidProfile' }
                     },
+                    {
+                        path: 'bidProfile/detail/:id', component: BidDetailComponent,
+                        data: { permission: 'Pages.Administration.BidProfile' }
+                    },
+                    {
+                        path: 'bidProfile/create', component: BidCreateComponent,
+                        data: { permission: 'Pages.Administration.BidProfile' }
+                    }
                 ]
             },
             {

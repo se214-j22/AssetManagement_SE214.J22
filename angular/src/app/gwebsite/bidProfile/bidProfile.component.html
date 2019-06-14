@@ -156,7 +156,7 @@
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record="$implicit" let-index="rowIndex">
-                                    <tr class="table-row text-center">
+                                    <tr class="table-row text-center" (click)="gotoBidDetail(record.id, $event)">
                                         <td style="width: 90px">
                                             <span class="ui-column-title">{{l('Number')}}</span>
                                             <span title="{{record.ordinalNumber}}">{{truncateString(index + 1)}}</span>
@@ -233,7 +233,7 @@
                                             </button> -->
                                             <button *ngIf="!record.isEdit" class="btn btn-danger"
                                                 [disabled]="record.isIncludeBidProfile" type="button"
-                                                (click)="removePcItem(record.id, record, index)"
+                                                (click)="removePcItem(record.id, record, index, $event)"
                                                 title="{{record.isIncludeBidProfile ? 'Cannot remove bidProfile exist reference': 'Delete this'}}">
                                                 Remove</button>
                                             </div>
@@ -261,5 +261,4 @@
             </div>
         </div>
     </div>
-    <createOrEditBidProfileModal #createOrEditModal (modalSave)="refreshValueFromModal()"></createOrEditBidProfileModal>
 </div>
