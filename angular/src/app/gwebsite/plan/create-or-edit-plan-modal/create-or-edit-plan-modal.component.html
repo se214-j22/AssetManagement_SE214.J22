@@ -47,7 +47,7 @@
                         <validation-messages [formCtrl]="nameInput"></validation-messages>
                     </div> -->
                     <div *ngIf="isExistAdd" class="primeng-datatable-container">
-                        <p-table #dataTable [value]="newProductTableList">
+                        <p-table #dataTable [value]="newBidUnits">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th pSortableColumn="ordinalNumber">

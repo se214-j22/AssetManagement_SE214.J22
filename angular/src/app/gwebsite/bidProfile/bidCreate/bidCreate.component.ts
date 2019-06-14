@@ -9,8 +9,7 @@ import { Table } from 'primeng/components/table/table';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import * as moment from 'moment';
-import { ApprovalStatusEnum, StatusEnum } from '../dto/bidProfile.dto';
-
+import { ApprovalStatusEnum, BidTypeEnum, StatusEnum, BidProfileTypeInfo, BidProfileTypeInfo2, NewBidUnit } from '../dto/bidProfile.dto';
 
 @Component({
     selector: 'app-bidCreate',
@@ -36,6 +35,48 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
     // sửa, đóng: department tạo ra bidCreate đó và Admin.
     // thêm: ai thêm cũng đc, ko phân quyền
     public isPermissionEditCloseActive = false;
+    public bidCatalogProductId: number;
+
+
+    //api 8.7, get all products có status=1(active hay open)
+    public productInfos = [];
+    public productFakes = [
+            {
+                id: 1,
+                code: 'Pd01',
+                name: 'Product1'
+            },
+            {
+                id: 2,
+                code: 'Pd02',
+                name: 'Product1'
+            },
+            {
+                id: 3,
+                code: 'Pd03',
+                name: 'Product1'
+            },
+            {
+                id: 4,
+                code: 'Pd04',
+                name: 'Product1'
+            },
+            {
+                id: 5,
+                code: 'Pd05',
+                name: 'Product1'
+            },
+            {
+                id: 6,
+                code: 'Pd06',
+                name: 'Product1'
+            }
+        ];
+
+    saving = false;
+
+    public bidProfileWinStatus = 2;
+    public bidProjectId: number;
 
     public status = StatusEnum.All;
     public statusEnum = StatusEnum;
@@ -54,7 +95,22 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
         }
     ];
 
-    public createDatePickerOptions: IMyDpOptions = {
+    public startDateString = '';
+    public endDateString = '';
+    public openDateString = '';
+
+
+    public newSupplierCode;
+    public newsupplierSubmitDateString = '';
+    public newProofNum;
+    public newBank;
+    public newBeginCost;
+    public newNotes;
+
+    public newBidUnits: Array<NewBidUnit> = [];
+
+
+    public datePickerOptions: IMyDpOptions = {
         selectorWidth: '240px',
         dateFormat: 'dd/mm/yyyy',
         showTodayBtn: true,
@@ -68,17 +124,18 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
         height: '37px',
         firstDayOfWeek: 'su',
         sunHighlight: true,
-        disableSince: {
+        disableUntil: {
             year: new Date().getFullYear(),
             month: new Date().getMonth() + 1,
-            day: new Date().getDate() + 1
+            day: new Date().getDate() - 1
         }
     };
+
     // public model: any = { date: { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate() } };
     // public model = new Date();
     public creatDateString = '';
-    public bidCreateCodeFilter = '';
-    public bidCreateNameFilter = '';
+    public bidProfileCode = '';
+    public bidCreateName = '';
 
     // -những dự án của năm cũ, sẽ tự động close (mỗi lần đến 1/1/newyear, sẽ trigger cho nó close hết bidCreates năm cũ),
     //      dù có đc approved hay chưa.
@@ -240,6 +297,8 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
         }
     ];
 
+    public isExistAdd = false;
+
     public oldObject = {};
 
     public approvalStatusEnum = ApprovalStatusEnum;
@@ -251,6 +310,87 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
         'font-size': '11px'
     };
     public header;
+
+    public bidTypeEnum = BidTypeEnum;
+    public bidType = 1;
+    public bidTypes = [
+        {
+            id: BidTypeEnum.Bidding,
+            name: 'Bidding'
+        },
+        {
+            id: BidTypeEnum.AppointContractors,
+            name: 'Appoint Contractors'
+        }
+    ];
+
+    public cautionMoney;
+
+    public note: string;
+
+    //get all supplier có status=1(active hay open),
+    // chỉ cần get 3 fields
+    supplierInfos = [];
+    public supplierFakes = [
+        {
+            id: 1,
+            code: 'SP01',
+            name: 'Supplier1'
+        },
+        {
+            id: 2,
+            code: 'SP02',
+            name: 'Supplier2'
+        },
+        {
+            id: 3,
+            code: 'SP03',
+            name: 'Supplier3'
+        },
+        {
+            id: 4,
+            code: 'SP04',
+            name: 'Supplier4'
+        }
+    ];
+
+    public projectInfos = [];
+    public allProjectFakes = [
+        {
+            id: 1,
+            code: 'Pd01',
+            name: 'Product1'
+        },
+        {
+            id: 2,
+            code: 'Pd02',
+            name: 'Product1'
+        },
+        {
+            id: 3,
+            code: 'Pd03',
+            name: 'Product1'
+        },
+        {
+            id: 4,
+            code: 'Pd04',
+            name: 'Product1'
+        },
+        {
+            id: 5,
+            code: 'Pd05',
+            name: 'Product1'
+        },
+        {
+            id: 6,
+            code: 'Pd06',
+            name: 'Product1'
+        }
+    ];
+
+    // get all bidUnit của bidProfile này.
+    public isAdd = false;
+
 
     constructor(
         injector: Injector,
@@ -266,6 +406,11 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
      */
     ngOnInit(): void {
         this.isPermissionEditCloseActive = true;
+
+        // call hàm này khi subcribe api 8.7 get all product success
+        this.handelSelectsProject();
+        this.handelSelectsProduct();
+        this.handelSelectsSupplier();
     }
 
     /**
@@ -275,6 +420,81 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
         setTimeout(() => {
             this.init();
         });
+    }
+    public handelSelectsProject(): void {
+        // filter products
+        this.projectInfos = [];
+        this.allProjectFakes.forEach((item, i) => {
+            this.projectInfos.push(
+                new BidProfileTypeInfo(item.id, `${item.code} - ${item.name}`));
+        });
+        this.bidProjectId = this.projectInfos[0].id;
+    }
+    public handelSelectsProduct(): void {
+        this.productInfos = [];
+        this.productFakes.forEach((item, i) => {
+            this.productInfos.push(
+                new BidProfileTypeInfo(item.id, `${item.code} - ${item.name}`));
+        });
+        this.bidCatalogProductId = this.productInfos[0].id;
+    }
+    public handelSelectsSupplier(): void {
+        this.supplierInfos = [];
+        this.supplierFakes.forEach((item, i) => {
+            this.supplierInfos.push(
+                new BidProfileTypeInfo2(item.code, `${item.code} - ${item.name}`));
+        });
+        debugger
+        this.newSupplierCode = this.supplierInfos[0].code;
+    }
+
+    addNewContractor(): void {
+        this.newBidUnits.push(new NewBidUnit(this.bidProfileCode, this.newSupplierCode, this.newsupplierSubmitDateString,
+            this.newProofNum, this.newBeginCost, this.newBank, this.newNotes, 2));
+            debugger
+    }
+
+    removeBidUnit(i: number): void {
+        this.newBidUnits.splice(i, 1);
+    }
+
+    cancelAdd(): void {
+
+        this.isAdd = false;
+    }
+
+    addSupplier(): void {
+        // if (this.isAdd && this.productCode && this.productCode !== 0 && this.quantity > 0) {
+        //     this.newProductTableList.push(new NewProductAddList(this.productCode, this.quantity, false));
+        //     this.productInfoList = this.productInfoList.filter(x => x.productCode !== this.productCode);
+        //     this.isAdd = false;
+            //newPlanProductList exist >= 1item
+            if (!this.isExistAdd) {
+                this.isExistAdd = true;
+            }
+        // }
+    }
+
+    public onDateChangedByStart(event: IMyDateModel): void {
+        const date = Object.assign({}, event);
+        this.startDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
+    }
+    public onDateChangedByEnd(event: IMyDateModel): void {
+        const date = Object.assign({}, event);
+        this.endDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
+    }
+    public onDateChangedByOpen(event: IMyDateModel): void {
+        const date = Object.assign({}, event);
+        this.openDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
+    }
+
+    public onDateChangedBySupplierSubmit(event: IMyDateModel): void {
+        const date = Object.assign({}, event);
+        this.newsupplierSubmitDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
+    }
+
+    public OpenAddSupplier(): void {
+        this.isAdd =  true;
     }
 
     /**
@@ -360,7 +580,7 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
     public searchBidCreate(): void {
         //3 params filter FE truyền vào api
         // filter, values default = ''
-        console.log(this.status + '--' + this.bidCreateCodeFilter + '--' + this.bidCreateNameFilter);
+        console.log(this.status + '--' + this.bidProfileCode + '--' + this.bidCreateName);
     }
 
     public onDateChangedBy(event: IMyDateModel): void {
@@ -417,4 +637,21 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
         }
         this.primengTableHelper.hideLoadingIndicator();
     }
+
+    save(): void {
+        this.saving = true;
+
+        this.newBidUnits.forEach((ele, index) => {
+            let radioButton = document.getElementById(`selectWinContractor-${index}`);
+            // if (radioButton.checked) {
+            //     ele.status = 1;
+            //     this.bidProfileWinStatus = 1;
+            // } else {
+            //     ele.status = 2;
+            // }
+        });
+        // save xong
+        this.saving = false;
+    }
+
 }
