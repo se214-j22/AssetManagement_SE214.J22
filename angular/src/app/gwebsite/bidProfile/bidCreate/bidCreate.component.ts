@@ -444,14 +444,12 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
             this.supplierInfos.push(
                 new BidProfileTypeInfo2(item.code, `${item.code} - ${item.name}`));
         });
-        debugger
         this.newSupplierCode = this.supplierInfos[0].code;
     }
 
     addNewContractor(): void {
         this.newBidUnits.push(new NewBidUnit(this.bidProfileCode, this.newSupplierCode, this.newsupplierSubmitDateString,
             this.newProofNum, this.newBeginCost, this.newBank, this.newNotes, 2));
-            debugger
     }
 
     removeBidUnit(i: number): void {
