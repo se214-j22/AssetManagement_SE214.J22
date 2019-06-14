@@ -1,7 +1,7 @@
-import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild, OnInit, OnChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild, OnInit, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
-import { CustomerServiceProxy, CustomerInput, AssetInput, AssetServiceProxy, AssetLine, AssetLineServiceProxy, AssetLineDto, ComboboxItemDto, OrganizationUnitServiceProxy, ListResultDtoOfOrganizationUnitDto, OrganizationUnitDto } from '@shared/service-proxies/service-proxies';
+import { CustomerServiceProxy, CustomerInput, AssetInput, AssetTypeServiceProxy, AssetType, AssetTypeDto, ManufacturerServiceProxy, Manufacturer, ManufacturerDto, AssetServiceProxy, AssetLine, AssetLineServiceProxy, AssetLineDto, ComboboxItemDto, OrganizationUnitServiceProxy, ListResultDtoOfOrganizationUnitDto, OrganizationUnitDto, SoftAssetInput } from '@shared/service-proxies/service-proxies';
 import jsQR from "jsqr";
 
 @Component({
@@ -9,11 +9,13 @@ import jsQR from "jsqr";
     templateUrl: './create-or-edit-asset-modal.component.html'
 })
 export class CreateOrEditAssetModalComponentGroup1 extends AppComponentBase implements OnInit {
-
-
     @ViewChild('createOrEditModal') modal: ModalDirective;
+    @ViewChild('assetTypeCombobox') assetTypeCombobox: ElementRef;
+    @ViewChild('manufacturerCombobox') manufacturerCombobox: ElementRef;
     @ViewChild('assetLineCombobox') assetLineCombobox: ElementRef;
     @ViewChild('statusCombobox') statusCombobox: ElementRef;
+    assetTypeComboboxs: ComboboxItemDto[] = [];
+    manufacturerComboboxs: ComboboxItemDto[] = [];
     assetLineComboboxs: ComboboxItemDto[] = [];
     organizationUnitComboboxs: ComboboxItemDto[] = [];
     statusComboboxs: ComboboxItemDto[] = [
@@ -29,94 +31,146 @@ export class CreateOrEditAssetModalComponentGroup1 extends AppComponentBase impl
 
     modifyMultipleAssetsMode = false;
     asset: AssetInput = new AssetInput();
+    assetTypeID: string;
+    manufacturerID: string;
+    processingAssetCodes: string[] = [];
+    completedAssetCodes: string[] = [];
+    errorAssetCodes: string[] = [];
+    assetTypes: AssetTypeDto[] = new Array<AssetTypeDto>();
+    manufacturers: ManufacturerDto[] = new Array<ManufacturerDto>();
     assetLines: AssetLineDto[] = new Array<AssetLineDto>();
     beingCreated: boolean;
     status: 'IS_DAMAGED' | 'RESTING' | 'USING';
     OUs: ListResultDtoOfOrganizationUnitDto;
     mainOU: OrganizationUnitDto;
-    assetCode: string;
+    // assetCode: string;
 
     constructor(
         injector: Injector,
         private _assetService: AssetServiceProxy,
+        private _assetTypeService: AssetTypeServiceProxy,
+        private _manufacturerService: ManufacturerServiceProxy,
         private _assetLineService: AssetLineServiceProxy,
         private _organizationUnitService: OrganizationUnitServiceProxy
     ) {
         super(injector);
-        console.log('cre_cons', this);
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.assetTypeID && changes.assetTypeID.currentValue && changes.assetTypeID.currentValue != changes.assetTypeID.previousValue
+            || changes.manufacturerID && changes.manufacturerID.currentValue && changes.manufacturerID.currentValue != changes.manufacturerID.previousValue) {
+            this._assetLineService.getByFilter(undefined, changes.assetTypeID.currentValue, changes.manufacturerID.currentValue, undefined, 999, undefined).subscribe(result => {
+                if (result) {
+                    this.assetLines = result.items;
+                    this.assetLineComboboxs = result.items.map(m => {
+                        return new ComboboxItemDto({ value: m.id.toString(), displayText: m.name, isSelected: false })
+                    })
+                    setTimeout(() => {
+                        $(this.assetLineCombobox.nativeElement).selectpicker('refresh');
+                    }, 0);
+                }
+            });
+        }
+        if (changes.asset && changes.asset.currentValue.assetLineID != changes.assetTypeID.previousValue.assetLineID) {
+            this._assetLineService.getById(changes.asset.currentValue.assetLineID).subscribe(al => {
+                this.assetTypeID = al.assetType.id.toString();
+                this.manufacturerID = al.manufacturer.id.toString();
+                setTimeout(() => {
+                    $(this.assetTypeCombobox.nativeElement).selectpicker('refresh');
+                    $(this.manufacturerCombobox.nativeElement).selectpicker('refresh');
+                }, 0);
+            })
+        }
+
+
     }
 
     ngOnInit() {
-        console.log('cre_on', this);
         this._organizationUnitService.getOrganizationUnit().subscribe(ou =>
             this.mainOU = ou);
         this._organizationUnitService.getOrganizationUnits().subscribe(ous => {
-            this.OUs = ous;
-            this.organizationUnitComboboxs = ous.items.filter(ou => ou.id != this.mainOU.id).map(ou => {
-                return new ComboboxItemDto({ value: ou.id.toString(), displayText: ou.displayName, isSelected: false })
-            })
-        }
-        );
+            if (ous) {
+                this.OUs = ous;
+                this.organizationUnitComboboxs = ous.items.filter(ou => ou.id != this.mainOU.id).map(ou => {
+                    return new ComboboxItemDto({ value: ou.id.toString(), displayText: ou.displayName, isSelected: false })
+                })
+            }
+        });
+
+        this._assetTypeService.getByFilter(undefined, undefined, 999, undefined).subscribe(result => {
+            if (result) {
+                this.assetTypes = result.items;
+                this.assetTypeComboboxs = result.items.map(at => {
+                    return new ComboboxItemDto({ value: at.id.toString(), displayText: at.name, isSelected: false })
+                })
+            }
+        });
+
+
+        this._manufacturerService.getByFilter(undefined, undefined, 999, undefined).subscribe(result => {
+            if (result) {
+                this.manufacturers = result.items;
+                this.manufacturerComboboxs = result.items.map(m => {
+                    return new ComboboxItemDto({ value: m.id.toString(), displayText: m.name, isSelected: false })
+                })
+            }
+        });
+
         this._assetLineService.getByFilter(undefined, undefined, undefined, undefined, 999, undefined).subscribe(result => {
             if (result) {
                 this.assetLines = result.items;
-                this.assetLineComboboxs = result.items.map(al => {
-                    return new ComboboxItemDto({ value: al.id.toString(), displayText: al.name, isSelected: false })
+                this.assetLineComboboxs = result.items.map(m => {
+                    return new ComboboxItemDto({ value: m.id.toString(), displayText: m.name, isSelected: false })
                 })
             }
         });
     }
 
-    getAssetByCode() {
-        this._assetService.getByCode(this.assetCode).subscribe(asset => {
-          if( asset!=null)
-          {
-           this.show(asset.id);
-          }
-        });
-      }
-
     startup() {
-        // this.video = document.createElement("video");
         this.video = document.getElementById('video');
         this.canvas = document.getElementById('canvas');
         this.context = this.canvas.getContext('2d');
-        // const nav = <any>navigator;
-        // nav.getUserMedia = nav.getUserMedia || nav.mozGetUserMedia || nav.webkitGetUserMedia;
-    
         navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false })
-          .then((stream) => {
-            this.video.srcObject = stream;
-            this.video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-            this.video.play();
-            requestAnimationFrame(this.decodeQRCode);
-          });
-    
-      }
-      video: any;
-      canvas: any;
-      context: any;
-      decodeQRCode = () => {
+            .then((stream) => {
+                this.video.srcObject = stream;
+                this.video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+                this.video.play();
+                requestAnimationFrame(this.decodeQRCode);
+            });
+
+    }
+    video: any;
+    canvas: any;
+    context: any;
+    decodeQRCode = () => {
         // console.log(this.video.readyState);
         if (this.video.readyState === this.video.HAVE_ENOUGH_DATA) {
-          this.canvas.height = this.video.videoHeight;
-          this.canvas.width = this.video.videoWidth;
-          this.context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
-          var imageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
-          var code = jsQR(imageData.data, imageData.width, imageData.height, {
-            inversionAttempts: "dontInvert",
-          });
-          if (code && code.data) {
-            console.log("Found QR code", code.data);
-            this.assetCode = code.data;
-            this.getAssetByCode();
-          }
-          // else { console.log("Not found QR code", code); }
-          requestAnimationFrame(this.decodeQRCode)
+            this.canvas.height = this.video.videoHeight;
+            this.canvas.width = this.video.videoWidth;
+            this.context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
+            var imageData = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+            var code = jsQR(imageData.data, imageData.width, imageData.height, {
+                inversionAttempts: "dontInvert",
+            });
+            if (code && code.data) {
+                console.log("Found QR code", code.data);
+                if (this.processingAssetCodes.some(c => c == code.data)
+                    || this.completedAssetCodes.some(c => c == code.data)) {
+                    this.notify.info('This asset have aready edited!');
+                }
+                else {
+                    this.processingAssetCodes.push(code.data);
+                    this.editAsset(code.data);
+                }
+                setTimeout(() => requestAnimationFrame(this.decodeQRCode), 2000);
+            }
+            else {
+                requestAnimationFrame(this.decodeQRCode);
+            }
         }
         else
-          requestAnimationFrame(this.decodeQRCode);
-      }
+            requestAnimationFrame(this.decodeQRCode);
+    }
 
     getStatus() {
         if (this.asset.isDamaged)
@@ -132,20 +186,32 @@ export class CreateOrEditAssetModalComponentGroup1 extends AppComponentBase impl
     }
 
     showForModify(): void {
+        this.processingAssetCodes = [];
+        this.completedAssetCodes = [];
+        this.errorAssetCodes = [];
         this.saving = false;
+        this.assetTypeID = String(0);
+        this.manufacturerID = String(0);
+        this.asset.assetLineID = 0;
         this.modifyMultipleAssetsMode = true;
-        this.asset.isDamaged = false;
         this.beingCreated = false;
+        this.asset.isDamaged = false;
         this.getStatus();
         this.modal.show();
         setTimeout(() => {
             this.startup()
+            $(this.assetTypeCombobox.nativeElement).selectpicker('refresh');
+            $(this.manufacturerCombobox.nativeElement).selectpicker('refresh');
             $(this.assetLineCombobox.nativeElement).selectpicker('refresh');
             $(this.statusCombobox.nativeElement).selectpicker('refresh');
         }, 0);
     }
-    
+
     show(assetId?: number | null | undefined): void {
+        this.assetTypeID = String(0);
+        this.manufacturerID = String(0);
+        this.modifyMultipleAssetsMode = false;
+        console.log(assetId);
         this.saving = false;
         console.log(this);
         this._assetService.getForEdit(assetId).subscribe(result2 => {
@@ -161,19 +227,45 @@ export class CreateOrEditAssetModalComponentGroup1 extends AppComponentBase impl
                 }
                 else {
                     this.beingCreated = false;
+                    this._assetLineService.getById(this.asset.assetLineID).subscribe(al => {
+                        this.assetTypeID = al.assetType.id.toString();
+                        this.manufacturerID = al.manufacturer.id.toString();
+                        setTimeout(() => {
+                            $(this.assetTypeCombobox.nativeElement).selectpicker('refresh');
+                            $(this.manufacturerCombobox.nativeElement).selectpicker('refresh');
+                        }, 0);
+                    })
                 }
                 console.log(this);
                 this.getStatus();
                 this.modal.show();
                 setTimeout(() => {
+                    $(this.assetTypeCombobox.nativeElement).selectpicker('refresh');
+                    $(this.manufacturerCombobox.nativeElement).selectpicker('refresh');
                     $(this.assetLineCombobox.nativeElement).selectpicker('refresh');
                     $(this.statusCombobox.nativeElement).selectpicker('refresh');
                 }, 0);
             }
         })
     }
+    editAsset(code: string) {
+        this.asset.isDamaged = this.status == 'IS_DAMAGED';
+        if (this.status == 'IS_DAMAGED' || this.status == 'RESTING')
+            this.asset.organizationUnitId = this.mainOU.id;
+        let softUpdateAsset = new SoftAssetInput(Object.assign(this.asset, { code: code }));
+        this.saving = true;
+        this._assetService.softUpdate(softUpdateAsset).subscribe(result => {
+            this.processingAssetCodes = this.processingAssetCodes.filter(c => c != code);
+            this.completedAssetCodes.push(code);
+            this.notify.info(this.l('SavedSuccessfully'));
+        },
+            error => {
+                this.processingAssetCodes = this.processingAssetCodes.filter(c => c != code);
+                this.errorAssetCodes.push(code);
+            })
+    }
 
-    save(): void {
+    save(multiple = false): void {
         this.asset.isDamaged = this.status == 'IS_DAMAGED';
         if (this.status == 'IS_DAMAGED' || this.status == 'RESTING')
             this.asset.organizationUnitId = this.mainOU.id;
@@ -181,9 +273,9 @@ export class CreateOrEditAssetModalComponentGroup1 extends AppComponentBase impl
         this.saving = true;
         this._assetService.createOrEdit(input).subscribe(result => {
             this.notify.info(this.l('SavedSuccessfully'));
-            this.close();
+            if (!multiple)
+                this.close();
         })
-
     }
 
     close(): void {

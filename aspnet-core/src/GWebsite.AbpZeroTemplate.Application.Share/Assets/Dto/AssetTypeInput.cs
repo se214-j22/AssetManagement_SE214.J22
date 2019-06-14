@@ -13,5 +13,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Assets.Dto
         public string Code { get; set; }
         public string Name { get; set; }
         public int? ParentId { get; set; }
+        public string Descriptions { get; set; }
     }
 }

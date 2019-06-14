@@ -14,5 +14,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Assets
         Task CreateOrEdit(AssetInput assetInput);
         Task CreateAsync(AssetInput assetInput);
         Task DeleteAsync(int id);
+        Task SoftUpdateAsync(SoftAssetInput input);
     }
 }

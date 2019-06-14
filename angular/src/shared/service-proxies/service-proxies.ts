@@ -867,6 +867,58 @@ export class AssetServiceProxy {
     }
 
     /**
+     * @input (optional) 
+     * @return Success
+     */
+    softUpdate(input: SoftAssetInput | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/Asset/SoftUpdate";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(input);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSoftUpdate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSoftUpdate(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processSoftUpdate(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
      * @return Success
      */
     delete(id: number): Observable<void> {
@@ -11875,6 +11927,7 @@ export class AssetDto implements IAssetDto {
     isDamaged!: boolean | undefined;
     organizationUnitId!: number | undefined;
     assetLine!: AssetLine | undefined;
+    note!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: IAssetDto) {
@@ -11892,6 +11945,7 @@ export class AssetDto implements IAssetDto {
             this.isDamaged = data["isDamaged"];
             this.organizationUnitId = data["organizationUnitId"];
             this.assetLine = data["assetLine"] ? AssetLine.fromJS(data["assetLine"]) : <any>undefined;
+            this.note = data["note"];
             this.id = data["id"];
         }
     }
@@ -11909,6 +11963,7 @@ export class AssetDto implements IAssetDto {
         data["isDamaged"] = this.isDamaged;
         data["organizationUnitId"] = this.organizationUnitId;
         data["assetLine"] = this.assetLine ? this.assetLine.toJSON() : <any>undefined;
+        data["note"] = this.note;
         data["id"] = this.id;
         return data; 
     }
@@ -11919,6 +11974,7 @@ export interface IAssetDto {
     isDamaged: boolean | undefined;
     organizationUnitId: number | undefined;
     assetLine: AssetLine | undefined;
+    note: string | undefined;
     id: number | undefined;
 }
 
@@ -11929,6 +11985,8 @@ export class AssetLine implements IAssetLine {
     manufacturerID!: number | undefined;
     assetType!: AssetType | undefined;
     manufacturer!: Manufacturer | undefined;
+    descriptions!: string | undefined;
+    image!: string | undefined;
     createdDate!: moment.Moment | undefined;
     createdBy!: string | undefined;
     updatedDate!: moment.Moment | undefined;
@@ -11953,6 +12011,8 @@ export class AssetLine implements IAssetLine {
             this.manufacturerID = data["manufacturerID"];
             this.assetType = data["assetType"] ? AssetType.fromJS(data["assetType"]) : <any>undefined;
             this.manufacturer = data["manufacturer"] ? Manufacturer.fromJS(data["manufacturer"]) : <any>undefined;
+            this.descriptions = data["descriptions"];
+            this.image = data["image"];
             this.createdDate = data["createdDate"] ? moment(data["createdDate"].toString()) : <any>undefined;
             this.createdBy = data["createdBy"];
             this.updatedDate = data["updatedDate"] ? moment(data["updatedDate"].toString()) : <any>undefined;
@@ -11977,6 +12037,8 @@ export class AssetLine implements IAssetLine {
         data["manufacturerID"] = this.manufacturerID;
         data["assetType"] = this.assetType ? this.assetType.toJSON() : <any>undefined;
         data["manufacturer"] = this.manufacturer ? this.manufacturer.toJSON() : <any>undefined;
+        data["descriptions"] = this.descriptions;
+        data["image"] = this.image;
         data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
         data["createdBy"] = this.createdBy;
         data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
@@ -11994,6 +12056,8 @@ export interface IAssetLine {
     manufacturerID: number | undefined;
     assetType: AssetType | undefined;
     manufacturer: Manufacturer | undefined;
+    descriptions: string | undefined;
+    image: string | undefined;
     createdDate: moment.Moment | undefined;
     createdBy: string | undefined;
     updatedDate: moment.Moment | undefined;
@@ -12006,6 +12070,7 @@ export class AssetType implements IAssetType {
     code!: string | undefined;
     name!: string | undefined;
     parentId!: number | undefined;
+    descriptions!: string | undefined;
     createdDate!: moment.Moment | undefined;
     createdBy!: string | undefined;
     updatedDate!: moment.Moment | undefined;
@@ -12027,6 +12092,7 @@ export class AssetType implements IAssetType {
             this.code = data["code"];
             this.name = data["name"];
             this.parentId = data["parentId"];
+            this.descriptions = data["descriptions"];
             this.createdDate = data["createdDate"] ? moment(data["createdDate"].toString()) : <any>undefined;
             this.createdBy = data["createdBy"];
             this.updatedDate = data["updatedDate"] ? moment(data["updatedDate"].toString()) : <any>undefined;
@@ -12048,6 +12114,7 @@ export class AssetType implements IAssetType {
         data["code"] = this.code;
         data["name"] = this.name;
         data["parentId"] = this.parentId;
+        data["descriptions"] = this.descriptions;
         data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
         data["createdBy"] = this.createdBy;
         data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
@@ -12062,6 +12129,7 @@ export interface IAssetType {
     code: string | undefined;
     name: string | undefined;
     parentId: number | undefined;
+    descriptions: string | undefined;
     createdDate: moment.Moment | undefined;
     createdBy: string | undefined;
     updatedDate: moment.Moment | undefined;
@@ -12073,6 +12141,8 @@ export interface IAssetType {
 export class Manufacturer implements IManufacturer {
     code!: string | undefined;
     name!: string | undefined;
+    descriptions!: string | undefined;
+    logo!: string | undefined;
     createdDate!: moment.Moment | undefined;
     createdBy!: string | undefined;
     updatedDate!: moment.Moment | undefined;
@@ -12093,6 +12163,8 @@ export class Manufacturer implements IManufacturer {
         if (data) {
             this.code = data["code"];
             this.name = data["name"];
+            this.descriptions = data["descriptions"];
+            this.logo = data["logo"];
             this.createdDate = data["createdDate"] ? moment(data["createdDate"].toString()) : <any>undefined;
             this.createdBy = data["createdBy"];
             this.updatedDate = data["updatedDate"] ? moment(data["updatedDate"].toString()) : <any>undefined;
@@ -12113,6 +12185,8 @@ export class Manufacturer implements IManufacturer {
         data = typeof data === 'object' ? data : {};
         data["code"] = this.code;
         data["name"] = this.name;
+        data["descriptions"] = this.descriptions;
+        data["logo"] = this.logo;
         data["createdDate"] = this.createdDate ? this.createdDate.toISOString() : <any>undefined;
         data["createdBy"] = this.createdBy;
         data["updatedDate"] = this.updatedDate ? this.updatedDate.toISOString() : <any>undefined;
@@ -12126,6 +12200,8 @@ export class Manufacturer implements IManufacturer {
 export interface IManufacturer {
     code: string | undefined;
     name: string | undefined;
+    descriptions: string | undefined;
+    logo: string | undefined;
     createdDate: moment.Moment | undefined;
     createdBy: string | undefined;
     updatedDate: moment.Moment | undefined;
@@ -12139,6 +12215,7 @@ export class AssetInput implements IAssetInput {
     assetLineID!: number | undefined;
     isDamaged!: boolean | undefined;
     organizationUnitId!: number | undefined;
+    note!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: IAssetInput) {
@@ -12156,6 +12233,7 @@ export class AssetInput implements IAssetInput {
             this.assetLineID = data["assetLineID"];
             this.isDamaged = data["isDamaged"];
             this.organizationUnitId = data["organizationUnitId"];
+            this.note = data["note"];
             this.id = data["id"];
         }
     }
@@ -12173,6 +12251,7 @@ export class AssetInput implements IAssetInput {
         data["assetLineID"] = this.assetLineID;
         data["isDamaged"] = this.isDamaged;
         data["organizationUnitId"] = this.organizationUnitId;
+        data["note"] = this.note;
         data["id"] = this.id;
         return data; 
     }
@@ -12183,6 +12262,63 @@ export interface IAssetInput {
     assetLineID: number | undefined;
     isDamaged: boolean | undefined;
     organizationUnitId: number | undefined;
+    note: string | undefined;
+    id: number | undefined;
+}
+
+export class SoftAssetInput implements ISoftAssetInput {
+    code!: string | undefined;
+    assetLineID!: number | undefined;
+    isDamaged!: boolean | undefined;
+    organizationUnitId!: number | undefined;
+    note!: string | undefined;
+    id!: number | undefined;
+
+    constructor(data?: ISoftAssetInput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.code = data["code"];
+            this.assetLineID = data["assetLineID"];
+            this.isDamaged = data["isDamaged"];
+            this.organizationUnitId = data["organizationUnitId"];
+            this.note = data["note"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): SoftAssetInput {
+        data = typeof data === 'object' ? data : {};
+        let result = new SoftAssetInput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["assetLineID"] = this.assetLineID;
+        data["isDamaged"] = this.isDamaged;
+        data["organizationUnitId"] = this.organizationUnitId;
+        data["note"] = this.note;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ISoftAssetInput {
+    code: string | undefined;
+    assetLineID: number | undefined;
+    isDamaged: boolean | undefined;
+    organizationUnitId: number | undefined;
+    note: string | undefined;
     id: number | undefined;
 }
 
@@ -12239,6 +12375,8 @@ export class AssetLineDto implements IAssetLineDto {
     name!: string | undefined;
     assetType!: AssetTypeDto | undefined;
     manufacturer!: ManufacturerDto | undefined;
+    descriptions!: string | undefined;
+    image!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: IAssetLineDto) {
@@ -12256,6 +12394,8 @@ export class AssetLineDto implements IAssetLineDto {
             this.name = data["name"];
             this.assetType = data["assetType"] ? AssetTypeDto.fromJS(data["assetType"]) : <any>undefined;
             this.manufacturer = data["manufacturer"] ? ManufacturerDto.fromJS(data["manufacturer"]) : <any>undefined;
+            this.descriptions = data["descriptions"];
+            this.image = data["image"];
             this.id = data["id"];
         }
     }
@@ -12273,6 +12413,8 @@ export class AssetLineDto implements IAssetLineDto {
         data["name"] = this.name;
         data["assetType"] = this.assetType ? this.assetType.toJSON() : <any>undefined;
         data["manufacturer"] = this.manufacturer ? this.manufacturer.toJSON() : <any>undefined;
+        data["descriptions"] = this.descriptions;
+        data["image"] = this.image;
         data["id"] = this.id;
         return data; 
     }
@@ -12283,6 +12425,8 @@ export interface IAssetLineDto {
     name: string | undefined;
     assetType: AssetTypeDto | undefined;
     manufacturer: ManufacturerDto | undefined;
+    descriptions: string | undefined;
+    image: string | undefined;
     id: number | undefined;
 }
 
@@ -12290,6 +12434,7 @@ export class AssetTypeDto implements IAssetTypeDto {
     code!: string | undefined;
     name!: string | undefined;
     parentId!: number | undefined;
+    descriptions!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: IAssetTypeDto) {
@@ -12306,6 +12451,7 @@ export class AssetTypeDto implements IAssetTypeDto {
             this.code = data["code"];
             this.name = data["name"];
             this.parentId = data["parentId"];
+            this.descriptions = data["descriptions"];
             this.id = data["id"];
         }
     }
@@ -12322,6 +12468,7 @@ export class AssetTypeDto implements IAssetTypeDto {
         data["code"] = this.code;
         data["name"] = this.name;
         data["parentId"] = this.parentId;
+        data["descriptions"] = this.descriptions;
         data["id"] = this.id;
         return data; 
     }
@@ -12331,12 +12478,15 @@ export interface IAssetTypeDto {
     code: string | undefined;
     name: string | undefined;
     parentId: number | undefined;
+    descriptions: string | undefined;
     id: number | undefined;
 }
 
 export class ManufacturerDto implements IManufacturerDto {
     code!: string | undefined;
     name!: string | undefined;
+    descriptions!: string | undefined;
+    logo!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: IManufacturerDto) {
@@ -12352,6 +12502,8 @@ export class ManufacturerDto implements IManufacturerDto {
         if (data) {
             this.code = data["code"];
             this.name = data["name"];
+            this.descriptions = data["descriptions"];
+            this.logo = data["logo"];
             this.id = data["id"];
         }
     }
@@ -12367,6 +12519,8 @@ export class ManufacturerDto implements IManufacturerDto {
         data = typeof data === 'object' ? data : {};
         data["code"] = this.code;
         data["name"] = this.name;
+        data["descriptions"] = this.descriptions;
+        data["logo"] = this.logo;
         data["id"] = this.id;
         return data; 
     }
@@ -12375,6 +12529,8 @@ export class ManufacturerDto implements IManufacturerDto {
 export interface IManufacturerDto {
     code: string | undefined;
     name: string | undefined;
+    descriptions: string | undefined;
+    logo: string | undefined;
     id: number | undefined;
 }
 
@@ -12383,6 +12539,8 @@ export class AssetLineInput implements IAssetLineInput {
     name!: string | undefined;
     assetTypeID!: number | undefined;
     manufacturerID!: number | undefined;
+    descriptions!: string | undefined;
+    image!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: IAssetLineInput) {
@@ -12400,6 +12558,8 @@ export class AssetLineInput implements IAssetLineInput {
             this.name = data["name"];
             this.assetTypeID = data["assetTypeID"];
             this.manufacturerID = data["manufacturerID"];
+            this.descriptions = data["descriptions"];
+            this.image = data["image"];
             this.id = data["id"];
         }
     }
@@ -12417,6 +12577,8 @@ export class AssetLineInput implements IAssetLineInput {
         data["name"] = this.name;
         data["assetTypeID"] = this.assetTypeID;
         data["manufacturerID"] = this.manufacturerID;
+        data["descriptions"] = this.descriptions;
+        data["image"] = this.image;
         data["id"] = this.id;
         return data; 
     }
@@ -12427,6 +12589,8 @@ export interface IAssetLineInput {
     name: string | undefined;
     assetTypeID: number | undefined;
     manufacturerID: number | undefined;
+    descriptions: string | undefined;
+    image: string | undefined;
     id: number | undefined;
 }
 
@@ -12482,6 +12646,7 @@ export class AssetTypeInput implements IAssetTypeInput {
     code!: string | undefined;
     name!: string | undefined;
     parentId!: number | undefined;
+    descriptions!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: IAssetTypeInput) {
@@ -12498,6 +12663,7 @@ export class AssetTypeInput implements IAssetTypeInput {
             this.code = data["code"];
             this.name = data["name"];
             this.parentId = data["parentId"];
+            this.descriptions = data["descriptions"];
             this.id = data["id"];
         }
     }
@@ -12514,6 +12680,7 @@ export class AssetTypeInput implements IAssetTypeInput {
         data["code"] = this.code;
         data["name"] = this.name;
         data["parentId"] = this.parentId;
+        data["descriptions"] = this.descriptions;
         data["id"] = this.id;
         return data; 
     }
@@ -12523,6 +12690,7 @@ export interface IAssetTypeInput {
     code: string | undefined;
     name: string | undefined;
     parentId: number | undefined;
+    descriptions: string | undefined;
     id: number | undefined;
 }
 
@@ -16515,6 +16683,8 @@ export interface IPagedResultDtoOfManufacturerDto {
 export class ManufacturerInput implements IManufacturerInput {
     code!: string | undefined;
     name!: string | undefined;
+    descriptions!: string | undefined;
+    logo!: string | undefined;
     id!: number | undefined;
 
     constructor(data?: IManufacturerInput) {
@@ -16530,6 +16700,8 @@ export class ManufacturerInput implements IManufacturerInput {
         if (data) {
             this.code = data["code"];
             this.name = data["name"];
+            this.descriptions = data["descriptions"];
+            this.logo = data["logo"];
             this.id = data["id"];
         }
     }
@@ -16545,6 +16717,8 @@ export class ManufacturerInput implements IManufacturerInput {
         data = typeof data === 'object' ? data : {};
         data["code"] = this.code;
         data["name"] = this.name;
+        data["descriptions"] = this.descriptions;
+        data["logo"] = this.logo;
         data["id"] = this.id;
         return data; 
     }
@@ -16553,6 +16727,8 @@ export class ManufacturerInput implements IManufacturerInput {
 export interface IManufacturerInput {
     code: string | undefined;
     name: string | undefined;
+    descriptions: string | undefined;
+    logo: string | undefined;
     id: number | undefined;
 }
 

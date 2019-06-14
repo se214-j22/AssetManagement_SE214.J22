@@ -12,5 +12,8 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Assets.Dto
         public string Name { get; set; }
         public AssetTypeDto AssetType { get; set; }
         public ManufacturerDto Manufacturer { get; set; }
+        public string Descriptions { get; set; }
+        public string Image { get; set; }
+        public string Price { get; set; }
     }
 }

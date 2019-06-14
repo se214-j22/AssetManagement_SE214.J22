@@ -27,19 +27,23 @@
                             <p>{{manufacturer.name}}</p>
                         </div>
                     </div>
-          <!--#endregion -->
-                </div>
-            </div>
-              <div class="modal-footer">
-                  <button [disabled]="saving" type="button" class="btn btn-default"
-                      (click)="close()">{{l("Cancel")}}</button>
-                                <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
-                                    [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
-                                    <span>{{l("Save")}}</span></button>
-                        </div>
-
-
+                    <div class='col-6'>
+                        <img src="{{manufacturer.logo}}" alt="manufacturer logo" style="max-width:150px">
                     </div>
-
+                    <div class="col-12 form-group" *ngIf='manufacturer.descriptions'>
+                        <label>Descriptions</label>
+                        <p>{{manufacturer.descriptions}}</p>
+                    </div>
                 </div>
+                <!--#endregion -->
             </div>
+            <div class="modal-footer">
+                <button (click)="close()" type="submit" class="btn btn-primary" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i></i>
+                    <span>{{l("OK")}}</span></button>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>

@@ -1,11 +1,11 @@
-<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form #editForm="ngForm" novalidate (ngSubmit)="save()">
                 <div class="modal-header">
                     <h4 class="modal-title">
-                        <span *ngIf="manufacturer.id">Updating Manufacturer {{manufacturer.code}}</span>
+                        <span *ngIf="manufacturer.id">Updating Manufacturer {{manufacturer.name}}</span>
                         <span *ngIf="!manufacturer.id">Creating Manufacturer</span>
                     </h4>
                     <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
@@ -15,22 +15,33 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>CODE*</label>
-                        <input #codeInput="ngModel" class="form-control" type="text" name="Code"
-                            [(ngModel)]="manufacturer.code" required minlength = '3' maxlength="3" [disabled]='!beingCreated'>
+                        <input #codeInput="ngModel" class="form-control" type="text" name="Code" [(ngModel)]="manufacturer.code"
+                            required minlength='3' maxlength="3" [disabled]='!beingCreated'>
                         <validation-messages [formCtrl]="codeInput"></validation-messages>
                     </div>
                     <div class="form-group">
                         <label>Name*</label>
-                        <input #nameInput="ngModel" class="form-control" type="text" name="Name"
-                            [(ngModel)]="manufacturer.name" required maxlength="64">
+                        <input #nameInput="ngModel" class="form-control" type="text" name="Name" [(ngModel)]="manufacturer.name"
+                            required maxlength="64">
                         <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Logo*</label>
+                        <input #logoInput="ngModel" class="form-control" type="text" name="Logo" [(ngModel)]="manufacturer.logo"
+                            required>
+                        <validation-messages [formCtrl]="logoInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Descriptions</label>
+                        <input #descriptionsInput="ngModel" class="form-control" type="text" name="Descriptions"
+                            [(ngModel)]="manufacturer.descriptions">
+                        <validation-messages [formCtrl]="descriptionsInput"></validation-messages>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button [disabled]="saving" type="button" class="btn btn-default"
-                        (click)="close()">{{l("Cancel")}}</button>
-                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
-                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i
+                            class="fa fa-save"></i>
                         <span>{{l("Save")}}</span></button>
                 </div>
             </form>

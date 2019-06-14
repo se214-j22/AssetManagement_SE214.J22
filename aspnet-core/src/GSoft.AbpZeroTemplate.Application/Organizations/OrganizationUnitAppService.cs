@@ -317,20 +317,38 @@ namespace GSoft.AbpZeroTemplate.Organizations
         [AbpAuthorize(AppPermissions.Pages_Administration_OrganizationUnits_ManageWarehouse)]
         public async Task<WarehouseStatus> GetWarehouseStatus()
         {
+
             var user = GetCurrentUser();
-            var organizationUnitId = (await _userOrganizationUnitRepository.FirstOrDefaultAsync(uo => uo.UserId == user.Id))?.OrganizationUnitId;
-            if(organizationUnitId == null)  //this case occurs when current user granted organization unit permission don't have organization unit.
-                return new WarehouseStatus { AllNumber = 0, RestingNumber = 0, DamagedNumber = 0, UsingNumber = 0 };
-            var childrendOrgIds = from o in _organizationUnitRepository.GetAll() where (o.ParentId == organizationUnitId) select o.Id;
-            var usingNumber = (from po in _assetOrganizationUnitRepository.GetAll()
-                                   where childrendOrgIds.Contains(po.OrganizationUnitId) && po.Asset.IsDamaged == false && po.Asset.IsDelete == false
-                               select po).Count();
-            var allNumber = (from po in _assetOrganizationUnitRepository.GetAll()
-                                where (organizationUnitId == po.OrganizationUnitId || childrendOrgIds.Contains(po.OrganizationUnitId)) && po.Asset.IsDelete == false
+            int usingNumber, allNumber, damagedNumber;
+            if (await userManager.IsInRoleAsync(user, "Admin")) //admin
+            {
+               
+                usingNumber = (from po in _assetOrganizationUnitRepository.GetAll()
+                                   where po.OrganizationUnit.ParentId!=null && po.Asset.IsDamaged == false && po.Asset.IsDelete == false
+                                   select po).Count();
+                allNumber = (from po in _assetOrganizationUnitRepository.GetAll()
+                                 where po.Asset.IsDelete == false
                                  select po).Count();
-            var damagedNumber = (from po in _assetOrganizationUnitRepository.GetAll()
-                                 where (organizationUnitId == po.OrganizationUnitId|| childrendOrgIds.Contains(po.OrganizationUnitId)) && po.Asset.IsDamaged == true && po.Asset.IsDelete == false
+                damagedNumber = (from po in _assetOrganizationUnitRepository.GetAll()
+                                     where po.Asset.IsDamaged == true && po.Asset.IsDelete == false
+                                     select po.Asset).Count();
+            }
+            else
+            {
+                var organizationUnitId = (await _userOrganizationUnitRepository.FirstOrDefaultAsync(uo => uo.UserId == user.Id))?.OrganizationUnitId;
+                if (organizationUnitId == null)  //this case occurs when current user granted organization unit permission don't have organization unit.
+                    return new WarehouseStatus { AllNumber = 0, RestingNumber = 0, DamagedNumber = 0, UsingNumber = 0 };
+                var childrendOrgIds = from o in _organizationUnitRepository.GetAll() where (o.ParentId == organizationUnitId) select o.Id;
+                usingNumber = (from po in _assetOrganizationUnitRepository.GetAll()
+                               where childrendOrgIds.Contains(po.OrganizationUnitId) && po.Asset.IsDamaged == false && po.Asset.IsDelete == false
+                               select po).Count();
+                allNumber = (from po in _assetOrganizationUnitRepository.GetAll()
+                             where (organizationUnitId == po.OrganizationUnitId || childrendOrgIds.Contains(po.OrganizationUnitId)) && po.Asset.IsDelete == false
+                             select po).Count();
+                damagedNumber = (from po in _assetOrganizationUnitRepository.GetAll()
+                                 where (organizationUnitId == po.OrganizationUnitId || childrendOrgIds.Contains(po.OrganizationUnitId)) && po.Asset.IsDamaged == true && po.Asset.IsDelete == false
                                  select po.Asset).Count();
+            }
             return new WarehouseStatus { AllNumber = allNumber, RestingNumber = allNumber - usingNumber - damagedNumber, DamagedNumber = damagedNumber, UsingNumber = usingNumber };
         }
 

@@ -11,3 +11,14 @@ app-root > ng-component {
   flex: 1;
   flex-direction: column;
 }
+label{
+  display: inline-block;
+  font-weight: bold;
+  width: 100px;
+}
+.not-block{
+  display: unset;
+}
+p{
+  display: inline-block;
+}

@@ -1,5 +1,5 @@
-<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form #editForm="ngForm" novalidate (ngSubmit)="save()">
@@ -14,10 +14,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Asset Line*</label>
-                        <select [disabled]='!beingCreated' #assetTypeCombobox autofocus name="assetTypeName"
-                            class="form-control" [(ngModel)]="assetLine.assetTypeID" [attr.data-live-search]="true"
-                            jq-plugin="selectpdateInputker" required>
+                        <label>Asset Type*</label>
+                        <select [disabled]='!beingCreated' #assetTypeCombobox autofocus name="assetTypeName" class="form-control"
+                            [(ngModel)]="assetLine.assetTypeID" [attr.data-live-search]="true" jq-plugin="selectpdateInputker"
+                            required>
                             <option value="">{{emptyText}}</option>
                             <option *ngFor="let item of assetTypeComboboxs" [value]="item.value">{{item.displayText}}
                             </option>
@@ -35,22 +35,33 @@
                     </div>
                     <div class="form-group">
                         <label>CODE*</label>
-                        <input #codeInput="ngModel" class="form-control" type="text" name="Code"
-                            [(ngModel)]="assetLine.code" required maxlength="64" [disabled]='!beingCreated'>
+                        <input #codeInput="ngModel" class="form-control" type="text" name="Code" [(ngModel)]="assetLine.code"
+                            required maxlength="64" [disabled]='!beingCreated'>
                         <validation-messages [formCtrl]="codeInput"></validation-messages>
                     </div>
                     <div class="form-group">
                         <label>Name*</label>
-                        <input #nameInput="ngModel" class="form-control" type="text" name="Name"
-                            [(ngModel)]="assetLine.name" required maxlength="64">
+                        <input #nameInput="ngModel" class="form-control" type="text" name="Name" [(ngModel)]="assetLine.name"
+                            required maxlength="64">
                         <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Image*</label>
+                        <input #imageInput="ngModel" class="form-control" type="text" name="Image" [(ngModel)]="assetLine.image"
+                            required>
+                        <validation-messages [formCtrl]="imageInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Descriptions</label>
+                        <input #descriptionsInput="ngModel" class="form-control" type="text" name="Descriptions"
+                            [(ngModel)]="assetLine.descriptions">
+                        <validation-messages [formCtrl]="descriptionsInput"></validation-messages>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button [disabled]="saving" type="button" class="btn btn-default"
-                        (click)="close()">{{l("Cancel")}}</button>
-                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
-                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i
+                            class="fa fa-save"></i>
                         <span>{{l("Save")}}</span></button>
                 </div>
             </form>
