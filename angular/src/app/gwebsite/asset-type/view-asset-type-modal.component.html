@@ -27,6 +27,10 @@
                             <p>{{assetType.name}}</p>
                         </div>
                         <div class="form-group">
+                            <label>Depreciation Rate</label>
+                            <p>{{assetType.depreciationRate}}%</p>
+                        </div>
+                        <div class="form-group">
                             <label>Descriptions</label>
                             <p>{{assetType.descriptions}}</p>
                         </div>
@@ -35,7 +39,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button (click)="close()" type="submit" class="btn btn-primary" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i></i>
+                <button (click)="close()" type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                    [busyText]="l('SavingWithThreeDot')"><i></i>
                     <span>{{l("OK")}}</span></button>
             </div>
 

@@ -18,6 +18,7 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
     @ViewChild('assetLineCombobox') assetLineCombobox: ElementRef;
     @ViewChild('statusCombobox') statusCombobox: ElementRef;
     assetTypeComboboxs: ComboboxItemDto[] = [];
+    assetTypes: AssetTypeDto[] = [];
     manufacturerComboboxs: ComboboxItemDto[] = [];
     assetLineComboboxs: ComboboxItemDto[] = [];
     organizationUnitComboboxs: ComboboxItemDto[] = [];
@@ -36,17 +37,16 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
     asset: AssetInput = new AssetInput();
     assetTypeID: string;
     manufacturerID: string;
+    depreciationRate: number;
     processingAssetCodes: string[] = [];
     completedAssetCodes: string[] = [];
     errorAssetCodes: string[] = [];
-    assetTypes: AssetTypeDto[] = new Array<AssetTypeDto>();
     manufacturers: ManufacturerDto[] = new Array<ManufacturerDto>();
     assetLines: AssetLineDto[] = new Array<AssetLineDto>();
     beingCreated: boolean;
     status: 'IS_DAMAGED' | 'RESTING' | 'USING';
     OUs: ListResultDtoOfOrganizationUnitDto;
     mainOU: OrganizationUnitDto;
-    // assetCode: string;
 
     constructor(
         injector: Injector,
@@ -62,17 +62,7 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
     ngOnChanges(changes: SimpleChanges) {
         if (changes.assetTypeID && changes.assetTypeID.currentValue && changes.assetTypeID.currentValue != changes.assetTypeID.previousValue
             || changes.manufacturerID && changes.manufacturerID.currentValue && changes.manufacturerID.currentValue != changes.manufacturerID.previousValue) {
-            this._assetLineService.getByFilter(undefined, changes.assetTypeID.currentValue, changes.manufacturerID.currentValue, undefined, 999, undefined).subscribe(result => {
-                if (result) {
-                    this.assetLines = result.items;
-                    this.assetLineComboboxs = result.items.map(m => {
-                        return new ComboboxItemDto({ value: m.id.toString(), displayText: m.name, isSelected: false })
-                    })
-                    setTimeout(() => {
-                        $(this.assetLineCombobox.nativeElement).selectpicker('refresh');
-                    }, 0);
-                }
-            });
+            
         }
         if (changes.asset && changes.asset.currentValue.assetLineID != changes.assetTypeID.previousValue.assetLineID) {
             this._assetLineService.getById(changes.asset.currentValue.assetLineID).subscribe(al => {
@@ -129,6 +119,36 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
         });
     }
 
+    refreshAssetLine(){
+        this._assetLineService.getByFilter(undefined, Number(this.assetTypeID), Number(this.manufacturerID), undefined, 999, undefined).subscribe(result => {
+            if (result) {
+                this.assetLines = result.items;
+                this.assetLineComboboxs = result.items.map(m => {
+                    return new ComboboxItemDto({ value: m.id.toString(), displayText: m.name, isSelected: false })
+                })
+                setTimeout(() => {
+                    $(this.assetLineCombobox.nativeElement).selectpicker('refresh');
+                }, 0);
+            }
+        });
+    }
+    onChangeAssetType(e) {
+        this.refreshAssetLine();
+        // this.depreciationRate = this.assetTypes.find(at => at.id==e).depreciationRate;
+    }
+    onChangeManufacturer(e){
+        this.refreshAssetLine();
+    }
+    onChangeAssetLine(e){
+        this._assetLineService.getById(this.asset.assetLineID).subscribe(al => {
+            this.assetTypeID = al.assetType.id.toString();
+            this.manufacturerID = al.manufacturer.id.toString();
+            setTimeout(() => {
+                $(this.assetTypeCombobox.nativeElement).selectpicker('refresh');
+                $(this.manufacturerCombobox.nativeElement).selectpicker('refresh');
+            }, 0);
+        })
+    }
     startup() {
         this.video = document.getElementById('video');
         this.canvas = document.getElementById('canvas');

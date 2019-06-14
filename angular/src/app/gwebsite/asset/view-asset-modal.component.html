@@ -26,45 +26,62 @@
                             <img src="{{asset.assetLine?.image}}" alt="asset line image" style="width:100%">
                         </div>
                         <div class="form-group col-6">
-                            <img src="{{asset.assetLine?.manufacturer?.logo}}" alt="manufacturer logo" style="width:100%">
+                            <img src="{{asset.assetLine?.manufacturer?.logo}}" alt="manufacturer logo"
+                                style="width:100%">
                         </div>
                         <div class='col-12'>
                             <div class="form-group">
-                                <label>Id</label>
+                                <label class='width100'>Id</label>
                                 <p>{{asset.id}}</p>
                             </div>
                             <div class="form-group">
-                                <label>CODE</label>
+                                <label class='width100'>CODE</label>
                                 <p>{{asset.code}}</p>
                             </div>
                         </div>
 
                         <div class="form-group col-12">
-                            <label>Name</label>
+                            <label class='width100'>Name</label>
                             <p>{{asset.assetLine?.assetType?.name}} {{asset.assetLine?.manufacturer?.name}}
                                 {{asset.assetLine?.name}}</p>
                         </div>
                         <div class="form-group col-12">
-                            <label>Type</label>
+                            <label class='width100'>Type</label>
                             <p>{{asset.assetLine?.assetType?.name}}</p>
                         </div>
                         <div class="form-group col-12">
-                            <label>Manufacturer</label>
+                            <label class='width100'>Manufacturer</label>
                             <p>{{asset.assetLine?.manufacturer?.name}}</p>
                         </div>
 
 
                         <div class="form-group col-12">
-                            <label>Line</label>
+                            <label class='width100'>Line</label>
                             <p>{{asset.assetLine?.name}}</p>
                         </div>
                     </div>
                     <div class="form-group col-12" *ngIf='asset.assetLine?.descriptions'>
-                            <label>Descriptions</label>
-                            <p>{{asset.assetLine?.descriptions}}</p>
-                        </div>
+                        <label class='width100'>Descriptions</label>
+                        <p>{{asset.assetLine?.descriptions}}</p>
+                    </div>
+                    <div class='col-6'>
+                        <label class='width100'>Months Count Of Depreciation</label>
+                        <p>{{asset.depreciationMonths}}</p>
+                    </div>
+                    <div class='col-6'>
+                        <label class='width100'>Depreciation Rate</label>
+                        <p>{{asset.assetType?.depreciationRate}}%</p>
+                    </div>
+                    <div class='col-6'>
+                        <label class='width100'>Full Depreciation Price</label>
+                        <p>{{asset.fullDepreciationPrice}}$</p>
+                    </div>
+                    <div class="form-group col-6">
+                        <label class='width100'>Depreciation Value</label>
+                        <p>{{asset.depreciationValue}}$</p>
+                    </div>
                     <div class="form-group col-12" *ngIf='asset.note'>
-                        <label>Note</label>
+                        <label class='width100'>Note</label>
                         <p>{{asset.note}}</p>
                     </div>
                     <!--#endregion -->

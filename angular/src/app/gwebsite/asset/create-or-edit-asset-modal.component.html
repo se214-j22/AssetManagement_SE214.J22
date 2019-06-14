@@ -18,7 +18,7 @@
                         <label>Asset Type*</label>
                         <select [disabled]='!beingCreated||modifyMultipleAssetsMode' #assetTypeCombobox autofocus
                             name="assetTypeName" class="form-control" [(ngModel)]="assetTypeID"
-                            [attr.data-live-search]="true" jq-plugin="selectpdateInputker" required>
+                            [attr.data-live-search]="true" jq-plugin="selectpdateInputker" required (change)="onChangeAssetType($event.target.value)">
                             <option value="">{{emptyText}}</option>
                             <option *ngFor="let item of assetTypeComboboxs" [value]="item.value">{{item.displayText}}
                             </option>
@@ -28,7 +28,7 @@
                         <label>Manufacturer*</label>
                         <select [disabled]='!beingCreated||modifyMultipleAssetsMode' #manufacturerCombobox autofocus
                             name="manufacturerName" class="form-control" [(ngModel)]="manufacturerID"
-                            [attr.data-live-search]="true" jq-plugin="selectpdateInputker" required>
+                            [attr.data-live-search]="true" jq-plugin="selectpdateInputker" required (change)="onChangeManufacturer($event.target.value)">
                             <option value="">{{emptyText}}</option>
                             <option *ngFor="let item of manufacturerComboboxs" [value]="item.value">{{item.displayText}}
                             </option>
@@ -38,7 +38,7 @@
                         <label>Asset Line*</label>
                         <select [disabled]='!beingCreated||modifyMultipleAssetsMode' #assetLineCombobox autofocus
                             name="assetLineName" class="form-control" [(ngModel)]="asset.assetLineID"
-                            [attr.data-live-search]="true" jq-plugin="selectpdateInputker" required>
+                            [attr.data-live-search]="true" jq-plugin="selectpdateInputker" required (change)="onChangeAssetLine($event.target.value)">
                             <option value="">{{emptyText}}</option>
                             <option *ngFor="let item of assetLineComboboxs" [value]="item.value">{{item.displayText}}
                             </option>
@@ -62,11 +62,41 @@
                                 {{item.displayText}}</option>
                         </select>
                     </div>
+                    <div class="form-group col-sm-6">
+                        <label>Months Count Of Depreciation</label>
+                        <input #depreciationMonthsInput="ngModel" class="form-control" type="number" name="Value"
+                            [(ngModel)]="asset.depreciationMonths" maxlength="256">
+                        <validation-messages [formCtrl]="depreciationMonthsInput"></validation-messages>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>Depreciation Rate (%)</label>
+                        <input disabled #depreciationRateInput="ngModel" class="form-control" type="number" step="0.01" name="Value"
+                            [(ngModel)]="depreciationRate" maxlength="256">
+                        <validation-messages [formCtrl]="depreciationRateInput"></validation-messages>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label>PO Number*</label>
+                        <input #pONumberInput="ngModel" class="form-control" type="number" name="Value"
+                            [(ngModel)]="asset.pONumber" required maxlength="256">
+                        <validation-messages [formCtrl]="pONumberInput"></validation-messages>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>Full Depreciation Price* ($)</label>
+                        <input #fullDepreciationPriceInput="ngModel" class="form-control" type="number" step="0.01" name="Value"
+                            [(ngModel)]="asset.fullDepreciationPrice" required maxlength="256">
+                        <validation-messages [formCtrl]="fullDepreciationPriceInput"></validation-messages>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>Depreciation Value* ($)</label>
+                        <input #depreciationValueInput="ngModel" class="form-control" type="number" step="0.01" name="Value"
+                            [(ngModel)]="asset.depreciationValue" maxlength="256">
+                        <validation-messages [formCtrl]="depreciationValueInput"></validation-messages>
+                    </div>
                     <div class="form-group col-sm-12">
                         <label>{{l("Note")}} </label>
                         <input #noteInput="ngModel" class="form-control" type="text" name="Value"
                             [(ngModel)]="asset.note" maxlength="256">
-                        <validation-messages [formCtrl]="valueInput"></validation-messages>
+                        <validation-messages [formCtrl]="noteInput"></validation-messages>
                     </div>
                     <div class="form-group col-sm-12" *ngIf='beingCreated'>
                         <label>Created Asset Number*</label>
