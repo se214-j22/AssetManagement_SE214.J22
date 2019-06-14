@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { MenuClientComponent } from '@app/gwebsite/menu-client/menu-client.component';
 import { DemoModelComponent } from './demo-model/demo-model.component';
 import { CustomerComponent } from './customer/customer.component';
-import { AssetComponent } from './asset/asset.component';
+import { AssetComponentGroup1 } from './asset-group1/asset.component';
 import { AssetLineComponent } from './asset-line/asset-line.component';
 import { AssetTypeComponent } from './asset-type/asset-type.component';
 import { ManufacturerComponent } from './manufacturer/manufacturer.component';
@@ -69,7 +69,7 @@ import { ManufacturerComponent } from './manufacturer/manufacturer.component';
                 path: '',
                 children: [
                     {
-                        path: 'asset', component: AssetComponent,
+                        path: 'asset-group1', component: AssetComponentGroup1,
                         data: { permission: 'Pages.Administration.Asset' }
                     },
                 ]

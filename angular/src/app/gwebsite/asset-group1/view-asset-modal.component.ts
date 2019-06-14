@@ -4,11 +4,11 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { AppComponentBase } from '@shared/common/app-component-base';
 
 @Component({
-    selector: 'viewAssetModal',
+    selector: 'viewAssetModalGroup1',
     templateUrl: './view-asset-modal.component.html',
     // styleUrls: ['./view-asset-modal.component.css']
 })
-export class ViewAssetModalComponent extends AppComponentBase implements OnInit {
+export class ViewAssetModalComponentGroup1 extends AppComponentBase implements OnInit {
     @Input() asset: AssetDto = new AssetDto();
     @ViewChild('viewModal') modal: ModalDirective;
     OU: ListResultDtoOfOrganizationUnitDto;

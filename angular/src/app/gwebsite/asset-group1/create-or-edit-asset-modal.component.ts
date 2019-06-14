@@ -5,10 +5,10 @@ import { CustomerServiceProxy, CustomerInput, AssetInput, AssetServiceProxy, Ass
 import jsQR from "jsqr";
 
 @Component({
-    selector: 'createOrEditAssetModal',
+    selector: 'createOrEditAssetModalGroup1',
     templateUrl: './create-or-edit-asset-modal.component.html'
 })
-export class CreateOrEditAssetModalComponent extends AppComponentBase implements OnInit {
+export class CreateOrEditAssetModalComponentGroup1 extends AppComponentBase implements OnInit {
 
 
     @ViewChild('createOrEditModal') modal: ModalDirective;

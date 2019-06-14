@@ -10,19 +10,19 @@ import { Table } from 'primeng/components/table/table';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import { DemoModelServiceProxy, AssetServiceProxy, AssetDto, OrganizationUnitServiceProxy, OrganizationUnitDto } from '@shared/service-proxies/service-proxies';
 import jsQR from "jsqr";
-import { ViewAssetModalComponent } from './view-asset-modal.component';
-import { CreateOrEditAssetModalComponent } from './create-or-edit-asset-modal.component';
+import { ViewAssetModalComponentGroup1 } from './view-asset-modal.component';
+import { CreateOrEditAssetModalComponentGroup1 } from './create-or-edit-asset-modal.component';
 
 @Component({
   templateUrl: './asset.component.html',
   animations: [appModuleAnimation()]
 })
-export class AssetComponent extends AppComponentBase implements OnInit, AfterViewInit {
+export class AssetComponentGroup1 extends AppComponentBase implements OnInit, AfterViewInit {
   // @ViewChild('textsTable') textsTable: ElementRef;
   @ViewChild('dataTable') dataTable: Table;
   @ViewChild('paginator') paginator: Paginator;
-  @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditAssetModalComponent;
-  @ViewChild('viewModal') viewModal: ViewAssetModalComponent;
+  @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditAssetModalComponentGroup1;
+  @ViewChild('viewModal') viewModal: ViewAssetModalComponentGroup1;
   filterTerm: string;
   asset: AssetDto;
   assetId: number;
