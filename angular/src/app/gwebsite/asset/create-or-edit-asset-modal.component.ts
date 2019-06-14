@@ -21,6 +21,8 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
     assetTypes: AssetTypeDto[] = [];
     manufacturerComboboxs: ComboboxItemDto[] = [];
     assetLineComboboxs: ComboboxItemDto[] = [];
+    assetLines: AssetLineDto[] = new Array<AssetLineDto>();
+    manufacturers: ManufacturerDto[] = new Array<ManufacturerDto>();
     organizationUnitComboboxs: ComboboxItemDto[] = [];
     statusComboboxs: ComboboxItemDto[] = [
         new ComboboxItemDto({ value: 'IS_DAMAGED', isSelected: false, displayText: 'Damaged' }),
@@ -41,8 +43,6 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
     processingAssetCodes: string[] = [];
     completedAssetCodes: string[] = [];
     errorAssetCodes: string[] = [];
-    manufacturers: ManufacturerDto[] = new Array<ManufacturerDto>();
-    assetLines: AssetLineDto[] = new Array<AssetLineDto>();
     beingCreated: boolean;
     status: 'IS_DAMAGED' | 'RESTING' | 'USING';
     OUs: ListResultDtoOfOrganizationUnitDto;
@@ -62,7 +62,7 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
     ngOnChanges(changes: SimpleChanges) {
         if (changes.assetTypeID && changes.assetTypeID.currentValue && changes.assetTypeID.currentValue != changes.assetTypeID.previousValue
             || changes.manufacturerID && changes.manufacturerID.currentValue && changes.manufacturerID.currentValue != changes.manufacturerID.previousValue) {
-            
+
         }
         if (changes.asset && changes.asset.currentValue.assetLineID != changes.assetTypeID.previousValue.assetLineID) {
             this._assetLineService.getById(changes.asset.currentValue.assetLineID).subscribe(al => {
@@ -119,7 +119,7 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
         });
     }
 
-    refreshAssetLine(){
+    refreshAssetLine() {
         this._assetLineService.getByFilter(undefined, Number(this.assetTypeID), Number(this.manufacturerID), undefined, 999, undefined).subscribe(result => {
             if (result) {
                 this.assetLines = result.items;
@@ -134,12 +134,16 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
     }
     onChangeAssetType(e) {
         this.refreshAssetLine();
-        // this.depreciationRate = this.assetTypes.find(at => at.id==e).depreciationRate;
+        this.depreciationRate = this.assetTypes.find(at => at.id == e).depreciationRate;
     }
-    onChangeManufacturer(e){
+    onChangeManufacturer(e) {
         this.refreshAssetLine();
     }
-    onChangeAssetLine(e){
+    onChangeAssetLine(e) {
+        if (!e) {
+            this.assetTypeID = String(0);
+            this.manufacturerID = String(0);
+        };
         this._assetLineService.getById(this.asset.assetLineID).subscribe(al => {
             this.assetTypeID = al.assetType.id.toString();
             this.manufacturerID = al.manufacturer.id.toString();
@@ -148,6 +152,8 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
                 $(this.manufacturerCombobox.nativeElement).selectpicker('refresh');
             }, 0);
         })
+        if (this.asset.fullDepreciationPrice == null)
+            this.asset.fullDepreciationPrice = Number(this.assetLines.find(al => al.id == e).price);
     }
     startup() {
         this.video = document.getElementById('video');
@@ -215,10 +221,9 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
         this.saving = false;
         this.assetTypeID = String(0);
         this.manufacturerID = String(0);
-        this.asset.assetLineID = 0;
+        this.asset = new AssetInput();
         this.modifyMultipleAssetsMode = true;
         this.beingCreated = false;
-        this.asset.isDamaged = false;
         this.getStatus();
         this.modal.show();
         setTimeout(() => {
@@ -234,6 +239,7 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
         this.assetTypeID = String(0);
         this.manufacturerID = String(0);
         this.modifyMultipleAssetsMode = false;
+        this.depreciationRate = undefined;
         console.log(assetId);
         this.saving = false;
         console.log(this);
@@ -253,9 +259,11 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
                     this._assetLineService.getById(this.asset.assetLineID).subscribe(al => {
                         this.assetTypeID = al.assetType.id.toString();
                         this.manufacturerID = al.manufacturer.id.toString();
+                        this.depreciationRate = this.assetTypes.find(at => at.id == Number(this.assetTypeID)).depreciationRate;
                         setTimeout(() => {
                             $(this.assetTypeCombobox.nativeElement).selectpicker('refresh');
                             $(this.manufacturerCombobox.nativeElement).selectpicker('refresh');
+                            $(this.assetLineCombobox.nativeElement).selectpicker('refresh');
                         }, 0);
                     })
                 }

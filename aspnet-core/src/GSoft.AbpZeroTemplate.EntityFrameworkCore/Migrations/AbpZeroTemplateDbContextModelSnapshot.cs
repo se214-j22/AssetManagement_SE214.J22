@@ -1566,11 +1566,19 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<DateTime?>("CreatedDate");
 
+                    b.Property<int>("DepreciationMonths");
+
+                    b.Property<float>("DepreciationValue");
+
+                    b.Property<float>("FullDepreciationPrice");
+
                     b.Property<bool>("IsDamaged");
 
                     b.Property<bool>("IsDelete");
 
                     b.Property<string>("Note");
+
+                    b.Property<long>("PONumber");
 
                     b.Property<string>("UpdatedBy");
 
@@ -1607,6 +1615,8 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     b.Property<int>("ManufacturerID");
 
                     b.Property<string>("Name");
+
+                    b.Property<string>("Price");
 
                     b.Property<string>("UpdatedBy");
 
@@ -1652,6 +1662,8 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     b.Property<string>("CreatedBy");
 
                     b.Property<DateTime?>("CreatedDate");
+
+                    b.Property<float>("DepreciationRate");
 
                     b.Property<string>("Descriptions");
 
