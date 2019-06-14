@@ -17,27 +17,33 @@
                         <label>Tên khách hàng *</label>
                         <input #nameInput="ngModel" class="form-control" type="text" name="Name"
                             [(ngModel)]="customer.name" required maxlength="64">
-                        <validation-messages [formCtrl]="nameInput"></validation-messages>
                     </div>
                     <div class="form-group">
                         <label>Địa chỉ *</label>
                         <input #addressInput="ngModel" class="form-control" type="text" name="Address"
                             [(ngModel)]="customer.address" required maxlength="64">
-                        <validation-messages [formCtrl]="addressInput"></validation-messages>
                     </div>
                     <div class="form-group">
                         <label>Thông tin *</label>
                         <input #addressInput="ngModel" class="form-control" type="text" name="Info"
                             [(ngModel)]="customer.info" required maxlength="64">
-                        <validation-messages [formCtrl]="infoInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Đơn vị sử dụng *</label>
+                        <select [(ngModel)]='customer.organizationId'
+                            class='form-control' name="organizationId">
+                            <option *ngFor="let item of organizationUnits" [value]="item.id">
+                                {{item.code}} - {{item.displayName}}
+                            </option>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button [disabled]="saving" type="button" class="btn btn-default"
-                        (click)="close()">{{l("Cancel")}}</button>
+                        (click)="close()">{{l("Huỷ bỏ")}}</button>
                     <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
                         [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
-                        <span>{{l("Save")}}</span></button>
+                        <span>{{l("Lưu")}}</span></button>
                 </div>
             </form>
         </div>

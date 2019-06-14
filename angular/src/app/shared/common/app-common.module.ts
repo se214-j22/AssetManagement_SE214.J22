@@ -17,6 +17,7 @@ import { DatePickerDirective } from './timing/date-picker.component';
 import { DateRangePickerComponent } from './timing/date-range-picker.component';
 import { DateTimeService } from './timing/date-time.service';
 import { TimeZoneComboComponent } from './timing/timezone-combo.component';
+import { AssetLookupModalComponent } from './lookup/asset-lookup-modal.component';
 
 @NgModule({
     imports: [
@@ -34,14 +35,16 @@ import { TimeZoneComboComponent } from './timing/timezone-combo.component';
         JqPluginDirective,
         CommonLookupModalComponent,
         DateRangePickerComponent,
-        DatePickerDirective
+        DatePickerDirective,
+        AssetLookupModalComponent
     ],
     exports: [
         TimeZoneComboComponent,
         JqPluginDirective,
         CommonLookupModalComponent,
         DateRangePickerComponent,
-        DatePickerDirective
+        DatePickerDirective,
+        AssetLookupModalComponent
     ],
     providers: [
         DateTimeService,

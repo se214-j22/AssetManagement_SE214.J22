@@ -1,0 +1,94 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span *ngIf="revoke.id">{{l("Xem thông tin chi tiết thu hồi")}}: {{revoke.assetId}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <b>Ngày thu hồi: </b>
+                    <span>{{revoke.revokeDate}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Mã tài sản: </b>
+                    <span>{{revoke.assetId}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Tên tài sản: </b>
+                    <span>{{asset.assetName}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Loại tài sản: </b>
+                    <span *ngIf="asset.assetType == 0">Công cụ lao động</span>
+                    <span *ngIf="asset.assetType == 1">Tài sản cố định</span>
+                </div>
+                <div class="form-group">
+                    <b>Nhóm tài sản: </b>
+                    <span>{{assetGroup.assetGroupName}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Thông tin mô tả: </b>
+                    <span>{{asset.describe}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Tình trạng tài sản: </b>
+                    <span>{{asset.status}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Ngày bắt đầu khấu hao: </b>
+                    <span>{{asset.dateAdded}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Ngày kết thúc khấu hao: </b>
+                    <span>{{dateEndDepreciation}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Số tháng khấu hao: </b>
+                    <span>{{asset.monthOfDepreciation}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Giá trị khấu hao: </b>
+                    <span>{{asset.depreciationValue}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Nguyên giá tài sản: </b>
+                    <span>{{asset.originalPrice}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Giá trị khấu hao còn lại: </b>
+                    <span>{{remainingOfLiquidation}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Đơn vị sửa dụng: </b>
+                    <span>{{organizationUnit.displayName}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Người sử dụng: </b>
+                    <span>{{userUseAsset.name}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Lý do: </b>
+                    <span>{{revoke.reason}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Vị trí tài sản: </b>
+                    <span>{{revoke.currentLocationOfAssets}}</span>
+                </div>
+                <div class="form-group">
+                    <b>Nội dung thu hồi: </b>
+                    <span>{{revoke.revokeContent}}</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-default"
+                    (click)="close()">{{l("Đóng")}}</button>
+            </div>
+        </div>
+    </div>
+</div>

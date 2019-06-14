@@ -1,0 +1,150 @@
+<div [@routerTransition]>
+
+  <div class="m-subheader ">
+    <div class="d-flex align-items-center">
+      <div class="mr-auto col-xs-6">
+        <h3 class="m-subheader__title m-subheader__title--separator">
+          <span>{{l("Tài sản")}}</span>
+        </h3>
+        <span class="m-section__sub">
+          {{l("Tạo mới tài sản")}}
+        </span>
+      </div>
+      <div class="col-xs-6 text-right">
+        <button (click)="goBack()" class="btn btn-primary"><i class="fa fa-angle-left"></i> {{l("Quay lại")}}</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="m-content">
+    <div class="m-portlet m-portlet--mobile">
+      <div class="m-portlet__body">
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label style="font-weight: bold;">Ngày nhập *</label>
+              <input #nameInput="ngModel" readonly class="form-control" type="date" name="DateAdded"
+                (change)="onChange($event)" [(ngModel)]="asset.dateAdded" required>
+            </div>
+            <div class="form-group">
+              <label style="font-weight: bold;">Loại tài sản *</label>
+              <select *ngIf="!asset.id" #nameInput="ngModel" required [(ngModel)]='asset.assetType'
+                (change)="getListAssetGroupsByAssetType($event.target.value)" class='form-control' name="AssetType">
+                <option value='0'>Công cụ lao động</option>
+                <option value='1'>Tài sản cố định</option>
+              </select>
+              <input *ngIf="asset.id && asset.assetType == 0" value="Công cụ lao động" readonly class="form-control"
+                type="text" name="AssetType">
+              <input *ngIf="asset.id && asset.assetType == 1" value="Tài sản cố định" readonly class="form-control"
+                type="text" name="AssetType">
+            </div>
+            <div class="form-group">
+              <label style="font-weight: bold;">Nhóm tài sản *</label>
+              <select *ngIf="!asset.id" #nameInput="ngModel" required [(ngModel)]='asset.assetGrouptId'
+                class='form-control' name="AssetGrouptId" (change)="getAssetGroupByID($event.target.value)">
+                <option *ngFor="let item of assetGroups" [value]="item.assetGrouptId">
+                  {{item.assetGrouptId}} - {{item.assetGroupName}}
+                </option>
+              </select>
+              <input *ngIf="asset.id" [value]="assetGroup.assetGroupName" readonly class="form-control" type="text"
+                name="AssetType">
+            </div>
+            <div class="form-group">
+              <label style="font-weight: bold;">Số tháng khấu hao *</label>
+              <!-- <input *ngIf="!asset.id" readonly #nameInput="ngModel" class="form-control" type="number"
+                    name="MonthOfDepreciation" [(ngModel)]="asset.monthOfDepreciation" required maxlength="64"> -->
+              <!-- <div *ngIf="assetGroup.assetType == 0">
+                <input *ngIf="!asset.id" readonly #nameInput="ngModel" class="form-control" type="number"
+                  name="MonthOfDepreciation" [(ngModel)]="asset.monthOfDepreciation">
+              </div>
+              <div *ngIf="assetGroup.assetType != 0">
+                <input *ngIf="!asset.id && asset.monthOfDepreciation <= 0" #nameInput="ngModel" class="form-control"
+                  type="number" name="MonthOfDepreciation" [(ngModel)]="asset.monthOfDepreciation" required>
+                <input *ngIf="!asset.id && asset.monthOfDepreciation > 0" readonly #nameInput="ngModel"
+                  class="form-control" type="number" name="MonthOfDepreciation" [(ngModel)]="asset.monthOfDepreciation"
+                  [(value)]="assetGroup.monthOfDepreciation">
+              </div> -->
+              <input readonly class="form-control" type="number"
+                  name="MonthOfDepreciation" [(ngModel)]="asset.monthOfDepreciation">
+            </div>
+            <div class="form-group">
+              <label style="font-weight: bold;">Tỷ lệ khấu hao *</label>
+              <input readonly class="form-control" type="number" name="DepreciationRates"
+                [value]="assetGroup.depreciationRates" required>
+            </div>
+            <div class="form-group">
+              <label style="font-weight: bold;">Mã tài sản *</label>
+              <input #nameInput="ngModel" readonly class="form-control" type="text" name="AssetId"
+                [(ngModel)]="asset.assetId" required maxlength="10">
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label style="font-weight: bold;">Tên tài sản *</label>
+              <input #nameInput="ngModel" class="form-control" type="text" name="AssetName"
+                [(ngModel)]="asset.assetName" required maxlength="64">
+            </div>
+            <div class="form-group">
+              <label style="font-weight: bold;">Thông tin mô tả *</label>
+              <textarea #nameInput="ngModel" class="form-control" name="Describe" [(ngModel)]="asset.describe" required
+                rows="3">
+                                </textarea>
+            </div>
+            <div class="form-group">
+              <label style="font-weight: bold;">Nhà cung cấp *</label>
+              <select *ngIf="!asset.id" #nameInput="ngModel" required [(ngModel)]='asset.providerId'
+                class='form-control' name="ProviderId">
+                <option value='0'>Nhà cung cấp A</option>
+                <option value='1'>Nhà cung cấp B</option>
+                <option value='2'>Nhà cung cấp C</option>
+              </select>
+              <select *ngIf="asset.id" disabled #nameInput="ngModel" required [(ngModel)]='asset.providerId'
+                class='form-control' name="ProviderId">
+                <option value='0'>Nhà cung cấp A</option>
+                <option value='1'>Nhà cung cấp B</option>
+                <option value='2'>Nhà cung cấp C</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label style="font-weight: bold;">Nguyên giá tài sản *</label>
+              <input *ngIf="asset.id" readonly #nameInput="ngModel" class="form-control" type="number"
+                name="OriginalPrice" [(ngModel)]="asset.originalPrice" required>
+              <input *ngIf="!asset.id" #nameInput="ngModel" class="form-control" type="number" name="OriginalPrice"
+                [(ngModel)]="asset.originalPrice" required>
+            </div>
+            <div class="form-group">
+              <label style="font-weight: bold;">Giá trị khấu hao *</label>
+              <input *ngIf="!asset.id" #nameInput="ngModel" class="form-control" type="number" name="DepreciationValue"
+                [(ngModel)]="asset.depreciationValue" required>
+              <input *ngIf="asset.id" readonly #nameInput="ngModel" class="form-control" type="number"
+                name="DepreciationValue" [(ngModel)]="asset.depreciationValue" required>
+            </div>
+            <div class="form-group">
+              <label style="font-weight: bold;">Ghi chú *</label>
+              <textarea #nameInput="ngModel" class="form-control" name="Note" [(ngModel)]="asset.note" required
+                rows="3">
+                                </textarea>
+            </div>
+            <div class="form-group">
+              <label style="font-weight: bold;">Ngày hết hạn bảo hành *</label>
+              <input *ngIf="asset.id" readonly #nameInput="ngModel" class="form-control" type="date"
+                name="WarrantyExpiryDate" [(ngModel)]="asset.warrantyExpiryDate" required>
+              <input *ngIf="!asset.id" #nameInput="ngModel" class="form-control" type="date" name="WarrantyExpiryDate"
+                [(ngModel)]="asset.warrantyExpiryDate" required>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')" (click)="save()">
+          <i class="fa fa-save"></i>
+          <span>{{l("Lưu")}}</span>
+        </button>
+        <button type="submit" class="btn btn-danger" [disabled]="saving" (click)="clear()">
+          <i class="fa fa-times"></i>
+          <span>{{l("Xóa")}}</span>
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>

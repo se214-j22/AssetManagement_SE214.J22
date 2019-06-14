@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
-import { CustomerServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CustomerServiceProxy, OrganizationUnitServiceProxy, OrganizationUnitDto } from '@shared/service-proxies/service-proxies';
 import { CreateOrEditCustomerModalComponent } from './create-or-edit-customer-modal.component';
 
 @Component({
@@ -24,6 +24,8 @@ export class CustomerComponent extends AppComponentBase implements AfterViewInit
     @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditCustomerModalComponent;
     @ViewChild('viewCustomerModal') viewCustomerModal: ViewCustomerModalComponent;
 
+    organizationUnits: OrganizationUnitDto[] = [];
+
     /**
      * tạo các biến dể filters
      */
@@ -32,6 +34,7 @@ export class CustomerComponent extends AppComponentBase implements AfterViewInit
     constructor(
         injector: Injector,
         private _customerService: CustomerServiceProxy,
+        private _organizationService: OrganizationUnitServiceProxy,
         private _activatedRoute: ActivatedRoute,
     ) {
         super(injector);
@@ -61,6 +64,7 @@ export class CustomerComponent extends AppComponentBase implements AfterViewInit
             return;
         }
 
+        this.permission
         //show loading trong gridview
         this.primengTableHelper.showLoadingIndicator();
 
@@ -69,7 +73,6 @@ export class CustomerComponent extends AppComponentBase implements AfterViewInit
          */
 
         this.reloadList(null, event);
-
     }
 
     reloadList(customerName, event?: LazyLoadEvent) {
@@ -93,6 +96,12 @@ export class CustomerComponent extends AppComponentBase implements AfterViewInit
         //get params từ url để thực hiện filter
         this._activatedRoute.params.subscribe((params: Params) => {
             this.customerName = params['name'] || '';
+
+            this._organizationService.getOrganizationUnits().subscribe(result => {
+                this.organizationUnits = result.items;
+                console.log(this.organizationUnits);
+            })
+
             this.reloadList(this.customerName, null);
         });
     }
@@ -122,5 +131,15 @@ export class CustomerComponent extends AppComponentBase implements AfterViewInit
      */
     truncateString(text): string {
         return abp.utils.truncateStringWithPostfix(text, 32, '...');
+    }
+
+
+    getOrganizationUnitNameById(id: number): string {
+        const organizationsFound = this.organizationUnits.filter(organization => organization.id === id);
+        if (organizationsFound.length > 0) {
+            return organizationsFound[0].displayName;
+        } else {
+            return '';
+        }
     }
 }

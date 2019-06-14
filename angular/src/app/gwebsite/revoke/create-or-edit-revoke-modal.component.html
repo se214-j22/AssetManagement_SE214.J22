@@ -1,0 +1,118 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="revoke.id">Cập nhật thông tin thu hồi: {{revoke.assetId}}</span>
+                        <span *ngIf="!revoke.id">Tạo mới thu hồi tài sản</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Ngày thu hồi</label>
+                        <input readonly #addressInput="ngModel" class="form-control" type="date" name="RevokeDate"
+                            [(ngModel)]="revoke.revokeDate" required maxlength="64">
+                    </div>
+
+                    <!-- <div class="form-group">
+                        <label>Tài sản *</label>
+                        <select *ngIf="!revoke.id" #nameInput="ngModel" required [(ngModel)]='revoke.assetId'
+                            class='form-control' name="AssetID" (change)="getAssetByID($event.target.value)">
+                            <option *ngFor="let item of listAssetInUse" [value]="item.assetId">
+                                {{item.assetId}} - {{item.assetName}}
+                            </option>
+                        </select>
+                        <input *ngIf="revoke.id" readonly name="AssetID" [value]="assetSelect.assetName"
+                            class="form-control" type="text">
+                    </div> -->
+                    <!-- Open EmCampaign Lookup Modal -->
+                    <div class="form-group m-form__group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <button class="btn btn-success" (click)="openSelectAssetModal()" type="button"><i class="fa fa-search"></i> Chọn tài sản</button>
+                            </div>
+                            <input class="form-control" id="EmcampaignName" name="emCampaignName" value="{{assetSelect.assetName}}" type="text" disabled required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Loại tài sản *</label>
+                        <input readonly name="assetType" [value]="assetType" class="form-control" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Nhóm tài sản *</label>
+                        <input readonly name="assetGroupName" [value]="assetGroup.assetGroupName" class="form-control"
+                            type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Thông tin mô tả *</label>
+                        <input readonly name="describe" [value]="assetSelect.describe" class="form-control" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày bắt đầu khấu hao *</label>
+                        <input readonly name="DateAdded" [value]="assetSelect.dateAdded" class="form-control"
+                            type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Số tháng khấu hao *</label>
+                        <input readonly name="monthOfDepreciation" [value]="assetSelect.monthOfDepreciation"
+                            class="form-control" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày kết thúc khấu hao *</label>
+                        <input readonly class="form-control" [value]="dateEndDepreciation" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Nguyên giá tài sản *</label>
+                        <input readonly name="originalPrice" [value]="assetSelect.originalPrice" class="form-control"
+                            type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Giá trị khấu hao *</label>
+                        <input readonly name="depreciationValue" [value]="assetSelect.depreciationValue"
+                            class="form-control" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Giá trị khấu hao còn lại *</label>
+                        <input readonly [value]="remainingOfLiquidation" class="form-control" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Lý do *</label>
+                        <input list="RevokeReason" #nameInput="ngModel" class="form-control" type="text" name="Reason"
+                            [(ngModel)]="revoke.reason" required maxlength="64">
+                            <datalist id="RevokeReason">
+                                <option value="Hư hỏng">
+                                <option value="Hết hạn bảo hành">
+                                <option value="Thanh lý">
+                                <option value="Điều chuyển">
+                              </datalist>
+                    </div>
+                    <div class="form-group">
+                        <label>Vị trí tài sản *</label>
+                        <input #nameInput="ngModel" class="form-control" type="text" name="CurrentLocationOfAssets"
+                            [(ngModel)]="revoke.currentLocationOfAssets" required maxlength="64">
+                    </div>
+                    <div class="form-group">
+                        <label>Nội dung thu hồi *</label>
+                        <input #nameInput="ngModel" class="form-control" type="text" name="RevokeContent"
+                            [(ngModel)]="revoke.revokeContent" required maxlength="64">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Huỷ bỏ")}}</button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Lưu")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <assetLookupModal #assetLookup [assetStatusFilter]="1" (modalSave)="modalSaved($event)"></assetLookupModal>
+</div>

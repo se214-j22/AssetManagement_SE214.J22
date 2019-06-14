@@ -1,7 +1,7 @@
-import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild, Input } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
-import { CustomerServiceProxy, CustomerInput } from '@shared/service-proxies/service-proxies';
+import { CustomerServiceProxy, CustomerInput, OrganizationUnitDto } from '@shared/service-proxies/service-proxies';
 
 
 @Component({
@@ -16,7 +16,7 @@ export class CreateOrEditCustomerModalComponent extends AppComponentBase {
     @ViewChild('iconCombobox') iconCombobox: ElementRef;
     @ViewChild('dateInput') dateInput: ElementRef;
 
-
+    @Input() organizationUnits: OrganizationUnitDto[];
     /**
      * @Output dùng để public event cho component khác xử lý
      */

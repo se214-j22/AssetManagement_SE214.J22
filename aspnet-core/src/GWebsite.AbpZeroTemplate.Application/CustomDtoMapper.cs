@@ -1,103 +1,86 @@
 using AutoMapper;
 using GWebsite.AbpZeroTemplate.Application.Share.Customers.Dto;
-using GWebsite.AbpZeroTemplate.Application.Share.Speedsters.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.DemoModels.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.MenuClients.Dto;
+
+//
+using GWebsite.AbpZeroTemplate.Application.Share.Assets.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.AssetGroups.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.Liquidations.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.Repairs.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.Revokes.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.Transfers.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.UseAssets.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
-using GWebsite.AbpZeroTemplate.Application.Share.DonViCungCapTaiSans.Dto;
-using GWebsite.AbpZeroTemplate.Application.Share.PhongBan.Dto;
-using GWebsite.AbpZeroTemplate.Application.Share.HoaDonNhaps.Dto;
-using GWebsite.AbpZeroTemplate.Application.Share.BangYeuCauCungCapTaiSans.Dto;
-using GWebsite.AbpZeroTemplate.Application.Share.LoaiTaiSans.Dto;
-using GWebsite.AbpZeroTemplate.Application.Share.TaiSanCoDinhs.Dto;
-using GWebsite.AbpZeroTemplate.Application.Share.PhieuBaoDuongs.Dto;
-using GWebsite.AbpZeroTemplate.Application.Share.BienBanThanhLys.Dto;
-using GWebsite.AbpZeroTemplate.Application.Share.BienBanBanGiaoTaiSans.Dto;
 
 namespace GWebsite.AbpZeroTemplate.Applications
 {
-	internal static class CustomDtoMapper
-	{
-		public static void CreateMappings(IMapperConfigurationExpression configuration)
-		{
-			configuration.CreateMap<MenuClient, MenuClientDto>();
-			configuration.CreateMap<MenuClient, MenuClientListDto>();
-			configuration.CreateMap<CreateMenuClientInput, MenuClient>();
-			configuration.CreateMap<UpdateMenuClientInput, MenuClient>();
+    internal static class CustomDtoMapper
+    {
+        public static void CreateMappings(IMapperConfigurationExpression configuration)
+        {
+            configuration.CreateMap<MenuClient, MenuClientDto>();
+            configuration.CreateMap<MenuClient, MenuClientListDto>();
+            configuration.CreateMap<CreateMenuClientInput, MenuClient>();
+            configuration.CreateMap<UpdateMenuClientInput, MenuClient>();
 
-			// DemoModel
-			configuration.CreateMap<DemoModel, DemoModelDto>();
-			configuration.CreateMap<DemoModelInput, DemoModel>();
-			configuration.CreateMap<DemoModel, DemoModelInput>();
-			configuration.CreateMap<DemoModel, DemoModelForViewDto>();
+            // DemoModel
+            configuration.CreateMap<DemoModel, DemoModelDto>();
+            configuration.CreateMap<DemoModelInput, DemoModel>();
+            configuration.CreateMap<DemoModel, DemoModelInput>();
+            configuration.CreateMap<DemoModel, DemoModelForViewDto>();
 
-			// Customer
-			configuration.CreateMap<Customer, CustomerDto>();
-			configuration.CreateMap<CustomerInput, Customer>();
-			configuration.CreateMap<Customer, CustomerInput>();
-			configuration.CreateMap<Customer, CustomerForViewDto>();
+            // Customer
+            configuration.CreateMap<Customer, CustomerDto>();
+            configuration.CreateMap<CustomerInput, Customer>();
+            configuration.CreateMap<Customer, CustomerInput>();
+            configuration.CreateMap<Customer, CustomerForViewDto>();
 
-			// Speedster
-			configuration.CreateMap<Speedster, SpeedsterDto>();
-			configuration.CreateMap<SpeedsterInput, Speedster>();
-			configuration.CreateMap<Speedster, SpeedsterInput>();
-			configuration.CreateMap<Speedster, SpeedsterForViewDto>();
+            /// <summary>
+            /// qlts
+            /// </summary>
 
-			// DonViCungCapTaiSan
-			configuration.CreateMap<DonViCungCapTaiSan, DonViCungCapTaiSanDto>();
-			configuration.CreateMap<DonViCungCapTaiSanInput, DonViCungCapTaiSan>();
-			configuration.CreateMap<DonViCungCapTaiSan, DonViCungCapTaiSanInput>();
-			configuration.CreateMap<DonViCungCapTaiSan, DonViCungCapTaiSanForViewDto>();
+            // Asset
+            configuration.CreateMap<Asset, AssetDto>();
+            configuration.CreateMap<AssetInput, Asset>();
+            configuration.CreateMap<Asset, AssetInput>();
+            configuration.CreateMap<Asset, AssetForViewDto>();
 
-			// PhongBan
-			configuration.CreateMap<PhongBan, PhongBanDto>();
-			configuration.CreateMap<PhongBanInput, PhongBan>();
-			configuration.CreateMap<PhongBan, PhongBanInput>();
-			configuration.CreateMap<PhongBan, PhongBanForViewDto>();
+            //AssetGroup
+            configuration.CreateMap<AssetGroup, AssetGroupDto>();
+            configuration.CreateMap<AssetGroupInput, AssetGroup>();
+            configuration.CreateMap<AssetGroup, AssetGroupInput>();
+            configuration.CreateMap<AssetGroup, AssetGroupForViewDto>();
 
+            //Liquidation
+            configuration.CreateMap<Liquidation, LiquidationDto>();
+            configuration.CreateMap<LiquidationInput, Liquidation>();
+            configuration.CreateMap<Liquidation, LiquidationInput>();
+            configuration.CreateMap<Liquidation, LiquidationForViewDto>();
 
-			// HoaDonNhap
-			configuration.CreateMap<HoaDonNhap, HoaDonNhapDto>();
-			configuration.CreateMap<HoaDonNhapInput, HoaDonNhap>();
-			configuration.CreateMap<HoaDonNhap, HoaDonNhapInput>();
-			configuration.CreateMap<HoaDonNhap, HoaDonNhapForViewDto>();
+            //Repair
+            configuration.CreateMap<Repair, RepairDto>();
+            configuration.CreateMap<RepairInput, Repair>();
+            configuration.CreateMap<Repair, RepairInput>();
+            configuration.CreateMap<Repair, RepairForViewDto>();
 
-			// BangYeuCauCungCapTaiSan
-			configuration.CreateMap<BangYeuCauCungCapTaiSan, BangYeuCauCungCapTaiSanDto>();
-			configuration.CreateMap<BangYeuCauCungCapTaiSanInput, BangYeuCauCungCapTaiSan>();
-			configuration.CreateMap<BangYeuCauCungCapTaiSan, BangYeuCauCungCapTaiSanInput>();
-			configuration.CreateMap<BangYeuCauCungCapTaiSan, BangYeuCauCungCapTaiSanForViewDto>();
+            //Revoke
+            configuration.CreateMap<Revoke, RevokeDto>();
+            configuration.CreateMap<RevokeInput, Revoke>();
+            configuration.CreateMap<Revoke, RevokeInput>();
+            configuration.CreateMap<Revoke, RevokeForViewDto>();
 
-			// LoaiTaiSan
-			configuration.CreateMap<LoaiTaiSan, LoaiTaiSanDto>();
-			configuration.CreateMap<LoaiTaiSanInput, LoaiTaiSan>();
-			configuration.CreateMap<LoaiTaiSan, LoaiTaiSanInput>();
-			configuration.CreateMap<LoaiTaiSan, LoaiTaiSanForViewDto>();
+            //Transfer
+            configuration.CreateMap<Transfer, TransferDto>();
+            configuration.CreateMap<TransferInput, Transfer>();
+            configuration.CreateMap<Transfer, TransferInput>();
+            configuration.CreateMap<Transfer, TransferForViewDto>();
 
-            // TaiSaiCoDinh
-            configuration.CreateMap<TaiSanCoDinh, TaiSanCoDinhDto>();
-            configuration.CreateMap<TaiSanCoDinhInput, TaiSanCoDinh>();
-            configuration.CreateMap<TaiSanCoDinh, TaiSanCoDinhInput>();
-			//configuration.CreateMap<TaiSanCoDinh, TaiSanCoDinhForViewDto>();
-
-			// PhieuBaoDuong
-			configuration.CreateMap<PhieuBaoDuong, PhieuBaoDuongDto>();
-			configuration.CreateMap<PhieuBaoDuongInput, PhieuBaoDuong>();
-			configuration.CreateMap<PhieuBaoDuong, PhieuBaoDuongInput>();
-			//configuration.CreateMap<PhieuBaoDuong, PhieuBaoDuongForViewDto>();
-
-			// BienBanThanhLy
-			configuration.CreateMap<BienBanThanhLy, BienBanThanhLyDto>();
-			configuration.CreateMap<BienBanThanhLyInput, BienBanThanhLy>();
-			configuration.CreateMap<BienBanThanhLy, BienBanThanhLyInput>();
-			//configuration.CreateMap<BienBanThanhLy, BienBanThanhLyForViewDto>();
-
-			// BienBanBanGiaoTaiSan
-			configuration.CreateMap<BienBanBanGiaoTaiSan, BienBanBanGiaoTaiSanDto>();
-			configuration.CreateMap<BienBanBanGiaoTaiSanInput, BienBanBanGiaoTaiSan>();
-			configuration.CreateMap<BienBanBanGiaoTaiSan, BienBanBanGiaoTaiSanInput>();
-			//configuration.CreateMap<BienBanBanGiaoTaiSan, BienBanBanGiaoTaiSanForViewDto>();
-
-		}
-	}
+            //UseAsset
+            configuration.CreateMap<UseAsset, UseAssetDto>();
+            configuration.CreateMap<UseAssetInput, UseAsset>();
+            configuration.CreateMap<UseAsset, UseAssetInput>();
+            configuration.CreateMap<UseAsset, UseAssetForViewDto>();
+        }
+    }
 }

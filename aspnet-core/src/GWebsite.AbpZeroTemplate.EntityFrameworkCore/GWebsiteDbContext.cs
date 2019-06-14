@@ -24,16 +24,18 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
         public virtual DbSet<MenuClient> MenuClients { get; set; }
         public virtual DbSet<DemoModel> DemoModels { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
-        public virtual DbSet<Speedster> Speedsters { get; set; }
-        public virtual DbSet<DonViCungCapTaiSan> DonViCungCapTaiSans { get; set; }
-        public virtual DbSet<PhongBan> PhongBans { get; set; }
-        public virtual DbSet<HoaDonNhap> HoaDonNhaps { get; set; }
-        public virtual DbSet<BangYeuCauCungCapTaiSan> BangYeuCauCungCapTaiSans { get; set; }
-        public virtual DbSet<LoaiTaiSan> LoaiTaiSans { get; set; }
-        public virtual DbSet<TaiSanCoDinh> TaiSanCoDinhs { get; set; }
-		public virtual DbSet<PhieuBaoDuong> PhieuBaoDuongs { get; set; }
-		public virtual DbSet<BienBanThanhLy> BienBanThanhLys { get; set; }
-		public virtual DbSet<BienBanBanGiaoTaiSan> BienBanBanGiaoTaiSans { get; set; }
+
+        /// <summary>
+        /// add database qlts
+        /// </summary>
+
+        public virtual DbSet<AssetGroup> AssetGroups { get; set; }
+        public virtual DbSet<Asset> Assets { get; set; }
+        public virtual DbSet<Liquidation> Liquidations { get; set; }
+        public virtual DbSet<Repair> Repairs { get; set; }
+        public virtual DbSet<Revoke> Revokes { get; set; }
+        public virtual DbSet<Transfer> Transfers { get; set; }
+        public virtual DbSet<UseAsset> UseAssets { get; set; }
 
         /// <summary>
         /// GPermissions dùng cho bên Gwebsite
@@ -333,19 +335,6 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
                     .HasConstraintName("FK_dbo.Permissions_dbo.AppRoles_RoleId");
             });
 
-            modelBuilder.Entity<BangYeuCauCungCapTaiSan>(entity =>
-			{
-				entity.Property(p => p.NgayYeuCau)
-					.HasColumnType("date");
-			});
-			modelBuilder.Entity<HoaDonNhap>(entity =>
-			{
-				entity.Property(p => p.NguyenGiaTaiSan)
-					.HasComputedColumnSql("[GiaMuaThucTe] + [ChiPhiVanChuyen] + [ChiPhiSuaChua] + [ChiPhiNangCap] + [ChiPhiLapDatChayThu] + [Thue] + [LePhi]");
-
-				entity.Property(p => p.NgayNhan)
-					.HasColumnType("date");
-			});
         }
     }
 }

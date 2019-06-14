@@ -7,8 +7,9 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Customers.Dto
     /// </summary>
     public class CustomerForViewDto
     {
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public string Info { get; set; }
-    }
+		public long OrganizationId { get; set; }
+		public string Name { get; set; }
+		public string Address { get; set; }
+		public string Info { get; set; }
+	}
 }

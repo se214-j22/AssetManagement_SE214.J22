@@ -7,8 +7,9 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Customers.Dto
     /// <model cref="Customer"></model>
     /// </summary>
     public class CustomerInput : Entity<int>
-    {
-        public string Name { get; set; }
+	{
+		public long OrganizationId { get; set; }
+		public string Name { get; set; }
         public string Address { get; set; }
         public string Info { get; set; }
     }
