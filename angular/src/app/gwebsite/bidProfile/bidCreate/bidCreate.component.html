@@ -233,7 +233,7 @@
                 <div class="row align-items-center">
                     <div *ngIf="newBidUnits && newBidUnits.length" class="primeng-datatable-container">
                         <perfect-scrollbar [config]="{suppressScrollX: false}" (psScrollX)="onScrollX($event)">
-                            <p-table #dataTable [value]="newProductTableList">
+                            <p-table #dataTable [value]="newBidUnits">
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th pSortableColumn="ordinalNumber" style="width: 90px; text-align: center">
