@@ -19,9 +19,9 @@ import { DemoModelServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CustomerComponent } from './customer/customer.component';
 import { ViewCustomerModalComponent } from './customer/view-customer-modal.component';
 import { CreateOrEditCustomerModalComponent } from './customer/create-or-edit-customer-modal.component';
-import { AssetComponent } from './asset/asset.component';
-import { ViewAssetModalComponent } from './asset/view-asset-modal.component';
-import { CreateOrEditAssetModalComponent } from './asset/create-or-edit-asset-modal.component';
+import { AssetComponentGroup1 } from './asset-group1/asset.component';
+import { ViewAssetModalComponentGroup1 } from './asset-group1/view-asset-modal.component';
+import { CreateOrEditAssetModalComponentGroup1 } from './asset-group1/create-or-edit-asset-modal.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AssetLineComponent } from './asset-line/asset-line.component';
 import { ViewAssetLineModalComponent } from './asset-line/view-asset-line-modal.component';
@@ -32,7 +32,7 @@ import { AssetTypeComponent } from './asset-type/asset-type.component';
 import { CreateOrEditManufacturerModalComponent } from './manufacturer/create-or-edit-manufacturer-modal.component';
 import { ViewManufacturerModalComponent } from './manufacturer/view-manufacturer-modal.component';
 import { ManufacturerComponent } from './manufacturer/manufacturer.component';
-import { ExportAssetModalComponent } from './asset/export-asset-modal.component';
+import { ExportAssetModalComponent } from './asset-group1/export-asset-modal.component';
 
 @NgModule({
     imports: [
@@ -61,10 +61,10 @@ import { ExportAssetModalComponent } from './asset/export-asset-modal.component'
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
         DemoModelComponent, CreateOrEditDemoModelModalComponent, ViewDemoModelModalComponent,
         CustomerComponent, CreateOrEditCustomerModalComponent, ViewCustomerModalComponent,
-        AssetComponent, ViewAssetModalComponent,  CreateOrEditAssetModalComponent, ExportAssetModalComponent,
-        AssetLineComponent, ViewAssetLineModalComponent,  CreateOrEditAssetLineModalComponent,
-        AssetTypeComponent, ViewAssetTypeModalComponent,  CreateOrEditAssetTypeModalComponent,
-        ManufacturerComponent, ViewManufacturerModalComponent,  CreateOrEditManufacturerModalComponent,
+        AssetComponentGroup1, ViewAssetModalComponentGroup1, CreateOrEditAssetModalComponentGroup1, ExportAssetModalComponent,
+        AssetLineComponent, ViewAssetLineModalComponent, CreateOrEditAssetLineModalComponent,
+        AssetTypeComponent, ViewAssetTypeModalComponent, CreateOrEditAssetTypeModalComponent,
+        ManufacturerComponent, ViewManufacturerModalComponent, CreateOrEditManufacturerModalComponent,
     ],
     providers: [
         DemoModelServiceProxy,

@@ -16,7 +16,7 @@ export class AppNavigationService {
             new AppMenuItem('Dashboard', 'Pages.Tenant.Dashboard', 'flaticon-line-graph', '/app/main/dashboard'),
             new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),
             new AppMenuItem('Editions', 'Pages.Editions', 'flaticon-app', '/app/admin/editions'),
-            new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [
+            new AppMenuItem('Group1', '', 'flaticon-interface-8', '', [
                 new AppMenuItem('MenuClient', 'Pages.Administration.MenuClient', 'flaticon-menu-1', '/app/gwebsite/menu-client'),
                 new AppMenuItem('DemoModel', 'Pages.Administration.DemoModel', 'flaticon-menu-1', '/app/gwebsite/demo-model'),
                 new AppMenuItem('Customer', 'Pages.Administration.Customer', 'flaticon-menu-1', '/app/gwebsite/customer'),
@@ -25,7 +25,7 @@ export class AppNavigationService {
                 new AppMenuItem('Manufacturer', 'Pages.Administration.Manufacturer', 'flaticon-bag', '/app/gwebsite/manufacturer'),
                 new AppMenuItem('AssetType', 'Pages.Administration.AssetType', 'flaticon-interface', '/app/gwebsite/asset-type'),
                 new AppMenuItem('AssetLine', 'Pages.Administration.AssetLine', 'flaticon-cart', '/app/gwebsite/asset-line'),
-                new AppMenuItem('Asset', 'Pages.Administration.Asset', 'flaticon-imac', '/app/gwebsite/asset'),
+                new AppMenuItem('AssetGroup1', 'Pages.Administration.Asset', 'flaticon-imac', '/app/gwebsite/asset'),
             ]),
             new AppMenuItem('Systems', '', 'flaticon-layers', '', [
                 new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),
