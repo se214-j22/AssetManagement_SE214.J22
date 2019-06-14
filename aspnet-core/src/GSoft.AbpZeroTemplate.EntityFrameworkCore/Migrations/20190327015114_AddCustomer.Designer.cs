@@ -1559,17 +1559,18 @@ namespace GSoft.AbpZeroTemplate.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Address");
+                    b.Property<string>("nhomBDS");
 
                     b.Property<string>("CreatedBy");
 
                     b.Property<DateTime?>("CreatedDate");
 
-                    b.Property<string>("Info");
+                    b.Property<string>("loaiBDS");
+                    b.Property<string>("maBDS");
 
                     b.Property<bool>("IsDelete");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("tenBDS");
 
                     b.Property<string>("UpdatedBy");
 

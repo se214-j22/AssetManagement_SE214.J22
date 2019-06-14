@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GSoft.AbpZeroTemplate.Migrations
 {
-    public partial class AddCustomer : Migration
+    public partial class QuanLyToaNha : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Customers",
+                name: "Customers_QuanLyToaNha",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -19,33 +19,26 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     UpdatedDate = table.Column<DateTime>(nullable: true),
                     UpdatedBy = table.Column<string>(nullable: true),
                     IsDelete = table.Column<bool>(nullable: false),
-                    tenBDS = table.Column<string>(nullable: true),
-                    loaiBDS = table.Column<string>(nullable: true),
-                    nhomBDS = table.Column<string>(nullable: true),
                     maBDS = table.Column<string>(nullable: true),
-
-                    hienTrang = table.Column<string>(nullable: true),
-                    dienTich = table.Column<string>(nullable: true),
-                    dai = table.Column<string>(nullable: true),
-                    rong = table.Column<string>(nullable: true),
-                    thoiHanSD = table.Column<string>(nullable: true),
-                    tinhTrangSD = table.Column<string>(nullable: true),
-                    ketCauNha = table.Column<string>(nullable: true),
-                    ranhGioi = table.Column<string>(nullable: true),
-                    tinhTrangPhapLy = table.Column<string>(nullable: true)
-                    
-
+                    ThongTinKhachThue = table.Column<string>(nullable: true),
+                    PhiDichVu = table.Column<string>(nullable: true),
+                    NgayVao = table.Column<string>(nullable: true),
+                    NgayRa = table.Column<string>(nullable: true),
+                    GiaHan = table.Column<string>(nullable: true),
+                    KhuVucThue = table.Column<string>(nullable: true),
+                    LichSuThueSanPham = table.Column<string>(nullable: true),
+                    DanhSachSanPham = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.PrimaryKey("PK_Customers_QuanLyToaNha", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "Customers_QuanLyToaNha");
         }
     }
 }

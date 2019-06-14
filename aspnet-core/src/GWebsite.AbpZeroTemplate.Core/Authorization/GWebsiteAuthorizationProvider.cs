@@ -46,6 +46,21 @@ namespace GWebsite.AbpZeroTemplate.Core.Authorization
             customer.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_Edit, L("EditingCustomer"));
             customer.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_Delete, L("DeletingCustomer"));
 
+            var customer_QuanLyCongTrinhXayDung = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_QuanLyCongTrinhXayDung, L("Customer_QuanLyCongTrinhXayDung"));
+            customer_QuanLyCongTrinhXayDung.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_QuanLyCongTrinhXayDung_Create, L("CreatingNewCustomer_QuanLyCongTrinhXayDung"));
+            customer_QuanLyCongTrinhXayDung.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_QuanLyCongTrinhXayDung_Edit, L("EditingCustomer_QuanLyCongTrinhXayDung"));
+            customer_QuanLyCongTrinhXayDung.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_QuanLyCongTrinhXayDung_Delete, L("DeletingCustomer_QuanLyCongTrinhXayDung"));
+
+            var customer_QuanLyToaNha = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_QuanLyToaNha, L("Customer_QuanLyToaNha"));
+            customer_QuanLyToaNha.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_QuanLyToaNha_Create, L("CreatingNewCustomer_QuanLyToaNha"));
+            customer_QuanLyToaNha.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_QuanLyToaNha_Edit, L("EditingCustomer_QuanLyToaNha"));
+            customer_QuanLyToaNha.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_QuanLyToaNha_Delete, L("DeletingCustomer_QuanLyToaNha"));
+
+
+            var customer_SuaChua = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_SuaChua, L("Customer_SuaChua"));
+            customer_SuaChua.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_SuaChua_Create, L("CreatingNewCustomer_SuaChua"));
+            customer_SuaChua.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_SuaChua_Edit, L("EditingCustomer_SuaChua"));
+            customer_SuaChua.CreateChildPermission(GWebsitePermissions.Pages_Administration_Customer_SuaChua_Delete, L("DeletingCustomer_SuaChua"));
         }
 
         private static ILocalizableString L(string name)

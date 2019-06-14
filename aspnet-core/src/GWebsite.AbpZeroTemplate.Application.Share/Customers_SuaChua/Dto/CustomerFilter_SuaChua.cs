@@ -2,12 +2,12 @@
 using GWebsite.AbpZeroTemplate.Core.Models;
 using System;
 
-namespace GWebsite.AbpZeroTemplate.Application.Share.Customers.Dto
+namespace GWebsite.AbpZeroTemplate.Application.Share.Customers_SuaChua.Dto
 {
     /// <summary>
-    /// <model cref="Customer"></model>
+    /// <model cref="Customer_SuaChua"></model>
     /// </summary>
-    public class CustomerFilter : PagedAndSortedInputDto
+    public class CustomerFilter_SuaChua : PagedAndSortedInputDto
     {
         public string maBDS { get; set; }
     }

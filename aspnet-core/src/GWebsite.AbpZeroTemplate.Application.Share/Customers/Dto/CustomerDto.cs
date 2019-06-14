@@ -8,8 +8,9 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Customers.Dto
     /// </summary>
     public class CustomerDto : Entity<int>
     {
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public string Info { get; set; }
+        public string maBDS { get; set; }
+        public string tenBDS { get; set; }
+        public string loaiBDS { get; set; }
+        public string nhomBDS { get; set; }
     }
 }

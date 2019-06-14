@@ -24,5 +24,20 @@
         public const string Pages_Administration_Customer_Edit = "Pages.Administration.Customer.Edit";
         public const string Pages_Administration_Customer_Delete = "Pages.Administration.Customer.Delete";
 
+        public const string Pages_Administration_Customer_SuaChua = "Pages.Administration.Customer_SuaChua";
+        public const string Pages_Administration_Customer_SuaChua_Create = "Pages.Administration.Customer_SuaChua.Create";
+        public const string Pages_Administration_Customer_SuaChua_Edit = "Pages.Administration.Customer_SuaChua.Edit";
+        public const string Pages_Administration_Customer_SuaChua_Delete = "Pages.Administration.Customer_SuaChua.Delete";
+
+        public const string Pages_Administration_Customer_QuanLyToaNha = "Pages.Administration.Customer_QuanLyToaNha";
+        public const string Pages_Administration_Customer_QuanLyToaNha_Create = "Pages.Administration.Customer_QuanLyToaNha.Create";
+        public const string Pages_Administration_Customer_QuanLyToaNha_Edit = "Pages.Administration.Customer_QuanLyToaNha.Edit";
+        public const string Pages_Administration_Customer_QuanLyToaNha_Delete = "Pages.Administration.Customer_QuanLyToaNha.Delete";
+
+
+        public const string Pages_Administration_Customer_QuanLyCongTrinhXayDung = "Pages.Administration.Customer_QuanLyCongTrinhXayDung";
+        public const string Pages_Administration_Customer_QuanLyCongTrinhXayDung_Create = "Pages.Administration.Customer_QuanLyCongTrinhXayDung.Create";
+        public const string Pages_Administration_Customer_QuanLyCongTrinhXayDung_Edit = "Pages.Administration.Customer_QuanLyCongTrinhXayDung.Edit";
+        public const string Pages_Administration_Customer_QuanLyCongTrinhXayDung_Delete = "Pages.Administration.Customer_QuanLyCongTrinhXayDung.Delete";
     }
 }

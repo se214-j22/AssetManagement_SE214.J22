@@ -3,28 +3,28 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using GWebsite.AbpZeroTemplate.Application;
-using GWebsite.AbpZeroTemplate.Application.Share.Customers;
-using GWebsite.AbpZeroTemplate.Application.Share.Customers.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.Customers_QuanLyToaNha;
+using GWebsite.AbpZeroTemplate.Application.Share.Customers_QuanLyToaNha.Dto;
 using GWebsite.AbpZeroTemplate.Core.Authorization;
 using GWebsite.AbpZeroTemplate.Core.Models;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 
-namespace GWebsite.AbpZeroTemplate.Web.Core.Customers
+namespace GWebsite.AbpZeroTemplate.Web.Core.Customers_QuanLyToaNha
 {
     [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient)]
-    public class CustomerAppService : GWebsiteAppServiceBase, ICustomerAppService
+    public class Customer_QuanLyToaNhaAppService : GWebsiteAppServiceBase, ICustomer_QuanLyToaNhaAppService
     {
-        private readonly IRepository<Customer> customerRepository;
+        private readonly IRepository<Customer_QuanLyToaNha> customerRepository;
 
-        public CustomerAppService(IRepository<Customer> customerRepository)
+        public Customer_QuanLyToaNhaAppService(IRepository<Customer_QuanLyToaNha> customerRepository)
         {
             this.customerRepository = customerRepository;
         }
 
         #region Public Method
 
-        public void CreateOrEditCustomer(CustomerInput customerInput)
+        public void CreateOrEditCustomer(CustomerInput_QuanLyToaNha customerInput)
         {
             if (customerInput.Id == 0)
             {
@@ -47,27 +47,27 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Customers
             }
         }
 
-        public CustomerInput GetCustomerForEdit(int id)
+        public CustomerInput_QuanLyToaNha GetCustomerForEdit(int id)
         {
             var customerEntity = customerRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == id);
             if (customerEntity == null)
             {
                 return null;
             }
-            return ObjectMapper.Map<CustomerInput>(customerEntity);
+            return ObjectMapper.Map<CustomerInput_QuanLyToaNha>(customerEntity);
         }
 
-        public CustomerForViewDto GetCustomerForView(int id)
+        public CustomerForViewDto_QuanLyToaNha GetCustomerForView(int id)
         {
             var customerEntity = customerRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == id);
             if (customerEntity == null)
             {
                 return null;
             }
-            return ObjectMapper.Map<CustomerForViewDto>(customerEntity);
+            return ObjectMapper.Map<CustomerForViewDto_QuanLyToaNha>(customerEntity);
         }
 
-        public PagedResultDto<CustomerDto> GetCustomers(CustomerFilter input)
+        public PagedResultDto<CustomerDto_QuanLyToaNha> GetCustomers(CustomerFilter_QuanLyToaNha input)
         {
             var query = customerRepository.GetAll().Where(x => !x.IsDelete);
 
@@ -89,9 +89,9 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Customers
             var items = query.PageBy(input).ToList();
 
             // result
-            return new PagedResultDto<CustomerDto>(
+            return new PagedResultDto<CustomerDto_QuanLyToaNha>(
                 totalCount,
-                items.Select(item => ObjectMapper.Map<CustomerDto>(item)).ToList());
+                items.Select(item => ObjectMapper.Map<CustomerDto_QuanLyToaNha>(item)).ToList());
         }
 
         #endregion
@@ -99,16 +99,16 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Customers
         #region Private Method
 
         [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient_Create)]
-        private void Create(CustomerInput customerInput)
+        private void Create(CustomerInput_QuanLyToaNha customerInput)
         {
-            var customerEntity = ObjectMapper.Map<Customer>(customerInput);
+            var customerEntity = ObjectMapper.Map<Customer_QuanLyToaNha>(customerInput);
             SetAuditInsert(customerEntity);
             customerRepository.Insert(customerEntity);
             CurrentUnitOfWork.SaveChanges();
         }
 
         [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient_Edit)]
-        private void Update(CustomerInput customerInput)
+        private void Update(CustomerInput_QuanLyToaNha customerInput)
         {
             var customerEntity = customerRepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == customerInput.Id);
             if (customerEntity == null)
@@ -122,4 +122,6 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.Customers
 
         #endregion
     }
+
+   
 }
