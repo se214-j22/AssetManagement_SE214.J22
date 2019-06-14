@@ -10,6 +10,7 @@ import { SanPhamServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CreateOrEditSanPhamModalComponent } from './create-or-edit-san-pham-modal.component';
 import { ViewSanPhamModalComponent } from './view-san-pham-modal.component';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
+import {ExcelService} from './services/excel.service';
 
 @Component({
     templateUrl: './san-pham.component.html',
@@ -31,6 +32,7 @@ export class SanPhamComponent extends AppComponentBase implements AfterViewInit,
 
     maSP: string;
     id: string;
+    data:any=[];
 
     constructor(
         injector: Injector,
@@ -38,6 +40,7 @@ export class SanPhamComponent extends AppComponentBase implements AfterViewInit,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
         private _apiService: WebApiServiceProxy,
+        private excelService:ExcelService,
     ) {
         super(injector);
     }
@@ -46,7 +49,7 @@ export class SanPhamComponent extends AppComponentBase implements AfterViewInit,
      * Hàm xử lý trước khi View được init
      */
     ngOnInit(): void {
-       
+
     }
 
     /**
@@ -86,6 +89,9 @@ export class SanPhamComponent extends AppComponentBase implements AfterViewInit,
             this.primengTableHelper.records = result.items;
             
             this.primengTableHelper.hideLoadingIndicator();
+        });
+        this._sanPhamService.getAllSanPhams().subscribe((result)=>{    
+            this.data  =  result;
         });
     }
 
@@ -134,4 +140,8 @@ export class SanPhamComponent extends AppComponentBase implements AfterViewInit,
     truncateString(text): string {
         return abp.utils.truncateStringWithPostfix(text, 32, '...');
     }
+
+    exportAsXLSX():void {
+        this.excelService.exportAsExcelFile(this.data);
+     }
 }

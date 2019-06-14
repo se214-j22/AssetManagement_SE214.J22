@@ -1,42 +1,28 @@
 import { Injectable, ViewChild } from '@angular/core';
 import { Workbook } from 'exceljs';
 import * as fs from 'file-saver';
-import * as logoFile from './software_engineer.js';
 import * as moment from 'moment/moment.js';
 
+const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+const EXCEL_EXTENSION = '.xlsx';
 @Injectable({
   providedIn: 'root'
 })
 export class ExcelService {
-  constructor(
+  constructor() { }
 
-  ){}
-
-
-  generateExcel(json:any[]) {
+  public exportAsExcelFile(json: any[]): void {
+    
     
     //Excel Title, Header, Data
-    const title = 'Báo cáo kiểm kê';
+    const title = 'Danh sách tài sản';
     const header = ["STT","Mã tài sản", "Tên tài sản", "Ngày tạo", "Ngày cập nhật", "Trạng thái"]
 
     const data=[];
 
-    var n1=0,n2=0,n3=0,n4=0;
     if(json!=null){
      for(var i=0;i<json.length;i++){
       data.push([(i+1).toString(),json[i].maSP,json[i].tenSP,json[i].ngayTao,json[i].ngayCapNhat,json[i].trangThai]);
-    
-      if(json[i].ngayCapNhat!=moment().format("DD/MM/YYYY")){
-        n1++;
-      }
-      if(json[i].trangThai=="Bình thường"){
-          n2++;
-      }else if(json[i].trangThai=="Hư hỏng"){
-          n3++;
-      }else{
-          n4++;
-      }   
-    }
   }
 
     //Create workbook and worksheet
@@ -51,19 +37,12 @@ export class ExcelService {
     worksheet.addRow([]);
     worksheet.addRow([]);
 
-    let nameInventory=worksheet.addRow(['Đơn vị được kiểm kê: Khoa Công nghệ phần mềm']);
-    nameInventory.font = { name: 'Times New Roman',family: 3, size: 13, underline: 'none', bold: true }
-    let inventoryPeriod=worksheet.addRow(['Kì kiểm kê: 1']);
+  
     let subTitleRow = worksheet.addRow(['Ngày : ' +moment().lang('Vi').format("DD/MM/YYYY, h:mm:ss A")])
     subTitleRow.alignment = { vertical: 'top', horizontal: 'left' };
 
-    //Add Image
-    let logo = workbook.addImage({
-      base64: logoFile.logoBase64,
-      extension: 'png',
-    });
 
-    worksheet.addImage(logo, 'E1:F3');
+  
     worksheet.mergeCells('A1:D2');
 
 
@@ -123,24 +102,15 @@ export class ExcelService {
     footerRow.getCell(1).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
 
     worksheet.addRow([]);
-    worksheet.addRow([]);
-    let info1=worksheet.addRow(['* Số sản phẩm chưa cập nhật là: '+n1]);
-    let info2=worksheet.addRow(['* Số sản phẩm trạng thái "Bình thường" là: '+n2]);
-    let info3=worksheet.addRow(['* Số sản phẩm trạng thái "Hư hỏng" là: '+n3]);
-    let info4=worksheet.addRow(['* Số sản phẩm trạng thái "Thất lạc" là: '+n4]);
-
-    worksheet.addRow([]);
-    let personCreate=worksheet.addRow(['Người tạo']);
-    personCreate.getCell(2);
-    personCreate.font = { name: 'Times New Roman',family: 3, size: 13, underline: 'none', bold: true }
     //Merge Cells
     worksheet.mergeCells(`A${footerRow.number}:F${footerRow.number}`);
 
     //Generate Excel File with given name
     workbook.xlsx.writeBuffer().then((data) => {
       let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      fs.saveAs(blob, "report"+"_"+new Date().getTime()+'.xlsx');
+      fs.saveAs(blob, "ds_taisan"+"_"+new Date().getTime()+'.xlsx');
     })
 
+  }
   }
 }

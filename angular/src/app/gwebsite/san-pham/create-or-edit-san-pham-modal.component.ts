@@ -28,7 +28,6 @@ export class CreateOrEditSanPhamModalComponent extends AppComponentBase {
 
     saving = false;
     check=false;
-    maSP:string;
 
     sanPham: SanPhamInput = new SanPhamInput();
 
@@ -46,7 +45,6 @@ export class CreateOrEditSanPhamModalComponent extends AppComponentBase {
         this._sanPhamService.getSanPhamForEdit(sanPhamId).subscribe(result => {
             this.sanPham = result;
             this.modal.show();
-            this.maSP=this.sanPham.maSP;
         })
     }
 

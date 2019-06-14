@@ -70,7 +70,7 @@ import { ReportComponent } from './report/report.component';
         LoaiTaiSanComponent, CreateOrEditLoaiTaiSanModalComponent, ViewLoaiTaiSanModalComponent,
         BangYeuCauCungCapTaiSanComponent, CreateOrEditBangYeuCauCungCapTaiSanModalComponent, ViewBangYeuCauCungCapTaiSanModalComponent,
         SanPhamComponent, CreateOrEditSanPhamModalComponent, ViewSanPhamModalComponent, ScannerComponent, ScanModalComponent, GenerateQrComponent,
-        ReportComponent
+        ReportComponent,
     ],
     providers: [
     ]

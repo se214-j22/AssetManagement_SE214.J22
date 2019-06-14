@@ -4,7 +4,7 @@
         <div class="d-flex align-items-center">
             <div class="mr-auto col-xs-6">
                 <h3 class="m-subheader__title m-subheader__title--separator">
-                    <span>{{l("Thông tin sản phẩm")}}</span>
+                    <span>{{l("Thông tin tài sản")}}</span>
                 </h3>
                 <span class="m-section__sub">
                     {{l("Thông tin")}}
@@ -12,7 +12,7 @@
             </div>
             <div class="col-xs-6 text-right">
                 <button (click)="createSanPham()" *ngIf="isGranted('Pages.Administration.SanPham.Create')"
-                    class="btn btn-primary"><i class="fa fa-plus"></i> {{l("Tạo mới sản phẩm")}}</button>
+                    class="btn btn-primary"><i class="fa fa-plus"></i> {{l("Tạo mới tài sản")}}</button>
             </div>
         </div>
     </div>
@@ -46,11 +46,11 @@
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th pSortableColumn="maSP">
-                                        Mã sản phẩm
+                                        Mã tài sản
                                         <p-sortIcon field="maSP"></p-sortIcon>
                                     </th>
                                     <th pSortableColumn="tenSP">
-                                        Tên sản phẩm
+                                        Tên tài sản
                                         <p-sortIcon field="tenSP"></p-sortIcon>
                                     </th>
                                     <th pSortableColumn="ngayTao">
@@ -65,17 +65,19 @@
                                         Trạng thái
                                         <p-sortIcon field="trangThai"></p-sortIcon>
                                     </th>
-                                    <th>{{l('Edit')}}</th>
+                                    <th>{{l('Edit')}}
+                                        <button (click)="exportAsXLSX()"><i class="fa fa-file-excel-o" style="font-size:30px;color:red"></i></button>
+                                    </th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-record="$implicit">
                                 <tr>
                                     <td>
-                                        <span class="ui-column-title">Mã sản phẩm</span>
+                                        <span class="ui-column-title">Mã tài sản</span>
                                         <span title="{{record.maSP}}">{{truncateString(record.maSP)}}</span>
                                     </td>
                                     <td>
-                                        <span class="ui-column-title">Tên sản phẩm</span>
+                                        <span class="ui-column-title">Tên tài sản</span>
                                         <span title="{{record.tenSP}}">{{truncateString(record.tenSP)}}</span>
                                     </td>
                                     <td>
@@ -91,7 +93,7 @@
                                         <span title="{{record.trangThai}}">{{truncateString(record.trangThai)}}</span>
                                     </td>
   
-  
+
                                     <td>
                                         <button
                                             class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"

@@ -17,7 +17,7 @@ export class AppNavigationService {
             new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),
             new AppMenuItem('Editions', 'Pages.Editions', 'flaticon-app', '/app/admin/editions'),
             new AppMenuItem('Kiểm kê', 'Pages.Administration.SanPham', 'flaticon-menu-1', '/app/gwebsite/scanner'),
-            new AppMenuItem('Sản phẩm', 'Pages.Administration.SanPham', 'flaticon-menu-1', '/app/gwebsite/san-pham'),
+            new AppMenuItem('Tài sản', 'Pages.Administration.SanPham', 'flaticon-menu-1', '/app/gwebsite/san-pham'),
             new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [
                 // new AppMenuItem('MenuClient', 'Pages.Administration.MenuClient', 'flaticon-menu-1', '/app/gwebsite/menu-client'),
                 // new AppMenuItem('DemoModel', 'Pages.Administration.DemoModel', 'flaticon-menu-1', '/app/gwebsite/demo-model'),

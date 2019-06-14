@@ -4,8 +4,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    <span *ngIf="sanPham.id">{{l("Thông tin Sản phẩm")}}: {{sanPham.tenSP}}</span>
-                    <span *ngIf="!sanPham.id">{{l("Xem chi tiết Sản phẩm")}}: {{sanPham.tenSP}}</span>
+                    <span *ngIf="sanPham.id">{{l("Thông tin tài sản")}}: {{sanPham.tenSP}}</span>
+                    <span *ngIf="!sanPham.id">{{l("Xem chi tiết tài sản")}}: {{sanPham.tenSP}}</span>
                 </h4>
                 <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
                     <span aria-hidden="true">&times;</span>
@@ -13,11 +13,11 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <h6>Mã sản phẩm</h6>
+                    <h6>Mã tài sản</h6>
                     <p>{{sanPham.maSP}}</p>
                 </div>
                 <div class="form-group">
-                    <h6>Tên sản phẩm</h6>
+                    <h6>Tên tài sản</h6>
                     <p>{{sanPham.tenSP}}</p>
                 </div>
                 <div class="form-group">
