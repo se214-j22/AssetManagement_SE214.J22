@@ -16,7 +16,22 @@ export class AppNavigationService {
             new AppMenuItem('Dashboard', 'Pages.Tenant.Dashboard', 'flaticon-line-graph', '/app/main/dashboard'),
             new AppMenuItem('Tenants', 'Pages.Tenants', 'flaticon-list-3', '/app/admin/tenants'),
             new AppMenuItem('Editions', 'Pages.Editions', 'flaticon-app', '/app/admin/editions'),
-            new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [
+
+            new AppMenuItem('Group 7', '', 'flaticon-squares', '', [
+                new AppMenuItem('QuanLyTaiSan', '', 'flaticon-interface-8', '', [  
+                    new AppMenuItem('NhomTaiSan', 'Pages.Administration.NhomTaiSan', 'flaticon-menu-1', '/app/gwebsite/nhomtaisan'),              
+                    new AppMenuItem('TaiSan', 'Pages.Administration.TaiSan', 'flaticon-menu-1', '/app/gwebsite/taisan'),                
+                    new AppMenuItem('XuatTaiSan', 'Pages.Administration.XuatTaiSan', 'flaticon-menu-1', '/app/gwebsite/xuattaisan'),
+                    new AppMenuItem('DieuChuyen', 'Pages.Administration.DieuChuyen', 'flaticon-menu-1', '/app/gwebsite/dieuchuyen'),
+                    new AppMenuItem('ThuHoi', 'Pages.Administration.ThuHoi', 'flaticon-menu-1', '/app/gwebsite/thuhoi')
+                ]),
+                new AppMenuItem('QuanLyDonVi', '', 'flaticon-interface-8', '', [                
+                    new AppMenuItem('DonVi', 'Pages.Administration.DonVi', 'flaticon-menu-1', '/app/gwebsite/donvi'),
+                    new AppMenuItem('NhanVien', 'Pages.Administration.NhanVien', 'flaticon-menu-1', '/app/gwebsite/nhanvien')
+                ]),
+            ]),
+
+            new AppMenuItem('Group 9', '', 'flaticon-interface-8', '', [
                 new AppMenuItem('MenuClient', 'Pages.Administration.MenuClient', 'flaticon-menu-1', '/app/gwebsite/menu-client'),
                 new AppMenuItem('DemoModel', 'Pages.Administration.DemoModel', 'flaticon-menu-1', '/app/gwebsite/demo-model'),
                 new AppMenuItem('Customer', 'Pages.Administration.Customer', 'flaticon-menu-1', '/app/gwebsite/customer'),
@@ -32,17 +47,7 @@ export class AppNavigationService {
 
                 ])
             ]),
-            new AppMenuItem('QuanLyTaiSan', '', 'flaticon-interface-8', '', [  
-                new AppMenuItem('NhomTaiSan', 'Pages.Administration.NhomTaiSan', 'flaticon-menu-1', '/app/gwebsite/nhomtaisan'),              
-                new AppMenuItem('TaiSan', 'Pages.Administration.TaiSan', 'flaticon-menu-1', '/app/gwebsite/taisan'),                
-                new AppMenuItem('XuatTaiSan', 'Pages.Administration.XuatTaiSan', 'flaticon-menu-1', '/app/gwebsite/xuattaisan'),
-                new AppMenuItem('DieuChuyen', 'Pages.Administration.DieuChuyen', 'flaticon-menu-1', '/app/gwebsite/dieuchuyen'),
-                new AppMenuItem('ThuHoi', 'Pages.Administration.ThuHoi', 'flaticon-menu-1', '/app/gwebsite/thuhoi')
-            ]),
-            new AppMenuItem('QuanLyDonVi', '', 'flaticon-interface-8', '', [                
-                new AppMenuItem('DonVi', 'Pages.Administration.DonVi', 'flaticon-menu-1', '/app/gwebsite/donvi'),
-                new AppMenuItem('NhanVien', 'Pages.Administration.NhanVien', 'flaticon-menu-1', '/app/gwebsite/nhanvien')
-            ]),
+            
             new AppMenuItem('Systems', '', 'flaticon-layers', '', [
                 new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),
                 new AppMenuItem('Roles', 'Pages.Administration.Roles', 'flaticon-suitcase', '/app/admin/roles'),
