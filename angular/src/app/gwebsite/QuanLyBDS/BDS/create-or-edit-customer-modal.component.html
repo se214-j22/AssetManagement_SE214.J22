@@ -1,0 +1,107 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form #editForm="ngForm" novalidate (ngSubmit)="save()">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="customer.id">Cập nhật BDS: {{customer.name}}</span>
+                        <span *ngIf="!customer.id">Tạo mới BDS</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label><b>Mã Tài sản  *</b></label>
+                        <input #nameInput="ngModel" class="form-control" type="text" name="maBDS"
+                            [(ngModel)]="customer.maBDS" required maxlength="64">
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label><b>Tên Tài Sản *</b></label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="tenBDS"
+                            [(ngModel)]="customer.tenBDS" required maxlength="64">
+                        <validation-messages [formCtrl]="addressInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label><b>Loại Tài Sản *</b></label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="loaiBDS"
+                            [(ngModel)]="customer.loaiBDS" required maxlength="64">
+                        <validation-messages [formCtrl]="infoInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label><b>Nhóm Tài Sản *</b></label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="nhomBDS"
+                            [(ngModel)]="customer.nhomBDS" required maxlength="64">
+                        <validation-messages [formCtrl]="infoInput"></validation-messages>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label><b>Hiện Trạng *</b></label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="hienTrang"
+                            [(ngModel)]="customer.hienTrang" required maxlength="64">
+                        <validation-messages [formCtrl]="infoInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label><b>Diện Tích Sử Dụng *</b></label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="dienTichSD"
+                            [(ngModel)]="customer.dienTichSD" required maxlength="64">
+                        <validation-messages [formCtrl]="infoInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label><b>Dài *</b></label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="dai"
+                            [(ngModel)]="customer.dai" required maxlength="64">
+                        <validation-messages [formCtrl]="infoInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label><b>Rộng*</b></label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="rong"
+                            [(ngModel)]="customer.rong" required maxlength="64">
+                        <validation-messages [formCtrl]="infoInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label><b>Thời Hạn Sử Dụng *</b></label>
+                        <input #addressInput="ngModel" class="form-control" type="date" name="thoiHanSD"
+                            [(ngModel)]="customer.thoiHanSD" required maxlength="64">
+                        <validation-messages [formCtrl]="infoInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label><b>Tình trạng Sử Dụng *</b></label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="tinhTrangSD"
+                            [(ngModel)]="customer.tinhTrangSD" required maxlength="64">
+                        <validation-messages [formCtrl]="infoInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label><b>Kết Cấu Nhà *</b></label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="ketCauNha"
+                            [(ngModel)]="customer.ketCauNha" required maxlength="64">
+                        <validation-messages [formCtrl]="infoInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label><b>Ranh giới *</b></label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="ranhGioi"
+                            [(ngModel)]="customer.ranhGioi" required maxlength="64">
+                        <validation-messages [formCtrl]="infoInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label><b>Tình Trạng Pháp Lý *</b></label>
+                        <input #addressInput="ngModel" class="form-control" type="text" name="tinhTrangPhapLy"
+                            [(ngModel)]="customer.tinhTrangPhapLy" required maxlength="64">
+                        <validation-messages [formCtrl]="infoInput"></validation-messages>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                        [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

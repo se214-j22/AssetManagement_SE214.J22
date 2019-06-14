@@ -1,0 +1,94 @@
+<div bsModal #viewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewModal"
+    aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span *ngIf="customer.id">{{l("EditCustomer")}}: {{customer.maBDS}}</span>
+                    <span *ngIf="!customer.id">{{l("CreateNewBDS")}}</span>
+                </h4>
+                <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                    <label style="color: black"><b>Mã Tài Sản</b></label>
+                    <p>{{customer.maBDS}}</p>
+                    </div>
+                    <div class="col-sm-6">
+                            <label style="color: black"><b>Tên Công Trình</b></label>
+                            <p>{{customer.TenCongTrinh}}</p>
+                        </div>
+                </div>
+               
+                 <!-- 
+                <div class="form-group">
+                    <label>Loại Tài Sản</label>
+                    <p>{{customer.loaiBDS}}</p>
+                </div>
+                <div class="form-group">
+                    <label>Nhóm Tài Sản</label>
+                    <p>{{customer.nhomBDS}}</p>
+                </div> -->
+
+
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                    <label style="color: black"><b>Địa Chỉ Công Trình</b></label>
+                    <p>{{customer.DiaChiCongTrinh}}</p>
+                    </div>
+                    <div class="col-sm-6">
+                            <label style="color: black"><b>Tiến độ chương trình</b></label>
+                            <p>{{customer.TienDoChuongTrinh}}</p>
+                        </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                    <label style="color: black"><b>Diện Tích Công Trình</b></label>
+                    <p>{{customer.DienTichCongTrinh}}</p>
+                    </div>
+                    <div class="col-sm-6">
+                            <label style="color: black"><b>Chi Phí Dự Toán Ban Đầu</b></label>
+                            <p>{{customer.ChiPhiDuToanBanDau}}</p>
+                        </div>
+                </div>
+                
+               
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                    <label style="color: black"><b>Chi Phí Thực Hiện</b></label>
+                    <p>{{customer.ChiPhiThucHien}}</p>
+                    </div>
+                    <div class="col-sm-6">
+                            <label style="color: black"><b>Chi Phí Phát Sinh</b></label>
+                            <p>{{customer.ChiPhiPhatSinh}}</p>
+                        </div>
+                </div>
+                
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                    <label style="color: black"><b>Mô Tả Công Trình</b></label>
+                    <p>{{customer.MoTaCongTrinh}}</p>
+                    </div>
+                    <div class="col-sm-6">
+                            <label style="color: black"><b>Thời Gian Hoàn Thành</b></label>
+                            <p>{{customer.ThoiGianHoanThanh}}</p>
+                        </div>
+                </div>
+                
+              
+               
+                
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="saving" type="button" class="btn btn-default"
+                    (click)="close()">{{l("Cancel")}}</button>
+                <button type="submit" class="btn btn-primary" [buttonBusy]="saving"
+                    [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                    <span>{{l("Save")}}</span></button>
+            </div>
+        </div>
+    </div>
+</div>
