@@ -15,5 +15,6 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public int? ParentId { get; set; }
         //public ICollection<AssetLine> AssetLines { get; set; }
         public string Descriptions { get; set; }
+        public float DepreciationRate { get; set; }
     }
 }
