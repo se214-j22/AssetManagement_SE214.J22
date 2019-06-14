@@ -18,7 +18,13 @@
                         <input #tenDonViInput="ngModel" class="form-control" type="text" name="tenDonVi"
                                [(ngModel)]="donVi.tenDonVi" required maxlength="64">
                         <validation-messages [formCtrl]="tenDonViInput"></validation-messages>
-                    </div>                    
+                    </div>
+                    <div class="form-group">
+                        <label>Địa chỉ *</label>
+                        <input #diaChiInput="ngModel" class="form-control" type="text" name="diaChi"
+                               [(ngModel)]="donVi.diaChi" required maxlength="64">
+                        <validation-messages [formCtrl]="diaChiInput"></validation-messages>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"

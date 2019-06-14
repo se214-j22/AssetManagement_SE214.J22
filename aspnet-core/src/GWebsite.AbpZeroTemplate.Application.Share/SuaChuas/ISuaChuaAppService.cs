@@ -15,5 +15,9 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.SuaChuas
         void DeleteSuaChua(int id);
         PagedResultDto<SuaChuaDto> GetSuaChuas(SuaChuaFilter input);
         SuaChuaForViewDto GetSuaChuaForView(int id);
+        string[] GetArrTenDVSC();
+        string[] GetArrTenNVPT(string tenDV);
+        string[] GetArrTenNVDX();
+        string GetTenDVDX(string tenNV);
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Abp.Application.Services.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.NhomTaiSans.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.TaiSans;
 using GWebsite.AbpZeroTemplate.Application.Share.TaiSans.Dto;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,18 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         {
             return "Test";
         }
-        
+        //filterXuat
+        [HttpGet]
+        public PagedResultDto<TaiSanDto> GetTaiSansXuatByFilter(TaiSanFilter TaiSanFilter)
+        {
+            return taiSanAppservice.GetTaiSansXuat(TaiSanFilter);
+        }
+        //filterTon
+        [HttpGet]
+        public PagedResultDto<TaiSanDto> GetTaiSansTonByFilter(TaiSanFilter TaiSanFilter)
+        {
+            return taiSanAppservice.GetTaiSansTon(TaiSanFilter);
+        }
         [HttpGet]
         public PagedResultDto<TaiSanDto> GetTaiSansByFilter(TaiSanFilter TaiSanFilter)
         {
@@ -52,14 +64,19 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
             return taiSanAppservice.GetTaiSanForView(id);
         }
         [HttpGet]
-        public string[] GetArrTenNhomTaiSan()
+        public string[] GetArrTenNhomTaiSan(string loaiTS)
         {
-            return taiSanAppservice.GetArrTenNhomTaiSan();
+            return taiSanAppservice.GetArrTenNhomTaiSan(loaiTS);
         }
         [HttpGet]
         public TaiSanInput getSoLuongTonTaiSan(int id)
         {
             return taiSanAppservice.getSoLuongTonTaiSan(id);
+        }
+        [HttpGet]
+        public NhomTaiSanInput GetKhauHao(string tenNhomTS)
+        {
+            return taiSanAppservice.GetKhauHao(tenNhomTS);
         }
     }
 }

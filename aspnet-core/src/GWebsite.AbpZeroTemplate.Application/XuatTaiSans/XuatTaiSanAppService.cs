@@ -17,18 +17,14 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.XuatTaiSans
     public class XuatTaiSanAppService:GWebsiteAppServiceBase,IXuatTaiSanAppService
     {
         private readonly IRepository<XuatTaiSan> xuatttaisanRepository;
-        private readonly IRepository<CTTaiSan> cttaisanRepository;
-        private readonly IRepository<CTDonVi> ctDonVirepository;
         private readonly IRepository<DonVi> donVirepository;
         private readonly IRepository<NhanVien> nhanVienrepository;
         private readonly IRepository<ThongTinTaiSan> thongtintaisanrepository;
-        public XuatTaiSanAppService(IRepository<CTTaiSan> cttaisanrepository, IRepository<XuatTaiSan> xuatttaisanRepository, IRepository<CTDonVi> ctDonVirepository, IRepository<DonVi> donVirepository
+        public XuatTaiSanAppService(IRepository<XuatTaiSan> xuatttaisanRepository, IRepository<DonVi> donVirepository
             , IRepository<NhanVien> nhanVienrepository
             , IRepository<ThongTinTaiSan> thongtintaisanrepository)
         {
-            this.cttaisanRepository = cttaisanrepository;
             this.xuatttaisanRepository = xuatttaisanRepository;
-            this.ctDonVirepository = ctDonVirepository;
             this.donVirepository = donVirepository;
             this.nhanVienrepository = nhanVienrepository;
             this.thongtintaisanrepository = thongtintaisanrepository;
@@ -123,55 +119,25 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.XuatTaiSans
         [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient_Create)]
         private void Create(XuatTaiSanInput xuatTaiSanInput)
         {
-            var checksoluong = cttaisanRepository.GetAll().Where(x => !x.IsDelete).Select(x => x.MaTS == xuatTaiSanInput.MaTaiSan && x.MaXuatTS == 0).Count();
-            if(xuatTaiSanInput.SoLuong<=checksoluong)
-            {
-                var maDonVi = donVirepository.GetAll().Where(x => !x.IsDelete).FirstOrDefault(x => x.TenDonVi == xuatTaiSanInput.TenDonVi).Id;
-                var maNhanVien = nhanVienrepository.GetAll().Where(x => !x.IsDelete).FirstOrDefault(x => x.MaDV == maDonVi && x.TenNhanVien == xuatTaiSanInput.TenNhanVien).Id;
 
-                xuatTaiSanInput.MaDonVi = maDonVi;
-                xuatTaiSanInput.MaNhanVien = maNhanVien;
-                xuatTaiSanInput.NgayXuat = DateTime.Now;
+            var maDonVi = donVirepository.GetAll().Where(x => !x.IsDelete).FirstOrDefault(x => x.TenDonVi == xuatTaiSanInput.TenDonVi).Id;
+            var maNhanVien = nhanVienrepository.GetAll().Where(x => !x.IsDelete).FirstOrDefault(x => x.MaDV == maDonVi && x.TenNhanVien == xuatTaiSanInput.TenNhanVien).Id;
 
-                var xuattaisanEnity = ObjectMapper.Map<XuatTaiSan>(xuatTaiSanInput);
-                SetAuditInsert(xuattaisanEnity);
-                xuatttaisanRepository.Insert(xuattaisanEnity);
-                CurrentUnitOfWork.SaveChanges();
+            xuatTaiSanInput.MaDonVi = maDonVi;
+            xuatTaiSanInput.MaNhanVien = maNhanVien;
+            xuatTaiSanInput.NgayXuat = DateTime.Now;
 
-                var updatesoluongtaisan = thongtintaisanrepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.Id == xuatTaiSanInput.MaTaiSan);
-                CurrentUnitOfWork.SaveChanges();
+           
+            var xuattaisanEnity = ObjectMapper.Map<XuatTaiSan>(xuatTaiSanInput);
+            SetAuditInsert(xuattaisanEnity);
+            xuatttaisanRepository.Insert(xuattaisanEnity);
+            CurrentUnitOfWork.SaveChanges();
 
-                for (int i = 0; i < xuatTaiSanInput.SoLuong; i++)
-                {
-                    var updateMa = cttaisanRepository.GetAll().Where(x => !x.IsDelete).FirstOrDefault(x => x.MaTS == xuatTaiSanInput.MaTaiSan && x.MaXuatTS == 0);
-                    updateMa.MaXuatTS = xuattaisanEnity.Id;
-                    updateMa.MaDV = maDonVi;
-                    CurrentUnitOfWork.SaveChanges();
-                }
-                var checkMaTaiSanInCTDonVi = ctDonVirepository.GetAll().Where(x => !x.IsDelete).Where(x => x.MaTS == xuatTaiSanInput.MaTaiSan && x.MaDV==xuatTaiSanInput.MaDonVi).Count();
-                if(checkMaTaiSanInCTDonVi == 0)
-                {
-                    CTDonViInput cTDonViInput = new CTDonViInput();
-                    cTDonViInput.MaDV = xuatTaiSanInput.MaDonVi;
-                    cTDonViInput.MaTS = xuatTaiSanInput.MaTaiSan;
-                    cTDonViInput.TenDonVi = xuatTaiSanInput.TenDonVi;
-                    cTDonViInput.TenTaiSan = xuatTaiSanInput.TenTaiSan;
-                    cTDonViInput.SoLuong = xuatTaiSanInput.SoLuong;
-                    var ctDonViEntity = ObjectMapper.Map<CTDonVi>(cTDonViInput);
-                    SetAuditInsert(ctDonViEntity);
-                    ctDonVirepository.Insert(ctDonViEntity);
-                    CurrentUnitOfWork.SaveChanges();
-                }
-                else
-                {
-                    var query = ctDonVirepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.MaTS == xuatTaiSanInput.MaTaiSan && x.MaDV==xuatTaiSanInput.MaDonVi);
-                    query.SoLuong += xuatTaiSanInput.SoLuong;
-                    CurrentUnitOfWork.SaveChanges();
-                }
-              
-
-            }
-        
+            var updateTaiSan = thongtintaisanrepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.MaTS == xuatTaiSanInput.MaTaiSan);
+            updateTaiSan.MaDV = xuattaisanEnity.MaDonVi;
+            updateTaiSan.TenDV = xuatTaiSanInput.TenDonVi;
+            updateTaiSan.TinhTrang = "Đã cấp phát";
+            CurrentUnitOfWork.SaveChanges();
         }
 
         [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient_Edit)]

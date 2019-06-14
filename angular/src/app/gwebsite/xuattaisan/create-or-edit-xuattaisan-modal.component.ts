@@ -49,7 +49,7 @@ export class CreateOrEditXuatTaiSanModalComponent extends AppComponentBase imple
         if (taisan.id != undefined) {
 
             this.taisan = taisan
-            this.xuatTaiSan.maTaiSan = this.taisan.id;
+            this.xuatTaiSan.maTaiSan = this.taisan.maTS;
             this.xuatTaiSan.tenTaiSan = this.taisan.tenTs;
         }
     }

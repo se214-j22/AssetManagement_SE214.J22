@@ -15,16 +15,15 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.DieuChuyens.Dto
     public class DieuChuyenForViewDto
     {
 
-        public int MaTaiSan { get; set; }
-        public int SoLuong { get; set; }
+        public string MaTaiSan { get; set; }
         public string TenTaiSan { get; set; }
-        public int MaNhanVienDC { get; set; }
-        public string TenNhanVienDC { get; set; }
-        public int MaDonVi { get; set; }
-        public string TenDonVi { get; set; }
+        public int MaDVDC { get; set; }
+        public string TenDonViDC { get; set; }
+        public int MaDVNhan { get; set; }
+        public string TenDonViNhan { get; set; }
         public int MaNhanVienNhan { get; set; }
         public string TenNhanVienNhan { get; set; }
-        public string GhiChu { get; set; }
         public DateTime NgayDieuChuyen { get; set; }
+        public string GhiChu { get; set; }
     }
 }

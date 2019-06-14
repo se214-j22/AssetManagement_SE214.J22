@@ -10,6 +10,6 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
     public class DonVi:FullAuditModel
     {
         public string TenDonVi { get; set; }
-        public DateTime NgayTest { get; set; }
+        public string DiaChi { get; set; }
     }
 }

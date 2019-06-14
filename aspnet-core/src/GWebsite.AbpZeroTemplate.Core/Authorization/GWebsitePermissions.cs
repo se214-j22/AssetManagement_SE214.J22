@@ -86,5 +86,10 @@
         public const string Pages_Administration_CTDonVi_Create = "Pages.Administration.CTDonVi.Create";
         public const string Pages_Administration_CTDonVi_Edit = "Pages.Administration.CTDonVi.Edit";
         public const string Pages_Administration_CTDonVi_Delete = "Pages.Administration.CTDonVi.Delete";
+
+        public const string Pages_Administration_ThanhLy = "Pages.Administration.ThanhLy";
+        public const string Pages_Administration_ThanhLy_Create = "Pages.Administration.ThanhLy.Create";
+        public const string Pages_Administration_ThanhLy_Edit = "Pages.Administration.ThanhLy.Edit";
+        public const string Pages_Administration_ThanhLy_Delete = "Pages.Administration.ThanhLy.Delete";
     }
 }

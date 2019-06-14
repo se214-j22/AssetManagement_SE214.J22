@@ -14,8 +14,9 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.SuaChuas.Dto
     /// <model cref="SuaChua"></model>
     /// </summary>
     public class SuaChuaFilter: PagedAndSortedInputDto
-    { 
-        public string TenNhanVienpT { get; set; }
+    {
+       
+        public string TenNhanVienPT { get; set; }
      
     }
 }

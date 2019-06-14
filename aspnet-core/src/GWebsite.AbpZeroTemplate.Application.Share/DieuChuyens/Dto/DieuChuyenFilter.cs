@@ -15,7 +15,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.DieuChuyens.Dto
     /// </summary>
     public class DieuChuyenFilter : PagedAndSortedInputDto
     {
-        public string TenDonVi { get; set; }
+        public string TenDonViNhan { get; set; }
     
     }
 }

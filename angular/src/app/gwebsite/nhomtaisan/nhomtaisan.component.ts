@@ -28,7 +28,10 @@ export class NhomTaiSanComponent extends AppComponentBase implements AfterViewIn
     /**
      * tạo các biến dể filters
      */
-    TenNhomTaiSan: string;
+    tenNhomTaiSan: string;
+    loaiTaiSan: string;
+    soThangKhauHao: number;
+    tyLeKhauHao: number;
 
     constructor(
         injector: Injector,
@@ -36,6 +39,10 @@ export class NhomTaiSanComponent extends AppComponentBase implements AfterViewIn
         private _activatedRoute: ActivatedRoute,
     ) {
         super(injector);
+        this.tenNhomTaiSan = null;
+        this.loaiTaiSan = null;
+        this.soThangKhauHao = null;
+        this.tyLeKhauHao = null;
     }
 
     /**
@@ -69,12 +76,23 @@ export class NhomTaiSanComponent extends AppComponentBase implements AfterViewIn
          * mặc định ban đầu lấy hết dữ liệu nên dữ liệu filter = null
          */
 
-        this.reloadList(null, event);
+        this.reloadList(event);
 
     }
 
-    reloadList(TenNhomTaiSan, event?: LazyLoadEvent) {
-        this._nhomTaiSanService.getNhomTaiSanByFilter(TenNhomTaiSan, this.primengTableHelper.getSorting(this.dataTable),
+    reloadList(event?: LazyLoadEvent) {
+        this._nhomTaiSanService.getNhomTaiSanByFilter(this.tenNhomTaiSan, this.loaiTaiSan, this.soThangKhauHao, this.primengTableHelper.getSorting(this.dataTable),
+            this.primengTableHelper.getMaxResultCount(this.paginator, event),
+            this.primengTableHelper.getSkipCount(this.paginator, event),
+        ).subscribe(result => {
+            this.primengTableHelper.totalRecordsCount = result.totalCount;
+            this.primengTableHelper.records = result.items;
+            this.primengTableHelper.hideLoadingIndicator();
+        });
+    }
+
+    refreshList(event?: LazyLoadEvent) {
+        this._nhomTaiSanService.getNhomTaiSanByFilter(null, null, null, this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getMaxResultCount(this.paginator, event),
             this.primengTableHelper.getSkipCount(this.paginator, event),
         ).subscribe(result => {
@@ -93,8 +111,8 @@ export class NhomTaiSanComponent extends AppComponentBase implements AfterViewIn
     init(): void {
         //get params từ url để thực hiện filter
         this._activatedRoute.params.subscribe((params: Params) => {
-            this.TenNhomTaiSan = params['TenNhomTaiSan'] || '';
-            this.reloadList(this.TenNhomTaiSan, null);
+            this.tenNhomTaiSan = params['tenNhomTaiSan'] || '';
+            this.reloadList(null);
         });
     }
 
@@ -104,7 +122,7 @@ export class NhomTaiSanComponent extends AppComponentBase implements AfterViewIn
 
     applyFilters(): void {
         //truyền params lên url thông qua router
-        this.reloadList(this.TenNhomTaiSan, null);
+        this.reloadList(null);
 
         if (this.paginator.getPage() !== 0) {
             this.paginator.changePage(0);

@@ -7,6 +7,7 @@ using GWebsite.AbpZeroTemplate.Application.Share.NhomTaiSans;
 using GWebsite.AbpZeroTemplate.Application.Share.NhomTaiSans.Dto;
 using GWebsite.AbpZeroTemplate.Core.Authorization;
 using GWebsite.AbpZeroTemplate.Core.Models;
+using System;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 namespace GWebsite.AbpZeroTemplate.Web.Core.NhomTaiSans
@@ -71,6 +72,14 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.NhomTaiSans
             {
                 query = query.Where(x => x.tenNhomTaiSan.ToLower().Contains(input.tenNhomTaiSan));
             }
+            if (input.loaiTaiSan != null)
+            {
+                query = query.Where(x => x.loaiTaiSan.ToLower().Contains(input.loaiTaiSan));
+            }
+            if (input.soThangKhauHao != null)
+            {
+                query = query.Where(x => x.soThangKhauHao == input.soThangKhauHao);
+            }
 
             var totalCount = query.Count();
 
@@ -93,6 +102,7 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.NhomTaiSans
         [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient_Create)]
         private void Create(NhomTaiSanInput nhomTaiSanInput)
         {
+            nhomTaiSanInput.tyLeKhauHao = Math.Round((double)(1.0/nhomTaiSanInput.soThangKhauHao),2);
             var nhomTaiSanEnity = ObjectMapper.Map<NhomTaiSan>(nhomTaiSanInput);
             SetAuditInsert(nhomTaiSanEnity);
             nhomTaiSanRepository.Insert(nhomTaiSanEnity);

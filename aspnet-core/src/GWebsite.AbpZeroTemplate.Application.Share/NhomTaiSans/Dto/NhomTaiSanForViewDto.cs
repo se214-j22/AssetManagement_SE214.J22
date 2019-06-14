@@ -17,6 +17,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.NhomTaiSans.Dto
         public string tenNhomTaiSan { get; set; }
         public string loaiTaiSan { get; set; }
         public int? soThangKhauHao { get; set; }
-        public int? tyLeKhauHao { get; set; }
+        public double tyLeKhauHao { get; set; }
     }
 }

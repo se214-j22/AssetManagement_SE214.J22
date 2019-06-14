@@ -1,8 +1,8 @@
 import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild, OnInit } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
-import { ThuHoiServiceProxy, ThuHoiInput, CTDonViDto, CTDonViServiceProxy } from '@shared/service-proxies/service-proxies';
-import { CTDonViComponent } from '../donvi/donvi-chitiet.component';
+import { ThuHoiServiceProxy, ThuHoiInput, TaiSanDto, TaiSanServiceProxy } from '@shared/service-proxies/service-proxies';
+import { TaiSanFindXuatComponent } from '../taisan/taisan-find-xuat.component';
 
 
 @Component({
@@ -16,8 +16,7 @@ export class CreateOrEditThuHoiModalComponent extends AppComponentBase implement
     @ViewChild('thuHoiCombobox') thuHoiCombobox: ElementRef;
     @ViewChild('iconCombobox') iconCombobox: ElementRef;
     @ViewChild('dateInput') dateInput: ElementRef;
-    @ViewChild('viewCTDonVi') viewCTDonVi: CTDonViComponent;
-
+    @ViewChild('viewTaiSanFindXuatModel') viewTaiSanFindXuatModel: TaiSanFindXuatComponent;
 
     /**
      * @Output dùng để public event cho component khác xử lý
@@ -27,13 +26,13 @@ export class CreateOrEditThuHoiModalComponent extends AppComponentBase implement
     saving = false;
 
     thuHoi: ThuHoiInput = new ThuHoiInput();
-    ctDonVi: CTDonViDto = new CTDonViDto();
+    taiSanXuat: TaiSanDto = new TaiSanDto();
     ngayThuHoi: number;
 
     constructor(
         injector: Injector,
         private _thuHoiService: ThuHoiServiceProxy,
-        private _ctDonViService: CTDonViServiceProxy
+        private _taiSanService: TaiSanServiceProxy
     ) {
         super(injector);
     }
@@ -42,14 +41,13 @@ export class CreateOrEditThuHoiModalComponent extends AppComponentBase implement
         this.ngayThuHoi = Date.now();
     }
 
-    getCTDonVi(ctDonVi: CTDonViDto) {
-        if (ctDonVi.id != undefined) {
+    getTaiSans(taiSanXuat: TaiSanDto) {
+        if (taiSanXuat.id != undefined) {
 
-            this.ctDonVi = ctDonVi
-            this.thuHoi.maTS = this.ctDonVi.maTS;
-            this.thuHoi.tenTaiSan = this.ctDonVi.tenTaiSan;
-            this.thuHoi.maDV = this.ctDonVi.maDV;
-            this.thuHoi.tenDonVi = this.ctDonVi.tenDonVi;
+            this.taiSanXuat = taiSanXuat
+            this.thuHoi.maTS = this.taiSanXuat.maTS;
+            this.thuHoi.tenTaiSan = this.taiSanXuat.tenTs;
+            this.thuHoi.tenDonVi = this.taiSanXuat.tenDV;
         }
     }
 
@@ -60,8 +58,8 @@ export class CreateOrEditThuHoiModalComponent extends AppComponentBase implement
         this._thuHoiService.getThuHoiForEdit(thuHoiId).subscribe(result => {
             this.thuHoi = result;
 
-            this._ctDonViService.getCTDonViForEdit(result.id).subscribe(kq => {
-                this.ctDonVi = kq;
+            this._taiSanService.getTaiSanForEdit(result.id).subscribe(kq => {
+                this.taiSanXuat = kq;
             });
 
             this.modal.show();

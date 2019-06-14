@@ -8,7 +8,7 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
 {
     public class XuatTaiSan:FullAuditModel
     {
-        public int MaTaiSan { get; set; }
+        public string MaTaiSan { get; set; }
         public string TenTaiSan { get; set; }
         public int SoLuong { get; set; }
         public DateTime NgayXuat { get; set; }
@@ -16,5 +16,6 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public string TenDonVi { get; set; }
         public int MaNhanVien { get; set; }
         public string TenNhanVien { get; set; }
+
     }
 }

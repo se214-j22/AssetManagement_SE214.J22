@@ -10,9 +10,8 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
     {
         public int MaDV { get; set; }
         public string TenDonVi { get; set; }
-        public int MaTS { get; set; }
+        public string MaTS { get; set; }
         public string TenTaiSan { get; set; }
-        public int SoLuongTh { get; set; }
         public DateTime NgayThuHoi { get; set; }
         public string LyDo { get; set; }
         public bool TrangThaiDuyet { get; set; }

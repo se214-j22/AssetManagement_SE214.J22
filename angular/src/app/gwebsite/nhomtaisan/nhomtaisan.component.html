@@ -23,14 +23,40 @@
                 <form autocomplete="off">
                     <div class="m-form m-form--label-align-right" id="TextsFilterForm">
                         <div class="row align-items-center m--margin-bottom-10">
-                            <div class="col-sm-12">
-                                <div class="input-group">
-                                    <input [(ngModel)]="TenNhomTaiSan" name="TenNhomTaiSan" autoFocus class="form-control"
-                                        placeholder="Nhập tên nhóm tài sản" type="text">
-                                    <span class="input-group-btn">
-                                        <button (click)="applyFilters()" class="btn btn-primary" type="submit"><i
-                                                class="icon-refresh"></i>
-                                            {{l("Refresh")}}</button>
+                            <div class="col-sm-12 row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Tên nhóm tài sản</label>
+                                        <input #tenNhomTaiSanInput="ngModel" class="form-control" type="text"
+                                               name="tenNhomTaiSan" [(ngModel)]="tenNhomTaiSan" maxlength="64">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Loại tài sản </label>
+                                        <input #loaiTaiSanInput="ngModel" class="form-control"
+                                               type="text" name="loaiTaiSan"
+                                               [(ngModel)]="loaiTaiSan" maxlength="64">
+                                    </div>                                    
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Số tháng khấu hao</label>
+                                        <input #soThangKhauHaoInput="ngModel" class="form-control"
+                                               type="text" name="soThangKhauHao"
+                                               [(ngModel)]="soThangKhauHao" maxlength="64">
+                                    </div>                                                                       
+                                </div>
+                                <div class="input-group w-100">
+                                    <span class="input-group-btn w-100">
+                                        <button (click)="refreshList($null)"
+                                                class="btn btn-info float-right ml-2 " type="submit">
+                                            <i class="icon-refresh"></i>
+                                            {{l("Refresh")}}
+                                        </button>
+                                        <button class="btn btn-info float-right "
+                                                (click)="reloadList($event)">
+                                            <i class="icon-refresh"></i>
+                                            {{l("Tìm kiếm")}}
+                                        </button>
                                     </span>
                                 </div>
                             </div>
@@ -45,9 +71,9 @@
                             [responsive]="primengTableHelper.isResponsive">
                             <ng-template pTemplate="header">
                                 <tr>
-                                    <th pSortableColumn="TenNhomTaiSan">
+                                    <th pSortableColumn="tenNhomTaiSan">
                                         Tên nhóm tài sản
-                                        <p-sortIcon field="TenNhomTaiSan"></p-sortIcon>
+                                        <p-sortIcon field="tenNhomTaiSan"></p-sortIcon>
                                     </th>
                                     <th pSortableColumn="LoaiTaiSan">
                                         Loại tài sản

@@ -1759,21 +1759,21 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<bool>("IsDelete");
 
-                    b.Property<int>("MaDonVi");
+                    b.Property<int>("MaDVDC");
 
-                    b.Property<int>("MaNhanVienDC");
+                    b.Property<int>("MaDVNhan");
 
                     b.Property<int>("MaNhanVienNhan");
 
-                    b.Property<int>("MaTaiSan");
+                    b.Property<string>("MaTaiSan");
 
                     b.Property<DateTime>("NgayDieuChuyen");
 
                     b.Property<int>("SoLuong");
 
-                    b.Property<string>("TenDonVi");
+                    b.Property<string>("TenDonViDC");
 
-                    b.Property<string>("TenNhanVienDC");
+                    b.Property<string>("TenDonViNhan");
 
                     b.Property<string>("TenNhanVienNhan");
 
@@ -1798,9 +1798,9 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<DateTime?>("CreatedDate");
 
-                    b.Property<bool>("IsDelete");
+                    b.Property<string>("DiaChi");
 
-                    b.Property<DateTime>("NgayTest");
+                    b.Property<bool>("IsDelete");
 
                     b.Property<string>("TenDonVi");
 
@@ -2000,7 +2000,7 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<string>("tenNhomTaiSan");
 
-                    b.Property<int?>("tyLeKhauHao");
+                    b.Property<double>("tyLeKhauHao");
 
                     b.HasKey("Id");
 
@@ -2044,7 +2044,7 @@ namespace GSoft.AbpZeroTemplate.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ChiPhiduKien");
+                    b.Property<long>("ChiPhiduKien");
 
                     b.Property<string>("CreatedBy");
 
@@ -2054,23 +2054,35 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<bool>("IsDelete");
 
-                    b.Property<int>("MaDV");
+                    b.Property<int>("MaDVDeXuat");
+
+                    b.Property<int>("MaDVSuaChua");
 
                     b.Property<int>("MaNhanVienDX");
 
                     b.Property<int>("MaNhanVienPT");
 
-                    b.Property<int>("MaTS");
+                    b.Property<string>("MaTS");
+
+                    b.Property<DateTime>("NgayDuKienSuaXong");
+
+                    b.Property<DateTime>("NgaySuaXong");
+
+                    b.Property<DateTime>("NgayXuat");
 
                     b.Property<string>("NoiDungSuaChua");
 
-                    b.Property<string>("TenDonVi");
+                    b.Property<string>("TenDVDeXuat");
+
+                    b.Property<string>("TenDVSuaChua");
 
                     b.Property<string>("TenNhanVienDX");
 
-                    b.Property<string>("TenNhanVienpT");
+                    b.Property<string>("TenNhanVienPT");
 
                     b.Property<string>("TenTaiSan");
+
+                    b.Property<bool>("ThayDoiCongNang");
 
                     b.Property<string>("UpdatedBy");
 
@@ -2110,6 +2122,41 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Test");
+                });
+
+            modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.ThanhLy", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime?>("CreatedDate");
+
+                    b.Property<string>("DonViMua");
+
+                    b.Property<string>("GhiChu");
+
+                    b.Property<long>("GiaTienThanhLy");
+
+                    b.Property<string>("HinhThucThanhLy");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<int>("MaDonViMua");
+
+                    b.Property<string>("MaTS");
+
+                    b.Property<string>("TenTS");
+
+                    b.Property<string>("UpdatedBy");
+
+                    b.Property<DateTime?>("UpdatedDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ThanhLies");
                 });
 
             modelBuilder.Entity("GWebsite.AbpZeroTemplate.Core.Models.ThongTinTaiSan", b =>
@@ -2154,6 +2201,8 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<string>("ThongTinMoTa");
 
+                    b.Property<string>("TinhTrang");
+
                     b.Property<string>("TinhTrangKhauHao");
 
                     b.Property<float>("TyLeKhauHao");
@@ -2183,13 +2232,11 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<int>("MaDV");
 
-                    b.Property<int>("MaTS");
+                    b.Property<string>("MaTS");
 
                     b.Property<DateTime>("NgayThuHoi");
 
                     b.Property<string>("NoiDungTh");
-
-                    b.Property<int>("SoLuongTh");
 
                     b.Property<string>("TenDonVi");
 
@@ -2257,7 +2304,7 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<int>("MaNhanVien");
 
-                    b.Property<int>("MaTaiSan");
+                    b.Property<string>("MaTaiSan");
 
                     b.Property<DateTime>("NgayXuat");
 

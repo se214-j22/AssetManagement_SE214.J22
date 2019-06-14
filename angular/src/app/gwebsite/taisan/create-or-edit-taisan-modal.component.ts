@@ -1,9 +1,10 @@
 import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild, OnInit } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
-import { TaiSanServiceProxy, TaiSanInput } from '@shared/service-proxies/service-proxies';
+import { TaiSanServiceProxy, TaiSanInput, NhomTaiSanInput } from '@shared/service-proxies/service-proxies';
 import { DatePipe } from '@angular/common';
 import { DateTimeService } from '@app/shared/common/timing/date-time.service';
+import { NhomTaiSanComponent } from '../nhomtaisan/nhomtaisan.component';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class CreateOrEditTaiSanModalComponent extends AppComponentBase implement
     taiSan: TaiSanInput = new TaiSanInput();
     ngayNhap: number;
     listTenNhomTaiSan: string[];
+    khauHao: NhomTaiSanInput = new NhomTaiSanInput();
 
     constructor(
         injector: Injector,
@@ -38,12 +40,10 @@ export class CreateOrEditTaiSanModalComponent extends AppComponentBase implement
 
     ngOnInit(): void {
         this.ngayNhap = Date.now();
-        this.getTenNhomTaiSan();
     }
 
     show(taiSanId?: number | null | undefined): void {
         this.saving = false;
-
 
         this._taiSanService.getTaiSanForEdit(taiSanId).subscribe(result => {
             this.taiSan = result;
@@ -52,10 +52,22 @@ export class CreateOrEditTaiSanModalComponent extends AppComponentBase implement
         })
     }
 
-    getTenNhomTaiSan(): void {
-        this._taiSanService.getTenNhomTaiSan().subscribe(
+    getTenNhomTaiSan(loaiTS: string): void {
+        //if (this.taiSan.loaiTS == "...")
+        //    this.taiSan.loaiTS = "";
+
+        this._taiSanService.getTenNhomTaiSan(loaiTS).subscribe(
             result => {
                 this.listTenNhomTaiSan = result['result'];
+            })
+    }
+
+    getKhauHao(tenNhomTS: string): void {
+        this._taiSanService.getKhauHao(tenNhomTS).subscribe(
+            result => {
+                this.khauHao = result['result'];
+                this.taiSan.soThangKhauHao = this.khauHao.soThangKhauHao;
+                this.taiSan.tyLeKhauHao = this.khauHao.tyLeKhauHao;
             })
     }
 

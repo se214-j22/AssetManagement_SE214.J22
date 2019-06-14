@@ -12,6 +12,7 @@ using GWebsite.AbpZeroTemplate.Application.Share.NhanViens.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.NhomTaiSans.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.SuaChuas.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.TaiSans.Dto;
+using GWebsite.AbpZeroTemplate.Application.Share.ThanhLys.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.ThuHois.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.XuatTaiSans.Dto;
 using GWebsite.AbpZeroTemplate.Core.Models;
@@ -123,6 +124,12 @@ namespace GWebsite.AbpZeroTemplate.Applications
             configuration.CreateMap<CTDonViInput, CTDonVi>();
             configuration.CreateMap<CTDonVi, CTDonViInput>();
             configuration.CreateMap<CTDonVi, CTDonViForViewDto>();
+
+            // ThanhLy
+            configuration.CreateMap<ThanhLy, ThanhLyDto>();
+            configuration.CreateMap<ThanhLyInput, ThanhLy>();
+            configuration.CreateMap<ThanhLy, ThanhLyInput>();
+            configuration.CreateMap<ThanhLy, ThanhLyForViewDto>();
         }
     }
 }

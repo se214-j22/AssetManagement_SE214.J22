@@ -25,5 +25,6 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public string LoaiTS { get; set; }
         public int MaDV { get; set; }
         public string TenDV { get; set; }
+        public string TinhTrang { get; set; }
     }
 }

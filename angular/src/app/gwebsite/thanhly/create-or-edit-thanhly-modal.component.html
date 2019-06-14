@@ -1,0 +1,80 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!--<form #editForm="ngForm" novalidate (ngSubmit)="save()">-->
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <span *ngIf="thanhLy.id">Cập nhật thanh lý: {{thanhLy.tenTS}}</span>
+                        <span *ngIf="!thanhLy.id">Tạo mới thanh lý</span>
+                    </h4>
+                    <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Mã tài sản *</label>
+                        <div class="d-flex ">
+                            <input #maTSInput="ngModel" class="form-control" type="text" name="maTS" disabled
+                                   [(ngModel)]="thanhLy.maTS" required maxlength="64">
+                            <validation-messages [formCtrl]="maTSInput"></validation-messages>
+                            <button class="form-control btn btn-outline-primary"
+                                    (click)="viewThongTinTaiSan.show()"
+                                    style="margin-right: 20px; width: 50px">
+                                ...
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Tên tài sản *</label>
+                        <input #tenTSInput="ngModel" class="form-control" type="text" name="tenTS" disabled
+                               [(ngModel)]="thanhLy.tenTS" required maxlength="64">
+                        <validation-messages [formCtrl]="tenTSInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Đơn vị mua *</label>
+                        <select #donViMuaInput="ngModel" class="form-control" name="donViMua"
+                                [(ngModel)]="thanhLy.donViMua" required maxlength="64"
+                                (change)="getTenDonVi()">
+                            <option>...</option>
+                            <option *ngFor="let listTen of listTenDonVi">
+                                {{listTen}}
+                            </option>
+                        </select>
+                        <validation-messages [formCtrl]="donViMuaInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Hình thức thanh lý *</label>
+                        <select #hinhThucThanhLyInput="ngModel" class="form-control" name="hinhThucThanhLy"
+                                [(ngModel)]="thanhLy.hinhThucThanhLy" required maxlength="64">
+                            <option value="Một phần">Một phần</option>
+                            <option value="Toàn phần">Toàn phần</option>
+                        </select>
+                        <validation-messages [formCtrl]="hinhThucThanhLyInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Số tiền thanh lý *</label>
+                        <input #giaTienThanhLyInput="ngModel" class="form-control" type="text" name="giaTienThanhLy"
+                               [(ngModel)]="thanhLy.giaTienThanhLy" required maxlength="64">
+                        <validation-messages [formCtrl]="giaTienThanhLyInput"></validation-messages>
+                    </div>
+                    <div class="form-group">
+                        <label>Ghi chú *</label>
+                        <input #ghiChuInput="ngModel" class="form-control" type="text" name="ghiChu"
+                               [(ngModel)]="thanhLy.ghiChu" required maxlength="64">
+                        <validation-messages [formCtrl]="ghiChuInput"></validation-messages>
+                    </div>                   
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                        (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary" (click)="save()"><i class="fa fa-save"></i>
+                        <span>{{l("Save")}}</span></button>
+                </div>
+            <!--</form>-->
+        </div>
+    </div>
+    <!--<taiSanFindModel #viewThongTinTaiSan></taiSanFindModel>-->
+</div>
+<taiSanFindModel #viewThongTinTaiSan (modalTaiSanSave)="getTaiSan($event)"></taiSanFindModel>

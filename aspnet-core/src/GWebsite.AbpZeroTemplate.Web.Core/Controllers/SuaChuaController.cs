@@ -51,6 +51,26 @@ namespace GWebsite.AbpZeroTemplate.Application.Controllers
         {
             return suaChuaAppservice.GetSuaChuaForView(id);
         }
+        [HttpGet]
+        public string[] GetArrTenDVSC()
+        {
+            return suaChuaAppservice.GetArrTenDVSC();
+        }
+        [HttpGet]
+        public string[] GetArrTenNVPT(string tenDV)
+        {
+            return suaChuaAppservice.GetArrTenNVPT(tenDV);
+        }
+        [HttpGet]
+        public string[] GetArrTenNVDX()
+        {
+            return suaChuaAppservice.GetArrTenNVDX();
+        }
+        [HttpGet]
+        public string GetTenDVDX(string tenNV)
+        {
+            return suaChuaAppservice.GetTenDVDX(tenNV);
+        }
     }
 }
 

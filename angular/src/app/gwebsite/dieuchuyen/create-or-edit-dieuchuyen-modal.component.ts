@@ -1,8 +1,8 @@
 import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild, OnInit } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
-import { DieuChuyenServiceProxy, DieuChuyenInput, CTDonViDto, CTDonViServiceProxy } from '@shared/service-proxies/service-proxies';
-import { CTDonViComponent } from '../donvi/donvi-chitiet.component';
+import { DieuChuyenServiceProxy, DieuChuyenInput, TaiSanDto, TaiSanServiceProxy } from '@shared/service-proxies/service-proxies';
+import { TaiSanFindXuatComponent } from '../taisan/taisan-find-xuat.component';
 
 
 @Component({
@@ -16,7 +16,7 @@ export class CreateOrEditDieuChuyenModalComponent extends AppComponentBase imple
     @ViewChild('dieuChuyenCombobox') dieuChuyenCombobox: ElementRef;
     @ViewChild('iconCombobox') iconCombobox: ElementRef;
     @ViewChild('dateInput') dateInput: ElementRef;
-    @ViewChild('viewCTDonVi') viewCTDonVi: CTDonViComponent;
+    @ViewChild('viewTaiSanFindXuatModel') viewTaiSanFindXuatModel: TaiSanFindXuatComponent;
 
 
     /**
@@ -27,7 +27,7 @@ export class CreateOrEditDieuChuyenModalComponent extends AppComponentBase imple
     saving = false;
 
     dieuChuyen: DieuChuyenInput = new DieuChuyenInput();
-    ctDonVi: CTDonViDto = new CTDonViDto();
+    taiSanXuat: TaiSanDto = new TaiSanDto();
     listTenDV: string[]
     listTenNVNhan: string[]
     ngayDieuChuyen: number
@@ -35,7 +35,7 @@ export class CreateOrEditDieuChuyenModalComponent extends AppComponentBase imple
     constructor(
         injector: Injector,
         private _dieuChuyenService: DieuChuyenServiceProxy,
-        private _ctDonViService: CTDonViServiceProxy
+        private _taiSanService: TaiSanServiceProxy
     ) {
         super(injector);
     }
@@ -45,13 +45,13 @@ export class CreateOrEditDieuChuyenModalComponent extends AppComponentBase imple
         this.getTenDV();
     }
 
-    getCTDonVi(ctDonVi: CTDonViDto) {
-        if (ctDonVi.id != undefined) {
+    getTaiSans(taiSanXuat: TaiSanDto) {
+        if (taiSanXuat.id != undefined) {
 
-            this.ctDonVi = ctDonVi
-            this.dieuChuyen.maTaiSan = this.ctDonVi.maTS;
-            this.dieuChuyen.tenTaiSan = this.ctDonVi.tenTaiSan;
-            this.dieuChuyen.tenNhanVienDC = this.ctDonVi.tenDonVi;
+            this.taiSanXuat = taiSanXuat
+            this.dieuChuyen.maTaiSan = this.taiSanXuat.maTS;
+            this.dieuChuyen.tenTaiSan = this.taiSanXuat.tenTs;
+            this.dieuChuyen.tenDonViDC = this.taiSanXuat.tenDV;
         }
     }
 
@@ -63,10 +63,10 @@ export class CreateOrEditDieuChuyenModalComponent extends AppComponentBase imple
     }
 
     getTenNVNhan(): void {
-        if (this.dieuChuyen.tenDonVi == "...")
+        if (this.dieuChuyen.tenDonViNhan == "...")
             return;
 
-        this._dieuChuyenService.getTenNVNhan(this.dieuChuyen.tenDonVi).subscribe(
+        this._dieuChuyenService.getTenNVNhan(this.dieuChuyen.tenDonViNhan).subscribe(
             result => {
                 this.listTenNVNhan = result['result'];
             })
@@ -79,8 +79,8 @@ export class CreateOrEditDieuChuyenModalComponent extends AppComponentBase imple
         this._dieuChuyenService.getDieuChuyenForEdit(dieuChuyenId).subscribe(result => {
             this.dieuChuyen = result;
 
-            this._ctDonViService.getCTDonViForEdit(result.id).subscribe(kq => {
-                this.ctDonVi = kq;
+            this._taiSanService.getTaiSanForEdit(result.id).subscribe(kq => {
+                this.taiSanXuat = kq;
             });
 
             this.modal.show();

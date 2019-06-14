@@ -45,21 +45,21 @@
                             [responsive]="primengTableHelper.isResponsive">
                             <ng-template pTemplate="header">
                                 <tr>
+                                    <th pSortableColumn="maTaiSan">
+                                        Mã tài sản
+                                        <p-sortIcon field="maTaiSan"></p-sortIcon>
+                                    </th>
                                     <th pSortableColumn="tenTaiSan">
                                         Tên tài sản
                                         <p-sortIcon field="tenTaiSan"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="tenNhanVienDC">
+                                    <th pSortableColumn="tenDonViDC">
                                         ĐV điều chuyển
-                                        <p-sortIcon field="tenNhanVienDC"></p-sortIcon>
+                                        <p-sortIcon field="tenDonViDC"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="tenDonVi">
+                                    <th pSortableColumn="tenDonViNhan">
                                         ĐV nhận
-                                        <p-sortIcon field="tenDonVi"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="soLuong">
-                                        Số lượng
-                                        <p-sortIcon field="soLuong"></p-sortIcon>
+                                        <p-sortIcon field="tenDonViNhan"></p-sortIcon>
                                     </th>
                                     <th pSortableColumn="tenNhanVienNhan">
                                         Tên NV nhận
@@ -79,20 +79,20 @@
                             <ng-template pTemplate="body" let-record="$implicit">
                                 <tr>
                                     <td>
+                                        <span class="ui-column-title">Mã tài sản</span>
+                                        <span title="{{record.maTaiSan}}">{{truncateString(record.maTaiSan)}}</span>
+                                    </td>
+                                    <td>
                                         <span class="ui-column-title">Tên tài sản</span>
                                         <span title="{{record.tenTaiSan}}">{{truncateString(record.tenTaiSan)}}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">ĐV điều chuyển</span>
-                                        <span title="{{record.tenNhanVienDC}}">{{truncateString(record.tenNhanVienDC)}}</span>
+                                        <span title="{{record.tenDonViDC}}">{{truncateString(record.tenDonViDC)}}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">ĐV nhận</span>
-                                        <span title="{{record.tenDonVi}}">{{truncateString(record.tenDonVi)}}</span>
-                                    </td>
-                                    <td>
-                                        <span class="ui-column-title">Số lượng</span>
-                                        <span title="{{record.soLuong}}">{{truncateString(record.soLuong)}}</span>
+                                        <span title="{{record.tenDonViNhan}}">{{truncateString(record.tenDonViNhan)}}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">Tên NV nhận</span>
@@ -105,7 +105,7 @@
                                     <td>
                                         <span class="ui-column-title">Ghi chú</span>
                                         <span title="{{record.ghiChu}}">{{truncateString(record.ghiChu)}}</span>
-                                    </td>                                    
+                                    </td>
                                     <td>
                                         <button class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
                                                 (click)="createOrEditModal.show(record.id)" title="{{l('Edit')}}">

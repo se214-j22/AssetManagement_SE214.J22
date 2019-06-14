@@ -10,6 +10,8 @@ import { ThuHoiComponent } from './thuhoi/thuhoi.component';
 import { NhomTaiSanComponent } from './nhomtaisan/nhomtaisan.component';
 import { DonViComponent } from './donvi/donvi.component';
 import { NhanVienComponent } from './nhanvien/nhanvien.component';
+import { SuaChuaComponent } from './suachua/suachua.component';
+import { ThanhLyComponent } from './thanhly/thanhly.component';
 
 @NgModule({
     imports: [
@@ -81,8 +83,26 @@ import { NhanVienComponent } from './nhanvien/nhanvien.component';
                 path: '',
                 children: [
                     {
+                        path: 'suachua', component: SuaChuaComponent,
+                        data: { permission: 'Pages.Administration.SuaChua' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
                         path: 'thuhoi', component: ThuHoiComponent,
                         data: { permission: 'Pages.Administration.ThuHoi' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'thanhly', component: ThanhLyComponent,
+                        data: { permission: 'Pages.Administration.ThanhLy' }
                     },
                 ]
             },

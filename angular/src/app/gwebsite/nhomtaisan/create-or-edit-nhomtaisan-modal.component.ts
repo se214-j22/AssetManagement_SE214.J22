@@ -35,6 +35,7 @@ export class CreateOrEditNhomTaiSanModalComponent extends AppComponentBase imple
     nhomTaiSan: NhomTaiSanInput = new NhomTaiSanInput();
     private baseUrl: string;
     listId: string[];
+    tyLeKhauHao: string
 
     constructor(
         injector: Injector,
@@ -55,6 +56,10 @@ export class CreateOrEditNhomTaiSanModalComponent extends AppComponentBase imple
             this.modal.show();
 
         })
+    }
+
+    setTyLeKhauHao(soThangKhauHao: number): void {
+        this.tyLeKhauHao = (1 / soThangKhauHao).toFixed(2);
     }
 
     // 30-5 lấy id

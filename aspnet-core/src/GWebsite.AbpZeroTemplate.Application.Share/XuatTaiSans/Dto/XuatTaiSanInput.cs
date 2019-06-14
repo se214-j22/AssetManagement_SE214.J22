@@ -14,7 +14,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.XuatTaiSans.Dto
     public class XuatTaiSanInput:Entity<int>
     {
 
-        public int MaTaiSan { get; set; }
+        public string MaTaiSan { get; set; }
         public string TenTaiSan { get; set; }
         public int SoLuong { get; set; }
         public DateTime NgayXuat { get; set; }

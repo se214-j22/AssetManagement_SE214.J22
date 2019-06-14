@@ -17,17 +17,19 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.DieuChuyens
     public class DieuChuyenAppService : GWebsiteAppServiceBase, IDieuChuyenAppService
     {
         private readonly IRepository<DieuChuyen> dieuChuyenRepository;
-        private readonly IRepository<CTTaiSan> cttsrepository;
         private readonly IRepository<DonVi> donVirepository;
         private readonly IRepository<NhanVien> nhanVienrepository;
-        private readonly IRepository<CTDonVi> ctDonVirepository;
-        public DieuChuyenAppService(IRepository<DieuChuyen> dieuChuyenRepository, IRepository<CTTaiSan> cttsrepository, IRepository<DonVi> donVirepository, IRepository<NhanVien> nhanVienrepository, IRepository<CTDonVi> ctDonVirepository)
+        private readonly IRepository<ThongTinTaiSan> tttsrepository;
+      
+        public DieuChuyenAppService(IRepository<DieuChuyen> dieuChuyenRepository, IRepository<DonVi> donVirepository,
+            IRepository<NhanVien> nhanVienrepository,
+            IRepository<ThongTinTaiSan> tttsrepository)
         {
             this.dieuChuyenRepository = dieuChuyenRepository;
-            this.cttsrepository = cttsrepository;
             this.donVirepository = donVirepository;
             this.nhanVienrepository = nhanVienrepository;
-            this.ctDonVirepository = ctDonVirepository;
+            this.tttsrepository = tttsrepository;
+         
         }
         public void CreateOrEditDieuChuyen(DieuChuyenInput dieuChuyenInput)
         {
@@ -77,9 +79,9 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.DieuChuyens
             var query = dieuChuyenRepository.GetAll().Where(x => !x.IsDelete);
 
             // filter by value
-            if (input.TenDonVi != null)
+            if (input.TenDonViNhan != null)
             {
-                query = query.Where(x => x.TenDonVi.ToLower().Contains(input.TenDonVi));
+                query = query.Where(x => x.TenDonViNhan.ToLower().Contains(input.TenDonViNhan));
             }
 
             var totalCount = query.Count();
@@ -120,57 +122,26 @@ namespace GWebsite.AbpZeroTemplate.Web.Core.DieuChuyens
         [AbpAuthorize(GWebsitePermissions.Pages_Administration_MenuClient_Create)]
         private void Create(DieuChuyenInput dieuChuyenInput)
         {
-            var maDonViDC = donVirepository.GetAll().Where(x => !x.IsDelete).FirstOrDefault(x => x.TenDonVi == dieuChuyenInput.TenNhanVienDC).Id;
-            var maDonViNhan = donVirepository.GetAll().Where(x => !x.IsDelete).FirstOrDefault(x => x.TenDonVi == dieuChuyenInput.TenDonVi).Id;
+            var maDonViDC = donVirepository.GetAll().Where(x => !x.IsDelete).FirstOrDefault(x => x.TenDonVi == dieuChuyenInput.TenDonViDC).Id;
+            var maDonViNhan = donVirepository.GetAll().Where(x => !x.IsDelete).FirstOrDefault(x => x.TenDonVi == dieuChuyenInput.TenDonViNhan).Id;
             var maNhanVien = nhanVienrepository.GetAll().Where(x => !x.IsDelete).FirstOrDefault(x => x.MaDV == maDonViNhan && x.TenNhanVien == dieuChuyenInput.TenNhanVienNhan).Id;
 
-            var soluong = ctDonVirepository.GetAll().Where(x => !x.IsDelete).FirstOrDefault(x => x.MaDV == maDonViDC && x.MaTS == dieuChuyenInput.MaTaiSan).SoLuong;
-
-            if (dieuChuyenInput.SoLuong <= soluong && maDonViDC!=maDonViNhan)
+            if (maDonViDC!=maDonViNhan)
             {
                 dieuChuyenInput.NgayDieuChuyen = DateTime.Now;
                 dieuChuyenInput.MaNhanVienNhan = maNhanVien;
-                dieuChuyenInput.MaDonVi = maDonViNhan;
+                dieuChuyenInput.MaDVNhan = maNhanVien;
+                dieuChuyenInput.MaDVDC = maDonViDC;
+                dieuChuyenInput.TenDonViDC = dieuChuyenInput.TenDonViDC;
                 var dieuChuyenEnity = ObjectMapper.Map<DieuChuyen>(dieuChuyenInput);
                 SetAuditInsert(dieuChuyenEnity);
                 dieuChuyenRepository.Insert(dieuChuyenEnity);
                 CurrentUnitOfWork.SaveChanges();
 
-                for (int i = 0; i < dieuChuyenInput.SoLuong; i++)
-                {
-                    var update = cttsrepository.GetAll().Where(x => !x.IsDelete).FirstOrDefault(x => x.MaTS == dieuChuyenInput.MaTaiSan && x.MaDV == maDonViDC);
-                    update.MADC = dieuChuyenEnity.Id;
-                    update.MaDV = maDonViNhan;
-                    CurrentUnitOfWork.SaveChanges();
-                }
-                var checkMaTaiSanInCTDonVi = ctDonVirepository.GetAll().Where(x => !x.IsDelete).Where(x => x.MaTS == dieuChuyenInput.MaTaiSan && x.MaDV == maDonViNhan).Count();
-                if (checkMaTaiSanInCTDonVi == 0)
-                {
-                    CTDonViInput cTDonViInput = new CTDonViInput();
-                    cTDonViInput.MaDV = maDonViNhan;
-                    cTDonViInput.MaTS = dieuChuyenInput.MaTaiSan;
-                    cTDonViInput.TenDonVi = dieuChuyenInput.TenDonVi;
-                    cTDonViInput.TenTaiSan = dieuChuyenInput.TenTaiSan;
-                    cTDonViInput.SoLuong = dieuChuyenInput.SoLuong;
-                    var ctDonViEntity = ObjectMapper.Map<CTDonVi>(cTDonViInput);
-                    SetAuditInsert(ctDonViEntity);
-                    ctDonVirepository.Insert(ctDonViEntity);
-                    CurrentUnitOfWork.SaveChanges();
-
-                    var sldonvidc = ctDonVirepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.MaTS == dieuChuyenInput.MaTaiSan && x.MaDV == maDonViDC);
-                    sldonvidc.SoLuong -= dieuChuyenInput.SoLuong;
-                    CurrentUnitOfWork.SaveChanges();
-                }
-                else
-                {
-                    var sldonvinhan = ctDonVirepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.MaTS == dieuChuyenInput.MaTaiSan && x.MaDV == maDonViNhan);
-                    sldonvinhan.SoLuong += dieuChuyenInput.SoLuong;
-                    CurrentUnitOfWork.SaveChanges();
-                    var sldonvidc = ctDonVirepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.MaTS == dieuChuyenInput.MaTaiSan && x.MaDV == maDonViDC);
-                    sldonvidc.SoLuong -= dieuChuyenInput.SoLuong;
-                    CurrentUnitOfWork.SaveChanges();
-                }
-
+                var update = tttsrepository.GetAll().Where(x => !x.IsDelete).SingleOrDefault(x => x.MaTS == dieuChuyenInput.MaTaiSan);
+                update.MaDV = dieuChuyenEnity.MaDVNhan;
+                update.TenDV = dieuChuyenEnity.TenDonViNhan;
+                CurrentUnitOfWork.SaveChanges();
             }
         
         }

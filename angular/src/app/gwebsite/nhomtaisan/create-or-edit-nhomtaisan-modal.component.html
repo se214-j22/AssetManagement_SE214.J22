@@ -27,16 +27,16 @@
                     </div>
                     <div class="form-group">
                         <!--<label>Loại tài sản *</label>
-    <input #LoaiTaiSanInput="ngModel" class="form-control" type="text" name="loaiTaiSan"
-           [(ngModel)]="nhomTaiSan.loaiTaiSan" required maxlength="64">
-    <validation-messages [formCtrl]="LoaiTaiSanInput"></validation-messages>-->                        
+        <input #LoaiTaiSanInput="ngModel" class="form-control" type="text" name="loaiTaiSan"
+               [(ngModel)]="nhomTaiSan.loaiTaiSan" required maxlength="64">
+        <validation-messages [formCtrl]="LoaiTaiSanInput"></validation-messages>-->
 
                         <label>Loại tài sản *</label>
                         <select #LoaiTaiSanInput="ngModel" class="form-control" name="loaiTaiSan"
                                 [(ngModel)]="nhomTaiSan.loaiTaiSan" required maxlength="64">
                             <!-- <option *ngFor="let listid of listId">
-                                {{listid}}
-                            </option> -->
+                {{listid}}
+            </option> -->
                             <option value="Tài sản cố định">Tài sản cố định</option>
                             <option value="Công cụ lao động">Công cụ lao động</option>
 
@@ -46,15 +46,21 @@
                     <div class="form-group">
                         <label>Số tháng khấu hao *</label>
                         <input #SoThangKhauHaoInput="ngModel" class="form-control" type="text" name="soThangKhauHao"
-                               [(ngModel)]="nhomTaiSan.soThangKhauHao" required maxlength="64">
+                               [(ngModel)]="nhomTaiSan.soThangKhauHao" required maxlength="64"
+                               (change)="setTyLeKhauHao($event.target.value)">
                         <validation-messages [formCtrl]="SoThangKhauHaoInput"></validation-messages>
                     </div>
-                    <div class="form-group">
+                    <!--<div class="form-group">
                         <label>Tỷ lệ khấu hao *</label>
-                        <input #TyLeKhauHaoInput="ngModel" class="form-control" type="text" name="tyLeKhauHao"
+                        <input #TyLeKhauHaoInput="ngModel" class="form-control" type="text" name="tyLeKhauHao" disabled
                                [(ngModel)]="nhomTaiSan.tyLeKhauHao" required maxlength="64">
                         <validation-messages [formCtrl]="TyLeKhauHaoInput"></validation-messages>
-                    </div>                    
+                    </div>-->
+                    <div class="form-group">
+                        <label>Tỷ lệ khấu hao *</label>
+                        <input class="form-control" type="text" name="tyLeKhauHao" disabled
+                               value="{{tyLeKhauHao}}" required maxlength="64">                        
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"

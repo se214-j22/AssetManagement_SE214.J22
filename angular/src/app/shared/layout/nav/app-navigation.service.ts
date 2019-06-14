@@ -26,7 +26,9 @@ export class AppNavigationService {
                 new AppMenuItem('TaiSan', 'Pages.Administration.TaiSan', 'flaticon-menu-1', '/app/gwebsite/taisan'),                
                 new AppMenuItem('XuatTaiSan', 'Pages.Administration.XuatTaiSan', 'flaticon-menu-1', '/app/gwebsite/xuattaisan'),
                 new AppMenuItem('DieuChuyen', 'Pages.Administration.DieuChuyen', 'flaticon-menu-1', '/app/gwebsite/dieuchuyen'),
-                new AppMenuItem('ThuHoi', 'Pages.Administration.ThuHoi', 'flaticon-menu-1', '/app/gwebsite/thuhoi')
+                new AppMenuItem('SuaChua', 'Pages.Administration.SuaChua', 'flaticon-menu-1', '/app/gwebsite/suachua'),
+                new AppMenuItem('ThuHoi', 'Pages.Administration.ThuHoi', 'flaticon-menu-1', '/app/gwebsite/thuhoi'),
+                new AppMenuItem('ThanhLy', 'Pages.Administration.ThanhLy', 'flaticon-menu-1', '/app/gwebsite/thanhly')
             ]),
             new AppMenuItem('QuanLyDonVi', '', 'flaticon-interface-8', '', [                
                 new AppMenuItem('DonVi', 'Pages.Administration.DonVi', 'flaticon-menu-1', '/app/gwebsite/donvi'),

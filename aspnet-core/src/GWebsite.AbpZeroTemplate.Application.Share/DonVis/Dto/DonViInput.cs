@@ -14,7 +14,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.DonVis.Dto
     public class DonViInput:Entity<int>
     {
         public string TenDonVi { get; set; }
-        public DateTime NgayTest { get; set; }
+        public string DiaChi { get; set; }
     }
 }
 

@@ -29,7 +29,12 @@ export class TaiSanComponent extends AppComponentBase implements AfterViewInit, 
     /**
      * tạo các biến dể filters
      */
-    TenTs: string;
+    tenTs: string;
+    maTS: string;
+    loaiTS: string;
+    tenNhomTS: string;    
+    soseri: string;
+    tenDV: string;
 
     constructor(
         injector: Injector,
@@ -37,6 +42,12 @@ export class TaiSanComponent extends AppComponentBase implements AfterViewInit, 
         private _activatedRoute: ActivatedRoute,
     ) {
         super(injector);
+        this.tenTs = null;
+        this.maTS = null;
+        this.loaiTS = null;
+        this.tenNhomTS = null;
+        this.soseri = null;
+        this.tenDV = null;
     }
 
     /**
@@ -70,12 +81,23 @@ export class TaiSanComponent extends AppComponentBase implements AfterViewInit, 
          * mặc định ban đầu lấy hết dữ liệu nên dữ liệu filter = null
          */
 
-        this.reloadList(null, event);
+        this.reloadList(event);
 
     }
 
-    reloadList(TenTs, event?: LazyLoadEvent) {
-        this._taiSanService.getTaiSansByFilter(TenTs, this.primengTableHelper.getSorting(this.dataTable),
+    reloadList(event?: LazyLoadEvent) {
+        this._taiSanService.getTaiSansByFilter(this.tenTs, this.maTS, this.loaiTS, this.tenNhomTS, this.soseri, this.tenDV,this.primengTableHelper.getSorting(this.dataTable),
+            this.primengTableHelper.getMaxResultCount(this.paginator, event),
+            this.primengTableHelper.getSkipCount(this.paginator, event),
+        ).subscribe(result => {
+            this.primengTableHelper.totalRecordsCount = result.totalCount;
+            this.primengTableHelper.records = result.items;
+            this.primengTableHelper.hideLoadingIndicator();
+        });
+    }
+
+    refreshList(event?: LazyLoadEvent) {
+        this._taiSanService.getTaiSansByFilter(null, null, null, null, null, null, this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getMaxResultCount(this.paginator, event),
             this.primengTableHelper.getSkipCount(this.paginator, event),
         ).subscribe(result => {
@@ -94,8 +116,8 @@ export class TaiSanComponent extends AppComponentBase implements AfterViewInit, 
     init(): void {
         //get params từ url để thực hiện filter
         this._activatedRoute.params.subscribe((params: Params) => {
-            this.TenTs = params['TenTs'] || '';
-            this.reloadList(this.TenTs, null);
+            this.tenTs = params['tenTs'] || '';
+            this.reloadList(null);
         });
     }
 
@@ -105,7 +127,7 @@ export class TaiSanComponent extends AppComponentBase implements AfterViewInit, 
 
     applyFilters(): void {
         //truyền params lên url thông qua router
-        this.reloadList(this.TenTs, null);
+        this.reloadList(null);
 
         if (this.paginator.getPage() !== 0) {
             this.paginator.changePage(0);

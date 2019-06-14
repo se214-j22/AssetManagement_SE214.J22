@@ -16,5 +16,7 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.NhomTaiSans.Dto
     public class NhomTaiSanFilter: PagedAndSortedInputDto
     {
         public string tenNhomTaiSan { get; set; }
+        public string loaiTaiSan { get; set; }
+        public int? soThangKhauHao { get; set; }
     }
 }

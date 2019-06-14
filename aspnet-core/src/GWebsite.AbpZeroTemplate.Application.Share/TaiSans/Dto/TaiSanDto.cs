@@ -30,5 +30,6 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.TaiSans.Dto
         public string LoaiTS { get; set; }
         public int MaDV { get; set; }
         public string TenDV { get; set; }
+        public string TinhTrang { get; set; }
     }
 }
