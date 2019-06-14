@@ -1,0 +1,236 @@
+<div [@routerTransition]>
+
+    <div class="m-subheader ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-xs-6">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("BidCreate")}}</span>
+                </h3>
+                <span class="m-section__sub">
+                    {{l("BidCreateInfo")}}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form autocomplete="off" (ngSubmit)="searchBidCreate()">
+                    <div class="m-form m-form--label-align-right" id="TextsFilterForm">
+                        <!-- filter -->
+                        <div class="row m--margin-bottom-10">
+                            <div class="col-sm-6">
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">BidCreate Code:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <input type="text" name="bidCreate code" [(ngModel)]="bidCreateCodeFilter"
+                                            [placeholder]="'BidCreate Code'" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">BidCreate Name:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <input type="text" name="bidCreateName" [(ngModel)]="bidCreateNameFilter"
+                                            [placeholder]="'BidCreate Name'" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Status:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <select #statusSelect name="status" class="form-control" [(ngModel)]="status"
+                                            [attr.data-live-search]="false" jq-plugin="selectpicker" required>
+                                            <option *ngFor="let item of StatusList" [value]="item.id">
+                                                {{item.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- search -->
+                        <div class="row align-items-center m--margin-bottom-10">
+                            <div class="col-sm-12 text-center">
+                                <button class="btn btn-primary" type="submit"><i class="icon-refresh"></i>
+                                    {{l("Search")}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                        <!-- perfect-scrollbar, https://www.npmjs.com/package/ngx-perfect-scrollbar -->
+                        <perfect-scrollbar [config]="{suppressScrollX: false}" (psScrollX)="onScrollX($event)">
+                            <p-table #dataTable (onLazyLoad)="getBidCreates($event)" [value]="primengTableHelper.records"
+                                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
+                                [lazy]="true" [responsive]="primengTableHelper.isResponsive">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th pSortableColumn="ordinalNumber" style="width: 90px; text-align: center">
+                                            {{l('Number')}}
+                                        </th>
+                                        <th pSortableColumn="code" style="width: 150px; text-align: center">
+                                            {{l('Code')}}
+                                            <p-sortIcon field="code"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="name" style="width: 150px; text-align: center">
+                                            {{l('Name')}}
+                                            <p-sortIcon field="name"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="bidCreateTypeId" style="width: 150px; text-align: center">
+                                            {{l('BidCreate Type')}}
+                                            <p-sortIcon field="bidCreateTypeId"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="supplierId" style="width: 150px; text-align: center">
+                                            {{l('Supplier Id')}}
+                                            <p-sortIcon field="supplierId"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="unitPrice" style="width: 150px; text-align: center">
+                                            {{l('Unit Price')}}
+                                            <p-sortIcon field="unitPrice"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="calUnit" style="width: 150px; text-align: center">
+                                            {{l('Cal Unit')}}
+                                            <p-sortIcon field="calUnit"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="description" style="width: 150px; text-align: center">
+                                            {{l('Description')}}
+                                        </th>
+                                        <th pSortableColumn="supplierAddress" style="width: 150px; text-align: center">
+                                            {{l('Address')}}
+                                        </th>
+                                        <th pSortableColumn="createDate" style="width: 150px; text-align: center">
+                                            {{l('Create Date')}}
+                                            <p-sortIcon field="createDate"></p-sortIcon>
+                                        </th>
+                                        <th pSortableColumn="status" style="width: 150px; text-align: center">
+                                            {{l('Status')}}
+                                            <p-sortIcon field="status"></p-sortIcon>
+                                        </th>
+                                        <th *ngIf="isPermissionEditCloseActive"
+                                            style="width: 230px; text-align: center">
+                                            {{l('Action')}}</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-record="$implicit" let-index="rowIndex">
+                                    <tr class="table-row text-center">
+                                        <td style="width: 90px">
+                                            <span class="ui-column-title">{{l('Number')}}</span>
+                                            <span title="{{record.ordinalNumber}}">{{truncateString(index + 1)}}</span>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Code')}}</span>
+                                            <span title="{{record.code}}">{{truncateString(record.code)}}</span>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Name')}}</span>
+                                            <span *ngIf="!record.isEdit"
+                                                title="{{record.name}}">{{ record.name }}</span>
+                                            <input *ngIf="record.isEdit" type="text" name="recordName"
+                                                [(ngModel)]="record.name" class="form-control">
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('BidCreate Type')}}</span>
+                                            <span
+                                                title="{{record.bidCreateTypeId}}">{{truncateString(record.bidCreateTypeId)}}</span>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Supplier Id')}}</span>
+                                            <span
+                                                title="{{record.supplierId}}">{{truncateString(record.supplierId)}}</span>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Unit Price')}}</span>
+                                            <span *ngIf="!record.isEdit"
+                                                title="{{record.unitPrice}}">{{ record.unitPrice }}</span>
+                                            <input *ngIf="record.isEdit" type="text" name="recordUnitPrice"
+                                                [(ngModel)]="record.unitPrice" class="form-control">
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Cal Unit')}}</span>
+                                            <span *ngIf="!record.isEdit"
+                                                title="{{record.calUnit}}">{{ record.calUnit }}</span>
+                                            <input *ngIf="record.isEdit" type="text" name="recordUnitPrice"
+                                                [(ngModel)]="record.calUnit" class="form-control">
+                                        </td>
+
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Description')}}</span>
+                                            <span *ngIf="!record.isEdit"
+                                                title="{{record.description}}">{{ record.description }}</span>
+                                            <input *ngIf="record.isEdit" type="text" name="recordDescription"
+                                                [(ngModel)]="record.description" class="form-control">
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Address')}}</span>
+                                            <span *ngIf="!record.isEdit"
+                                                title="{{record.supplierAddress}}">{{ record.supplierAddress }}</span>
+                                        </td>
+                                        <span style="width: 150px">
+                                            <span class="ui-column-title">{{l('Create Date')}}</span>
+                                            <span title="{{record.createDate}}">{{ record.createDate }}</span>
+                                        </span>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Status')}}</span>
+                                            <span
+                                                title="{{record.activeDate}}">{{ record.status === statusEnum.Open ? 'Open' : 'Close' }}</span>
+                                        </td>
+                                        <td *ngIf="isPermissionEditCloseActive" style="width: 230px">
+                                            <button *ngIf="!record.isEdit" class="btn btn-primary"
+                                                (click)="actionEdit(record, $event)">Edit
+                                            </button>
+                                            <button *ngIf="record.isEdit"
+                                                [disabled]="!record.name || record.name === ''" class="btn btn-success"
+                                                (click)="saveEditItem(record.id, record, $event)">Save
+                                            </button>
+                                            <button *ngIf="record.isEdit" class="btn btn-danger"
+                                                (click)="cancelEdit(record, $event)">Cancel
+                                            </button>
+                                            <button *ngIf="record.status === statusEnum.Close && !record.isEdit"
+                                                class="btn btn-success" (click)="actionPCItem(record.id, record)"
+                                                title="Open this bidCreate">Open
+                                            </button>
+                                            <button *ngIf="record.status === statusEnum.Open && !record.isEdit"
+                                                class="btn btn-warning" (click)="actionPCItem(record.id, record)"
+                                                title="Close this bidCreate">
+                                                Close
+                                            </button>
+                                            <button *ngIf="!record.isEdit" class="btn btn-danger"
+                                                [disabled]="record.isIncludeBidCreate" type="button"
+                                                (click)="removePcItem(record.id, record, index)"
+                                                title="{{record.isIncludeBidCreate ? 'Cannot remove bidCreate exist reference': 'Delete this'}}">
+                                                Remove</button>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </perfect-scrollbar>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
+                                (onPageChange)="getBidCreates($event)"
+                                [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

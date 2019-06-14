@@ -61,3 +61,15 @@ export class BidProfileTypeInfo {
         this.label = info;
     }
 }
+
+export enum ApprovalStatusEnum {
+    Active = 1,
+    Inactive = 2,
+    Close = 3
+}
+
+export enum StatusEnum {
+    Open = 1,
+    Close = 2,
+    All = 3
+}
