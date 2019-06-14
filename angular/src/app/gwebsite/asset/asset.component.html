@@ -126,6 +126,11 @@
                                             (click)="viewModal.show(record.id)" title="{{l('View')}}">
                                             <i class="fa fa-eye" [attr.aria-label]="l('View')"></i>
                                         </button>
+                                        <button *ngIf="isGranted('Pages.Administration.Asset.Create_Edit') && record.isResting"
+                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                            (click)="exportModal.show(record.id)" title="{{l('Export')}}">
+                                            <i class="fa fa-fast-forward" [attr.aria-label]="l('Export')"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             </ng-template>
@@ -150,4 +155,5 @@
     </div>
     <createOrEditAssetModal #createOrEditModal (modalSave)="reloadPage()"></createOrEditAssetModal>
     <viewAssetModal #viewModal></viewAssetModal>
+    <exportAssetModal #exportModal></exportAssetModal>
 </div>

@@ -12,6 +12,7 @@ import { DemoModelServiceProxy, AssetServiceProxy, AssetDto, OrganizationUnitSer
 import jsQR from "jsqr";
 import { ViewAssetModalComponent } from './view-asset-modal.component';
 import { CreateOrEditAssetModalComponent } from './create-or-edit-asset-modal.component';
+import { ExportAssetModalComponent } from './export-asset-modal.component';
 
 @Component({
   templateUrl: './asset.component.html',
@@ -22,6 +23,7 @@ export class AssetComponent extends AppComponentBase implements OnInit, AfterVie
   @ViewChild('dataTable') dataTable: Table;
   @ViewChild('paginator') paginator: Paginator;
   @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditAssetModalComponent;
+  @ViewChild('exportModal') exportModal: ExportAssetModalComponent;
   @ViewChild('viewModal') viewModal: ViewAssetModalComponent;
   filterTerm: string;
   asset: AssetDto;
@@ -69,7 +71,6 @@ export class AssetComponent extends AppComponentBase implements OnInit, AfterVie
     this.reloadList(null, event);
 
   }
-
   createAsset() {
     this.createOrEditModal.show();
   }
@@ -80,6 +81,8 @@ export class AssetComponent extends AppComponentBase implements OnInit, AfterVie
     ).subscribe(result => {
       this.primengTableHelper.totalRecordsCount = result.totalCount;
       this.primengTableHelper.records = result.items;
+      this.primengTableHelper.records.forEach(i => {
+         i.isResting = i.isDamaged == false && i.organizationUnitId == this.mainOU.id; });
       this.primengTableHelper.hideLoadingIndicator();
     });
   }

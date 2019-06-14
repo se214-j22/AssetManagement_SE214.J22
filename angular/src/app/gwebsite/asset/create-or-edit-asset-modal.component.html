@@ -110,7 +110,8 @@
                     <!-- #region QR -->
                     <div class='row' *ngIf='modifyMultipleAssetsMode'>
                         <div class='col-sm-12'>
-                            <label style="color:blueviolet">The asset's fields are't filled in will not affected.</label>
+                            <label style="color:cornflowerblue">The asset's fields are't filled in will not
+                                affected.</label>
                         </div>
                         <div class='col-sm-4' id='detectingByCamera' #detectingByCamera style='display:block'>
                             <label>Detecting by camera</label>
@@ -176,7 +177,7 @@
                     <button [disabled]="saving" type="button" class="btn btn-default"
                         (click)="close()">{{l("Cancel")}}</button>
                     <button *ngIf='!modifyMultipleAssetsMode' type="submit" class="btn btn-primary"
-                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-fast-forward"></i>
                         <span>{{l("Save")}}</span></button>
                 </div>
             </form>

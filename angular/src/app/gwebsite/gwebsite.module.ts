@@ -32,6 +32,7 @@ import { AssetTypeComponent } from './asset-type/asset-type.component';
 import { CreateOrEditManufacturerModalComponent } from './manufacturer/create-or-edit-manufacturer-modal.component';
 import { ViewManufacturerModalComponent } from './manufacturer/view-manufacturer-modal.component';
 import { ManufacturerComponent } from './manufacturer/manufacturer.component';
+import { ExportAssetModalComponent } from './asset/export-asset-modal.component';
 
 @NgModule({
     imports: [
@@ -60,7 +61,7 @@ import { ManufacturerComponent } from './manufacturer/manufacturer.component';
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
         DemoModelComponent, CreateOrEditDemoModelModalComponent, ViewDemoModelModalComponent,
         CustomerComponent, CreateOrEditCustomerModalComponent, ViewCustomerModalComponent,
-        AssetComponent, ViewAssetModalComponent,  CreateOrEditAssetModalComponent,
+        AssetComponent, ViewAssetModalComponent,  CreateOrEditAssetModalComponent, ExportAssetModalComponent,
         AssetLineComponent, ViewAssetLineModalComponent,  CreateOrEditAssetLineModalComponent,
         AssetTypeComponent, ViewAssetTypeModalComponent,  CreateOrEditAssetTypeModalComponent,
         ManufacturerComponent, ViewManufacturerModalComponent,  CreateOrEditManufacturerModalComponent,
