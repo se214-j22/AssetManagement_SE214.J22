@@ -167,5 +167,47 @@ namespace GSoft.AbpZeroTemplate.Organizations
             dto.MemberCount = await _userOrganizationUnitRepository.CountAsync(uou => uou.OrganizationUnitId == organizationUnit.Id);
             return dto;
         }
+
+        public async Task<ListResultDto<OrganizationUnitUserListDto>> GetListUsersOrganizationUnit(int Id)
+        {
+            var query = from uou in _userOrganizationUnitRepository.GetAll()
+                join ou in _organizationUnitRepository.GetAll() on uou.OrganizationUnitId equals ou.Id
+                join user in UserManager.Users on uou.UserId equals user.Id
+                where uou.OrganizationUnitId == Id
+                select new { uou, user };
+
+            var items = await query.ToListAsync();
+
+            return new ListResultDto<OrganizationUnitUserListDto>(
+                items.Select(item =>
+                {
+                    var dto = ObjectMapper.Map<OrganizationUnitUserListDto>(item.user);
+                    return dto;
+                }).ToList());
+        }
+
+        public async Task<OrganizationUnitDto> GetOrganizationUnitByID(int Id)
+        {
+            var query =
+                from ou in _organizationUnitRepository.GetAll()
+                join uou in _userOrganizationUnitRepository.GetAll() on ou.Id equals uou.OrganizationUnitId into g
+                select new { ou, memberCount = g.Count() };
+
+            var items = await query.ToListAsync();
+
+            OrganizationUnitDto unit = new OrganizationUnitDto();
+
+            items.Select(item =>
+            {
+                if(item.ou.Id == Id)
+                {
+                    unit = ObjectMapper.Map<OrganizationUnitDto>(item.ou);
+                }
+                var dto = ObjectMapper.Map<OrganizationUnitDto>(item.ou);
+                return dto;
+            }).ToList();
+
+            return unit;
+        }
     }
 }
