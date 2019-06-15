@@ -4,8 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    <span *ngIf="liquidation.id">{{l("EditLiquidation")}}: {{liquidation.name}}</span>
-                    <span *ngIf="!liquidation.id">{{l("CreateNewLiquidation")}}</span>
+                    <span>Xem Thanh lý: {{liquidation.assetID}}</span>
                 </h4>
                 <button type="button" class="close" (click)="close()" [attr.aria-b]="l('Close')">
                     <span aria-hidden="true">&times;</span>
@@ -53,30 +52,22 @@
                     <b>Nguyên giá tài sản: </b>
                     <span>{{asset.originalPrice}}</span>
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <b>Giá trị khấu hao: </b>
                     <span></span>
                 </div>
                 <div class="form-group">
                     <b>Giá trị khấu hao còn lại: </b>
                     <span></span>
-                </div>
-                <div class="form-group">
-                    <b>Đơn vị sử dụng: </b>
-                    <span></span>
-                </div>
-                <div class="form-group">
-                    <b>Người sử dụng: </b>
-                    <span></span>
-                </div>
-                <div class="form-group">
+                </div> -->
+                <!-- <div class="form-group">
                     <b>Tình trạng khấu hao: </b>
                     <span></span>
                 </div>
                 <div class="form-group">
                     <b>Vị trí tài sản: </b>
                     <span></span>
-                </div>
+                </div> -->
                 <div class="form-group">
                     <b>Đơn vị mua tài sản thanh lý: </b>
                     <span *ngIf="liquidation.purchaseUnit == 0">Đơn vị mua tài sản 1</span>
@@ -99,7 +90,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">
+                <button type="button" class="btn btn-default" (click)="close()">
                     {{l("Đóng")}}</button>
             </div>
         </div>

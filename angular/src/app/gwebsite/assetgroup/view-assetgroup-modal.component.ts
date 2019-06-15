@@ -23,11 +23,14 @@ export class ViewAssetGroupModalComponent extends AppComponentBase {
     }
 
     show(assetgroupId?: number | null | undefined): void {
-        this._assetgroupService.getAssetGroupForView(assetgroupId).subscribe(result => {
-            this.assetgroup = result;
-            this.modal.show();
-            this.getNameAssetGroupParent();
-        })
+        this.modal.show();
+
+        if (assetgroupId) {
+            this._assetgroupService.getAssetGroupForView(assetgroupId).subscribe(result => {
+                this.assetgroup = result;
+                this.getNameAssetGroupParent();
+            })
+        }
     }
 
     close(): void {
@@ -35,9 +38,12 @@ export class ViewAssetGroupModalComponent extends AppComponentBase {
     }
 
     getNameAssetGroupParent(): void {
-        this._assetgroupService.getAssetGroupNameByAssetID(this.assetgroup.assetGroupParentId).subscribe(result => {
-            if(result != null)
-            this.assetGroupName = result;
-        });
+        this.assetGroupName = '';
+        if (this.assetgroup.assetGroupParentId) {
+            this._assetgroupService.getAssetGroupNameByAssetID(this.assetgroup.assetGroupParentId).subscribe(result => {
+                if(result != null)
+                this.assetGroupName = result;
+            });
+        }
     }
 }

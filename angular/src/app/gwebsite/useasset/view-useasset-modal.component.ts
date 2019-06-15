@@ -1,6 +1,6 @@
 import { AppComponentBase } from "@shared/common/app-component-base";
 import { AfterViewInit, Injector, Component, ViewChild } from "@angular/core";
-import { UseAssetServiceProxy, UseAssetForViewDto, AssetForViewDto, AssetGroupForViewDto, AssetServiceProxy, AssetGroupServiceProxy, UserServiceProxy, OrganizationUnitServiceProxy, OrganizationUnitDto, UserEditDto } from "@shared/service-proxies/service-proxies";
+import { UseAssetServiceProxy, UseAssetForViewDto, AssetForViewDto, AssetGroupForViewDto, AssetServiceProxy, AssetGroupServiceProxy, UserServiceProxy, OrganizationUnitServiceProxy, OrganizationUnitDto, UserEditDto, CustomerServiceProxy, CustomerDto, CustomerForViewDto } from "@shared/service-proxies/service-proxies";
 import { ModalDirective } from 'ngx-bootstrap';
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
 
@@ -18,8 +18,9 @@ export class ViewUseAssetModalComponent extends AppComponentBase {
     assetGroup: AssetGroupForViewDto = new AssetGroupForViewDto();
     dateEndDepreciation: string = "";
 
-    userUseAsset: UserEditDto = new UserEditDto();
+    customer: CustomerForViewDto = new CustomerForViewDto();
     organizationUnit: OrganizationUnitDto = new OrganizationUnitDto();
+    organizationName: string = '';
     barcode: string = '';
 
     constructor(
@@ -27,7 +28,7 @@ export class ViewUseAssetModalComponent extends AppComponentBase {
         private _useassetService: UseAssetServiceProxy,
         private _assetService: AssetServiceProxy,
         private _assetGroupService: AssetGroupServiceProxy,
-        private _userService: UserServiceProxy,
+        private _userService: CustomerServiceProxy,
         private _organizationUnitService: OrganizationUnitServiceProxy,
     ) {
         super(injector);
@@ -35,12 +36,12 @@ export class ViewUseAssetModalComponent extends AppComponentBase {
 
 
     show(useassetId?: number | null | undefined): void {
-        console.log(this);
+        // console.log(this);
         this._useassetService.getUseAssetForView(useassetId).subscribe(result => {
             this.useasset = result;
             this.modal.show();
             this.getUserUseAsset();
-            this.getOrganizationUnit();
+            this.getOrganizationUnits();
             this.getAssetByAssetID();
             this.barcode = this.useasset.dateExport + "-" + this.useasset.assetId + "-" + this.useasset.unitsUsedId + "-" + this.useasset.userId;
         })
@@ -69,17 +70,25 @@ export class ViewUseAssetModalComponent extends AppComponentBase {
     }
 
     getUserUseAsset() {
-        this._userService.getUserForEdit(this.useasset.userId).subscribe(
-            result => {
-                this.userUseAsset = result.user;
-            }
-        )
+        // this._userService.getUserForEdit(this.useasset.userId).subscribe(
+        //     result => {
+        //         this.userUseAsset = result.user;
+        //     }
+        // )
+        this._userService.getCustomerForView(this.useasset.userId).subscribe(result => {
+            this.customer = result;
+        })
     }
 
-    getOrganizationUnit() {
-        this._organizationUnitService.getOrganizationUnitByID(this.useasset.unitsUsedId).subscribe(
+    getOrganizationUnits() {
+        this.organizationName = '';
+        this._organizationUnitService.getOrganizationUnits().subscribe(
             result => {
-                this.organizationUnit = result;
+                if (result.items.length > 0) {
+                    this.organizationName = result.items.filter(item => item.id === this.useasset.unitsUsedId)[0].displayName;
+                }
+                
+                // this.organizationUnit = this.organizationUnits[0];
             }
         )
     }

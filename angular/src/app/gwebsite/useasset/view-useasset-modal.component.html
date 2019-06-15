@@ -4,8 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    <span *ngIf="useasset.id">{{l("Chỉnh sửa thông tin sử dụng")}}: {{asset.assetName}}</span>
-                    <span *ngIf="!useasset.id">{{l("Tạo mới xuất sử dụng")}}</span>
+                    <span>{{l("Thông tin Xuất sử dụng")}}</span>
                 </h4>
                 <button type="button" class="close" (click)="close()" [attr.aria-b]="l('Close')">
                     <span aria-hidden="true">&times;</span>
@@ -61,17 +60,17 @@
                     <b>Đơn vị sử dụng: </b>
                     <span>{{useasset.unitsUsedId}}</span>
                 </div>
-                <div class="form-group">
+                <div class="form-group" *ngIf="organizationName">
                     <b>Tên đơn vị: </b>
-                    <span>{{organizationUnit.displayName}}</span>
+                    <span>{{organizationName}}</span>
                 </div>
                 <div class="form-group">
                     <b>Người sử dụng: </b>
                     <span>{{useasset.userId}}</span>
                 </div>
-                <div class="form-group">
+                <div class="form-group" *ngIf="customer.name">
                     <b>Tên người sử dụng: </b>
-                    <span>{{userUseAsset.surname}} {{userUseAsset.name}}</span>
+                    <span>{{customer.name}}</span>
                 </div>
                 <div class="form-group">
                     <b>Mã QR Code: </b><br>
