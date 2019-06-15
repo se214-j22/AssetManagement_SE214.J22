@@ -1,5 +1,4 @@
 ﻿using Abp.Domain.Entities;
-using GWebsite.AbpZeroTemplate.Application.Share.Bidding.Dto;
 using GWebsite.AbpZeroTemplate.Application.Share.Product.Dto;
 using System;
 using System.Collections.Generic;
@@ -14,13 +13,14 @@ namespace GWebsite.AbpZeroTemplate.Application.Share.Products.Dto
         public string Name { get; set; }
         public float Discount { get; set; }
         public string Code { get; set; }
-        public string Address { get; set; }
+        public string Description { get; set; }
         public string UnitPrice { get; set; }
         public string CalUnit { get; set; }
         public DateTime CreateDate { get; set; }
         public int Status { get; set; }
-        public string Description { get; set; }
         //public ImageDto Image { get; set; }
         //public ICollection<TitleBiddingProduct> Biddings { get; set; }
+        public SupplierDtoTitle Supplier { get; set; }
+        public SupplierTypeDtoTitle ProductType { get; set; }
     }
 }

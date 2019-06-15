@@ -4,14 +4,16 @@ using GSoft.AbpZeroTemplate.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GSoft.AbpZeroTemplate.Migrations
 {
     [DbContext(typeof(AbpZeroTemplateDbContext))]
-    partial class AbpZeroTemplateDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190613084516_a")]
+    partial class a
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1932,6 +1934,8 @@ namespace GSoft.AbpZeroTemplate.Migrations
 
                     b.Property<int>("Status");
 
+                    b.Property<int>("Status1");
+
                     b.Property<float>("TotalPrice");
 
                     b.Property<string>("UnitCode");
@@ -1978,7 +1982,7 @@ namespace GSoft.AbpZeroTemplate.Migrations
                     b.ToTable("Products");
 
                     b.HasData(
-                        new { Id = 1, CalUnit = "unit", Code = "DELL-PJ", CreateDate = new DateTime(2019, 6, 13, 15, 48, 48, 680, DateTimeKind.Local), Name = "Dell Projector", ProductTypeId = 1, Status = 1, SupplierId = 1, UnitPrice = 1E+07f }
+                        new { Id = 1, CalUnit = "unit", Code = "DELL-PJ", CreateDate = new DateTime(2019, 6, 13, 15, 45, 16, 118, DateTimeKind.Local), Name = "Dell Projector", ProductTypeId = 1, Status = 1, SupplierId = 1, UnitPrice = 1E+07f }
                     );
                 });
 

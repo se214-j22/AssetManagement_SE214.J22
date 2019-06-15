@@ -10,6 +10,7 @@ import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.serv
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import * as moment from 'moment';
 import { ApprovalStatusEnum, BidTypeEnum, StatusEnum, BidProfileTypeInfo, BidProfileTypeInfo2, NewBidUnit } from '../dto/bidProfile.dto';
+import { BidProfileServiceProxy, ProductsServiceProxy, SupplierServiceProxy, BidProfileSaveForCreate, BidUnitDto } from '@shared/service-proxies/service-proxies';
 
 @Component({
     selector: 'app-bidCreate',
@@ -95,8 +96,8 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
         }
     ];
 
-    public startDateString = '';
-    public endDateString = '';
+    public startDateString: any= new Date();
+    public endDateString: any= new Date();
     public openDateString = '';
 
 
@@ -107,7 +108,7 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
     public newBeginCost;
     public newNotes;
 
-    public newBidUnits: Array<NewBidUnit> = [];
+    public newBidUnits: Array<BidUnitDto> = [];
 
 
     public datePickerOptions: IMyDpOptions = {
@@ -133,7 +134,7 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
 
     // public model: any = { date: { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate() } };
     // public model = new Date();
-    public creatDateString = '';
+    public creatDateString: any= new Date();
     public bidProfileCode = '';
     public bidCreateName = '';
 
@@ -396,7 +397,9 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
         injector: Injector,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
-        private _apiService: WebApiServiceProxy
+        private _apiService: BidProfileServiceProxy,
+        private _productsServiceProxy: ProductsServiceProxy,
+        private _supplierServiceProxy: SupplierServiceProxy,
     ) {
         super(injector);
     }
@@ -432,6 +435,13 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
     }
     public handelSelectsProduct(): void {
         this.productInfos = [];
+        this._productsServiceProxy.getProducts(undefined, undefined, undefined, undefined, undefined, undefined).subscribe(result => {
+            result.items.forEach((item, i) => {
+                this.productInfos.push(
+                    new BidProfileTypeInfo(item.id, `${item.code} - ${item.name}`));
+            });
+            this.bidCatalogProductId = this.productInfos[0].value;
+        });
         this.productFakes.forEach((item, i) => {
             this.productInfos.push(
                 new BidProfileTypeInfo(item.id, `${item.code} - ${item.name}`));
@@ -440,6 +450,13 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
     }
     public handelSelectsSupplier(): void {
         this.supplierInfos = [];
+        this._supplierServiceProxy.getSupplierWithFilterAsync(undefined, undefined, undefined, undefined, undefined, undefined).subscribe(result => {
+            result.items.forEach((item, i) => {
+                this.supplierInfos.push(
+                    new BidProfileTypeInfo2(item.code, `${item.code} - ${item.name}`));
+            });
+            this.newSupplierCode = this.supplierInfos[0].value; //code
+        });
         this.supplierFakes.forEach((item, i) => {
             this.supplierInfos.push(
                 new BidProfileTypeInfo2(item.code, `${item.code} - ${item.name}`));
@@ -448,8 +465,7 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
     }
 
     addNewContractor(): void {
-        this.newBidUnits.push(new NewBidUnit(this.bidProfileCode, this.newSupplierCode, this.newsupplierSubmitDateString,
-            this.newProofNum, this.newBeginCost, this.newBank, this.newNotes, 2));
+        this.newBidUnits.push(new BidUnitDto({bank: this.newBank, beginCost:  this.newBeginCost, bidProfileId: 0, note: this.note, productId: 6, proofNum: this.newProofNum, status: 1, submitDate: moment(new Date(this.newsupplierSubmitDateString))}));
     }
 
     removeBidUnit(i: number): void {
@@ -510,17 +526,6 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
         /**
          * Sử dụng _apiService để call các api của backend
          */
-
-        // this._apiService.get('api/MenuClient/GetMenuClientsByFilter',
-        //     [{ fieldName: 'Name', value: this.filterText }],
-        //     this.primengTableHelper.getSorting(this.dataTable),
-        //     this.primengTableHelper.getMaxResultCount(this.paginator, event),
-        //     this.primengTableHelper.getSkipCount(this.paginator, event),
-        // ).subscribe(result => {
-        //     this.primengTableHelper.totalRecordsCount = result.totalCount;
-        //     this.primengTableHelper.records = result.items;
-        //     this.primengTableHelper.hideLoadingIndicator();
-        // });
 
         this.primengTableHelper.totalRecordsCount = 16;
         this.primengTableHelper.records = this.bidCreateFakes;
@@ -583,7 +588,7 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
 
     public onDateChangedBy(event: IMyDateModel): void {
         const date = Object.assign({}, event);
-        this.creatDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
+        this.creatDateString = date.jsdate ? moment(date.jsdate) : new Date();
     }
 
     public actionEdit(row: any, $event: Event): void {
@@ -649,7 +654,10 @@ export class BidCreateComponent extends AppComponentBase implements AfterViewIni
             // }
         });
         // save xong
-        this.saving = false;
+        this._apiService.createBidProfileAsync(new BidProfileSaveForCreate({id: 0, bidType: this.bidTypes[this.bidType].name, bidCatalog: this.bidProfileCode, cautionMoney: this.cautionMoney, code: this.bidProfileCode, createDate: moment(new Date(this.creatDateString)), endReceivedDate: moment(new Date(this.endDateString)), name: this.bidCreateName, note: this.note, startReceivedDate: moment(new Date(this.startDateString)), projectId: this.bidProjectId, status: this.status, bidUnits: this.newBidUnits, organizationUnitId: 2})).subscribe(ressult => {
+            console.log(ressult);
+            this.saving = false;
+        });
     }
 
 }

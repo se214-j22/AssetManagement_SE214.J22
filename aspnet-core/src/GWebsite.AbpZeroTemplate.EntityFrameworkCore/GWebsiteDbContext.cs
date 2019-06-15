@@ -333,7 +333,6 @@ namespace GWebsite.AbpZeroTemplate.EntityFrameworkCore
                      .WithOne(i => i.Plan)
                      .HasForeignKey(i => i.PlanId)
                      .OnDelete(DeleteBehavior.Restrict);
-
             });
 
             modelBuilder.Entity<BidProfile>(entity =>

@@ -1,4 +1,5 @@
 ﻿using Abp.Domain.Entities;
+using Abp.Organizations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,6 +20,9 @@ namespace GWebsite.AbpZeroTemplate.Core.Models
         public int CountChange { get; set; }
         public ICollection<SubPlan> SubPlans { get; set; }
 
+        //public OrganizationUnit OrganizationUnit { get; set; }
+        //public long? OrganizationUnitId { get; set; }
+        
         public Plan()
         {
             SubPlans = new Collection<SubPlan>();

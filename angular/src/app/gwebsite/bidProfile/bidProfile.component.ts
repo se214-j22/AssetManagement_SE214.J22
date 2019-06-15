@@ -414,8 +414,7 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
                 bidCatalog: row.bidCatalog,
                 bidType: row.bidType,
                 code: row.code,
-                projectId: row.projectId, name: row.name,
-                organizationUnitId: 1})).subscribe(item =>   row.isEdit = false);
+                projectId: row.projectId, name: row.name})).subscribe(item =>   row.isEdit = false);
 
         }
 
