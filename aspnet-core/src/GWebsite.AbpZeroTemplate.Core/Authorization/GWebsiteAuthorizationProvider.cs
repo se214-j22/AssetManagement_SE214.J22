@@ -57,6 +57,8 @@ namespace GWebsite.AbpZeroTemplate.Core.Authorization
             Plan.CreateChildPermission(GWebsitePermissions.Pages_Administration_Plan_Create, L("CreatingNewPlan"));
             Plan.CreateChildPermission(GWebsitePermissions.Pages_Administration_Plan_Edit, L("EditingPlan"));
             Plan.CreateChildPermission(GWebsitePermissions.Pages_Administration_Plan_Delete, L("DeletingPlan"));
+            Plan.CreateChildPermission(GWebsitePermissions.Pages_Administration_Approved, L("Approved"));
+            Plan.CreateChildPermission(GWebsitePermissions.Pages_Administration_UnApproved, L("UnApproved"));
 
             var SubPlan = gwebsite.CreateChildPermission(GWebsitePermissions.Pages_Administration_SubPlan, L("SubPlan"));
             SubPlan.CreateChildPermission(GWebsitePermissions.Pages_Administration_SubPlan_Create, L("CreatingNewSubPlan"));

@@ -54,6 +54,9 @@
         public const string Pages_Administration_BidProfile_Edit = "Pages.Administration.BidProfile.Edit";
         public const string Pages_Administration_BidProfile_Delete = "Pages.Administration.BidProfile.Delete";
 
+        public const string Pages_Administration_Approved = "Pages.Administration.Approved";
+        public const string Pages_Administration_UnApproved = "Pages.Administration.UnApproved";
+
         //public const string Pages_Administration_ABSsss = "Pages.Administration.ABSsss";
         //public const string Pages_Administration_ABSsss_Create = "Pages.Administration.ABSsss.Create";
         //public const string Pages_Administration_ABSsss_Edit = "Pages.Administration.ABSsss.Edit";
