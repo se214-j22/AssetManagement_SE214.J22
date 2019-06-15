@@ -273,18 +273,15 @@
                                         <td style="width: 90px">
                                             <span title="{{record.ordinalNumber}}">{{index + 1}}</span>
                                         </td>
-                                        <td style="width: 150px">
-                                            <input type="radio" id="selectWinContractor-{{index}}" value="{{index}}">
-                                        </td>
                                         <!-- status -->
                                         <td style="width: 150px">
-                                            <span title="{{record.productCode}}">{{record.productCode}}</span>
+                                            <input type="radio" id="selectWinContractor-{{index}}" value="{{index}}">
                                         </td>
                                         <td style="width: 150px">
                                             <span title="{{record.supplierCode}}">{{record.supplierCode}}</span>
                                         </td>
                                         <td style="width: 150px">
-                                            <span title="{{record.submitDate}}">{{record.submitDate}}</span>
+                                            <span title="{{record.submitDate}}">{{record.submitDate | date}}</span>
                                         </td>
                                         <td style="width: 150px">
                                             <span title="{{record.proofNum}}">{{record.proofNum}}</span>
