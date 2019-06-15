@@ -14,19 +14,19 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>CODE*</label>
+                        <label>CODE</label><label style='color:red;font-size: 20px'>*</label>
                         <input #codeInput="ngModel" class="form-control" type="text" name="Code" [(ngModel)]="manufacturer.code"
                             required minlength='3' maxlength="3" [disabled]='!beingCreated'>
                         <validation-messages [formCtrl]="codeInput"></validation-messages>
                     </div>
                     <div class="form-group">
-                        <label>Name*</label>
+                        <label>Name</label><label style='color:red;font-size: 20px'>*</label>
                         <input #nameInput="ngModel" class="form-control" type="text" name="Name" [(ngModel)]="manufacturer.name"
                             required maxlength="64">
                         <validation-messages [formCtrl]="nameInput"></validation-messages>
                     </div>
                     <div class="form-group">
-                        <label>Logo*</label>
+                        <label>Logo</label><label style='color:red;font-size: 20px'>*</label>
                         <input #logoInput="ngModel" class="form-control" type="text" name="Logo" [(ngModel)]="manufacturer.logo"
                             required>
                         <validation-messages [formCtrl]="logoInput"></validation-messages>

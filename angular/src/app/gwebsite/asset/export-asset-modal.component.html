@@ -78,7 +78,7 @@
                         <validation-messages [formCtrl]="depreciationValueInput"></validation-messages>
                     </div>
                     <div class="form-group col-sm-12" *ngIf="status=='USING'">
-                        <label>Export To*</label>
+                        <label>Export To</label><label style='color:red;font-size: 20px'>*</label>
                         <select #organizationUnitCombobox autofocus name="organizationUnitName" class="form-control"
                             [(ngModel)]="asset.organizationUnitId" [attr.data-live-search]="true"
                             jq-plugin="selectpdateInputker" required>
@@ -102,7 +102,7 @@
                     <button [disabled]="saving" type="button" class="btn btn-default"
                         (click)="close()">{{l("Cancel")}}</button>
                     <button *ngIf='!modifyMultipleAssetsMode' type="submit" class="btn btn-primary"
-                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-fast-forward"></i>
                         <span>{{l("Export")}}</span></button>
                 </div>
             </form>

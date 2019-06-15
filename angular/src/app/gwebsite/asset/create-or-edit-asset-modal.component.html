@@ -15,7 +15,7 @@
                 </div>
                 <div class="modal-body row">
                     <div class="form-group col-sm-6">
-                        <label>Asset Type*</label>
+                        <label>Asset Type</label><label style='color:red;font-size: 20px'>*</label>
                         <select [disabled]='!beingCreated||modifyMultipleAssetsMode' #assetTypeCombobox autofocus
                             name="assetTypeName" class="form-control" [(ngModel)]="assetTypeID"
                             [attr.data-live-search]="true" jq-plugin="selectpdateInputker" required
@@ -26,7 +26,7 @@
                         </select>
                     </div>
                     <div class="form-group col-sm-6">
-                        <label>Manufacturer*</label>
+                        <label>Manufacturer</label><label style='color:red;font-size: 20px'>*</label>
                         <select [disabled]='!beingCreated||modifyMultipleAssetsMode' #manufacturerCombobox autofocus
                             name="manufacturerName" class="form-control" [(ngModel)]="manufacturerID"
                             [attr.data-live-search]="true" jq-plugin="selectpdateInputker" required
@@ -37,7 +37,7 @@
                         </select>
                     </div>
                     <div class="form-group col-sm-12">
-                        <label>Asset Line*</label>
+                        <label>Asset Line</label><label style='color:red;font-size: 20px'>*</label>
                         <select [disabled]='!beingCreated||modifyMultipleAssetsMode' #assetLineCombobox autofocus
                             name="assetLineName" class="form-control" [(ngModel)]="asset.assetLineID"
                             [attr.data-live-search]="true" jq-plugin="selectpdateInputker" required
@@ -47,9 +47,9 @@
                             </option>
                         </select>
                     </div>
-                    <div class="form-group col-sm-12">
-                        <label>Status*</label>
-                        <select [disabled]='beingCreated' #statusCombobox autofocus name="statusName"
+                    <div class="form-group col-sm-12" *ngIf='!beingCreated'>
+                        <label>Status</label><label style='color:red;font-size: 20px'>*</label>
+                        <select  #statusCombobox autofocus name="statusName"
                             class="form-control" [(ngModel)]="status" [attr.data-live-search]="true"
                             jq-plugin="selectpdateInputker" required>
                             <option *ngFor="let item of statusComboboxs" [value]="item.value">{{item.displayText}}
@@ -57,7 +57,7 @@
                         </select>
                     </div>
                     <div class="form-group col-sm-12" *ngIf="status=='USING'">
-                        <label>Using by*</label>
+                        <label>Using by</label><label style='color:red;font-size: 20px'>*</label>
                         <select #organizationUnitCombobox autofocus name="organizationUnitName" class="form-control"
                             [(ngModel)]="asset.organizationUnitId" [attr.data-live-search]="true"
                             jq-plugin="selectpdateInputker" required>
@@ -78,21 +78,23 @@
                         <validation-messages [formCtrl]="depreciationRateInput"></validation-messages>
                     </div>
                     <div class="form-group col-sm-12">
-                        <label>PO Number*</label>
+                        <label>PO Number</label><label style='color:red;font-size: 20px'>*</label>
                         <input #poNumberInput="ngModel" class="form-control" type="number" name="poNumber"
-                            [(ngModel)]="asset.poNumber" required maxlength="256">
+                            [(ngModel)]="asset.poNumber" required maxlength="256" (ngModelChange)="checkSave()">
                         <validation-messages [formCtrl]="poNumberInput"></validation-messages>
                     </div>
                     <div class="form-group col-sm-6">
-                        <label>Full Depreciation Price* ($)</label>
+                        <label>Full Depreciation Price</label><label style='color:red;font-size: 20px'>* </label><label> ($)</label>
                         <input #fullDepreciationPriceInput="ngModel" class="form-control" type="number" step="0.01"
-                            name="fullDepreciation" [(ngModel)]="asset.fullDepreciationPrice" required maxlength="256">
+                            name="fullDepreciation" [(ngModel)]="asset.fullDepreciationPrice" required maxlength="256"
+                            (ngModelChange)="checkSave()">
                         <validation-messages [formCtrl]="fullDepreciationPriceInput"></validation-messages>
                     </div>
                     <div class="form-group col-sm-6">
-                        <label>Depreciation Value* ($)</label>
+                        <label>Depreciation Value</label><label style='color:red;font-size: 20px'>* </label><label> ($)</label>
                         <input #depreciationValueInput="ngModel" class="form-control" type="number" step="0.01"
-                            name="depreciationValue" [(ngModel)]="asset.depreciationValue" maxlength="256">
+                            name="depreciationValue" [(ngModel)]="asset.depreciationValue" maxlength="256"
+                            (ngModelChange)="checkSave()">
                         <validation-messages [formCtrl]="depreciationValueInput"></validation-messages>
                     </div>
                     <div class="form-group col-sm-12">
@@ -102,9 +104,10 @@
                         <validation-messages [formCtrl]="noteInput"></validation-messages>
                     </div>
                     <div class="form-group col-sm-12" *ngIf='beingCreated'>
-                        <label>Created Asset Number*</label>
+                        <label>Created Asset Number</label><label style='color:red;font-size: 20px'>*</label>
                         <input #assetNumberInput="ngModel" class="form-control" type="number" name="AssetNumber"
-                            [(ngModel)]="asset.number" required maxlength="64">
+                            [(ngModel)]="asset.number" required maxlength="2"
+                            (ngModelChange)="checkSave()">
                         <validation-messages [formCtrl]="assetNumberInput"></validation-messages>
                     </div>
                     <!-- #region QR -->
@@ -176,8 +179,8 @@
                 <div class="modal-footer">
                     <button [disabled]="saving" type="button" class="btn btn-default"
                         (click)="close()">{{l("Cancel")}}</button>
-                    <button *ngIf='!modifyMultipleAssetsMode' type="submit" class="btn btn-primary"
-                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-fast-forward"></i>
+                    <button *ngIf='!modifyMultipleAssetsMode' [disabled]='!allowSave'type="submit" class="btn btn-primary"
+                        [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i>
                         <span>{{l("Save")}}</span></button>
                 </div>
             </form>

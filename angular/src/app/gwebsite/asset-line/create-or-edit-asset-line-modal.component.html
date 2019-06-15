@@ -14,7 +14,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Asset Type*</label>
+                        <label>Asset Type</label><label style='color:red;font-size: 20px'>*</label>
                         <select [disabled]='!beingCreated' #assetTypeCombobox autofocus name="assetTypeName" class="form-control"
                             [(ngModel)]="assetLine.assetTypeID" [attr.data-live-search]="true" jq-plugin="selectpdateInputker"
                             required>
@@ -24,7 +24,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Manufacturer*</label>
+                        <label>Manufacturer</label><label style='color:red;font-size: 20px'>*</label>
                         <select [disabled]='!beingCreated' #manufacturerCombobox autofocus name="manufacturerName"
                             class="form-control" [(ngModel)]="assetLine.manufacturerID" [attr.data-live-search]="true"
                             jq-plugin="selectpdateInputker" required>
@@ -34,7 +34,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>CODE*</label>
+                        <label>CODE</label><label style='color:red;font-size: 20px'>*</label>
                         <input #codeInput="ngModel" class="form-control" type="text" name="Code" [(ngModel)]="assetLine.code"
                             required maxlength="64" [disabled]='!beingCreated'>
                         <validation-messages [formCtrl]="codeInput"></validation-messages>
@@ -46,13 +46,13 @@
                             <validation-messages [formCtrl]="priceInput"></validation-messages>
                         </div>
                     <div class="form-group">
-                        <label>Name*</label>
+                        <label>Name</label><label style='color:red;font-size: 20px'>*</label>
                         <input #nameInput="ngModel" class="form-control" type="text" name="Name" [(ngModel)]="assetLine.name"
                             required maxlength="64">
                         <validation-messages [formCtrl]="nameInput"></validation-messages>
                     </div>
                     <div class="form-group">
-                        <label>Image*</label>
+                        <label>Image</label><label style='color:red;font-size: 20px'>*</label>
                         <input #imageInput="ngModel" class="form-control" type="text" name="Image" [(ngModel)]="assetLine.image"
                             required>
                         <validation-messages [formCtrl]="imageInput"></validation-messages>

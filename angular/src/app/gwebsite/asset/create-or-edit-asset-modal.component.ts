@@ -34,6 +34,7 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
     saving = false;
+    allowSave = false;
 
     modifyMultipleAssetsMode = false;
     asset: AssetInput = new AssetInput();
@@ -77,7 +78,16 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
 
 
     }
-
+    checkSave() {
+        this.allowSave = Boolean(this.assetTypeID
+            && this.manufacturerID
+            && this.asset.assetLineID
+            && (this.status == 'RESTING' || this.asset.organizationUnitId)
+            && this.asset.poNumber
+            && this.asset.fullDepreciationPrice
+            && this.asset.depreciationValue
+            && (!this.beingCreated || this.asset.number));
+    }
     ngOnInit() {
         this._organizationUnitService.getOrganizationUnit().subscribe(ou =>
             this.mainOU = ou);
@@ -134,12 +144,15 @@ export class CreateOrEditAssetModalComponent extends AppComponentBase implements
     }
     onChangeAssetType(e) {
         this.refreshAssetLine();
+        this.checkSave();
         this.depreciationRate = this.assetTypes.find(at => at.id == e).depreciationRate;
     }
     onChangeManufacturer(e) {
         this.refreshAssetLine();
+        this.checkSave();
     }
     onChangeAssetLine(e) {
+        this.checkSave();
         if (!e) {
             this.assetTypeID = String(0);
             this.manufacturerID = String(0);

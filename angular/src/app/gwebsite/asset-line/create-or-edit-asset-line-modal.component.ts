@@ -26,7 +26,6 @@ export class CreateOrEditAssetLineModalComponent extends AppComponentBase implem
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
 
     saving = false;
-
     assetLine: AssetLineInput = new AssetLineInput();
     assetTypes: AssetTypeDto[] = new Array<AssetTypeDto>();
     manufacturers: ManufacturerDto[] = new Array<ManufacturerDto>()
@@ -57,7 +56,6 @@ export class CreateOrEditAssetLineModalComponent extends AppComponentBase implem
             }
         });
     }
-
     show(assetLineId?: number | null | undefined): void {
         this.saving = false;
 
