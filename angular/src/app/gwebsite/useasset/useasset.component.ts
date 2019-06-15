@@ -114,7 +114,7 @@ export class UseAssetComponent extends AppComponentBase implements AfterViewInit
 
     //hàm show view create MenuClient
     createUseAsset() {
-        this.createOrEditModal.show();
+        this.createOrEditModal.show(undefined);
     }
 
     /**

@@ -61,33 +61,56 @@ export class CreateOrEditUseAssetModalComponent extends AppComponentBase {
     ngOnInit(): void {
         //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
         //Add 'implements OnInit' to the class.
-        this.getListAssetsInStock();
-        this.getOrganizationUnit();
-        if(this.listAssetInStock[0].assetId) this._assetService.getAssetByAssetID(this.listAssetInStock[0].assetId).subscribe(result => {
-            this.assetSelect = result;
-        });
     }
 
     show(useassetId?: number | null | undefined): void {
+        this.useasset = new UseAssetInput();
+        // const today = new Date();
+        // this.useasset.dateExport = today.fo;
+
+        // this.listAssetInStock = [];
+        // this.assetSelect = new AssetForViewDto();
+        // this.assetType = '';
+        // this.assetGroup = new AssetGroupForViewDto();
+
+        // this.listOrganizationUnit = [];
+        // this.customers = [];
+        // this.customersByOrganization = [];
+
+
         this.saving = false;
+
+
         this.getListAssetsInStock();
-        this._useassetService.getUseAssetForEdit(useassetId).subscribe(result => {
-            this.useasset = result;
-            // this.modal.show();
-            if (!this.useasset.id) {
-                this.useasset.dateExport = moment().format('YYYY-MM-DD');
-            }
-            else {
-                this.getAssetByID(this.useasset.assetId);
-            }
-            this._customerService.getCustomersByFilter('', '', 1000, 0).subscribe(result => {
-                this.customers = result.items;
-            });
-            this.modal.show();
-        })
+        this.getOrganizationUnit();
+        // if (this.listAssetInStock[0].assetId) {
+        //     this._assetService.getAssetByAssetID(this.listAssetInStock[0].assetId).subscribe(result => {
+        //     this.assetSelect = result;});
+        // }
+
+
+        // this.getListAssetsInStock();
+        if (true) {
+            this._useassetService.getUseAssetForEdit(useassetId).subscribe(result => {
+                this.useasset = result;
+                if (!this.useasset.id) {
+                    this.useasset.dateExport = moment().format('YYYY-MM-DD');
+                }
+                else {
+                    this.getAssetByID(this.useasset.assetId);
+                }
+                this._customerService.getCustomersByFilter('', '', 1000, 0).subscribe(result => {
+                    this.customers = result.items;
+                });
+                // this.modal.show();
+            })
+        }
+        
+        this.modal.show();
     }
 
     save(): void {
+        console.log(this.useasset)
         let input = this.useasset;
         this.saving = true;
         this._useassetService.createOrEditUseAsset(input).subscribe(result => {
@@ -139,6 +162,11 @@ export class CreateOrEditUseAssetModalComponent extends AppComponentBase {
             }
             );
         });
+
+        if (this.listAssetInStock[0].assetId) {
+            this._assetService.getAssetByAssetID(this.listAssetInStock[0].assetId).subscribe(result => {
+            this.assetSelect = result;});
+        }
 
         if (this.listAssetInStock.length > 1) {
             this.getAssetByID(this.listAssetInStock[0].assetId);
@@ -204,5 +232,9 @@ export class CreateOrEditUseAssetModalComponent extends AppComponentBase {
     setAssetIdNull() {
         this.assetSelect = new AssetForViewDto();
         this.getAssetByID('');
+    }
+
+    test() {
+        console.log(this.useasset.userId);
     }
 }
