@@ -410,12 +410,13 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
 
             //save thành công
             this._apiService.updateBidProfileAsync(new BidProfileSaved({
-                id,
+                id: row.id,
                 bidCatalog: row.bidCatalog,
                 bidType: row.bidType,
                 code: row.code,
-                projectId: row.projectId, name: row.name})).subscribe(item =>   row.isEdit = false);
-
+                organizationUnitId: row.organizationUnit.id,
+                projectId: row.projectId,
+                name: row.name})).subscribe(item =>   row.isEdit = false);
         }
 
     }
