@@ -128,12 +128,12 @@
                                         </td>
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Create Date')}}</span>
-                                            <span title="{{record.createDate}}">{{ record.createDate }}</span>
+                                            <span title="{{record.createDate}}">{{ record.createDate | date: 'dd/MM/yyyy'}}</span>
                                         </td>
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Active Date')}}</span>
                                             <span
-                                                title="{{record.activeDate}}">{{ record.activeDate ? record.activeDate : 'N/A' }}</span>
+                                                title="{{record.activeDate}}">{{ (record.activeDate ? record.activeDate  : 'N/A') | date: 'dd/MM/yyyy'}}</span>
                                         </td>
 
                                         <td style="width: 150px">

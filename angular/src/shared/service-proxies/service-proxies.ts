@@ -2196,6 +2196,70 @@ export class ContractServiceProxy {
 }
 
 @Injectable()
+export class GetApprovedBidProfileServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    approvedBidProfile(): Observable<PagedResultDtoOfBidProfileDto> {
+        let url_ = this.baseUrl + "/api/Contract/GetApprovedBidProfile/approvedBidProfile";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processApprovedBidProfile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processApprovedBidProfile(<any>response_);
+                } catch (e) {
+                    return <Observable<PagedResultDtoOfBidProfileDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<PagedResultDtoOfBidProfileDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processApprovedBidProfile(response: HttpResponseBase): Observable<PagedResultDtoOfBidProfileDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? PagedResultDtoOfBidProfileDto.fromJS(resultData200) : new PagedResultDtoOfBidProfileDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PagedResultDtoOfBidProfileDto>(<any>null);
+    }
+}
+
+@Injectable()
 export class CustomerServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -9517,13 +9581,68 @@ export class SupplierTypeServiceProxy {
     }
 
     /**
+     * @id (optional) 
      * @return Success
      */
-    deleteSupplierTypeAsync(id: number): Observable<void> {
-        let url_ = this.baseUrl + "/api/SupplierType/DeleteSupplierTypeAsync/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+    setStatusSupplierTypeAsync(id: number | null | undefined): Observable<SupplierTypeDto> {
+        let url_ = this.baseUrl + "/api/SupplierType/SetStatusSupplierTypeAsync?";
+        if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSetStatusSupplierTypeAsync(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSetStatusSupplierTypeAsync(<any>response_);
+                } catch (e) {
+                    return <Observable<SupplierTypeDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<SupplierTypeDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processSetStatusSupplierTypeAsync(response: HttpResponseBase): Observable<SupplierTypeDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? SupplierTypeDto.fromJS(resultData200) : new SupplierTypeDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<SupplierTypeDto>(<any>null);
+    }
+
+    /**
+     * @id (optional) 
+     * @return Success
+     */
+    deleteSupplierTypeAsync(id: number | null | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/SupplierType/DeleteSupplierTypeAsync?";
+        if (id !== undefined)
+            url_ += "id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -9566,92 +9685,13 @@ export class SupplierTypeServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
-}
-
-@Injectable()
-export class SetStatusSupplierTypeAsyncServiceProxy {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "";
-    }
-
-    /**
-     * @return Success
-     */
-    status(id: number): Observable<SupplierTypeDto> {
-        let url_ = this.baseUrl + "/api/SupplierType/SetStatusSupplierTypeAsync/status/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processStatus(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processStatus(<any>response_);
-                } catch (e) {
-                    return <Observable<SupplierTypeDto>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<SupplierTypeDto>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processStatus(response: HttpResponseBase): Observable<SupplierTypeDto> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 ? SupplierTypeDto.fromJS(resultData200) : new SupplierTypeDto();
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<SupplierTypeDto>(<any>null);
-    }
-}
-
-@Injectable()
-export class EditNameSupplierTypeAsyncServiceProxy {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "";
-    }
 
     /**
      * @dto (optional) 
      * @return Success
      */
-    edit(dto: SupplierTypeDto | null | undefined): Observable<SupplierTypeDto> {
-        let url_ = this.baseUrl + "/api/SupplierType/EditNameSupplierTypeAsync/edit";
+    editNameSupplierTypeAsync(dto: SupplierTypeDto | null | undefined): Observable<SupplierTypeDto> {
+        let url_ = this.baseUrl + "/api/SupplierType/EditNameSupplierTypeAsync";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(dto);
@@ -9667,11 +9707,11 @@ export class EditNameSupplierTypeAsyncServiceProxy {
         };
 
         return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processEdit(response_);
+            return this.processEditNameSupplierTypeAsync(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processEdit(<any>response_);
+                    return this.processEditNameSupplierTypeAsync(<any>response_);
                 } catch (e) {
                     return <Observable<SupplierTypeDto>><any>_observableThrow(e);
                 }
@@ -9680,7 +9720,7 @@ export class EditNameSupplierTypeAsyncServiceProxy {
         }));
     }
 
-    protected processEdit(response: HttpResponseBase): Observable<SupplierTypeDto> {
+    protected processEditNameSupplierTypeAsync(response: HttpResponseBase): Observable<SupplierTypeDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -20159,6 +20199,8 @@ export class ProductDto implements IProductDto {
     createDate!: moment.Moment | undefined;
     status!: number | undefined;
     description!: string | undefined;
+    supplier!: SupplierDtoTitle | undefined;
+    productType!: SupplierTypeDtoTitle | undefined;
     id!: number | undefined;
 
     constructor(data?: IProductDto) {
@@ -20181,6 +20223,8 @@ export class ProductDto implements IProductDto {
             this.createDate = data["createDate"] ? moment(data["createDate"].toString()) : <any>undefined;
             this.status = data["status"];
             this.description = data["description"];
+            this.supplier = data["supplier"] ? SupplierDtoTitle.fromJS(data["supplier"]) : <any>undefined;
+            this.productType = data["productType"] ? SupplierTypeDtoTitle.fromJS(data["productType"]) : <any>undefined;
             this.id = data["id"];
         }
     }
@@ -20203,6 +20247,8 @@ export class ProductDto implements IProductDto {
         data["createDate"] = this.createDate ? this.createDate.toISOString() : <any>undefined;
         data["status"] = this.status;
         data["description"] = this.description;
+        data["supplier"] = this.supplier ? this.supplier.toJSON() : <any>undefined;
+        data["productType"] = this.productType ? this.productType.toJSON() : <any>undefined;
         data["id"] = this.id;
         return data; 
     }
@@ -20218,6 +20264,140 @@ export interface IProductDto {
     createDate: moment.Moment | undefined;
     status: number | undefined;
     description: string | undefined;
+    supplier: SupplierDtoTitle | undefined;
+    productType: SupplierTypeDtoTitle | undefined;
+    id: number | undefined;
+}
+
+export class SupplierDtoTitle implements ISupplierDtoTitle {
+    name!: string | undefined;
+    address!: string | undefined;
+    email!: string | undefined;
+    fax!: string | undefined;
+    phone!: string | undefined;
+    contact!: string | undefined;
+    code!: string | undefined;
+    description!: string | undefined;
+    createDate!: string | undefined;
+    status!: number | undefined;
+    supplierTypeId!: number | undefined;
+    id!: number | undefined;
+
+    constructor(data?: ISupplierDtoTitle) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.address = data["address"];
+            this.email = data["email"];
+            this.fax = data["fax"];
+            this.phone = data["phone"];
+            this.contact = data["contact"];
+            this.code = data["code"];
+            this.description = data["description"];
+            this.createDate = data["createDate"];
+            this.status = data["status"];
+            this.supplierTypeId = data["supplierTypeId"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): SupplierDtoTitle {
+        data = typeof data === 'object' ? data : {};
+        let result = new SupplierDtoTitle();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["address"] = this.address;
+        data["email"] = this.email;
+        data["fax"] = this.fax;
+        data["phone"] = this.phone;
+        data["contact"] = this.contact;
+        data["code"] = this.code;
+        data["description"] = this.description;
+        data["createDate"] = this.createDate;
+        data["status"] = this.status;
+        data["supplierTypeId"] = this.supplierTypeId;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ISupplierDtoTitle {
+    name: string | undefined;
+    address: string | undefined;
+    email: string | undefined;
+    fax: string | undefined;
+    phone: string | undefined;
+    contact: string | undefined;
+    code: string | undefined;
+    description: string | undefined;
+    createDate: string | undefined;
+    status: number | undefined;
+    supplierTypeId: number | undefined;
+    id: number | undefined;
+}
+
+export class SupplierTypeDtoTitle implements ISupplierTypeDtoTitle {
+    name!: string | undefined;
+    code!: string | undefined;
+    note!: string | undefined;
+    status!: number | undefined;
+    id!: number | undefined;
+
+    constructor(data?: ISupplierTypeDtoTitle) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.code = data["code"];
+            this.note = data["note"];
+            this.status = data["status"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): SupplierTypeDtoTitle {
+        data = typeof data === 'object' ? data : {};
+        let result = new SupplierTypeDtoTitle();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["code"] = this.code;
+        data["note"] = this.note;
+        data["status"] = this.status;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ISupplierTypeDtoTitle {
+    name: string | undefined;
+    code: string | undefined;
+    note: string | undefined;
+    status: number | undefined;
     id: number | undefined;
 }
 

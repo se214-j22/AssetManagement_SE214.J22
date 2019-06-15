@@ -95,7 +95,7 @@
                                             <p-sortIcon field="productTypeId"></p-sortIcon>
                                         </th>
                                         <th pSortableColumn="supplierId" style="width: 150px; text-align: center">
-                                            {{l('Supplier Id')}}
+                                            {{l('Supplier name')}}
                                             <p-sortIcon field="supplierId"></p-sortIcon>
                                         </th>
                                         <th pSortableColumn="unitPrice" style="width: 150px; text-align: center">
@@ -145,12 +145,12 @@
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Product Type')}}</span>
                                             <span
-                                                title="{{record.productTypeId}}">{{truncateString(record.productTypeId)}}</span>
+                                                title="{{record.productTypeId}}">{{truncateString(record.productType.name)}}</span>
                                         </td>
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Supplier Id')}}</span>
                                             <span
-                                                title="{{record.supplierId}}">{{truncateString(record.supplierId)}}</span>
+                                                title="{{record.supplierId}}">{{truncateString(record.supplier.name)}}</span>
                                         </td>
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Unit Price')}}</span>
@@ -177,11 +177,11 @@
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Address')}}</span>
                                             <span *ngIf="!record.isEdit"
-                                                title="{{record.supplierAddress}}">{{ record.supplierAddress }}</span>
+                                                title="{{record.supplierAddress}}">{{ record.supplier.address }}</span>
                                         </td>
                                         <span style="width: 150px">
-                                            <span class="ui-column-title">{{l('Create Date')}}</span>
-                                            <span title="{{record.createDate}}">{{ record.createDate }}</span>
+                                            <!-- <span class="ui-column-title">{{l('Create Date')}}</span> -->
+                                            <span title="{{record.createDate}}">{{ record.createDate | date: 'dd/MM/yyyy' }}</span>
                                         </span>
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Status')}}</span>
