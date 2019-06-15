@@ -206,6 +206,15 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
         this.ApprovalStatusList[0].name = 'Approved';
       });
     }
+  }
+
+  public unApprovedPlan(): void {
+
+    this.apiService.approvedPlanAsync(this.planId).subscribe(result => {
+      this.approvalStatus = ApprovalStatusEnum.AwaitingApproval;
+      this.ApprovalStatusList[0].id = 1;
+      this.ApprovalStatusList[0].name = 'UnApproved';
+    });
 
   }
 
